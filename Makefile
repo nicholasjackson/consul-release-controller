@@ -11,3 +11,6 @@ fetch_kubernetes_certs:
 
 run_kubernetes: fetch_kubernetes_certs
 	go run main.go
+
+functional_test:
+	cd functional_tests && go run main.go

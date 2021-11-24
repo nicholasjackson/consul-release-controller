@@ -23,3 +23,20 @@ jobs:
 
     - name: Test
       run: go test -v ./...
+   
+  functional_test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: 1.17
+
+    - name: Setup Functional Tests
+      run: |
+        curl https://shipyard.run/install | bash
+    - name: Run Functional Tests
+      run: |
+        make functional_test 

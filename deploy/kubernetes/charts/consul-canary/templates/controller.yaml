@@ -1,0 +1,86 @@
+---
+{{- if eq (toString .Values.controller.enabled) "true"}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{include "consul-canary.fullname" .}}
+  namespace: {{.Release.Namespace | quote}}
+  labels:
+    {{- include "consul-canary.labels" . | nindent 4}}
+spec:
+  {{- if not .Values.controller.autoscaling.enabled}}
+  replicas: {{.Values.controller.replicaCount}}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "consul-canary.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.controller.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "consul-canary.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "consul-canary.serviceAccountName" . }}
+      automountServiceAccountToken: true
+      securityContext:
+        {{- toYaml .Values.controller.podSecurityContext | nindent 8 }}
+      initContainers:
+        {{- toYaml .Values.controller.additional_init_containers | nindent 12 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.controller.securityContext | nindent 12 }}
+          image: "{{ .Values.controller.container_config.image.repository }}:{{ .Values.controller.container_config.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.controller.container_config.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 9443
+              protocol: TCP
+            - name: health
+              containerPort: 9444
+              protocol: TCP
+          volumeMounts:
+            - name: tls-secret
+              mountPath: /tmp/k8s-webhook-server/serving-certs
+            {{- if .Values.controller.container_config.volumeMounts }}
+            {{- toYaml .Values.controller.container_config.volumeMounts | nindent 12 }}
+            {{- end }}
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: health
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: health
+          resources:
+            {{- toYaml .Values.controller.container_config.resources | nindent 12 }}
+          env:
+            {{- toYaml .Values.controller.container_config.env | nindent 12 }}
+      {{- with .Values.controller.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.controller.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.controller.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      volumes:
+        - name: tls-secret
+          secret:
+            secretName: {{include "consul-canary.fullname" .}}-webhook-certificate
+        {{- if .Values.controller.additional_volumes }}
+        {{- toYaml .Values.controller.additional_volumes | nindent 8 }}
+        {{- end }}
+{{- end }}

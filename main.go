@@ -7,8 +7,8 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/httplog"
 	"github.com/hashicorp/go-hclog"
-	"github.com/nicholasjackson/consul-canary-controller/handlers"
 	"github.com/nicholasjackson/consul-canary-controller/handlers/api"
+	"github.com/nicholasjackson/consul-canary-controller/kubernetes"
 	promMetrics "github.com/nicholasjackson/consul-canary-controller/metrics"
 )
 
@@ -28,7 +28,7 @@ func main() {
 
 	metrics.ServiceStarting()
 
-	k8sHandler, _ := handlers.NewK8sWebhook(log)
+	k8sHandler, _ := kubernetes.NewK8sWebhook(log)
 	healthHandler := api.NewHealthHandlers(log)
 
 	log.Info("Starting controller")

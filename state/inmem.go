@@ -8,14 +8,17 @@ import (
 
 type InmemStore struct {
 	m           sync.Mutex
-	deployments []models.Deployment
+	deployments []*models.Deployment
 }
 
 func NewInmemStore() *InmemStore {
-	return &InmemStore{m: sync.Mutex{}, deployments: []models.Deployment{}}
+	return &InmemStore{m: sync.Mutex{}, deployments: []*models.Deployment{}}
 }
 
-func (m *InmemStore) UpsertDeployment(d models.Deployment) error {
+func (m *InmemStore) UpsertDeployment(d *models.Deployment) error {
+	m.m.Lock()
+	defer m.m.Unlock()
+
 	m.deployments = append(m.deployments, d)
 
 	return nil

@@ -9,7 +9,7 @@ type MockStore struct {
 	mock.Mock
 }
 
-func (m *MockStore) UpsertDeployment(d models.Deployment) error {
+func (m *MockStore) UpsertDeployment(d *models.Deployment) error {
 	args := m.Called(d)
 	return args.Error(0)
 }

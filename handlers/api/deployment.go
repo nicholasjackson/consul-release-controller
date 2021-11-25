@@ -24,4 +24,13 @@ func (d *Deployment) Post(rw http.ResponseWriter, req *http.Request) {
 		rw.WriteHeader(http.StatusBadRequest)
 		return
 	}
+
+	// store the new deployment
+	err = d.Store.UpsertDeployment(*dep)
+	if err != nil {
+		d.Logger.Error("unable to upsert deployment", "deployment", dep, "error", err)
+
+		rw.WriteHeader(http.StatusInternalServerError)
+		return
+	}
 }

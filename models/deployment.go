@@ -8,6 +8,10 @@ import (
 )
 
 type Deployment struct {
+	Active    bool
+	StartTime time.Time
+	EndTime   time.Time
+
 	ConsulService string              `hcl: "consul_service" json:"consul_service"`
 	Kubernetes    *KubernetesWorkload `hcl: "kubernetes_workload" json:"kubernetes,omitempty"`
 	Canary        *StrategyCanary     `hcl: "canary" json:"canary,omitempty"`
@@ -48,4 +52,14 @@ func (d *Deployment) FromJsonBody(r io.ReadCloser) error {
 
 	defer r.Close()
 	return json.NewDecoder(r).Decode(d)
+}
+
+// ToJson
+func (d *Deployment) ToJson() []byte {
+	data, err := json.Marshal(d)
+	if err != nil {
+		panic(err)
+	}
+
+	return data
 }

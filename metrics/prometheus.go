@@ -61,3 +61,19 @@ func (m *Sink) StartServer() error {
 func (m *Sink) ServiceStarting() {
 	m.m.IncrCounter([]string{"starting"}, 1)
 }
+
+func (m *Sink) HandleRequest(handler string, args map[string]string) func(status int) {
+	st := time.Now()
+
+	return func(status int) {
+		labs := []metrics.Label{}
+		for k, v := range args {
+			labs = append(labs, metrics.Label{Name: k, Value: v})
+		}
+
+		// add the response code
+		labs = append(labs, metrics.Label{Name: "response_code", Value: fmt.Sprintf("%d", status)})
+
+		m.m.MeasureSinceWithLabels([]string{handler}, st, labs)
+	}
+}

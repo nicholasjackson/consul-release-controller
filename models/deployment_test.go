@@ -1,7 +1,9 @@
 package models
 
 import (
+	"bytes"
 	"fmt"
+	"io/ioutil"
 	"testing"
 
 	"github.com/hashicorp/go-hclog"
@@ -42,6 +44,15 @@ func clearMockCall(mc *clients.MockConsul, method string) {
 	}
 
 	mc.ExpectedCalls = new
+}
+
+func TestFromJsonCreatesDeployment(t *testing.T) {
+	d := setupDeployment()
+
+	data := bytes.NewBufferString(`{"consul_service": "foo"}`)
+	d.FromJsonBody(ioutil.NopCloser(data))
+
+	require.Equal(t, "foo", d.ConsulService)
 }
 
 func TestInitializeCreatesConsulServiceDefaults(t *testing.T) {

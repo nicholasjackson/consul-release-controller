@@ -1,3 +1,3 @@
-# Consul Service Mesh Canary Release Controller
+# Consul Service Mesh Release Controller
 
 ## Developing

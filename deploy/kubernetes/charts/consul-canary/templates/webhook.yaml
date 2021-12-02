@@ -10,6 +10,7 @@ metadata:
     cert-manager.io/inject-ca-from: '{{ .Release.Namespace }}/consul-canary-webhook-certificate'
 webhooks:
   - name: consul-canary.consul.io
+    failurePolicy: {{ .Values.webhook.failurePolicy }}
     objectSelector:
       matchExpressions:
       - key: app

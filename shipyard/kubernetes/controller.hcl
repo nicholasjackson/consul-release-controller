@@ -8,6 +8,7 @@ webhook:
   port: 9443
   service: controller-webhook
   namespaceOverride: shipyard
+  failurePolicy: Ignore
 
   # Allows adding additional DNS Names to the cert generated
   # for the webhook
@@ -19,9 +20,13 @@ webhook:
   destination = "${data("kube_setup")}/helm-values.yaml"
 }
 
-helm "consul-canary" {
+helm "consul-release-controller" {
   # wait for certmanager to be installed and the template to be processed
-  depends_on = ["template.controller_values", "k8s_config.cert-manager"]
+  depends_on = [
+    "template.controller_values",
+    "k8s_config.cert-manager-controller",
+    "module.consul",
+  ]
 
   cluster          = "k8s_cluster.dc1"
   namespace        = "consul"

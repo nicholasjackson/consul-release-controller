@@ -1,0 +1,15 @@
+{
+  "setup": {
+    "plugin_name": "consul",
+    "config": {
+      "consul_service": "api"
+    }
+  },
+  
+  "deployment": {
+    "plugin_name": "kubernetes",
+    "config": {
+      "deployment": "api"
+    }
+  }
+}

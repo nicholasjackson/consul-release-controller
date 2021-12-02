@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/hashicorp/go-hclog"
+	"github.com/nicholasjackson/consul-canary-controller/clients"
 	"github.com/nicholasjackson/consul-canary-controller/metrics"
 	"github.com/nicholasjackson/consul-canary-controller/models"
 	"github.com/nicholasjackson/consul-canary-controller/state"
@@ -15,10 +16,11 @@ type Deployment struct {
 	Logger  hclog.Logger
 	Store   state.Store
 	Metrics metrics.Metrics
+	Clients *clients.Clients
 }
 
-func NewDeployment(l hclog.Logger, m metrics.Metrics, s state.Store) *Deployment {
-	return &Deployment{Logger: l, Metrics: m, Store: s}
+func NewDeployment(l hclog.Logger, m metrics.Metrics, s state.Store, c *clients.Clients) *Deployment {
+	return &Deployment{Logger: l, Metrics: m, Store: s, Clients: c}
 }
 
 // Post handler creates a new deployment
@@ -26,7 +28,7 @@ func (d *Deployment) Post(rw http.ResponseWriter, req *http.Request) {
 	d.Logger.Info("Deployment POST handler called")
 	mFinal := d.Metrics.HandleRequest("deployment/post", nil)
 
-	dep := models.NewDeployment(d.Logger, d.Metrics, nil)
+	dep := models.NewDeployment(d.Logger, d.Metrics, d.Clients)
 	err := dep.FromJsonBody(req.Body)
 	if err != nil {
 		d.Logger.Error("unable to upsert deployment", "deployment", *dep, "error", err)
@@ -45,6 +47,9 @@ func (d *Deployment) Post(rw http.ResponseWriter, req *http.Request) {
 		http.Error(rw, "unable to save deployment", http.StatusInternalServerError)
 		return
 	}
+
+	// move the state to initialize
+	dep.Initialize()
 
 	mFinal(http.StatusOK)
 }

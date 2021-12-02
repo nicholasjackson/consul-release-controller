@@ -8,7 +8,9 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
+	"time"
 
+	"github.com/nicholasjackson/consul-canary-controller/clients"
 	"github.com/nicholasjackson/consul-canary-controller/metrics"
 
 	"github.com/hashicorp/go-hclog"
@@ -18,14 +20,17 @@ import (
 	"github.com/stretchr/testify/mock"
 )
 
-func setupDeployment(t *testing.T) (*Deployment, *httptest.ResponseRecorder, *state.MockStore) {
+func setupDeployment(t *testing.T) (*Deployment, *httptest.ResponseRecorder, *state.MockStore, *clients.Clients) {
 	l := hclog.Default()
 	s := &state.MockStore{}
 	m := &metrics.Null{}
+	c := &clients.Clients{
+		Consul: &clients.MockConsul{},
+	}
 
 	rw := httptest.NewRecorder()
 
-	return NewDeployment(l, m, s), rw, s
+	return NewDeployment(l, m, s, c), rw, s, c
 }
 
 func TestDeploymentPostWithInvalidBodyReturnsBadRequest(t *testing.T) {
@@ -55,6 +60,22 @@ func TestDeploymentPostWithNoErrorReturnsOk(t *testing.T) {
 	r := httptest.NewRequest("POST", "/", bytes.NewBuffer(exampleDeployment.ToJson()))
 
 	d.Post(rw, r)
+
+	assert.Equal(t, http.StatusOK, rw.Code)
+}
+
+func TestDeploymentPostCallsInitialize(t *testing.T) {
+	d, rw, s, c := setupDeployment(t)
+	s.On("UpsertDeployment", mock.Anything).Return(nil)
+
+	r := httptest.NewRequest("POST", "/", bytes.NewBuffer(exampleDeployment.ToJson()))
+
+	d.Post(rw, r)
+
+	// work is done in the background check t
+	assert.Eventually(t, func() bool {
+		return false
+	}, 100*time.Millisecond, 1*time.Millisecond)
 
 	assert.Equal(t, http.StatusOK, rw.Code)
 }

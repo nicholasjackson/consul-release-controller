@@ -5,149 +5,89 @@ import (
 	"fmt"
 	"io/ioutil"
 	"testing"
+	"time"
 
-	"github.com/hashicorp/go-hclog"
-	"github.com/nicholasjackson/consul-canary-controller/clients"
-	"github.com/nicholasjackson/consul-canary-controller/metrics"
+	"github.com/nicholasjackson/consul-canary-controller/plugins"
+	"github.com/nicholasjackson/consul-canary-controller/testutils"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
 )
 
-func setupDeployment() *Deployment {
-	log := hclog.NewNullLogger()
-	nm := &metrics.Null{}
-	mc := &clients.MockConsul{}
-
-	cl := &Clients{
-		Consul: mc,
-	}
-
-	mc.On("CreateServiceDefaults", mock.Anything).Return(nil)
-	mc.On("CreateServiceResolver", mock.Anything).Return(nil)
-	mc.On("CreateServiceRouter", mock.Anything).Return(nil)
-	mc.On("CreateServiceSplitter", mock.Anything, mock.Anything, mock.Anything).Return(nil)
-
-	d := NewDeployment(log, nm, cl)
-	d.ConsulService = "testing"
-
-	return d
+type pluginMocks struct {
+	sp *plugins.SetupMock
+	rm *plugins.RuntimeMock
 }
 
-func clearMockCall(mc *clients.MockConsul, method string) {
-	calls := mc.ExpectedCalls
-	new := []*mock.Call{}
+func setupDeployment(t *testing.T) (*Deployment, *pluginMocks) {
+	d := &Deployment{}
 
-	for _, c := range calls {
-		if c.Method != method {
-			new = append(new, c)
-		}
-	}
-
-	mc.ExpectedCalls = new
-}
-
-func TestFromJsonCreatesDeployment(t *testing.T) {
-	d := setupDeployment()
-
-	data := bytes.NewBufferString(`{"consul_service": "foo"}`)
+	data := bytes.NewBuffer(testutils.GetTestData(t, "valid_kubernetes_deployment.json"))
 	d.FromJsonBody(ioutil.NopCloser(data))
 
-	require.Equal(t, "foo", d.ConsulService)
-}
+	// create the mock plugins
+	sm := &plugins.SetupMock{}
+	sm.On("Configure", mock.Anything).Return(nil)
+	sm.On("Setup", mock.Anything, mock.Anything).Return(nil)
 
-func TestInitializeCreatesConsulServiceDefaults(t *testing.T) {
-	d := setupDeployment()
+	rm := &plugins.RuntimeMock{}
+	rm.On("Configure", mock.Anything).Return(nil)
+	rm.On("Deploy", mock.Anything, mock.Anything).Return(nil)
 
-	err := d.Initialize()
+	mp := &plugins.ProviderMock{}
+	mp.On("CreateReleaser", mock.Anything).Return(sm, nil)
+	mp.On("CreateRuntime", mock.Anything).Return(rm, nil)
+
+	// build the deployment
+	err := d.Build(mp)
 	require.NoError(t, err)
 
-	d.clients.Consul.(*clients.MockConsul).AssertCalled(t, "CreateServiceDefaults", "cc-testing-primary")
-	d.clients.Consul.(*clients.MockConsul).AssertCalled(t, "CreateServiceDefaults", "cc-testing-canary")
+	sm.AssertCalled(t, "Configure", d.Setup.Config)
+	rm.AssertCalled(t, "Configure", d.Deployment.Config)
 
-	require.True(t, d.StateIs(EventInitialized))
+	return d, &pluginMocks{sm, rm}
 }
 
-func TestInitializeFailsOnCreateServiceDefaultsError(t *testing.T) {
-	d := setupDeployment()
+func TestInitializeWithNoErrorCallsPluginAndMovesState(t *testing.T) {
+	d, pm := setupDeployment(t)
+	d.Initialize()
 
-	clearMockCall(d.clients.Consul.(*clients.MockConsul), "CreateServiceDefaults")
-	d.clients.Consul.(*clients.MockConsul).On("CreateServiceDefaults", mock.Anything).Return(fmt.Errorf("boom"))
-
-	err := d.Initialize()
-
-	d.clients.Consul.(*clients.MockConsul).AssertCalled(t, "CreateServiceDefaults", "cc-testing-primary")
-	d.clients.Consul.(*clients.MockConsul).AssertNotCalled(t, "CreateServiceDefaults", "cc-testing-canary")
-
-	require.Error(t, err)
-
-	require.False(t, d.StateIs(EventInitialized))
+	require.Eventually(t, func() bool { return d.StateIs(StateIdle) }, 100*time.Millisecond, 1*time.Millisecond)
+	pm.sp.AssertCalled(t, "Setup", mock.Anything, mock.Anything)
 }
 
-func TestInitializeCreatesConsulServiceResolver(t *testing.T) {
-	d := setupDeployment()
+func TestInitializeWithErrorDoesNotMoveState(t *testing.T) {
+	d, pm := setupDeployment(t)
 
-	err := d.Initialize()
-	require.NoError(t, err)
+	testutils.ClearMockCall(&pm.sp.Mock, "Setup")
+	pm.sp.On("Setup", mock.Anything, mock.Anything).Return(fmt.Errorf("Boom"))
 
-	d.clients.Consul.(*clients.MockConsul).AssertCalled(t, "CreateServiceResolver", "cc-testing")
+	d.Initialize()
 
-	require.True(t, d.StateIs(EventInitialized))
+	require.Eventually(t, func() bool {
+		return d.StateIs(StateFail)
+	}, 100*time.Millisecond, 1*time.Millisecond)
 }
 
-func TestInitializeFailsOnCreateServiceResolverError(t *testing.T) {
-	d := setupDeployment()
+func TestDeployWithNoErrorCallsPluginAndMovesState(t *testing.T) {
+	d, pm := setupDeployment(t)
 
-	clearMockCall(d.clients.Consul.(*clients.MockConsul), "CreateServiceResolver")
-	d.clients.Consul.(*clients.MockConsul).On("CreateServiceResolver", mock.Anything).Return(fmt.Errorf("boom"))
+	d.state.SetState(StateIdle)
+	d.Deploy()
 
-	err := d.Initialize()
-	require.Error(t, err)
-
-	require.False(t, d.StateIs(EventInitialized))
+	require.Eventually(t, func() bool { return d.StateIs(StateMonitor) }, 100*time.Millisecond, 1*time.Millisecond)
+	pm.rm.AssertCalled(t, "Deploy", mock.Anything, mock.Anything)
 }
 
-func TestInitializeCreatesConsulServiceRouter(t *testing.T) {
-	d := setupDeployment()
+func TestDeployWithErrorDoesNotMoveState(t *testing.T) {
+	d, pm := setupDeployment(t)
 
-	err := d.Initialize()
-	require.NoError(t, err)
+	testutils.ClearMockCall(&pm.rm.Mock, "Deploy")
+	pm.rm.On("Deploy", mock.Anything).Return(fmt.Errorf("Boom"))
 
-	d.clients.Consul.(*clients.MockConsul).AssertCalled(t, "CreateServiceRouter", "cc-testing")
+	d.state.SetState(StateIdle)
+	d.Deploy()
 
-	require.True(t, d.StateIs(EventInitialized))
-}
-
-func TestInitializeFailsOnCreateServiceRouterError(t *testing.T) {
-	d := setupDeployment()
-
-	clearMockCall(d.clients.Consul.(*clients.MockConsul), "CreateServiceRouter")
-	d.clients.Consul.(*clients.MockConsul).On("CreateServiceRouter", mock.Anything).Return(fmt.Errorf("boom"))
-
-	err := d.Initialize()
-	require.Error(t, err)
-
-	require.False(t, d.StateIs(EventInitialized))
-}
-
-func TestInitializeCreatesConsulServiceSplitter(t *testing.T) {
-	d := setupDeployment()
-
-	err := d.Initialize()
-	require.NoError(t, err)
-
-	d.clients.Consul.(*clients.MockConsul).AssertCalled(t, "CreateServiceSplitter", "cc-testing", 100, 0)
-
-	require.True(t, d.StateIs(EventInitialized))
-}
-
-func TestInitializeFailsOnCreateServiceSplitter(t *testing.T) {
-	d := setupDeployment()
-
-	clearMockCall(d.clients.Consul.(*clients.MockConsul), "CreateServiceSplitter")
-	d.clients.Consul.(*clients.MockConsul).On("CreateServiceSplitter", mock.Anything, mock.Anything, mock.Anything).Return(fmt.Errorf("boom"))
-
-	err := d.Initialize()
-	require.Error(t, err)
-
-	require.False(t, d.StateIs(EventInitialized))
+	require.Eventually(t, func() bool {
+		return d.StateIs(StateFail)
+	}, 100*time.Millisecond, 1*time.Millisecond)
 }

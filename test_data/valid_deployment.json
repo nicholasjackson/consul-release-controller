@@ -1,6 +1,0 @@
-{
-  "consul_service": "api",
-  "kubernetes_workload": {
-    "deployment": "api"
-  }
-}

@@ -1,12 +1,14 @@
 {
-  "setup": {
+  "name":"api",
+
+  "releaser": {
     "plugin_name": "consul",
     "config": {
       "consul_service": "api"
     }
   },
   
-  "deployment": {
+  "runtime": {
     "plugin_name": "kubernetes",
     "config": {
       "deployment": "api"

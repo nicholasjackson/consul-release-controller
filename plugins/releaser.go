@@ -3,8 +3,6 @@ package plugins
 import (
 	"context"
 	"encoding/json"
-
-	"github.com/stretchr/testify/mock"
 )
 
 // Releaser defines methods for configuring and manipulating traffic in the service mesh
@@ -26,50 +24,4 @@ type Releaser interface {
 
 	// Destroy removes any configuration that was created with the Configure method
 	Destroy(ctx context.Context, done func()) error
-}
-
-type SetupMock struct {
-	mock.Mock
-}
-
-func (s *SetupMock) Setup(ctx context.Context, done func()) error {
-	args := s.Called(ctx, done)
-
-	err := args.Error(0)
-	if err != nil {
-		return err
-	}
-
-	// call the callback if no error
-	done()
-
-	return nil
-}
-
-func (s *SetupMock) Configure(config json.RawMessage) error {
-	args := s.Called(config)
-
-	return args.Error(0)
-}
-
-func (s *SetupMock) Scale(ctx context.Context, value int, done func()) error {
-	args := s.Called(ctx, value, done)
-
-	err := args.Error(0)
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (s *SetupMock) Destroy(ctx context.Context, done func()) error {
-	args := s.Called(ctx, done)
-
-	err := args.Error(0)
-	if err != nil {
-		return err
-	}
-
-	return nil
 }

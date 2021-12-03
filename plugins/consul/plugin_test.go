@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"testing"
+	"time"
 
 	"github.com/hashicorp/go-hclog"
 	"github.com/nicholasjackson/consul-canary-controller/clients"
@@ -27,12 +28,12 @@ func setupPlugin(t *testing.T) (*Plugin, *clients.MockConsul) {
 	dep := map[string]interface{}{}
 	json.Unmarshal(data, &dep)
 
-	conf := dep["setup"].(map[string]interface{})["config"]
+	conf := dep["releaser"].(map[string]interface{})["config"]
 	jsn, err := json.Marshal(conf)
 	assert.NoError(t, err)
 
-	p := New(log, mc)
-	err = p.Config(jsn)
+	p := &Plugin{log: log, consulClient: mc}
+	err = p.Configure(jsn)
 	assert.NoError(t, err)
 
 	return p, mc
@@ -47,7 +48,7 @@ func TestSerializesConfig(t *testing.T) {
 func TestInitializeCreatesConsulServiceDefaults(t *testing.T) {
 	p, mc := setupPlugin(t)
 
-	err := p.Setup(context.Background())
+	err := p.Setup(context.Background(), func() {})
 	require.NoError(t, err)
 
 	mc.AssertCalled(t, "CreateServiceDefaults", "cc-api-primary")
@@ -60,7 +61,7 @@ func TestInitializeFailsOnCreateServiceDefaultsError(t *testing.T) {
 	testutils.ClearMockCall(&mc.Mock, "CreateServiceDefaults")
 	mc.On("CreateServiceDefaults", mock.Anything).Return(fmt.Errorf("boom"))
 
-	err := p.Setup(context.Background())
+	err := p.Setup(context.Background(), func() {})
 
 	mc.AssertCalled(t, "CreateServiceDefaults", "cc-api-primary")
 	mc.AssertNotCalled(t, "CreateServiceDefaults", "cc-api-canary")
@@ -71,7 +72,7 @@ func TestInitializeFailsOnCreateServiceDefaultsError(t *testing.T) {
 func TestInitializeCreatesConsulServiceResolver(t *testing.T) {
 	p, mc := setupPlugin(t)
 
-	err := p.Setup(context.Background())
+	err := p.Setup(context.Background(), func() {})
 	require.NoError(t, err)
 
 	mc.AssertCalled(t, "CreateServiceResolver", "cc-api")
@@ -83,14 +84,14 @@ func TestInitializeFailsOnCreateServiceResolverError(t *testing.T) {
 	testutils.ClearMockCall(&mc.Mock, "CreateServiceResolver")
 	mc.On("CreateServiceResolver", mock.Anything).Return(fmt.Errorf("boom"))
 
-	err := p.Setup(context.Background())
+	err := p.Setup(context.Background(), func() {})
 	require.Error(t, err)
 }
 
 func TestInitializeCreatesConsulServiceRouter(t *testing.T) {
 	p, mc := setupPlugin(t)
 
-	err := p.Setup(context.Background())
+	err := p.Setup(context.Background(), func() {})
 	require.NoError(t, err)
 
 	mc.AssertCalled(t, "CreateServiceRouter", "cc-api")
@@ -102,14 +103,14 @@ func TestInitializeFailsOnCreateServiceRouterError(t *testing.T) {
 	testutils.ClearMockCall(&mc.Mock, "CreateServiceRouter")
 	mc.On("CreateServiceRouter", mock.Anything).Return(fmt.Errorf("boom"))
 
-	err := p.Setup(context.Background())
+	err := p.Setup(context.Background(), func() {})
 	require.Error(t, err)
 }
 
 func TestInitializeCreatesConsulServiceSplitter(t *testing.T) {
 	p, mc := setupPlugin(t)
 
-	err := p.Setup(context.Background())
+	err := p.Setup(context.Background(), func() {})
 	require.NoError(t, err)
 
 	mc.AssertCalled(t, "CreateServiceSplitter", "cc-api", 100, 0)
@@ -121,6 +122,20 @@ func TestInitializeFailsOnCreateServiceSplitter(t *testing.T) {
 	testutils.ClearMockCall(&mc.Mock, "CreateServiceSplitter")
 	mc.On("CreateServiceSplitter", mock.Anything, mock.Anything, mock.Anything).Return(fmt.Errorf("boom"))
 
-	err := p.Setup(context.Background())
+	err := p.Setup(context.Background(), func() {})
 	require.Error(t, err)
+}
+
+func TestInitializeSuccessCallsCallback(t *testing.T) {
+	callbackCalled := true
+	callback := func() {
+		callbackCalled = true
+	}
+
+	p, _ := setupPlugin(t)
+
+	err := p.Setup(context.Background(), callback)
+	require.NoError(t, err)
+
+	assert.Eventually(t, func() bool { return callbackCalled }, 100*time.Millisecond, 1*time.Millisecond)
 }

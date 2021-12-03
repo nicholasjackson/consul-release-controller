@@ -5,7 +5,6 @@ import (
 
 	"github.com/hashicorp/go-hclog"
 	"github.com/nicholasjackson/consul-canary-controller/plugins/consul"
-	"github.com/stretchr/testify/mock"
 )
 
 // Provider loads and creates registered plugins
@@ -48,27 +47,4 @@ func (p *ProviderImpl) CreateRuntime(pluginName string) (Runtime, error) {
 
 func (p *ProviderImpl) CreateMonitoring(pluginName string) (Monitoring, error) {
 	return nil, fmt.Errorf("not implemented")
-}
-
-// ProviderMock is a mock implementation of the provider that can be used for testing
-type ProviderMock struct {
-	mock.Mock
-}
-
-func (p *ProviderMock) CreateReleaser(pluginName string) (Releaser, error) {
-	args := p.Called(pluginName)
-
-	return args.Get(0).(Releaser), args.Error(1)
-}
-
-func (p *ProviderMock) CreateRuntime(pluginName string) (Runtime, error) {
-	args := p.Called(pluginName)
-
-	return args.Get(0).(Runtime), args.Error(1)
-}
-
-func (p *ProviderMock) CreateMonitoring(pluginName string) (Monitoring, error) {
-	args := p.Called(pluginName)
-
-	return args.Get(0).(Monitoring), args.Error(1)
 }

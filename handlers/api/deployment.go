@@ -6,21 +6,21 @@ import (
 	"net/http"
 
 	"github.com/hashicorp/go-hclog"
-	"github.com/nicholasjackson/consul-canary-controller/clients"
 	"github.com/nicholasjackson/consul-canary-controller/metrics"
 	"github.com/nicholasjackson/consul-canary-controller/models"
+	"github.com/nicholasjackson/consul-canary-controller/plugins"
 	"github.com/nicholasjackson/consul-canary-controller/state"
 )
 
 type Deployment struct {
-	Logger  hclog.Logger
-	Store   state.Store
-	Metrics metrics.Metrics
-	Clients *clients.Clients
+	Logger          hclog.Logger
+	Store           state.Store
+	Metrics         metrics.Metrics
+	PluginProviders plugins.Provider
 }
 
-func NewDeployment(l hclog.Logger, m metrics.Metrics, s state.Store, c *clients.Clients) *Deployment {
-	return &Deployment{Logger: l, Metrics: m, Store: s, Clients: c}
+func NewDeployment(l hclog.Logger, m metrics.Metrics, s state.Store, p plugins.Provider) *Deployment {
+	return &Deployment{Logger: l, Metrics: m, Store: s, PluginProviders: p}
 }
 
 // Post handler creates a new deployment
@@ -28,7 +28,7 @@ func (d *Deployment) Post(rw http.ResponseWriter, req *http.Request) {
 	d.Logger.Info("Deployment POST handler called")
 	mFinal := d.Metrics.HandleRequest("deployment/post", nil)
 
-	dep := models.NewDeployment(d.Logger, d.Metrics, d.Clients)
+	dep := &models.Deployment{}
 	err := dep.FromJsonBody(req.Body)
 	if err != nil {
 		d.Logger.Error("unable to upsert deployment", "deployment", *dep, "error", err)
@@ -36,6 +36,14 @@ func (d *Deployment) Post(rw http.ResponseWriter, req *http.Request) {
 
 		http.Error(rw, "invalid request body", http.StatusBadRequest)
 		return
+	}
+
+	err = dep.Build(d.PluginProviders)
+	if err != nil {
+		d.Logger.Error("unable to build deployment", "deployment", *dep, "error", err)
+		mFinal(http.StatusInternalServerError)
+
+		http.Error(rw, "unable to save deployment", http.StatusInternalServerError)
 	}
 
 	// store the new deployment
@@ -49,7 +57,7 @@ func (d *Deployment) Post(rw http.ResponseWriter, req *http.Request) {
 	}
 
 	// move the state to initialize
-	dep.Initialize()
+	dep.Configure()
 
 	mFinal(http.StatusOK)
 }
@@ -75,7 +83,7 @@ func (d *Deployment) Get(rw http.ResponseWriter, req *http.Request) {
 
 	resp := []GetResponse{}
 	for _, dep := range deps {
-		resp = append(resp, GetResponse{Name: dep.ConsulService, Status: dep.State()})
+		resp = append(resp, GetResponse{Name: dep.Name, Status: dep.State()})
 	}
 
 	json.NewEncoder(rw).Encode(resp)

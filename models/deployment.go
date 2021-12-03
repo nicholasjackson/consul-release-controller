@@ -15,13 +15,15 @@ type Deployment struct {
 	StartTime time.Time
 	EndTime   time.Time
 
-	Setup      *pluginConfig `json:"setup"`
-	Deployment *pluginConfig `json:"deployment"`
+	Name string `json:"name"`
+
+	Releaser *PluginConfig `json:"releaser"`
+	Runtime  *PluginConfig `json:"runtime"`
 
 	state *fsm.FSM
 }
 
-type pluginConfig struct {
+type PluginConfig struct {
 	Name   string          `json:"plugin_name"`
 	Config json.RawMessage `json:"config"`
 }
@@ -29,20 +31,22 @@ type pluginConfig struct {
 // Build creates a new deployment setting the state to inactive
 func (d *Deployment) Build(pluginProvider plugins.Provider) error {
 	// configure the setup plugin
-	sp, err := pluginProvider.CreateReleaser(d.Setup.Name)
+	sp, err := pluginProvider.CreateReleaser(d.Releaser.Name)
 	if err != nil {
 		return err
 	}
 
-	sp.Configure(d.Setup.Config)
+	// configure the releaser plugin
+	sp.Configure(d.Releaser.Config)
 
 	// configure the runtime plugin
-	rp, err := pluginProvider.CreateRuntime(d.Deployment.Name)
+	rp, err := pluginProvider.CreateRuntime(d.Runtime.Name)
 	if err != nil {
 		return err
 	}
 
-	rp.Configure(d.Deployment.Config)
+	// configure the runtime plugin
+	rp.Configure(d.Runtime.Config)
 
 	fsm := newFSM(d, sp, rp)
 	d.state = fsm
@@ -79,8 +83,8 @@ func (d *Deployment) State() string {
 	return d.state.Current()
 }
 
-// Initialize the deployment and create any necessary configuration
-func (d *Deployment) Initialize() error {
+// Configure the deployment and create any necessary configuration
+func (d *Deployment) Configure() error {
 	// callback executed after work is complete
 	done := func() {
 		// work has completed successfully

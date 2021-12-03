@@ -10,6 +10,7 @@ import (
 	"github.com/nicholasjackson/consul-canary-controller/handlers/api"
 	"github.com/nicholasjackson/consul-canary-controller/kubernetes"
 	promMetrics "github.com/nicholasjackson/consul-canary-controller/metrics"
+	"github.com/nicholasjackson/consul-canary-controller/plugins"
 	"github.com/nicholasjackson/consul-canary-controller/state"
 )
 
@@ -31,7 +32,7 @@ func main() {
 
 	k8sHandler, _ := kubernetes.NewK8sWebhook(log)
 	healthHandler := api.NewHealthHandlers(log)
-	apiHandler := api.NewDeployment(log, metrics, state.NewInmemStore())
+	apiHandler := api.NewDeployment(log, metrics, state.NewInmemStore(), plugins.GetProvider())
 
 	log.Info("Starting controller")
 	httplogger := httplog.NewLogger("consul-canary")

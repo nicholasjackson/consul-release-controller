@@ -41,7 +41,7 @@ func (m *InmemStore) DeleteDeployment(name string) error {
 	index := -1
 	// find the correct deployment
 	for i, d := range m.deployments {
-		if d.ConsulService == name {
+		if d.Name == name {
 			index = i
 			break
 		}

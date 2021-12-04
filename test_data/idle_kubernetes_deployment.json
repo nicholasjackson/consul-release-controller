@@ -1,5 +1,6 @@
 {
-  "name":"api",
+  "name": "api",
+  "current_state": "state_idle",
 
   "releaser": {
     "plugin_name": "consul",

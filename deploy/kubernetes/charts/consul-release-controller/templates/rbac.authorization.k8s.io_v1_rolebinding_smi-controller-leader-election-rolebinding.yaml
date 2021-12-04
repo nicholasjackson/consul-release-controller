@@ -1,13 +1,13 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: consul-canary-leader-election-rolebinding
+  name: consul-release-controller-leader-election-rolebinding
   namespace: '{{ .Release.Namespace }}'
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
-  name: consul-canary-leader-election-role
+  name: consul-release-controller-leader-election-role
 subjects:
 - kind: ServiceAccount
-  name: '{{ include "consul-canary.serviceAccountName" . }}'
+  name: '{{ include "consul-release-controller.serviceAccountName" . }}'
   namespace: '{{ default .Release.Namespace }}'

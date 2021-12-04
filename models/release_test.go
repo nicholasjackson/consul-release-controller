@@ -13,8 +13,8 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func setupDeployment(t *testing.T) (*Deployment, *plugins.Mocks) {
-	d := &Deployment{}
+func setupDeployment(t *testing.T) (*Release, *plugins.Mocks) {
+	d := &Release{}
 
 	data := bytes.NewBuffer(testutils.GetTestData(t, "valid_kubernetes_deployment.json"))
 	d.FromJsonBody(ioutil.NopCloser(data))
@@ -29,6 +29,37 @@ func setupDeployment(t *testing.T) (*Deployment, *plugins.Mocks) {
 	pm.RuntimeMock.AssertCalled(t, "Configure", d.Runtime.Config)
 
 	return d, pm
+}
+
+func TestBuildSetsUpPluginsAndState(t *testing.T) {
+	mp, _ := plugins.BuildMocks(t)
+
+	// test vanilla
+	d := &Release{}
+	data := bytes.NewBuffer(testutils.GetTestData(t, "valid_kubernetes_deployment.json"))
+	d.FromJsonBody(ioutil.NopCloser(data))
+	d.Build(mp)
+
+	require.Equal(t, StateStart, d.State())
+
+	// test with existing state
+	d = &Release{}
+	data = bytes.NewBuffer(testutils.GetTestData(t, "idle_kubernetes_deployment.json"))
+	d.FromJsonBody(ioutil.NopCloser(data))
+	d.Build(mp)
+
+	require.Equal(t, StateIdle, d.State())
+}
+
+func TestToJsonSerializesState(t *testing.T) {
+	mp, _ := plugins.BuildMocks(t)
+	d := &Release{}
+	data := bytes.NewBuffer(testutils.GetTestData(t, "valid_kubernetes_deployment.json"))
+	d.FromJsonBody(ioutil.NopCloser(data))
+	d.Build(mp)
+
+	releaseJson := d.ToJson()
+	require.Contains(t, string(releaseJson), `"current_state":"state_start"`)
 }
 
 func TestInitializeWithNoErrorCallsPluginAndMovesState(t *testing.T) {

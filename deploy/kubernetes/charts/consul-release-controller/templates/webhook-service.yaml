@@ -2,10 +2,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ default (include "consul-canary.fullname" .) .Values.webhook.service }}
+  name: {{ default (include "consul-release-controller.fullname" .) .Values.webhook.service }}
   namespace: {{ .Release.Namespace | quote }}
   labels:
-    {{- include "consul-canary.labels" . | nindent 4 }}
+    {{- include "consul-release-controller.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.webhook.type }}
   ports:
@@ -14,5 +14,5 @@ spec:
       protocol: TCP
       name: http
   selector:
-    {{- include "consul-canary.selectorLabels" . | nindent 4 }}
+    {{- include "consul-release-controller.selectorLabels" . | nindent 4 }}
 {{- end }}

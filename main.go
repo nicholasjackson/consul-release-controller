@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+	"io/ioutil"
 	"net/http"
 	"os"
 
@@ -8,7 +10,6 @@ import (
 	"github.com/go-chi/httplog"
 	"github.com/hashicorp/go-hclog"
 	"github.com/nicholasjackson/consul-canary-controller/handlers/api"
-	"github.com/nicholasjackson/consul-canary-controller/kubernetes"
 	promMetrics "github.com/nicholasjackson/consul-canary-controller/metrics"
 	"github.com/nicholasjackson/consul-canary-controller/plugins"
 	"github.com/nicholasjackson/consul-canary-controller/state"
@@ -30,9 +31,9 @@ func main() {
 
 	metrics.ServiceStarting()
 
-	k8sHandler, _ := kubernetes.NewK8sWebhook(log)
+	//k8sHandler, _ := kubernetes.NewK8sWebhook(log, metrics, state.NewInmemStore(), plugins.GetProvider())
 	healthHandler := api.NewHealthHandlers(log)
-	apiHandler := api.NewDeployment(log, metrics, state.NewInmemStore(), plugins.GetProvider())
+	apiHandler := api.NewReleaseHandler(log, metrics, state.NewInmemStore(), plugins.GetProvider())
 
 	log.Info("Starting controller")
 	httplogger := httplog.NewLogger("consul-canary")
@@ -46,7 +47,10 @@ func main() {
 	r.Get("/v1/ready", healthHandler.Ready)
 
 	// configure kubernetes webhooks
-	r.Post("/k8s/mutating", k8sHandler.Mutating())
+	r.Post("/k8s/mutating", func(rw http.ResponseWriter, r *http.Request) {
+		d, _ := ioutil.ReadAll(r.Body)
+		fmt.Println(string(d))
+	})
 
 	// configure the main API
 	r.Post("/v1/deployments", apiHandler.Post)

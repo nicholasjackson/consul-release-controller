@@ -3,17 +3,17 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{include "consul-canary.fullname" .}}
+  name: {{include "consul-release-controller.fullname" .}}
   namespace: {{.Release.Namespace | quote}}
   labels:
-    {{- include "consul-canary.labels" . | nindent 4}}
+    {{- include "consul-release-controller.labels" . | nindent 4}}
 spec:
   {{- if not .Values.controller.autoscaling.enabled}}
   replicas: {{.Values.controller.replicaCount}}
   {{- end }}
   selector:
     matchLabels:
-      {{- include "consul-canary.selectorLabels" . | nindent 6 }}
+      {{- include "consul-release-controller.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.controller.podAnnotations }}
@@ -21,13 +21,13 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "consul-canary.selectorLabels" . | nindent 8 }}
+        {{- include "consul-release-controller.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "consul-canary.serviceAccountName" . }}
+      serviceAccountName: {{ include "consul-release-controller.serviceAccountName" . }}
       automountServiceAccountToken: true
       securityContext:
         {{- toYaml .Values.controller.podSecurityContext | nindent 8 }}
@@ -79,7 +79,7 @@ spec:
       volumes:
         - name: tls-secret
           secret:
-            secretName: {{include "consul-canary.fullname" .}}-webhook-certificate
+            secretName: {{include "consul-release-controller.fullname" .}}-webhook-certificate
         {{- if .Values.controller.additional_volumes }}
         {{- toYaml .Values.controller.additional_volumes | nindent 8 }}
         {{- end }}

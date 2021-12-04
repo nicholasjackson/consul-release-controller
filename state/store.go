@@ -2,8 +2,14 @@ package state
 
 import "github.com/nicholasjackson/consul-canary-controller/models"
 
+type ListOptions struct {
+	Runtime string // the type of the runtime i.e kubernetes
+}
+
 type Store interface {
-	UpsertDeployment(d *models.Deployment) error
-	ListDeployments() ([]*models.Deployment, error)
-	DeleteDeployment(name string) error
+	UpsertRelease(d *models.Release) error
+	// ListReleases returns the releases in the data store that match the given options
+	// if options is nil then all releases are returned
+	ListReleases(options *ListOptions) ([]*models.Release, error)
+	DeleteRelease(name string) error
 }

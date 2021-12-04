@@ -110,6 +110,12 @@ func (r *runtimeMock) Configure(c json.RawMessage) error {
 	return args.Error(0)
 }
 
+func (r *runtimeMock) GetConfig() interface{} {
+	args := r.Called()
+
+	return args.Get(0)
+}
+
 func (r *runtimeMock) Deploy(ctx context.Context, done func()) error {
 	args := r.Called(ctx)
 

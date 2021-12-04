@@ -10,7 +10,7 @@ controller:
 
   container_config:
     image:
-      repository: nicholasjackson/consul-canary-controller
+      repository: nicholasjackson/consul-release-controller
       pullPolicy: IfNotPresent
       # Overrides the image tag whose default is the chart appVersion.
       tag: "0.1.0"
@@ -89,7 +89,7 @@ controller:
 webhook:
   type: ClusterIP
   port: 443
-  service: consul-canary-webhook
+  service: consul-release-controller-webhook
   namespaceOverride: ""
 
   # Allows adding additional DNS Names to the cert generated

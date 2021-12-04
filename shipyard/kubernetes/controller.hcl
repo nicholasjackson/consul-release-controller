@@ -32,7 +32,7 @@ helm "consul-release-controller" {
   namespace        = "consul"
   create_namespace = true
 
-  chart = "../../deploy/kubernetes/charts/consul-canary"
+  chart = "../../deploy/kubernetes/charts/consul-release-controller"
 
   values = "${data("kube_setup")}/helm-values.yaml"
 }

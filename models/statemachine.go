@@ -2,7 +2,6 @@ package models
 
 import (
 	"context"
-	"fmt"
 	"time"
 
 	"github.com/looplab/fsm"
@@ -46,7 +45,7 @@ initialized
 	-> *cancel -> canceling
 */
 
-func newFSM(d *Deployment, s plugins.Releaser, r plugins.Runtime) *fsm.FSM {
+func newFSM(d *Release, s plugins.Releaser, r plugins.Runtime) *fsm.FSM {
 	return fsm.NewFSM(
 		StateStart,
 		fsm.Events{
@@ -80,13 +79,8 @@ func newFSM(d *Deployment, s plugins.Releaser, r plugins.Runtime) *fsm.FSM {
 			}, Dst: StateDestroy},
 		},
 		fsm.Callbacks{
-			"leave_" + StateStart:      func(e *fsm.Event) { e.Async() }, // setup an async event
-			"before_" + EventConfigure: doAsync(s.Setup),                 // do the necessary work
-			"enter_" + StateConfigure:  triggerCallback,                  // perform the callback letting the caller know we are done
-
-			"leave_" + StateIdle:    func(e *fsm.Event) { e.Async() },
-			"before_" + EventDeploy: doAsync(r.Deploy),
-			"enter_" + StateDeploy:  triggerCallback,
+			"enter_" + StateConfigure: doAsync(s.Setup), // do the necessary work
+			"enter_" + StateDeploy:    doAsync(r.Deploy),
 		},
 	)
 }
@@ -102,26 +96,17 @@ func doAsync(f func(ctx context.Context, callback func()) error) func(e *fsm.Eve
 			// clean up resources if we finish before timeout
 			defer cancel()
 
-			// when the work is complete we transition to the next stage
-			// there we will decide if we should fail
-			done := func() {
-				// this is an async event so move the status along
-				e.FSM.Transition()
-			}
+			// execute the work function
+			err := f(ctx, func() {})
 
-			err := f(ctx, done)
 			// work has failed, raise the failed event
 			if err != nil {
 				e.Cancel(err)
 				e.FSM.SetState(StateFail)
 			}
+
+			// work has succeeded notify the callback
+			e.Args[0].(func())()
 		}()
 	}
-}
-
-func triggerCallback(e *fsm.Event) {
-	fmt.Println("Callback " + e.Event)
-
-	// perform the callback
-	e.Args[0].(func())()
 }

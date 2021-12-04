@@ -10,17 +10,21 @@ import (
 	"github.com/nicholasjackson/consul-canary-controller/plugins"
 )
 
-type Deployment struct {
-	Active    bool
-	StartTime time.Time
-	EndTime   time.Time
-
+type Release struct {
 	Name string `json:"name"`
+
+	Created     time.Time `json:"created"`
+	LastUpdated time.Time `json:"last_updated"`
+
+	CurrentState string `json:"current_state"`
 
 	Releaser *PluginConfig `json:"releaser"`
 	Runtime  *PluginConfig `json:"runtime"`
 
 	state *fsm.FSM
+
+	releaserPlugin plugins.Releaser
+	runtimePlugin  plugins.Runtime
 }
 
 type PluginConfig struct {
@@ -29,7 +33,9 @@ type PluginConfig struct {
 }
 
 // Build creates a new deployment setting the state to inactive
-func (d *Deployment) Build(pluginProvider plugins.Provider) error {
+// unless current state is set, this indicates that the release
+// has been de-serialzed
+func (d *Release) Build(pluginProvider plugins.Provider) error {
 	// configure the setup plugin
 	sp, err := pluginProvider.CreateReleaser(d.Releaser.Name)
 	if err != nil {
@@ -38,6 +44,7 @@ func (d *Deployment) Build(pluginProvider plugins.Provider) error {
 
 	// configure the releaser plugin
 	sp.Configure(d.Releaser.Config)
+	d.releaserPlugin = sp
 
 	// configure the runtime plugin
 	rp, err := pluginProvider.CreateRuntime(d.Runtime.Name)
@@ -47,15 +54,21 @@ func (d *Deployment) Build(pluginProvider plugins.Provider) error {
 
 	// configure the runtime plugin
 	rp.Configure(d.Runtime.Config)
+	d.runtimePlugin = rp
 
 	fsm := newFSM(d, sp, rp)
 	d.state = fsm
+
+	// if we are rehydrating this we probably have an existing state
+	if d.CurrentState != "" {
+		d.state.SetState(d.CurrentState)
+	}
 
 	return err
 }
 
 // FromJsonBody decodes the json body into the Deployment type
-func (d *Deployment) FromJsonBody(r io.ReadCloser) error {
+func (d *Release) FromJsonBody(r io.ReadCloser) error {
 	if r == nil {
 		return fmt.Errorf("no json body provided")
 	}
@@ -64,7 +77,10 @@ func (d *Deployment) FromJsonBody(r io.ReadCloser) error {
 }
 
 // ToJson serializes the deployment to json
-func (d *Deployment) ToJson() []byte {
+func (d *Release) ToJson() []byte {
+	// serialize the current state
+	d.CurrentState = d.State()
+
 	data, err := json.Marshal(d)
 	if err != nil {
 		panic(err)
@@ -73,18 +89,27 @@ func (d *Deployment) ToJson() []byte {
 	return data
 }
 
+// RuntimePlugin returns the runtime plugin for this release
+func (d *Release) RuntimePlugin() plugins.Runtime {
+	return d.runtimePlugin
+}
+
+func (d *Release) SetState(s string) {
+	d.state.SetState(s)
+}
+
 // StateIs returns true when the internal state matches the check state
-func (d *Deployment) StateIs(s string) bool {
+func (d *Release) StateIs(s string) bool {
 	return d.state.Is(s)
 }
 
 // State returns true when the internal state of the deployment
-func (d *Deployment) State() string {
+func (d *Release) State() string {
 	return d.state.Current()
 }
 
 // Configure the deployment and create any necessary configuration
-func (d *Deployment) Configure() error {
+func (d *Release) Configure() error {
 	// callback executed after work is complete
 	done := func() {
 		// work has completed successfully
@@ -95,7 +120,7 @@ func (d *Deployment) Configure() error {
 	return d.state.Event(EventConfigure, done)
 }
 
-func (d *Deployment) Deploy() error {
+func (d *Release) Deploy() error {
 	// callback executed after work is complete
 	done := func() {
 		// work has completed successfully

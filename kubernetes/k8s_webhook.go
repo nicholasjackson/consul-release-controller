@@ -5,6 +5,11 @@ import (
 	"net/http"
 
 	"github.com/hashicorp/go-hclog"
+	"github.com/nicholasjackson/consul-canary-controller/metrics"
+	appmetrics "github.com/nicholasjackson/consul-canary-controller/metrics"
+	"github.com/nicholasjackson/consul-canary-controller/plugins"
+	pluginKubernetes "github.com/nicholasjackson/consul-canary-controller/plugins/kubernetes"
+	"github.com/nicholasjackson/consul-canary-controller/state"
 	kwhhttp "github.com/slok/kubewebhook/v2/pkg/http"
 	kwhlog "github.com/slok/kubewebhook/v2/pkg/log"
 	kwhmodel "github.com/slok/kubewebhook/v2/pkg/model"
@@ -14,43 +19,69 @@ import (
 )
 
 type K8sWebhook struct {
-	log hclog.Logger
+	logger          hclog.Logger
+	store           state.Store
+	metrics         appmetrics.Metrics
+	pluginProviders plugins.Provider
 }
 
-func NewK8sWebhook(l hclog.Logger) (*K8sWebhook, error) {
-	return &K8sWebhook{log: l}, nil
+func NewK8sWebhook(l hclog.Logger, m metrics.Metrics, s state.Store, p plugins.Provider) (*K8sWebhook, error) {
+	return &K8sWebhook{logger: l, metrics: m, store: s, pluginProviders: p}, nil
 }
 
 func (k *K8sWebhook) Mutating() func(w http.ResponseWriter, r *http.Request) {
+
 	mt := kwhmutating.MutatorFunc(func(_ context.Context, _ *kwhmodel.AdmissionReview, obj metav1.Object) (*kwhmutating.MutatorResult, error) {
 		deployment, ok := obj.(*appsv1.Deployment)
 		if !ok {
+			k.logger.Error("Kubernetes webhook called with type that is not a deployment")
+
 			return &kwhmutating.MutatorResult{}, nil
 		}
 
-		// Mutate our object with the required annotations.
-		if deployment.Annotations == nil {
-			deployment.Annotations = make(map[string]string)
+		// check if we have a release that matches the name of this pod
+		rel, err := k.store.ListReleases(&state.ListOptions{Runtime: plugins.PluginRuntimeTypeKubernetes})
+		if err != nil {
+			k.logger.Error("Unable to list releases", "error", err)
+
+			return &kwhmutating.MutatorResult{}, nil
 		}
 
-		deployment.Annotations["mutated"] = "true"
-		deployment.Annotations["mutator"] = "deployment-annotate"
+		for _, r := range rel {
+			r.Build(k.pluginProviders)
+			rp := r.RuntimePlugin()
+			conf := rp.GetConfig().(*pluginKubernetes.PluginConfig)
 
-		return &kwhmutating.MutatorResult{MutatedObject: deployment}, nil
+			if conf.Deployment == deployment.Name {
+				// Mutate our object with the required annotations.
+				if deployment.Annotations == nil {
+					deployment.Annotations = make(map[string]string)
+				}
+
+				deployment.Annotations["consul-releaser"] = "true"
+
+				// trigger the deployment actions for the plugins, this is an async call
+				r.Deploy()
+
+				return &kwhmutating.MutatorResult{MutatedObject: deployment}, nil
+			}
+		}
+
+		return &kwhmutating.MutatorResult{}, nil
 	})
 
 	// Create webhook.
 	wh, _ := kwhmutating.NewWebhook(kwhmutating.WebhookConfig{
 		ID:      "deployment-annotate",
 		Mutator: mt,
-		Logger:  &wrappedLogger{log: k.log},
+		Logger:  &wrappedLogger{log: k.logger},
 	})
 
 	// Get HTTP handler from webhook.
 	whHandler, _ := kwhhttp.HandlerFor(
 		kwhhttp.HandlerConfig{
 			Webhook: wh,
-			Logger:  &wrappedLogger{log: k.log},
+			Logger:  &wrappedLogger{log: k.logger},
 		})
 
 	return whHandler.ServeHTTP

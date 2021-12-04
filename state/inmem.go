@@ -7,50 +7,62 @@ import (
 	"github.com/nicholasjackson/consul-canary-controller/models"
 )
 
-var DeploymentNotFound = errors.New("Deployment not found")
+var ReleaseNotFound = errors.New("Release not found")
 
 type InmemStore struct {
-	m           sync.Mutex
-	deployments []*models.Deployment
+	m        sync.Mutex
+	releases []*models.Release
 }
 
 func NewInmemStore() *InmemStore {
-	return &InmemStore{m: sync.Mutex{}, deployments: []*models.Deployment{}}
+	return &InmemStore{m: sync.Mutex{}, releases: []*models.Release{}}
 }
 
-func (m *InmemStore) UpsertDeployment(d *models.Deployment) error {
+func (m *InmemStore) UpsertRelease(d *models.Release) error {
 	m.m.Lock()
 	defer m.m.Unlock()
 
-	m.deployments = append(m.deployments, d)
+	m.releases = append(m.releases, d)
 
 	return nil
 }
 
-func (m *InmemStore) ListDeployments() ([]*models.Deployment, error) {
+func (m *InmemStore) ListReleases(options *ListOptions) ([]*models.Release, error) {
 	m.m.Lock()
 	defer m.m.Unlock()
 
-	return m.deployments, nil
+	if options == nil {
+		return m.releases, nil
+	}
+
+	// filter the releases based on options
+	ret := []*models.Release{}
+	for _, r := range m.releases {
+		if r.Runtime.Name == options.Runtime {
+			ret = append(ret, r)
+		}
+	}
+
+	return ret, nil
 }
 
-func (m *InmemStore) DeleteDeployment(name string) error {
+func (m *InmemStore) DeleteRelease(name string) error {
 	m.m.Lock()
 	defer m.m.Unlock()
 
 	index := -1
 	// find the correct deployment
-	for i, d := range m.deployments {
+	for i, d := range m.releases {
 		if d.Name == name {
 			index = i
 			break
 		}
 	}
 
-	m.deployments = append(m.deployments[:index], m.deployments[index+1:]...)
+	m.releases = append(m.releases[:index], m.releases[index+1:]...)
 
 	if index == -1 {
-		return DeploymentNotFound
+		return ReleaseNotFound
 	}
 
 	return nil

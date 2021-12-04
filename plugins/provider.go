@@ -7,6 +7,11 @@ import (
 	"github.com/nicholasjackson/consul-canary-controller/plugins/consul"
 )
 
+const (
+	PluginReleaserTypeConsul    = "consul"
+	PluginRuntimeTypeKubernetes = "kubernetes"
+)
+
 // Provider loads and creates registered plugins
 type Provider interface {
 	// CreateReleaser returns a Setup plugin that corresponds sto the given name

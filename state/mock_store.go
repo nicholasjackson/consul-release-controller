@@ -9,23 +9,23 @@ type MockStore struct {
 	mock.Mock
 }
 
-func (m *MockStore) UpsertDeployment(d *models.Deployment) error {
+func (m *MockStore) UpsertRelease(d *models.Release) error {
 	args := m.Called(d)
 	return args.Error(0)
 }
 
-func (m *MockStore) ListDeployments() ([]*models.Deployment, error) {
-	args := m.Called()
+func (m *MockStore) ListReleases(options *ListOptions) ([]*models.Release, error) {
+	args := m.Called(options)
 
-	var deps []*models.Deployment
-	if d, ok := args.Get(0).([]*models.Deployment); ok {
+	var deps []*models.Release
+	if d, ok := args.Get(0).([]*models.Release); ok {
 		deps = d
 	}
 
 	return deps, args.Error(1)
 }
 
-func (m *MockStore) DeleteDeployment(name string) error {
+func (m *MockStore) DeleteRelease(name string) error {
 	args := m.Called(name)
 	return args.Error(0)
 }

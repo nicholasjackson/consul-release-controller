@@ -18,6 +18,9 @@
       "request": "launch",
       "mode": "debug",
       "program": "${workspaceRoot}/main.go",
+      "env": {
+        "KUBECONFIG": "/home/nicj/.shipyard/config/dc1/kubeconfig.yaml"
+      }
     }
   ]
 }

@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: public
+  name: api
 spec:
   selector:
     app: api
@@ -11,6 +11,13 @@ spec:
       protocol: TCP
       port: 9090
       targetPort: 9090
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: api
+automountServiceAccountToken: false
 
 ---
 apiVersion: apps/v1
@@ -32,7 +39,9 @@ spec:
       annotations:
         consul.hashicorp.com/connect-inject: 'true'
         consul.hashicorp.com/connect-service-upstreams: 'payments:9091'
-    spec:
+    spec:  
+      serviceAccountName: api
+      automountServiceAccountToken: true
       containers:
         - name: api
           image: nicholasjackson/fake-service:v0.22.8

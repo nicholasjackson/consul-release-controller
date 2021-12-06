@@ -98,20 +98,33 @@ func (d *Release) SetState(s string) {
 	d.state.SetState(s)
 }
 
+// Save release to the datastore
+func (d *Release) Save(state string) {
+	d.CurrentState = state
+}
+
 // StateIs returns true when the internal state matches the check state
 func (d *Release) StateIs(s string) bool {
+	if d.state == nil {
+		return false
+	}
+
 	return d.state.Is(s)
 }
 
 // State returns true when the internal state of the deployment
 func (d *Release) State() string {
+	if d.state == nil {
+		return ""
+	}
+
 	return d.state.Current()
 }
 
 // Configure the deployment and create any necessary configuration
 func (d *Release) Configure() error {
 	// callback executed after work is complete
-	done := func() {
+	done := func(e *fsm.Event) {
 		// work has completed successfully
 		go d.state.Event(EventConfigured)
 	}
@@ -122,7 +135,7 @@ func (d *Release) Configure() error {
 
 func (d *Release) Deploy() error {
 	// callback executed after work is complete
-	done := func() {
+	done := func(e *fsm.Event) {
 		// work has completed successfully
 		go d.state.Event(EventDeployed)
 	}

@@ -16,7 +16,7 @@ import (
 func setupDeployment(t *testing.T) (*Release, *plugins.Mocks) {
 	d := &Release{}
 
-	data := bytes.NewBuffer(testutils.GetTestData(t, "valid_kubernetes_deployment.json"))
+	data := bytes.NewBuffer(testutils.GetTestData(t, "valid_kubernetes_release.json"))
 	d.FromJsonBody(ioutil.NopCloser(data))
 
 	mp, pm := plugins.BuildMocks(t)
@@ -36,7 +36,7 @@ func TestBuildSetsUpPluginsAndState(t *testing.T) {
 
 	// test vanilla
 	d := &Release{}
-	data := bytes.NewBuffer(testutils.GetTestData(t, "valid_kubernetes_deployment.json"))
+	data := bytes.NewBuffer(testutils.GetTestData(t, "valid_kubernetes_release.json"))
 	d.FromJsonBody(ioutil.NopCloser(data))
 	d.Build(mp)
 
@@ -44,7 +44,7 @@ func TestBuildSetsUpPluginsAndState(t *testing.T) {
 
 	// test with existing state
 	d = &Release{}
-	data = bytes.NewBuffer(testutils.GetTestData(t, "idle_kubernetes_deployment.json"))
+	data = bytes.NewBuffer(testutils.GetTestData(t, "idle_kubernetes_release.json"))
 	d.FromJsonBody(ioutil.NopCloser(data))
 	d.Build(mp)
 
@@ -54,7 +54,7 @@ func TestBuildSetsUpPluginsAndState(t *testing.T) {
 func TestToJsonSerializesState(t *testing.T) {
 	mp, _ := plugins.BuildMocks(t)
 	d := &Release{}
-	data := bytes.NewBuffer(testutils.GetTestData(t, "valid_kubernetes_deployment.json"))
+	data := bytes.NewBuffer(testutils.GetTestData(t, "valid_kubernetes_release.json"))
 	d.FromJsonBody(ioutil.NopCloser(data))
 	d.Build(mp)
 
@@ -67,6 +67,7 @@ func TestInitializeWithNoErrorCallsPluginAndMovesState(t *testing.T) {
 	d.Configure()
 
 	require.Eventually(t, func() bool { return d.StateIs(StateIdle) }, 100*time.Millisecond, 1*time.Millisecond)
+	require.Eventually(t, func() bool { return d.CurrentState == StateIdle }, 100*time.Millisecond, 1*time.Millisecond)
 	pm.ReleaserMock.AssertCalled(t, "Setup", mock.Anything, mock.Anything)
 }
 

@@ -58,16 +58,13 @@ type releaserMock struct {
 	mock.Mock
 }
 
-func (s *releaserMock) Setup(ctx context.Context, done func()) error {
-	args := s.Called(ctx, done)
+func (s *releaserMock) Setup(ctx context.Context) error {
+	args := s.Called(ctx)
 
 	err := args.Error(0)
 	if err != nil {
 		return err
 	}
-
-	// call the callback if no error
-	done()
 
 	return nil
 }
@@ -78,8 +75,8 @@ func (s *releaserMock) Configure(config json.RawMessage) error {
 	return args.Error(0)
 }
 
-func (s *releaserMock) Scale(ctx context.Context, value int, done func()) error {
-	args := s.Called(ctx, value, done)
+func (s *releaserMock) Scale(ctx context.Context, value int) error {
+	args := s.Called(ctx, value)
 
 	err := args.Error(0)
 	if err != nil {
@@ -89,8 +86,8 @@ func (s *releaserMock) Scale(ctx context.Context, value int, done func()) error 
 	return nil
 }
 
-func (s *releaserMock) Destroy(ctx context.Context, done func()) error {
-	args := s.Called(ctx, done)
+func (s *releaserMock) Destroy(ctx context.Context) error {
+	args := s.Called(ctx)
 
 	err := args.Error(0)
 	if err != nil {
@@ -116,7 +113,7 @@ func (r *runtimeMock) GetConfig() interface{} {
 	return args.Get(0)
 }
 
-func (r *runtimeMock) Deploy(ctx context.Context, done func()) error {
+func (r *runtimeMock) Deploy(ctx context.Context) error {
 	args := r.Called(ctx)
 
 	err := args.Error(0)
@@ -124,13 +121,10 @@ func (r *runtimeMock) Deploy(ctx context.Context, done func()) error {
 		return err
 	}
 
-	// call the callback if no error
-	done()
-
 	return nil
 }
 
-func (r *runtimeMock) Destroy(ctx context.Context, callback func()) error {
+func (r *runtimeMock) Destroy(ctx context.Context) error {
 	args := r.Called(ctx)
 
 	return args.Error(0)

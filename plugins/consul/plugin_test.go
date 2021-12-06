@@ -15,9 +15,9 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func setupPlugin(t *testing.T) (*Plugin, *clients.MockConsul) {
+func setupPlugin(t *testing.T) (*Plugin, *clients.ConsulMock) {
 	log := hclog.NewNullLogger()
-	mc := &clients.MockConsul{}
+	mc := &clients.ConsulMock{}
 
 	mc.On("CreateServiceDefaults", mock.Anything).Return(nil)
 	mc.On("CreateServiceResolver", mock.Anything).Return(nil)

@@ -81,14 +81,21 @@ func newFSM(d *Release, s plugins.Releaser, r plugins.Runtime) *fsm.FSM {
 		fsm.Callbacks{
 			"enter_" + StateConfigure: doAsync(s.Setup), // do the necessary work
 			"enter_" + StateDeploy:    doAsync(r.Deploy),
+			"enter_" + StateIdle:      saveRelease(d),
 		},
 	)
 }
 
 var defaultTimeout = 30 * time.Minute
 
+func saveRelease(r *Release) func(e *fsm.Event) {
+	return func(e *fsm.Event) {
+		r.Save(e.Dst)
+	}
+}
+
 // wrapTimeout ensures that the state function is executed asynchronously
-func doAsync(f func(ctx context.Context, callback func()) error) func(e *fsm.Event) {
+func doAsync(f func(ctx context.Context) error) func(e *fsm.Event) {
 	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
 
 	return func(e *fsm.Event) {
@@ -97,7 +104,7 @@ func doAsync(f func(ctx context.Context, callback func()) error) func(e *fsm.Eve
 			defer cancel()
 
 			// execute the work function
-			err := f(ctx, func() {})
+			err := f(ctx)
 
 			// work has failed, raise the failed event
 			if err != nil {
@@ -106,7 +113,7 @@ func doAsync(f func(ctx context.Context, callback func()) error) func(e *fsm.Eve
 			}
 
 			// work has succeeded notify the callback
-			e.Args[0].(func())()
+			e.Args[0].(func(*fsm.Event))(e)
 		}()
 	}
 }

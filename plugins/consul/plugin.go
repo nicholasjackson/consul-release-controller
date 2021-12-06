@@ -19,10 +19,14 @@ type PluginConfig struct {
 	ConsulService string `json:"consul_service"`
 }
 
-func New(l hclog.Logger) *Plugin {
+func New(l hclog.Logger) (*Plugin, error) {
 	// create a new Consul client
-	cc := &clients.MockConsul{}
-	return &Plugin{log: l, consulClient: cc}
+	cc, err := clients.NewConsul()
+	if err != nil {
+		return nil, err
+	}
+
+	return &Plugin{log: l, consulClient: cc}, nil
 }
 
 func (s *Plugin) Configure(data json.RawMessage) error {
@@ -31,7 +35,7 @@ func (s *Plugin) Configure(data json.RawMessage) error {
 }
 
 // initialize is an internal function triggered by the initialize event
-func (p *Plugin) Setup(ctx context.Context, done func()) error {
+func (p *Plugin) Setup(ctx context.Context) error {
 	p.log.Debug("initializing deployment", "service", p.config.ConsulService)
 
 	// create the service defaults for the primary and the canary
@@ -63,16 +67,13 @@ func (p *Plugin) Setup(ctx context.Context, done func()) error {
 		return err
 	}
 
-	// call the callback
-	done()
-
 	return nil
 }
 
-func (s *Plugin) Destroy(ctx context.Context, done func()) error {
+func (s *Plugin) Destroy(ctx context.Context) error {
 	return fmt.Errorf("not implemented")
 }
 
-func (s *Plugin) Scale(ctx context.Context, value int, done func()) error {
+func (s *Plugin) Scale(ctx context.Context, value int) error {
 	return fmt.Errorf("not implemented")
 }

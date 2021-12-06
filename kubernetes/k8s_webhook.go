@@ -52,7 +52,7 @@ func (k *K8sWebhook) Mutating() func(w http.ResponseWriter, r *http.Request) {
 			rp := r.RuntimePlugin()
 			conf := rp.GetConfig().(*pluginKubernetes.PluginConfig)
 
-			if conf.Deployment == deployment.Name {
+			if conf.Deployment == deployment.Name && conf.Namespace == deployment.ObjectMeta.Namespace {
 				// Mutate our object with the required annotations.
 				if deployment.Annotations == nil {
 					deployment.Annotations = make(map[string]string)
@@ -61,6 +61,7 @@ func (k *K8sWebhook) Mutating() func(w http.ResponseWriter, r *http.Request) {
 				deployment.Annotations["consul-releaser"] = "true"
 
 				// trigger the deployment actions for the plugins, this is an async call
+				k.logger.Info("Calling plugin deploy for kubernetes deployment", "deployment", deployment.Name, "namespace", deployment.Namespace)
 				r.Deploy()
 
 				return &kwhmutating.MutatorResult{MutatedObject: deployment}, nil

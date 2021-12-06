@@ -1,7 +1,5 @@
 package clients
 
-import "github.com/stretchr/testify/mock"
-
 type Consul interface {
 	CreateServiceDefaults(name string) error
 	CreateServiceResolver(name string) error
@@ -9,30 +7,24 @@ type Consul interface {
 	CreateServiceRouter(name string) error
 }
 
-type MockConsul struct {
-	mock.Mock
+func NewConsul() (Consul, error) {
+	return &ConsulImpl{}, nil
 }
 
-func (mc *MockConsul) CreateServiceDefaults(name string) error {
-	args := mc.Called(name)
+type ConsulImpl struct{}
 
-	return args.Error(0)
+func (c *ConsulImpl) CreateServiceDefaults(name string) error {
+	return nil
 }
 
-func (mc *MockConsul) CreateServiceResolver(name string) error {
-	args := mc.Called(name)
-
-	return args.Error(0)
+func (c *ConsulImpl) CreateServiceResolver(name string) error {
+	return nil
 }
 
-func (mc *MockConsul) CreateServiceSplitter(name string, primaryTraffic, canaryTraffic int) error {
-	args := mc.Called(name, primaryTraffic, canaryTraffic)
-
-	return args.Error(0)
+func (c *ConsulImpl) CreateServiceSplitter(name string, primaryTraffic, canaryTraffic int) error {
+	return nil
 }
 
-func (mc *MockConsul) CreateServiceRouter(name string) error {
-	args := mc.Called(name)
-
-	return args.Error(0)
+func (c *ConsulImpl) CreateServiceRouter(name string) error {
+	return nil
 }

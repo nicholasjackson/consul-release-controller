@@ -17,8 +17,8 @@ type Runtime interface {
 	GetConfig() interface{}
 
 	// Deploy the new test version to the platform
-	Deploy(ctx context.Context, callback func()) error
+	Deploy(ctx context.Context) error
 
 	// Destroy removes any configuration that was created with the Deploy method
-	Destroy(ctx context.Context, callback func()) error
+	Destroy(ctx context.Context) error
 }

@@ -5,6 +5,7 @@ import (
 
 	"github.com/hashicorp/go-hclog"
 	"github.com/nicholasjackson/consul-canary-controller/plugins/consul"
+	"github.com/nicholasjackson/consul-canary-controller/plugins/kubernetes"
 )
 
 const (
@@ -29,7 +30,7 @@ var prov Provider
 // GetProvider lazy instantiates a plugin provider and returns a reference
 func GetProvider() Provider {
 	if prov == nil {
-		prov = &ProviderImpl{hclog.Default()}
+		prov = &ProviderImpl{hclog.New(&hclog.LoggerOptions{Level: hclog.Debug, Color: hclog.AutoColor})}
 	}
 
 	return prov
@@ -43,10 +44,14 @@ type ProviderImpl struct {
 func (p *ProviderImpl) CreateReleaser(pluginName string) (Releaser, error) {
 	p.log.Debug("Creating setup plugin", "name", pluginName)
 
-	return consul.New(p.log), nil
+	return consul.New(p.log.Named("consul-plugin"))
 }
 
 func (p *ProviderImpl) CreateRuntime(pluginName string) (Runtime, error) {
+	if pluginName == "kubernetes" {
+		return kubernetes.New(p.log.Named("kubernetes-plugin"))
+	}
+
 	return nil, fmt.Errorf("not implemented")
 }
 

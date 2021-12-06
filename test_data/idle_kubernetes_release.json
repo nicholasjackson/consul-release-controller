@@ -12,7 +12,8 @@
   "runtime": {
     "plugin_name": "kubernetes",
     "config": {
-      "deployment": "api-deployment"
+      "deployment": "api-deployment",
+      "namespace": "default"
     }
   }
 }

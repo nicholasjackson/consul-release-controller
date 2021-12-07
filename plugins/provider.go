@@ -21,8 +21,11 @@ type Provider interface {
 	// CreateRuntime returns a Runtime plugin that corresponds to the given name
 	CreateRuntime(pluginName string) (Runtime, error)
 
-	// CreateMonitoring returns a Runtime plugin that corresponds to the given name
-	CreateMonitoring(name string) (Monitoring, error)
+	// CreateMonitoring returns a Monitor plugin that corresponds to the given name
+	CreateMonitor(pluginName string) (Monitor, error)
+
+	// CreateStrategy returns a Strategy plugin that corresponds to the given name
+	CreateStrategy(pluginName string) (Strategy, error)
 }
 
 var prov Provider
@@ -55,6 +58,10 @@ func (p *ProviderImpl) CreateRuntime(pluginName string) (Runtime, error) {
 	return nil, fmt.Errorf("not implemented")
 }
 
-func (p *ProviderImpl) CreateMonitoring(pluginName string) (Monitoring, error) {
+func (p *ProviderImpl) CreateMonitor(pluginName string) (Monitor, error) {
+	return nil, fmt.Errorf("not implemented")
+}
+
+func (p *ProviderImpl) CreateStrategy(pluginName string) (Strategy, error) {
 	return nil, fmt.Errorf("not implemented")
 }

@@ -112,7 +112,7 @@ func (d *Release) StateIs(s string) bool {
 	return d.state.Is(s)
 }
 
-// State returns true when the internal state of the deployment
+// State returns the internal state of the deployment
 func (d *Release) State() string {
 	if d.state == nil {
 		return ""

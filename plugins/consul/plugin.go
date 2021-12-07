@@ -38,32 +38,35 @@ func (s *Plugin) Configure(data json.RawMessage) error {
 func (p *Plugin) Setup(ctx context.Context) error {
 	p.log.Debug("initializing deployment", "service", p.config.ConsulService)
 
-	// create the service defaults for the primary and the canary
-	err := p.consulClient.CreateServiceDefaults(fmt.Sprintf("cc-%s-primary", p.config.ConsulService))
+	// create the service defaults for the main service
+	err := p.consulClient.CreateServiceDefaults(p.config.ConsulService)
 	if err != nil {
-		return err
-	}
+		p.log.Error("Unable to create Consul ServiceDefaults", "name", p.config.ConsulService, "error", err)
 
-	err = p.consulClient.CreateServiceDefaults(fmt.Sprintf("cc-%s-canary", p.config.ConsulService))
-	if err != nil {
 		return err
 	}
 
 	// create the service resolver
-	err = p.consulClient.CreateServiceResolver(fmt.Sprintf("cc-%s", p.config.ConsulService))
+	err = p.consulClient.CreateServiceResolver(p.config.ConsulService)
 	if err != nil {
-		return err
-	}
+		p.log.Error("Unable to create Consul ServiceResolver", "name", p.config.ConsulService, "error", err)
 
-	// create the service router
-	err = p.consulClient.CreateServiceRouter(fmt.Sprintf("cc-%s", p.config.ConsulService))
-	if err != nil {
 		return err
 	}
 
 	// create the service spiltter set to 100% primary
-	err = p.consulClient.CreateServiceSplitter(fmt.Sprintf("cc-%s", p.config.ConsulService), 100, 0)
+	err = p.consulClient.CreateServiceSplitter(p.config.ConsulService, 100, 0)
 	if err != nil {
+		p.log.Error("Unable to create Consul ServiceSplitter", "name", p.config.ConsulService, "error", err)
+
+		return err
+	}
+
+	// create the service router
+	err = p.consulClient.CreateServiceRouter(p.config.ConsulService)
+	if err != nil {
+		p.log.Error("Unable to create Consul ServiceRouter", "name", p.config.ConsulService, "error", err)
+
 		return err
 	}
 

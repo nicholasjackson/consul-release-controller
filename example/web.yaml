@@ -2,10 +2,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: api
+  name: web
 spec:
   selector:
-    app: api
+    app: web
   ports:
     - name: http
       protocol: TCP
@@ -16,44 +16,46 @@ spec:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: api
+  name: web
 automountServiceAccountToken: false
 
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: api-deployment
+  name: web-deployment
   labels:
-    app: api_v1
+    app: web_v1
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: api
+      app: web
   template:
     metadata:
       labels:
-        app: api
+        app: web
         metrics: enabled
       annotations:
         consul.hashicorp.com/connect-inject: 'true'
         consul.hashicorp.com/transparent-proxy: 'true'
         consul.hashicorp.com/transparent-proxy-overwrite-probes: 'true'
     spec:  
-      serviceAccountName: api
+      serviceAccountName: web
       automountServiceAccountToken: true
       containers:
-        - name: api
+        - name: web
           image: nicholasjackson/fake-service:v0.22.8
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 9090
           env:
             - name: "NAME"
-              value: "API V1"
+              value: "WEB"
             - name: "LISTEN_ADDR"
               value: "0.0.0.0:9090"
+            - name: "UPSTREAM_URIS"
+              value: "http://api.default.svc:9090"
             - name: "TIMING_50_PERCENTILE"
               value: "10ms"
             - name: "TIMING_50_PERCENTILE"

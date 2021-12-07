@@ -91,6 +91,7 @@ func TestDeployWithNoErrorCallsPluginAndMovesState(t *testing.T) {
 	d.Deploy()
 
 	require.Eventually(t, func() bool { return d.StateIs(StateMonitor) }, 100*time.Millisecond, 1*time.Millisecond)
+	require.Eventually(t, func() bool { return d.CurrentState == StateMonitor }, 100*time.Millisecond, 1*time.Millisecond)
 	pm.RuntimeMock.AssertCalled(t, "Deploy", mock.Anything, mock.Anything)
 }
 

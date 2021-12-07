@@ -48,7 +48,13 @@ func (k *K8sWebhook) Mutating() func(w http.ResponseWriter, r *http.Request) {
 		}
 
 		for _, r := range rel {
-			r.Build(k.pluginProviders)
+			err := r.Build(k.pluginProviders)
+			if err != nil {
+				k.logger.Error("Unable to build plugin", "error", err)
+
+				return &kwhmutating.MutatorResult{}, nil
+			}
+
 			rp := r.RuntimePlugin()
 			conf := rp.GetConfig().(*pluginKubernetes.PluginConfig)
 

@@ -48,10 +48,16 @@ func (p *ProviderMock) CreateRuntime(pluginName string) (Runtime, error) {
 	return args.Get(0).(Runtime), args.Error(1)
 }
 
-func (p *ProviderMock) CreateMonitoring(pluginName string) (Monitoring, error) {
+func (p *ProviderMock) CreateMonitor(pluginName string) (Monitor, error) {
 	args := p.Called(pluginName)
 
-	return args.Get(0).(Monitoring), args.Error(1)
+	return args.Get(0).(Monitor), args.Error(1)
+}
+
+func (p *ProviderMock) CreateStrategy(pluginName string) (Strategy, error) {
+	args := p.Called(pluginName)
+
+	return args.Get(0).(Strategy), args.Error(1)
 }
 
 type releaserMock struct {

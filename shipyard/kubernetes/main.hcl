@@ -66,6 +66,26 @@ module "consul" {
   source = "github.com/shipyard-run/blueprints?ref=8756e198e5b402ae93f23320c75b9ff519d38c2c/modules//kubernetes-consul"
 }
 
+ingress "web" {
+  source {
+    driver = "local"
+
+    config {
+      port = 9092
+    }
+  }
+
+  destination {
+    driver = "k8s"
+
+    config {
+      cluster = "k8s_cluster.dc1"
+      address = "web.default.svc"
+      port    = 9090
+    }
+  }
+}
+
 output "KUBECONFIG" {
   value = k8s_config("dc1")
 }

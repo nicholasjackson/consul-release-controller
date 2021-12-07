@@ -36,7 +36,7 @@ func main() {
 
 	log.Info("Starting controller")
 	httplogger := httplog.NewLogger("consul-canary")
-	httplogger = httplogger.Output(log.StandardWriter(&hclog.StandardLoggerOptions{ForceLevel: hclog.Debug}))
+	httplogger = httplogger.Output(log.StandardWriter(&hclog.StandardLoggerOptions{ForceLevel: hclog.Trace}))
 
 	r := chi.NewRouter()
 	r.Use(httplog.RequestLogger(httplogger))

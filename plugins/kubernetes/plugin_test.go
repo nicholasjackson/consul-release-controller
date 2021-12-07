@@ -15,13 +15,24 @@ import (
 func setupPlugin(t *testing.T) (*Plugin, *clients.KubernetesMock) {
 	l := hclog.Default()
 
-	dep := &appsv1.Deployment{ObjectMeta: v1.ObjectMeta{Name: "test", Namespace: "testnamespace"}}
+	one := int32(1)
+
+	dep := &appsv1.Deployment{
+		ObjectMeta: v1.ObjectMeta{
+			Name:      "test",
+			Namespace: "testnamespace",
+		},
+		Status: appsv1.DeploymentStatus{ReadyReplicas: 1},
+		Spec:   appsv1.DeploymentSpec{Replicas: &one},
+	}
 
 	km := &clients.KubernetesMock{}
 	km.On("GetDeployment", mock.Anything, mock.Anything).Return(dep, nil)
 	km.On("UpsertDeployment", mock.Anything).Return(nil)
 
-	p := New(l)
+	p := &Plugin{}
+
+	p.log = l
 	p.kubeClient = km
 	p.config = &PluginConfig{Deployment: "test", Namespace: "testnamespace"}
 

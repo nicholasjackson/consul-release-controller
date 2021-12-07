@@ -46,7 +46,7 @@ func TestReleaseHandlerPostWithStoreErrorReturnsError(t *testing.T) {
 	d, rw, s, _ := setupRelease(t)
 	s.On("UpsertRelease", mock.Anything).Return(fmt.Errorf("boom"))
 
-	td := testutils.GetTestData(t, "valid_kubernetes_deployment.json")
+	td := testutils.GetTestData(t, "valid_kubernetes_release.json")
 	r := httptest.NewRequest("POST", "/", bytes.NewBuffer(td))
 
 	d.Post(rw, r)
@@ -58,7 +58,7 @@ func TestReleaseHandlerPostWithNoErrorReturnsOk(t *testing.T) {
 	d, rw, s, _ := setupRelease(t)
 	s.On("UpsertRelease", mock.Anything).Return(nil)
 
-	td := testutils.GetTestData(t, "valid_kubernetes_deployment.json")
+	td := testutils.GetTestData(t, "valid_kubernetes_release.json")
 	r := httptest.NewRequest("POST", "/", bytes.NewBuffer(td))
 
 	d.Post(rw, r)
@@ -70,7 +70,7 @@ func TestReleaseHandlerPostCallsConfigure(t *testing.T) {
 	d, rw, s, _ := setupRelease(t)
 	s.On("UpsertRelease", mock.Anything).Return(nil)
 
-	td := testutils.GetTestData(t, "valid_kubernetes_deployment.json")
+	td := testutils.GetTestData(t, "valid_kubernetes_release.json")
 	r := httptest.NewRequest("POST", "/", bytes.NewBuffer(td))
 
 	d.Post(rw, r)

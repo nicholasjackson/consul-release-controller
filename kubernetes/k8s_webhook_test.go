@@ -34,12 +34,12 @@ func setupWebhook(t *testing.T) (func(w http.ResponseWriter, r *http.Request), *
 }
 
 func setupReleases(t *testing.T, pm *plugins.Mocks, s *state.MockStore, name string) *models.Release {
-	depData := testutils.GetTestData(t, "idle_kubernetes_deployment.json")
+	depData := testutils.GetTestData(t, "idle_kubernetes_release.json")
 
 	dep := &models.Release{}
 	dep.FromJsonBody(ioutil.NopCloser(bytes.NewBuffer(depData)))
 
-	pm.RuntimeMock.On("GetConfig").Return(&kubernetes.PluginConfig{Deployment: name})
+	pm.RuntimeMock.On("GetConfig").Return(&kubernetes.PluginConfig{Deployment: name, Namespace: "default"})
 	s.On("ListReleases", mock.Anything).Return([]*models.Release{dep}, nil)
 
 	return dep

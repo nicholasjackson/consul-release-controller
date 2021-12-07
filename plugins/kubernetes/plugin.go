@@ -19,8 +19,8 @@ type Plugin struct {
 }
 
 type PluginConfig struct {
-	Deployment string `hcl: "deployment" json:"deployment"`
-	Namespace  string `hcl: "namespace" json:"namespace"`
+	Deployment string `hcl:"deployment" json:"deployment"`
+	Namespace  string `hcl:"namespace" json:"namespace"`
 }
 
 func New(l hclog.Logger) (*Plugin, error) {
@@ -54,6 +54,8 @@ func (p *Plugin) Deploy(ctx context.Context) error {
 			return ctx.Err()
 		}
 
+		p.log.Info("Cloning deployment", "name", p.config.Deployment, "namespace", p.config.Namespace)
+
 		d, err := p.kubeClient.GetDeployment(p.config.Deployment, p.config.Namespace)
 		if err != nil {
 			p.log.Error("Kubernetes deployment not found", "name", p.config.Deployment, "namespace", p.config.Namespace, "error", err)
@@ -77,9 +79,36 @@ func (p *Plugin) Deploy(ctx context.Context) error {
 		return nil
 	})
 
-	// check the health of the new primary
+	if err != nil {
+		return err
+	}
 
-	return err
+	// check the health of the new primary
+	err = retry.Fibonacci(ctx, 1*time.Second, func(ctx context.Context) error {
+		primaryName := p.config.Deployment + "-primary"
+		p.log.Info("Checking health", "name", primaryName, "namespace", p.config.Namespace)
+
+		d, err := p.kubeClient.GetDeployment(primaryName, p.config.Namespace)
+		if err != nil {
+			p.log.Error("Kubernetes deployment not found", "name", primaryName, "namespace", p.config.Namespace, "error", err)
+			return retry.RetryableError(fmt.Errorf("unable to find deployment: %s", err))
+		}
+
+		if d.Status.ReadyReplicas != *d.Spec.Replicas {
+			p.log.Error("Kubernetes deployment not healthy", "name", primaryName, "namespace", p.config.Namespace)
+			return retry.RetryableError(fmt.Errorf("deployment not healthy: %s", err))
+		}
+
+		p.log.Info("Deployment healthy", "name", primaryName, "namespace", p.config.Namespace)
+		return nil
+	})
+
+	if err != nil {
+		return err
+	}
+
+	p.log.Info("Kubernetes deployment complete", "name", p.config.Deployment, "namespace", p.config.Namespace)
+	return nil
 }
 
 // Destroy removes any configuration that was created with the Deploy method

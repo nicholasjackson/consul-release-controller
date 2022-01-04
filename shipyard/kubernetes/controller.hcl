@@ -37,6 +37,66 @@ helm "consul-release-controller" {
   values = "${data("kube_setup")}/helm-values.yaml"
 }
 
+// fetch the certifcates
+template "certs_script" {
+  source = <<EOF
+#! /bin/sh -e
+
+kubectl get secret consul-release-controller-webhook-certificate -n consul -o json | \
+	jq -r '.data."tls.crt"' | \
+	base64 -d > /output/tls.crt
+
+kubectl get secret consul-release-controller-webhook-certificate -n consul -o json | \
+	jq -r '.data."tls.key"' | \
+	base64 -d > /output/tls.key
+  EOF
+
+  destination = "${data("kube_setup")}/fetch_certs.sh"
+}
+
+exec_remote "exec_standalone" {
+  depends_on = [
+    "helm.consul-release-controller",
+    "template.certs_script",
+  ]
+
+  network {
+    name = "network.dc1"
+  }
+
+  image {
+    name = "shipyardrun/tools:v0.6.0"
+  }
+
+  cmd = "sh"
+  args = [
+    "/output/fetch_certs.sh",
+  ]
+
+  volume {
+    source      = "${data("kube_setup")}"
+    destination = "/output"
+  }
+
+  volume {
+    source      = k8s_config_docker("dc1")
+    destination = "/kubeconfig.yaml"
+  }
+
+  env {
+    key   = "KUBECONFIG"
+    value = "/kubeconfig.yaml"
+  }
+}
+
+output "TLS_CERT" {
+  value = "${data("kube_setup")}/tls.crt"
+}
+
+output "TLS_KEY" {
+  value = "${data("kube_setup")}/tls.key"
+}
+
 ingress "controller-webhook" {
   source {
     driver = "k8s"

@@ -58,7 +58,7 @@ func (p *Plugin) Deploy(ctx context.Context) error {
 
 		d, err := p.kubeClient.GetDeployment(p.config.Deployment, p.config.Namespace)
 		if err != nil {
-			p.log.Error("Kubernetes deployment not found", "name", p.config.Deployment, "namespace", p.config.Namespace, "error", err)
+			p.log.Debug("Kubernetes deployment not found", "name", p.config.Deployment, "namespace", p.config.Namespace, "error", err)
 			return retry.RetryableError(fmt.Errorf("unable to find deployment: %s", err))
 		}
 
@@ -70,7 +70,7 @@ func (p *Plugin) Deploy(ctx context.Context) error {
 		// save the new deployment
 		err = p.kubeClient.UpsertDeployment(nd)
 		if err != nil {
-			p.log.Error("Unable to upsert Kubernetes deployment", "name", p.config.Deployment, "namespace", p.config.Namespace, "error", err)
+			p.log.Debug("Unable to upsert Kubernetes deployment", "name", p.config.Deployment, "namespace", p.config.Namespace, "error", err)
 			return retry.RetryableError(fmt.Errorf("unable to clone deployment: %s", err))
 		}
 
@@ -90,12 +90,12 @@ func (p *Plugin) Deploy(ctx context.Context) error {
 
 		d, err := p.kubeClient.GetDeployment(primaryName, p.config.Namespace)
 		if err != nil {
-			p.log.Error("Kubernetes deployment not found", "name", primaryName, "namespace", p.config.Namespace, "error", err)
+			p.log.Debug("Kubernetes deployment not found", "name", primaryName, "namespace", p.config.Namespace, "error", err)
 			return retry.RetryableError(fmt.Errorf("unable to find deployment: %s", err))
 		}
 
 		if d.Status.ReadyReplicas != *d.Spec.Replicas {
-			p.log.Error("Kubernetes deployment not healthy", "name", primaryName, "namespace", p.config.Namespace)
+			p.log.Debug("Kubernetes deployment not healthy", "name", primaryName, "namespace", p.config.Namespace)
 			return retry.RetryableError(fmt.Errorf("deployment not healthy: %s", err))
 		}
 

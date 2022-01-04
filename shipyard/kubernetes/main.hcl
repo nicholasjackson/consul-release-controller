@@ -86,6 +86,20 @@ ingress "web" {
   }
 }
 
+k8s_config "application" {
+  depends_on = [
+    "module.consul",
+  ]
+
+  cluster = "k8s_cluster.dc1"
+
+  paths = [
+    "${file_dir()}/../../example/kubernetes/",
+  ]
+
+  wait_until_ready = true
+}
+
 output "KUBECONFIG" {
   value = k8s_config("dc1")
 }

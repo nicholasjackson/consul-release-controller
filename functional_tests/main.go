@@ -79,10 +79,10 @@ func initializeScenario(ctx *godog.ScenarioContext) {
 			}
 		}
 
-		//err := executeCommand([]string{"/usr/local/bin/shipyard", "destroy"})
-		//if err != nil {
-		//	showLog = true
-		//}
+		err := executeCommand([]string{"/usr/local/bin/shipyard", "destroy"})
+		if err != nil {
+			showLog = true
+		}
 
 		if showLog {
 			fmt.Println(logStore.String())
@@ -121,10 +121,10 @@ func startServer() error {
 }
 
 func theControllerIsRunningOnKubernetes() error {
-	//err := executeCommand([]string{"/usr/local/bin/shipyard", "run", "./shipyard/kubernetes"})
-	//if err != nil {
-	//	return fmt.Errorf("unable to create Kubernetes environment: %s", err)
-	//}
+	err := executeCommand([]string{"/usr/local/bin/shipyard", "run", "./shipyard/kubernetes"})
+	if err != nil {
+		return fmt.Errorf("unable to create Kubernetes environment: %s", err)
+	}
 
 	// set the shipyard environment variables
 	environment["TLS_CERT"] = path.Join(os.Getenv("HOME"), ".shipyard", "data", "kube_setup", "tls.crt")
@@ -137,7 +137,7 @@ func theControllerIsRunningOnKubernetes() error {
 	cmd.Stdout = output
 	cmd.Stderr = output
 
-	err := cmd.Run()
+	err = cmd.Run()
 	if err != nil {
 		return fmt.Errorf("unable to get output variables from shipyard: %s", err)
 	}

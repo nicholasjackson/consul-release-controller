@@ -34,12 +34,12 @@
       "queries": [
         {
           "name": "request-success",
-          "preset": "kubernetes-request-success",
+          "preset": "envoy-request-success",
           "min":99
         },
         {
           "name": "request-duration",
-          "preset": "kubernetes-request-duration",
+          "preset": "envoy-request-duration",
           "min":20,
           "max": 200
         }

@@ -6,6 +6,7 @@ import (
 	"github.com/hashicorp/go-hclog"
 	"github.com/nicholasjackson/consul-canary-controller/plugins/consul"
 	"github.com/nicholasjackson/consul-canary-controller/plugins/kubernetes"
+	"github.com/nicholasjackson/consul-canary-controller/plugins/prometheus"
 )
 
 const (
@@ -59,6 +60,10 @@ func (p *ProviderImpl) CreateRuntime(pluginName string) (Runtime, error) {
 }
 
 func (p *ProviderImpl) CreateMonitor(pluginName string) (Monitor, error) {
+	if pluginName == "prometheus" {
+		return prometheus.New(p.log.Named("prometheus-plugin"))
+	}
+
 	return nil, fmt.Errorf("not implemented")
 }
 

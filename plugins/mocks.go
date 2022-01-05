@@ -11,6 +11,7 @@ import (
 type Mocks struct {
 	ReleaserMock *releaserMock
 	RuntimeMock  *runtimeMock
+	MonitorMock  *monitorMock
 }
 
 // BuildMocks builds a mock provider and mock plugins for testing
@@ -24,11 +25,16 @@ func BuildMocks(t *testing.T) (*ProviderMock, *Mocks) {
 	rm.On("Configure", mock.Anything).Return(nil)
 	rm.On("Deploy", mock.Anything, mock.Anything).Return(nil)
 
+	mm := &monitorMock{}
+	rm.On("Configure", mock.Anything).Return(nil)
+	rm.On("Check", mock.Anything).Return(nil)
+
 	mp := &ProviderMock{}
 	mp.On("CreateReleaser", mock.Anything).Return(sm, nil)
 	mp.On("CreateRuntime", mock.Anything).Return(rm, nil)
+	mp.On("CreateMonitor", mock.Anything).Return(mm, nil)
 
-	return mp, &Mocks{sm, rm}
+	return mp, &Mocks{sm, rm, mm}
 }
 
 // ProviderMock is a mock implementation of the provider that can be used for testing
@@ -131,6 +137,22 @@ func (r *runtimeMock) Deploy(ctx context.Context) error {
 }
 
 func (r *runtimeMock) Destroy(ctx context.Context) error {
+	args := r.Called(ctx)
+
+	return args.Error(0)
+}
+
+type monitorMock struct {
+	mock.Mock
+}
+
+func (r *monitorMock) Configure(c json.RawMessage) error {
+	args := r.Called(c)
+
+	return args.Error(0)
+}
+
+func (r *monitorMock) Check(ctx context.Context) error {
 	args := r.Called(ctx)
 
 	return args.Error(0)

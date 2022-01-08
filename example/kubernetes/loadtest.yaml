@@ -1,0 +1,104 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: load-generator
+  namespace: default
+data:
+  load_test.js: |
+    import http from 'k6/http';
+    import { sleep, check } from 'k6';
+    import { Counter } from 'k6/metrics';
+    import { randomIntBetween } from 'https://jslib.k6.io/k6-utils/1.1.0/index.js';
+
+    // A simple counter for http requests
+    export const requests = new Counter('http_reqs');
+    // you can specify stages of your test (ramp up/down patterns) through the options object
+    // target is the number of VUs you are aiming for
+    export const options = {
+      vus: 10,
+      duration: '30m',
+    };
+
+      //maxVUs: 10,
+      //startRate: 1,
+      //timeUnit: '1s',
+      //stages: [
+      //  { target: 1, duration: '59s' },
+      //  { target: 10, duration: '120s' },
+      //  { target: 10, duration: '60s' },
+      //  { target: 0, duration: '1s' },
+      //  { target: 0, duration: '59s' },
+      //],
+    export default function () {
+      var payload = 'Replicants are like any other machine, are either a benefit or a hazard'
+      var params = {
+        headers: {
+          'Content-Type': 'text/plain',
+        },
+      }
+      // our HTTP request, note that we are saving the response to res, which can be accessed later
+      //const res = http.get('http://app.dev.hashicraft.com');
+      const res = http.get('http://consul-ingress-gateway.consul.svc:18080');
+      //const res = http.get('http://api.default.svc:8080');
+      const checkRes = check(res, {
+        'status is 200': (r) => r.status === 200,
+      });
+
+      sleep(randomIntBetween(0.2, 1.5));
+    }
+
+---
+# Service to expose loadtest for scraping
+apiVersion: v1
+kind: Service
+metadata:
+  name: loadtest-metrics
+  labels:
+    app: metrics
+spec:
+  selector:
+    group: loadtest
+  ports:
+  - name: metrics
+    protocol: TCP
+    port: 9102
+    targetPort: 9102
+
+---
+# Load test
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: load-generator-deployment
+  labels:
+    app: web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: load-generator
+  template:
+    metadata:
+      labels:
+        group: loadtest
+        app: load-generator
+    spec:
+      containers:
+      - name: load-generator
+        image: loadimpact/k6
+        command: ["k6", "run", "--out", "statsd", "/etc/config/load_test.js"]
+        env:
+          - name: K6_STATSD_ADDR
+            value: localhost:9125
+        volumeMounts:
+        - name: config-volume
+          mountPath: /etc/config
+      - name: statsd-exporter
+        image: prom/statsd-exporter 
+        ports:
+          - containerPort: 9102
+      volumes:
+        - name: config-volume
+          configMap:
+            name: load-generator

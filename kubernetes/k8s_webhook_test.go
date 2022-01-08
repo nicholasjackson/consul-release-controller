@@ -13,8 +13,8 @@ import (
 	"github.com/hashicorp/go-hclog"
 	"github.com/nicholasjackson/consul-canary-controller/metrics"
 	"github.com/nicholasjackson/consul-canary-controller/models"
-	"github.com/nicholasjackson/consul-canary-controller/plugins"
 	"github.com/nicholasjackson/consul-canary-controller/plugins/kubernetes"
+	"github.com/nicholasjackson/consul-canary-controller/plugins/mocks"
 	"github.com/nicholasjackson/consul-canary-controller/state"
 	"github.com/nicholasjackson/consul-canary-controller/testutils"
 	"github.com/stretchr/testify/assert"
@@ -22,8 +22,8 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func setupWebhook(t *testing.T) (func(w http.ResponseWriter, r *http.Request), *state.MockStore, *plugins.Mocks) {
-	pp, pm := plugins.BuildMocks(t)
+func setupWebhook(t *testing.T) (func(w http.ResponseWriter, r *http.Request), *state.MockStore, *mocks.Mocks) {
+	pp, pm := mocks.BuildMocks(t)
 	l := hclog.Default()
 	s := &state.MockStore{}
 	m := &metrics.Null{}
@@ -33,7 +33,7 @@ func setupWebhook(t *testing.T) (func(w http.ResponseWriter, r *http.Request), *
 	return wh.Mutating(), s, pm
 }
 
-func setupReleases(t *testing.T, pm *plugins.Mocks, s *state.MockStore, name string) *models.Release {
+func setupReleases(t *testing.T, pm *mocks.Mocks, s *state.MockStore, name string) *models.Release {
 	depData := testutils.GetTestData(t, "idle_kubernetes_release.json")
 
 	dep := &models.Release{}

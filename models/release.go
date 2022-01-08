@@ -7,8 +7,13 @@ import (
 	"time"
 
 	"github.com/looplab/fsm"
-	"github.com/nicholasjackson/consul-canary-controller/plugins"
+	"github.com/nicholasjackson/consul-canary-controller/plugins/interfaces"
 )
+
+type StateHistory struct {
+	Time  time.Time
+	State string
+}
 
 type Release struct {
 	Name string `json:"name"`
@@ -16,15 +21,20 @@ type Release struct {
 	Created     time.Time `json:"created"`
 	LastUpdated time.Time `json:"last_updated"`
 
-	CurrentState string `json:"current_state"`
+	CurrentState string         `json:"current_state"`
+	StateHistory []StateHistory `json:"state_history"`
 
 	Releaser *PluginConfig `json:"releaser"`
 	Runtime  *PluginConfig `json:"runtime"`
+	Strategy *PluginConfig `json:"strategy"`
+	Monitor  *PluginConfig `json:"monitor"`
 
 	state *fsm.FSM
 
-	releaserPlugin plugins.Releaser
-	runtimePlugin  plugins.Runtime
+	releaserPlugin interfaces.Releaser
+	runtimePlugin  interfaces.Runtime
+	monitorPlugin  interfaces.Monitor
+	strategyPlugin interfaces.Strategy
 }
 
 type PluginConfig struct {
@@ -35,28 +45,50 @@ type PluginConfig struct {
 // Build creates a new deployment setting the state to inactive
 // unless current state is set, this indicates that the release
 // has been de-serialzed
-func (d *Release) Build(pluginProvider plugins.Provider) error {
+func (d *Release) Build(pluginProvider interfaces.Provider) error {
+	d.StateHistory = []StateHistory{}
+
 	// configure the setup plugin
-	sp, err := pluginProvider.CreateReleaser(d.Releaser.Name)
+	relP, err := pluginProvider.CreateReleaser(d.Releaser.Name)
 	if err != nil {
 		return err
 	}
 
 	// configure the releaser plugin
-	sp.Configure(d.Releaser.Config)
-	d.releaserPlugin = sp
+	relP.Configure(d.Releaser.Config)
+	d.releaserPlugin = relP
 
 	// configure the runtime plugin
-	rp, err := pluginProvider.CreateRuntime(d.Runtime.Name)
+	runP, err := pluginProvider.CreateRuntime(d.Runtime.Name)
 	if err != nil {
 		return err
 	}
 
 	// configure the runtime plugin
-	rp.Configure(d.Runtime.Config)
-	d.runtimePlugin = rp
+	runP.Configure(d.Runtime.Config)
+	d.runtimePlugin = runP
 
-	fsm := newFSM(d, sp, rp)
+	// configure the monitor plugin
+	monP, err := pluginProvider.CreateMonitor(d.Monitor.Name)
+	if err != nil {
+		return err
+	}
+
+	// configure the monitor plugin
+	monP.Configure(d.Monitor.Config)
+	d.monitorPlugin = monP
+
+	// configure the monitor plugin
+	stratP, err := pluginProvider.CreateStrategy(d.Strategy.Name, monP)
+	if err != nil {
+		return err
+	}
+
+	// configure the strategy plugin
+	stratP.Configure(d.Strategy.Config)
+	d.strategyPlugin = stratP
+
+	fsm := newFSM(d, relP, runP, stratP, pluginProvider.GetLogger())
 	d.state = fsm
 
 	// if we are rehydrating this we probably have an existing state
@@ -90,7 +122,7 @@ func (d *Release) ToJson() []byte {
 }
 
 // RuntimePlugin returns the runtime plugin for this release
-func (d *Release) RuntimePlugin() plugins.Runtime {
+func (d *Release) RuntimePlugin() interfaces.Runtime {
 	return d.runtimePlugin
 }
 
@@ -100,6 +132,7 @@ func (d *Release) SetState(s string) {
 
 // Save release to the datastore
 func (d *Release) Save(state string) {
+	d.StateHistory = append(d.StateHistory, StateHistory{Time: time.Now(), State: state})
 	d.CurrentState = state
 }
 
@@ -123,22 +156,11 @@ func (d *Release) State() string {
 
 // Configure the deployment and create any necessary configuration
 func (d *Release) Configure() error {
-	// callback executed after work is complete
-	done := func(e *fsm.Event) {
-		// work has completed successfully
-		go d.state.Event(EventConfigured)
-	}
-
 	// trigger the configure event
-	return d.state.Event(EventConfigure, done)
+	return d.state.Event(EventConfigure)
 }
 
+// Deploy the application
 func (d *Release) Deploy() error {
-	// callback executed after work is complete
-	done := func(e *fsm.Event) {
-		// work has completed successfully
-		go d.state.Event(EventDeployed)
-	}
-
-	return d.state.Event(EventDeploy, done)
+	return d.state.Event(EventDeploy)
 }

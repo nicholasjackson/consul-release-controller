@@ -15,5 +15,36 @@
       "deployment": "api-deployment",
       "namespace": "default"
     }
+  },
+
+  "strategy": {
+    "plugin_name": "canary",
+    "config": {
+      "interval": "30s",
+      "initial_traffic": 10,
+      "traffic_step": 10,
+      "max_traffic": 100,
+      "error_threshold": 5
+    }
+  },
+  
+  "monitor": {
+    "plugin_name": "prometheus",
+    "config": {
+      "address": "http://prometheus-kube-prometheus-prometheus.monitoring.svc:9090",
+      "queries": [
+        {
+          "name": "request-success",
+          "preset": "kubernetes-request-success",
+          "min":99
+        },
+        {
+          "name": "request-duration",
+          "preset": "kubernetes-request-duration",
+          "min":20,
+          "max": 200
+        }
+      ]
+    }
   }
 }

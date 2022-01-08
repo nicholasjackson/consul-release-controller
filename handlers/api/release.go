@@ -8,7 +8,7 @@ import (
 	"github.com/hashicorp/go-hclog"
 	appmetrics "github.com/nicholasjackson/consul-canary-controller/metrics"
 	"github.com/nicholasjackson/consul-canary-controller/models"
-	"github.com/nicholasjackson/consul-canary-controller/plugins"
+	plugins "github.com/nicholasjackson/consul-canary-controller/plugins/interfaces"
 	"github.com/nicholasjackson/consul-canary-controller/state"
 )
 

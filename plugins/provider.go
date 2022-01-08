@@ -4,35 +4,17 @@ import (
 	"fmt"
 
 	"github.com/hashicorp/go-hclog"
+	"github.com/nicholasjackson/consul-canary-controller/plugins/canary"
 	"github.com/nicholasjackson/consul-canary-controller/plugins/consul"
+	"github.com/nicholasjackson/consul-canary-controller/plugins/interfaces"
 	"github.com/nicholasjackson/consul-canary-controller/plugins/kubernetes"
 	"github.com/nicholasjackson/consul-canary-controller/plugins/prometheus"
 )
 
-const (
-	PluginReleaserTypeConsul    = "consul"
-	PluginRuntimeTypeKubernetes = "kubernetes"
-)
-
-// Provider loads and creates registered plugins
-type Provider interface {
-	// CreateReleaser returns a Setup plugin that corresponds sto the given name
-	CreateReleaser(pluginName string) (Releaser, error)
-
-	// CreateRuntime returns a Runtime plugin that corresponds to the given name
-	CreateRuntime(pluginName string) (Runtime, error)
-
-	// CreateMonitoring returns a Monitor plugin that corresponds to the given name
-	CreateMonitor(pluginName string) (Monitor, error)
-
-	// CreateStrategy returns a Strategy plugin that corresponds to the given name
-	CreateStrategy(pluginName string) (Strategy, error)
-}
-
-var prov Provider
+var prov interfaces.Provider
 
 // GetProvider lazy instantiates a plugin provider and returns a reference
-func GetProvider() Provider {
+func GetProvider() interfaces.Provider {
 	if prov == nil {
 		prov = &ProviderImpl{hclog.New(&hclog.LoggerOptions{Level: hclog.Debug, Color: hclog.AutoColor})}
 	}
@@ -45,28 +27,36 @@ type ProviderImpl struct {
 	log hclog.Logger
 }
 
-func (p *ProviderImpl) CreateReleaser(pluginName string) (Releaser, error) {
+func (p *ProviderImpl) CreateReleaser(pluginName string) (interfaces.Releaser, error) {
 	p.log.Debug("Creating setup plugin", "name", pluginName)
 
 	return consul.New(p.log.Named("consul-plugin"))
 }
 
-func (p *ProviderImpl) CreateRuntime(pluginName string) (Runtime, error) {
-	if pluginName == "kubernetes" {
+func (p *ProviderImpl) CreateRuntime(pluginName string) (interfaces.Runtime, error) {
+	if pluginName == PluginRuntimeTypeKubernetes {
 		return kubernetes.New(p.log.Named("kubernetes-plugin"))
 	}
 
 	return nil, fmt.Errorf("not implemented")
 }
 
-func (p *ProviderImpl) CreateMonitor(pluginName string) (Monitor, error) {
-	if pluginName == "prometheus" {
+func (p *ProviderImpl) CreateMonitor(pluginName string) (interfaces.Monitor, error) {
+	if pluginName == PluginMonitorTypePromethus {
 		return prometheus.New(p.log.Named("prometheus-plugin"))
 	}
 
 	return nil, fmt.Errorf("not implemented")
 }
 
-func (p *ProviderImpl) CreateStrategy(pluginName string) (Strategy, error) {
+func (p *ProviderImpl) CreateStrategy(pluginName string, mp interfaces.Monitor) (interfaces.Strategy, error) {
+	if pluginName == PluginStrategyTypeCanary {
+		return canary.New(p.log.Named("canary-strategy-plugin"), mp)
+	}
+
 	return nil, fmt.Errorf("not implemented")
+}
+
+func (p *ProviderImpl) GetLogger() hclog.Logger {
+	return p.log
 }

@@ -2,10 +2,12 @@ package models
 
 import (
 	"context"
+	"fmt"
 	"time"
 
+	"github.com/hashicorp/go-hclog"
 	"github.com/looplab/fsm"
-	"github.com/nicholasjackson/consul-canary-controller/plugins"
+	plugins "github.com/nicholasjackson/consul-canary-controller/plugins/interfaces"
 )
 
 const (
@@ -20,6 +22,7 @@ const (
 	EventComplete   = "event_complete"   // fired when all release traffic points at the new deployment
 	EventFail       = "event_fail"       // fired when any state returns an error
 	EventDestroy    = "event_destroy"    // triggers the destruction of a release
+	EventNull       = "event_null"       // null event
 
 	StateStart     = "state_start"     // initial state for a new release
 	StateConfigure = "state_configure" // state when the release is currently configuring
@@ -45,7 +48,7 @@ initialized
 	-> *cancel -> canceling
 */
 
-func newFSM(d *Release, s plugins.Releaser, r plugins.Runtime) *fsm.FSM {
+func newFSM(r *Release, pRel plugins.Releaser, pRun plugins.Runtime, pStrat plugins.Strategy, l hclog.Logger) *fsm.FSM {
 	return fsm.NewFSM(
 		StateStart,
 		fsm.Events{
@@ -79,46 +82,129 @@ func newFSM(d *Release, s plugins.Releaser, r plugins.Runtime) *fsm.FSM {
 			}, Dst: StateDestroy},
 		},
 		fsm.Callbacks{
-			"enter_" + StateConfigure: doAsync(s.Setup, d), // do the necessary work
-			"enter_" + StateIdle:      saveRelease(d),
-			"enter_" + StateDeploy:    doAsync(r.Deploy, d),
-			"enter_" + StateMonitor:   saveRelease(d),
+			"before_event":            logEvent(l),
+			"enter_" + StateConfigure: doAsync(pRel.Setup, EventConfigured, EventFail, r, l), // do the necessary work to setup the release
+			"enter_" + StateIdle:      saveRelease(r, l),                                     // everything is setup, wait for a deployment
+			"enter_" + StateDeploy:    doAsync(pRun.Deploy, EventDeployed, EventFail, r, l),  // new version of the application has been deployed
+			"enter_" + StateMonitor:   doMonitor(pStrat, r, l),                               // start monitoring changes in the applications health
+			"enter_" + StateScale:     doScale(pRel, r, l),                                   // scale the release
+			"enter_" + StatePromote:   doAsync(pRun.Promote, EventPromoted, EventFail, r, l), // promote the release to primary
+			"enter_" + StateFail:      saveRelease(r, l),
 		},
 	)
 }
 
 var defaultTimeout = 30 * time.Minute
 
-func saveRelease(r *Release) func(e *fsm.Event) {
+func logEvent(l hclog.Logger) func(e *fsm.Event) {
 	return func(e *fsm.Event) {
+		l.Debug("handle event", "event", e.Event, "state", e.FSM.Current())
+	}
+}
+
+func saveRelease(r *Release, l hclog.Logger) func(e *fsm.Event) {
+	return func(e *fsm.Event) {
+		l.Debug("handle state", "state", e.Src)
+
 		r.Save(e.Dst)
 	}
 }
 
-// wrapTimeout ensures that the state function is executed asynchronously
-func doAsync(f func(ctx context.Context) error, r *Release) func(e *fsm.Event) {
+func doMonitor(strat plugins.Strategy, r *Release, l hclog.Logger) func(e *fsm.Event) {
 	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
 
 	return func(e *fsm.Event) {
+		l.Debug("handle state", "state", e.FSM.Current())
+
 		go func() {
 			// clean up resources if we finish before timeout
 			defer cancel()
 
-			// save the release model
-			r.Save(e.Dst)
+			r.Save(e.FSM.Current())
+			result, traffic, err := strat.Execute(ctx)
+
+			// strategy has failed with an error
+			if err != nil {
+				l.Error("monitor state failed", "error", err)
+
+				e.FSM.Event(EventFail)
+			}
+
+			// strategy returned a response
+			switch result {
+			// when the strategy reports a healthy deployment
+			case plugins.StrategyStatusSuccess:
+				// send the traffic with the healthy event so that it can be used for scaling
+				e.FSM.Event(EventHealthy, traffic)
+
+			// the strategy has completed the roll out promote the deployment
+			case plugins.StrategyStatusComplete:
+				r.Save(e.FSM.Current())
+
+			// the strategy has reported that the deployment is unhealthy, rollback
+			case plugins.StrategyStatusFail:
+				e.FSM.Event(EventUnhealthy)
+			}
+
+		}()
+	}
+}
+
+func doScale(rel plugins.Releaser, r *Release, l hclog.Logger) func(e *fsm.Event) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+
+	return func(e *fsm.Event) {
+		l.Debug("handle state", "state", e.FSM.Current())
+
+		go func() {
+			// clean up resources if we finish before timeout
+			defer cancel()
+			// save the state
+			r.Save(e.FSM.Current())
+
+			// get the traffic from the event
+			if len(e.Args) != 1 {
+				l.Error("scale state failed", "error", fmt.Errorf("no traffic percentage in event payload"))
+				e.FSM.Event(EventFail)
+				return
+			}
+
+			traffic := e.Args[0].(int)
+
+			err := rel.Scale(ctx, traffic)
+			if err != nil {
+				e.FSM.Event(EventFail)
+				return
+			}
+
+			e.FSM.Event(EventScaled)
+		}()
+	}
+}
+
+// wrapTimeout ensures that the state function is executed asynchronously
+func doAsync(f func(ctx context.Context) error, eventSuccess, eventFail string, r *Release, l hclog.Logger) func(e *fsm.Event) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+
+	return func(e *fsm.Event) {
+		l.Debug("handle state", "state", e.FSM.Current())
+
+		go func() {
+			// clean up resources if we finish before timeout
+			defer cancel()
+
+			r.Save(e.FSM.Current())
 
 			// execute the work function
 			err := f(ctx)
 
 			// work has failed, raise the failed event
 			if err != nil {
-				e.Cancel(err)
-				e.FSM.SetState(StateFail)
-				r.Save(StateFail)
+				e.FSM.Event(eventFail)
+				return
 			}
 
-			// work has succeeded notify the callback
-			e.Args[0].(func(*fsm.Event))(e)
+			e.FSM.Event(eventSuccess)
 		}()
 	}
 }

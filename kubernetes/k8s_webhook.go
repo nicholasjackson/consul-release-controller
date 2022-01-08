@@ -8,6 +8,7 @@ import (
 	"github.com/nicholasjackson/consul-canary-controller/metrics"
 	appmetrics "github.com/nicholasjackson/consul-canary-controller/metrics"
 	"github.com/nicholasjackson/consul-canary-controller/plugins"
+	"github.com/nicholasjackson/consul-canary-controller/plugins/interfaces"
 	pluginKubernetes "github.com/nicholasjackson/consul-canary-controller/plugins/kubernetes"
 	"github.com/nicholasjackson/consul-canary-controller/state"
 	kwhhttp "github.com/slok/kubewebhook/v2/pkg/http"
@@ -22,10 +23,10 @@ type K8sWebhook struct {
 	logger          hclog.Logger
 	store           state.Store
 	metrics         appmetrics.Metrics
-	pluginProviders plugins.Provider
+	pluginProviders interfaces.Provider
 }
 
-func NewK8sWebhook(l hclog.Logger, m metrics.Metrics, s state.Store, p plugins.Provider) (*K8sWebhook, error) {
+func NewK8sWebhook(l hclog.Logger, m metrics.Metrics, s state.Store, p interfaces.Provider) (*K8sWebhook, error) {
 	return &K8sWebhook{logger: l, metrics: m, store: s, pluginProviders: p}, nil
 }
 

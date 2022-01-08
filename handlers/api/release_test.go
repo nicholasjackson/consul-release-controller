@@ -11,7 +11,7 @@ import (
 	"time"
 
 	"github.com/nicholasjackson/consul-canary-controller/metrics"
-	"github.com/nicholasjackson/consul-canary-controller/plugins"
+	"github.com/nicholasjackson/consul-canary-controller/plugins/mocks"
 	"github.com/nicholasjackson/consul-canary-controller/testutils"
 
 	"github.com/hashicorp/go-hclog"
@@ -21,12 +21,12 @@ import (
 	"github.com/stretchr/testify/mock"
 )
 
-func setupRelease(t *testing.T) (*ReleaseHandler, *httptest.ResponseRecorder, *state.MockStore, *plugins.ProviderMock) {
+func setupRelease(t *testing.T) (*ReleaseHandler, *httptest.ResponseRecorder, *state.MockStore, *mocks.ProviderMock) {
 	l := hclog.Default()
 	s := &state.MockStore{}
 	m := &metrics.Null{}
 
-	pp, _ := plugins.BuildMocks(t)
+	pp, _ := mocks.BuildMocks(t)
 
 	rw := httptest.NewRecorder()
 
@@ -103,12 +103,16 @@ func TestReleaseHandlerGetReturnsStatus(t *testing.T) {
 	m1.Name = "test1"
 	m1.Releaser = &models.PluginConfig{Name: "test", Config: []byte(`{}`)}
 	m1.Runtime = &models.PluginConfig{Name: "test", Config: []byte(`{}`)}
+	m1.Monitor = &models.PluginConfig{Name: "test", Config: []byte(`{}`)}
+	m1.Strategy = &models.PluginConfig{Name: "test", Config: []byte(`{}`)}
 	m1.Build(pp)
 
 	m2 := &models.Release{}
 	m2.Name = "test2"
 	m2.Releaser = &models.PluginConfig{Name: "test", Config: []byte(`{}`)}
 	m2.Runtime = &models.PluginConfig{Name: "test", Config: []byte(`{}`)}
+	m2.Monitor = &models.PluginConfig{Name: "test", Config: []byte(`{}`)}
+	m2.Strategy = &models.PluginConfig{Name: "test", Config: []byte(`{}`)}
 	m2.Build(pp)
 
 	deps := []*models.Release{m1, m2}

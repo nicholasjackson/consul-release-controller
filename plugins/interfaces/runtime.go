@@ -1,4 +1,4 @@
-package plugins
+package interfaces
 
 import (
 	"context"
@@ -18,6 +18,9 @@ type Runtime interface {
 
 	// Deploy the new test version to the platform
 	Deploy(ctx context.Context) error
+
+	// Promote the new test version to primary
+	Promote(ctx context.Context) error
 
 	// Destroy removes any configuration that was created with the Deploy method
 	Destroy(ctx context.Context) error

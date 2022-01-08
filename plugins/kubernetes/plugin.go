@@ -111,6 +111,12 @@ func (p *Plugin) Deploy(ctx context.Context) error {
 	return nil
 }
 
+func (p *Plugin) Promote(ctx context.Context) error {
+	p.log.Info("Promote deployment", "name", p.config.Deployment, "namespace", p.config.Namespace)
+
+	return nil
+}
+
 // Destroy removes any configuration that was created with the Deploy method
 func (p *Plugin) Destroy(ctx context.Context) error {
 	return nil

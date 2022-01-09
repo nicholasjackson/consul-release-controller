@@ -12,6 +12,8 @@ import (
 
 type Plugin struct {
 	log            hclog.Logger
+	name           string
+	namespace      string
 	config         *PluginConfig
 	monitoring     interfaces.Monitor
 	currentTraffic int
@@ -32,15 +34,17 @@ func New(l hclog.Logger, m interfaces.Monitor) (*Plugin, error) {
 }
 
 // Configure the plugin with the given json
-func (p *Plugin) Configure(data json.RawMessage) error {
+func (p *Plugin) Configure(name, namespace string, data json.RawMessage) error {
 	p.config = &PluginConfig{}
+	p.name = name
+	p.namespace = namespace
 
 	return json.Unmarshal(data, p.config)
 }
 
 // Execute the strategy
 func (p *Plugin) Execute(ctx context.Context) (interfaces.StrategyStatus, int, error) {
-	p.log.Debug("initializing strategy", "type", "canary", "traffic", p.currentTraffic)
+	p.log.Info("initializing strategy", "type", "canary", "traffic", p.currentTraffic)
 
 	// sleep for duration before checking
 	d, err := time.ParseDuration(p.config.Interval)
@@ -53,7 +57,10 @@ func (p *Plugin) Execute(ctx context.Context) (interfaces.StrategyStatus, int, e
 		time.Sleep(d)
 		p.log.Debug("executing strategy", "type", "canary")
 
-		err := p.monitoring.Check(ctx)
+		queryCtx, done := context.WithTimeout(context.Background(), 30*time.Second)
+		defer done()
+
+		err := p.monitoring.Check(queryCtx, p.name, p.namespace, d)
 		if err != nil {
 			p.log.Debug("check failed", "type", "canary", "error", err)
 			failCount++

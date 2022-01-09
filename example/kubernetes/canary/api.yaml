@@ -46,3 +46,9 @@ spec:
               port: 9090
             periodSeconds: 5
             initialDelaySeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 9090
+            periodSeconds: 5
+            initialDelaySeconds: 5

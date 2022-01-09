@@ -17,7 +17,6 @@ import (
 	"github.com/nicholasjackson/consul-canary-controller/plugins/mocks"
 	"github.com/nicholasjackson/consul-canary-controller/state"
 	"github.com/nicholasjackson/consul-canary-controller/testutils"
-	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
 )
@@ -34,7 +33,7 @@ func setupWebhook(t *testing.T) (func(w http.ResponseWriter, r *http.Request), *
 }
 
 func setupReleases(t *testing.T, pm *mocks.Mocks, s *state.MockStore, name string) *models.Release {
-	depData := testutils.GetTestData(t, "idle_kubernetes_release.json")
+	depData := testutils.GetTestData(t, "valid_kubernetes_release.json")
 
 	dep := &models.Release{}
 	dep.FromJsonBody(ioutil.NopCloser(bytes.NewBuffer(depData)))
@@ -67,7 +66,7 @@ func TestAddsAnnotationWhenDeploymentFound(t *testing.T) {
 
 func TestCallsDeployWhenDeploymentFound(t *testing.T) {
 	h, s, pm := setupWebhook(t)
-	release := setupReleases(t, pm, s, "api-deployment")
+	setupReleases(t, pm, s, "api-deployment")
 
 	data := testutils.GetTestData(t, "admission_review.json")
 	rr := httptest.NewRecorder()
@@ -75,8 +74,15 @@ func TestCallsDeployWhenDeploymentFound(t *testing.T) {
 
 	h(rr, r)
 
-	assert.Eventually(t, func() bool {
-		return release.StateIs(models.StateMonitor)
+	require.Eventually(t, func() bool {
+		calls := pm.RuntimeMock.Calls
+		for _, c := range calls {
+			if c.Method == "Deploy" {
+				return true
+			}
+		}
+
+		return false
 	}, 100*time.Millisecond, 1*time.Millisecond)
 }
 

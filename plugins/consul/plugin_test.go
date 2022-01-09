@@ -122,3 +122,22 @@ func TestInitializeFailsOnCreateServiceSplitter(t *testing.T) {
 	err := p.Setup(context.Background())
 	require.Error(t, err)
 }
+
+func TestScaleUpdatesServiceSplitter(t *testing.T) {
+	p, mc := setupPlugin(t)
+
+	err := p.Scale(context.Background(), 80)
+	require.NoError(t, err)
+
+	mc.AssertCalled(t, "CreateServiceSplitter", "api", 20, 80)
+}
+
+func TestScaleReturnsErrorOnUpdateError(t *testing.T) {
+	p, mc := setupPlugin(t)
+
+	testutils.ClearMockCall(&mc.Mock, "CreateServiceSplitter")
+	mc.On("CreateServiceSplitter", mock.Anything, mock.Anything, mock.Anything).Return(fmt.Errorf("boom"))
+
+	err := p.Scale(context.Background(), 80)
+	require.Error(t, err)
+}

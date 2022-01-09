@@ -12,8 +12,8 @@ type StrategyMock struct {
 	mock.Mock
 }
 
-func (r *StrategyMock) Configure(c json.RawMessage) error {
-	args := r.Called(c)
+func (r *StrategyMock) Configure(name, namespace string, c json.RawMessage) error {
+	args := r.Called(name, namespace, c)
 
 	return args.Error(0)
 }

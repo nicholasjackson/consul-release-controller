@@ -30,10 +30,10 @@ func BuildMocks(t *testing.T) (*ProviderMock, *Mocks) {
 
 	monMock := &MonitorMock{}
 	monMock.On("Configure", mock.Anything).Return(nil)
-	monMock.On("Check", mock.Anything).Return(nil)
+	monMock.On("Check", mock.Anything, mock.Anything, mock.Anything, mock.Anything).Return(nil)
 
 	stratMock := &StrategyMock{}
-	stratMock.On("Configure", mock.Anything).Return(nil)
+	stratMock.On("Configure", mock.Anything, mock.Anything, mock.Anything).Return(nil)
 	stratMock.On("Execute", mock.Anything).Return(interfaces.StrategyStatusSuccess, 10, nil)
 
 	provMock := &ProviderMock{}

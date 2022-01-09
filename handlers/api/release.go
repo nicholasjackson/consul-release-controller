@@ -56,9 +56,6 @@ func (d *ReleaseHandler) Post(rw http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	// move the state to initialize
-	dep.Configure()
-
 	mFinal(http.StatusOK)
 }
 

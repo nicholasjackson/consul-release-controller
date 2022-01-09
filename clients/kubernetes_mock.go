@@ -26,3 +26,9 @@ func (k *KubernetesMock) UpsertDeployment(d *appsv1.Deployment) error {
 
 	return args.Error(0)
 }
+
+func (k *KubernetesMock) DeleteDeployment(name, namespace string) error {
+	args := k.Called(name, namespace)
+
+	return args.Error(0)
+}

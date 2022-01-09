@@ -1,9 +1,11 @@
 package prometheus
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
+	"text/template"
 	"time"
 
 	"github.com/nicholasjackson/consul-canary-controller/clients"
@@ -57,16 +59,16 @@ func (s *Plugin) Configure(data json.RawMessage) error {
 
 // Check executes queries to the Prometheus server and returns an error if any of the queries
 // are not within the defined min and max thresholds
-func (s *Plugin) Check(ctx context.Context) error {
+func (s *Plugin) Check(ctx context.Context, name, namespace string, interval time.Duration) error {
 	querySQL := []string{}
 
 	// first check that the given queries have valid presets
 	for _, q := range s.config.Queries {
 		switch q.Preset {
-		case "envoy-request-success":
-			querySQL = append(querySQL, EnvoyRequestSuccess)
-		case "envoy-request-duration":
-			querySQL = append(querySQL, EnvoyRequestDuration)
+		case "kubernetes-envoy-request-success":
+			querySQL = append(querySQL, KubernetesEnvoyRequestSuccess)
+		case "kubernetes-envoy-request-duration":
+			querySQL = append(querySQL, KubernetesEnvoyRequestDuration)
 		default:
 			return fmt.Errorf("preset query %s, does not exist", q.Preset)
 		}
@@ -75,22 +77,49 @@ func (s *Plugin) Check(ctx context.Context) error {
 	// execute the queries
 	for i, q := range querySQL {
 		query := s.config.Queries[i]
-		s.log.Debug("querying prometheus", "address", s.config.Address, "name", query.Name, "query", q)
 
-		val, _, err := s.client.Query(ctx, s.config.Address, q, time.Now())
+		// add the interpolation for the queries
+		tmpl, err := template.New("query").Parse(q)
 		if err != nil {
 			return err
 		}
 
-		if v, ok := val.(*model.Scalar); ok {
-			s.log.Debug("query value returned", "name", query.Name, "preset", "value", v)
+		context := struct {
+			Name      string
+			Namespace string
+			Interval  string
+		}{
+			name,
+			namespace,
+			interval.String(),
+		}
 
+		out := bytes.NewBufferString("")
+		err = tmpl.Execute(out, context)
+		if err != nil {
+			return err
+		}
+
+		s.log.Debug("querying prometheus", "address", s.config.Address, "name", query.Name, "query", out)
+
+		val, warn, err := s.client.Query(ctx, s.config.Address, out.String(), time.Now())
+		if err != nil {
+			s.log.Error("unable to query prometheus", "error", err)
+
+			return err
+		}
+
+		s.log.Debug("query value returned", "name", query.Name, "preset", query.Preset, "value", val, "warnings", warn)
+
+		if v, ok := val.(*model.Scalar); ok {
 			checkFail := false
 			if query.Min != nil && int(v.Value) < *query.Min {
+				s.log.Debug("query value less than min", "name", query.Name, "preset", query.Preset, "value", v.Value)
 				checkFail = true
 			}
 
 			if query.Max != nil && int(v.Value) > *query.Max {
+				s.log.Debug("query value greater than max", "name", query.Name, "preset", query.Preset, "value", v.Value)
 				checkFail = true
 			}
 

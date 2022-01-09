@@ -16,7 +16,8 @@ type StateHistory struct {
 }
 
 type Release struct {
-	Name string `json:"name"`
+	Name      string `json:"name"`
+	Namespace string `json:"namespace"`
 
 	Created     time.Time `json:"created"`
 	LastUpdated time.Time `json:"last_updated"`
@@ -47,6 +48,11 @@ type PluginConfig struct {
 // has been de-serialzed
 func (d *Release) Build(pluginProvider interfaces.Provider) error {
 	d.StateHistory = []StateHistory{}
+
+	// set the namespace to default if not set
+	if d.Namespace == "" {
+		d.Namespace = "default"
+	}
 
 	// configure the setup plugin
 	relP, err := pluginProvider.CreateReleaser(d.Releaser.Name)
@@ -85,10 +91,10 @@ func (d *Release) Build(pluginProvider interfaces.Provider) error {
 	}
 
 	// configure the strategy plugin
-	stratP.Configure(d.Strategy.Config)
+	stratP.Configure(d.Name, d.Namespace, d.Strategy.Config)
 	d.strategyPlugin = stratP
 
-	fsm := newFSM(d, relP, runP, stratP, pluginProvider.GetLogger())
+	fsm := newFSM(d, relP, runP, stratP, pluginProvider.GetLogger().Named("state-machine"))
 	d.state = fsm
 
 	// if we are rehydrating this we probably have an existing state
@@ -152,12 +158,6 @@ func (d *Release) State() string {
 	}
 
 	return d.state.Current()
-}
-
-// Configure the deployment and create any necessary configuration
-func (d *Release) Configure() error {
-	// trigger the configure event
-	return d.state.Event(EventConfigure)
 }
 
 // Deploy the application

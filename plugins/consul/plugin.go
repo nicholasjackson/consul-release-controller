@@ -36,7 +36,7 @@ func (s *Plugin) Configure(data json.RawMessage) error {
 
 // initialize is an internal function triggered by the initialize event
 func (p *Plugin) Setup(ctx context.Context) error {
-	p.log.Debug("initializing deployment", "service", p.config.ConsulService)
+	p.log.Info("initializing deployment", "service", p.config.ConsulService)
 
 	// create the service defaults for the main service
 	err := p.consulClient.CreateServiceDefaults(p.config.ConsulService)
@@ -73,10 +73,23 @@ func (p *Plugin) Setup(ctx context.Context) error {
 	return nil
 }
 
-func (s *Plugin) Destroy(ctx context.Context) error {
+func (p *Plugin) Destroy(ctx context.Context) error {
 	return fmt.Errorf("not implemented")
 }
 
-func (s *Plugin) Scale(ctx context.Context, value int) error {
-	return fmt.Errorf("not implemented")
+func (p *Plugin) Scale(ctx context.Context, value int) error {
+	primaryTraffic := 100 - value
+	canaryTraffic := value
+
+	p.log.Info("scale deployment", "name", p.config.ConsulService, "traffic_primary", primaryTraffic, "traffic_canary", canaryTraffic)
+
+	// create the service spiltter set to 100% primary
+	err := p.consulClient.CreateServiceSplitter(p.config.ConsulService, primaryTraffic, canaryTraffic)
+	if err != nil {
+		p.log.Error("Unable to create Consul ServiceSplitter", "name", p.config.ConsulService, "error", err)
+
+		return err
+	}
+
+	return nil
 }

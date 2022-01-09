@@ -30,16 +30,16 @@
   "monitor": {
     "plugin_name": "prometheus",
     "config": {
-      "address": "http://prometheus-kube-prometheus-prometheus.monitoring.svc:9090",
+      "address": "http://localhost:9090",
       "queries": [
         {
           "name": "request-success",
-          "preset": "envoy-request-success",
+          "preset": "kubernetes-envoy-request-success",
           "min":99
         },
         {
           "name": "request-duration",
-          "preset": "envoy-request-duration",
+          "preset": "kubernetes-envoy-request-duration",
           "min":20,
           "max": 200
         }

@@ -36,7 +36,7 @@ func setupDeployment(t *testing.T) (*Release, *mocks.Mocks) {
 	pm.MonitorMock.AssertCalled(t, "Configure", d.Monitor.Config)
 
 	mp.AssertCalled(t, "CreateStrategy", d.Strategy.Name)
-	pm.StrategyMock.AssertCalled(t, "Configure", d.Strategy.Config)
+	pm.StrategyMock.AssertCalled(t, "Configure", d.Name, d.Namespace, d.Strategy.Config)
 
 	return d, pm
 }
@@ -82,35 +82,13 @@ func TestToJsonSerializesState(t *testing.T) {
 	require.Contains(t, string(releaseJson), `"current_state":"state_start"`)
 }
 
-func TestInitializeWithNoErrorSetsupReleaseAndMovesState(t *testing.T) {
-	d, pm := setupDeployment(t)
-	d.Configure()
-
-	require.Eventually(t, func() bool { return d.StateIs(StateIdle) }, 100*time.Millisecond, 1*time.Millisecond)
-	require.Eventually(t, func() bool { return d.CurrentState == StateIdle }, 100*time.Millisecond, 1*time.Millisecond)
-	pm.ReleaserMock.AssertCalled(t, "Setup", mock.Anything, mock.Anything)
-}
-
-func TestInitializeWithErrorDoesNotMoveState(t *testing.T) {
-	d, pm := setupDeployment(t)
-
-	testutils.ClearMockCall(&pm.ReleaserMock.Mock, "Setup")
-	pm.ReleaserMock.On("Setup", mock.Anything, mock.Anything).Return(fmt.Errorf("Boom"))
-
-	d.Configure()
-
-	require.Eventually(t, func() bool {
-		return d.StateIs(StateFail)
-	}, 100*time.Millisecond, 1*time.Millisecond)
-}
-
 func TestDeployWithNoErrorDeploysAndMovesState(t *testing.T) {
 	d, pm := setupDeployment(t)
 
-	d.state.SetState(StateIdle)
+	d.state.SetState(StateStart)
 	d.Deploy()
 
-	require.Eventually(t, func() bool { return historyContains(d, StateMonitor) }, 100*time.Millisecond, 1*time.Millisecond)
+	require.Eventually(t, func() bool { return historyContains(d, StateConfigure) }, 100*time.Millisecond, 1*time.Millisecond)
 	pm.RuntimeMock.AssertCalled(t, "Deploy", mock.Anything, mock.Anything)
 }
 
@@ -120,7 +98,7 @@ func TestDeployWithErrorDoesNotMoveState(t *testing.T) {
 	testutils.ClearMockCall(&pm.RuntimeMock.Mock, "Deploy")
 	pm.RuntimeMock.On("Deploy", mock.Anything).Return(fmt.Errorf("Boom"))
 
-	d.state.SetState(StateIdle)
+	d.state.SetState(StateStart)
 	d.Deploy()
 
 	require.Eventually(t, func() bool {
@@ -128,28 +106,102 @@ func TestDeployWithErrorDoesNotMoveState(t *testing.T) {
 	}, 100*time.Millisecond, 1*time.Millisecond)
 }
 
-func TestEventDeployedWithNoErrorMonitorsAndMovesState(t *testing.T) {
+func TestEventDeployedWithNoErrorSetsupReleaseAndMovesState(t *testing.T) {
 	d, pm := setupDeployment(t)
 
 	d.state.SetState(StateDeploy)
 	d.state.Event(EventDeployed)
 
+	require.Eventually(t, func() bool { return historyContains(d, StateConfigure) }, 100*time.Millisecond, 1*time.Millisecond)
+	pm.ReleaserMock.AssertCalled(t, "Setup", mock.Anything, mock.Anything)
+}
+
+func TestEventDeployedWithErrorDoesNotMoveState(t *testing.T) {
+	d, pm := setupDeployment(t)
+
+	testutils.ClearMockCall(&pm.ReleaserMock.Mock, "Setup")
+	pm.ReleaserMock.On("Setup", mock.Anything, mock.Anything).Return(fmt.Errorf("Boom"))
+
+	d.state.SetState(StateDeploy)
+	d.state.Event(EventDeployed)
+
+	require.Eventually(t, func() bool {
+		return d.StateIs(StateFail)
+	}, 100*time.Millisecond, 1*time.Millisecond)
+}
+
+func TestEventConfiguredWithNoErrorSetsInitialTrafficAndMovesState(t *testing.T) {
+	d, pm := setupDeployment(t)
+
+	d.state.SetState(StateConfigure)
+	d.state.Event(EventConfigured, -1)
+
+	require.Eventually(t, func() bool { return historyContains(d, StateScale) }, 100*time.Millisecond, 1*time.Millisecond)
+	pm.ReleaserMock.AssertCalled(t, "Scale", mock.Anything, -1)
+}
+
+func TestEventConfiguredWithScaleErrorDoesNotMoveState(t *testing.T) {
+	d, pm := setupDeployment(t)
+
+	testutils.ClearMockCall(&pm.ReleaserMock.Mock, "Scale")
+	pm.ReleaserMock.On("Scale", mock.Anything, mock.Anything).Return(fmt.Errorf("Boom"))
+
+	d.state.SetState(StateConfigure)
+	d.state.Event(EventConfigured)
+
+	require.Eventually(t, func() bool {
+		return d.StateIs(StateFail)
+	}, 100*time.Millisecond, 1*time.Millisecond)
+}
+
+func TestEventScaledWithNoErrorMonitorsAndMovesState(t *testing.T) {
+	d, pm := setupDeployment(t)
+
+	d.state.SetState(StateScale)
+	d.state.Event(EventScaled)
+
 	require.Eventually(t, func() bool { return historyContains(d, StateMonitor) }, 100*time.Millisecond, 1*time.Millisecond)
+
+	// check that the traffic has been sent
 	pm.StrategyMock.AssertCalled(t, "Execute", mock.Anything)
 }
 
-func TestEventDeployedWithMonitorErrorDoesNotMoveState(t *testing.T) {
+func TestEventScaledWithUnhealthyMontiorRollsback(t *testing.T) {
 	d, pm := setupDeployment(t)
 
 	testutils.ClearMockCall(&pm.StrategyMock.Mock, "Execute")
-	pm.StrategyMock.On("Execute", mock.Anything).Return(interfaces.StrategyStatusFail, 0, fmt.Errorf("Boom"))
+	pm.StrategyMock.On("Execute", mock.Anything).Return(interfaces.StrategyStatusFail, -1, nil)
 
-	d.state.SetState(StateDeploy)
-	d.state.Event(EventDeployed)
+	d.state.SetState(StateScale)
+	d.state.Event(EventScaled)
+
+	require.Eventually(t, func() bool { return historyContains(d, StateRollback) }, 100*time.Millisecond, 1*time.Millisecond)
+	require.Eventually(t, func() bool { return d.CurrentState == StateRollback }, 100*time.Millisecond, 1*time.Millisecond)
+}
+
+func TestEventScaledWithMontiorErrorRollsback(t *testing.T) {
+	d, pm := setupDeployment(t)
+
+	testutils.ClearMockCall(&pm.StrategyMock.Mock, "Execute")
+	pm.StrategyMock.On("Execute", mock.Anything).Return(interfaces.StrategyStatusFail, -1, fmt.Errorf("boom"))
+
+	d.state.SetState(StateScale)
+	d.state.Event(EventScaled)
 
 	require.Eventually(t, func() bool { return historyContains(d, StateFail) }, 100*time.Millisecond, 1*time.Millisecond)
 	require.Eventually(t, func() bool { return d.CurrentState == StateFail }, 100*time.Millisecond, 1*time.Millisecond)
-	pm.StrategyMock.AssertCalled(t, "Execute", mock.Anything)
+}
+
+func TestEventScaledWithCompletePromotes(t *testing.T) {
+	d, pm := setupDeployment(t)
+
+	testutils.ClearMockCall(&pm.StrategyMock.Mock, "Execute")
+	pm.StrategyMock.On("Execute", mock.Anything).Return(interfaces.StrategyStatusComplete, 100, nil)
+
+	d.state.SetState(StateScale)
+	d.state.Event(EventScaled)
+
+	require.Eventually(t, func() bool { return historyContains(d, StatePromote) }, 100*time.Millisecond, 1*time.Millisecond)
 }
 
 func TestEventHealthyWithNoErrorScalesAndMovesState(t *testing.T) {
@@ -196,9 +248,10 @@ func TestEventCompleteWithNoErrorPromotesAndMovesState(t *testing.T) {
 
 	require.Eventually(t, func() bool { return historyContains(d, StatePromote) }, 100*time.Millisecond, 1*time.Millisecond)
 	pm.RuntimeMock.AssertCalled(t, "Promote", mock.Anything)
+	pm.ReleaserMock.AssertCalled(t, "Scale", mock.Anything, 0)
 }
 
-func TestEventCompleteWithErrorDoesNotMoveState(t *testing.T) {
+func TestEventCompleteWithPromoteErrorDoesNotMoveState(t *testing.T) {
 	d, pm := setupDeployment(t)
 
 	testutils.ClearMockCall(&pm.RuntimeMock.Mock, "Promote")
@@ -210,6 +263,22 @@ func TestEventCompleteWithErrorDoesNotMoveState(t *testing.T) {
 	require.Eventually(t, func() bool { return historyContains(d, StateFail) }, 100*time.Millisecond, 1*time.Millisecond)
 	require.Eventually(t, func() bool { return d.CurrentState == StateFail }, 100*time.Millisecond, 1*time.Millisecond)
 	pm.RuntimeMock.AssertCalled(t, "Promote", mock.Anything)
+	pm.RuntimeMock.AssertNotCalled(t, "Scale", mock.Anything)
+}
+
+func TestEventCompleteWithScaleErrorDoesNotMoveState(t *testing.T) {
+	d, pm := setupDeployment(t)
+
+	testutils.ClearMockCall(&pm.ReleaserMock.Mock, "Scale")
+	pm.ReleaserMock.On("Scale", mock.Anything, mock.Anything).Return(fmt.Errorf("Boom"))
+
+	d.state.SetState(StateMonitor)
+	d.state.Event(EventComplete)
+
+	require.Eventually(t, func() bool { return historyContains(d, StateFail) }, 100*time.Millisecond, 1*time.Millisecond)
+	require.Eventually(t, func() bool { return d.CurrentState == StateFail }, 100*time.Millisecond, 1*time.Millisecond)
+	pm.RuntimeMock.AssertCalled(t, "Promote", mock.Anything)
+	pm.ReleaserMock.AssertCalled(t, "Scale", mock.Anything, 0)
 }
 
 func TestEventPromotedWithNoErrorCallsPluginAndMovesState(t *testing.T) {
@@ -219,4 +288,5 @@ func TestEventPromotedWithNoErrorCallsPluginAndMovesState(t *testing.T) {
 	d.state.Event(EventPromoted)
 
 	require.Eventually(t, func() bool { return historyContains(d, StateIdle) }, 100*time.Millisecond, 1*time.Millisecond)
+
 }

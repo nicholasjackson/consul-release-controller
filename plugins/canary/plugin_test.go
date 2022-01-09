@@ -20,7 +20,7 @@ func setupPlugin(t *testing.T, config string) (*Plugin, *mocks.MonitorMock) {
 
 	p, _ := New(log, m.MonitorMock)
 
-	err := p.Configure([]byte(config))
+	err := p.Configure("test", "testnamespace", []byte(config))
 	require.NoError(t, err)
 
 	return p, m.MonitorMock
@@ -33,7 +33,7 @@ func TestCallsMonitorCheckAndReturnsWhenNoError(t *testing.T) {
 	_, _, err := p.Execute(context.Background())
 	require.NoError(t, err)
 
-	mm.AssertCalled(t, "Check", mock.Anything)
+	mm.AssertCalled(t, "Check", mock.Anything, mock.Anything, mock.Anything, mock.Anything)
 
 	et := time.Since(st)
 	require.Greater(t, et, 30*time.Millisecond, "Execute should sleep for interval before check")
@@ -75,7 +75,7 @@ func TestReturnsErrorWhenChecksFail(t *testing.T) {
 	p, mm := setupPlugin(t, canaryStrategy)
 	testutils.ClearMockCall(&mm.Mock, "Check")
 
-	mm.On("Check", mock.Anything).Return(fmt.Errorf("boom"))
+	mm.On("Check", mock.Anything, mock.Anything, mock.Anything, mock.Anything).Return(fmt.Errorf("boom"))
 
 	state, traffic, err := p.Execute(context.Background())
 	require.NoError(t, err)

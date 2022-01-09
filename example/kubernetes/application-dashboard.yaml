@@ -148,7 +148,7 @@ data:
           "targets": [
             {
               "exemplar": true,
-              "expr": "count(count(prober_probe_total{pod=~\"api-primary-.*\", container=\"api\", result=\"successful\", probe_type=\"Liveness\"}) by (pod))",
+              "expr": "count(count(prober_probe_total{pod=~\"api-deployment-primary-.*\", container=\"api\", result=\"successful\", probe_type=\"Liveness\"}) by (pod))",
               "interval": "",
               "legendFormat": "",
               "refId": "A"
@@ -209,7 +209,7 @@ data:
           "targets": [
             {
               "exemplar": true,
-              "expr": "count(count(prober_probe_total{pod!~\"api-primary-.*\", container=\"api\", result=\"successful\", probe_type=\"Liveness\"}) by (pod))",
+              "expr": "count(count(prober_probe_total{pod!~\"api-deployment-primary-.*\", container=\"api\", result=\"successful\", probe_type=\"Liveness\"}) by (pod))",
               "interval": "",
               "legendFormat": "",
               "refId": "A"
@@ -479,14 +479,14 @@ data:
           "targets": [
             {
               "exemplar": true,
-              "expr": "sum by (envoy_response_code) (rate(envoy_cluster_upstream_rq{pod!~\"api-primary.*\", namespace=\"default\", envoy_cluster_name=\"local_app\", pod=~\"api.*\"}[$__rate_interval]))",
+              "expr": "sum by (envoy_response_code) (rate(envoy_cluster_upstream_rq{pod!~\"api-deployment-primary.*\", namespace=\"default\", envoy_cluster_name=\"local_app\", pod=~\"api.*\"}[$__rate_interval]))",
               "interval": "",
               "legendFormat": "Canary - {{envoy_response_code}}",
               "refId": "A"
             },
             {
               "exemplar": true,
-              "expr": "sum by (envoy_response_code) (rate(envoy_cluster_upstream_rq{pod=~\"api-primary.*\", namespace=\"default\", envoy_cluster_name=\"local_app\", pod=~\"api.*\"}[$__rate_interval]))",
+              "expr": "sum by (envoy_response_code) (rate(envoy_cluster_upstream_rq{pod=~\"api-deployment-primary.*\", namespace=\"default\", envoy_cluster_name=\"local_app\", pod=~\"api.*\"}[$__rate_interval]))",
               "interval": "",
               "legendFormat": "Primary - {{envoy_response_code}}",
               "refId": "B"

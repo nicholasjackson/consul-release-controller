@@ -31,7 +31,6 @@ func (p *PrometheusImpl) Query(ctx context.Context, address, query string, ts ti
 		return nil, v1.Warnings{}, fmt.Errorf("unable to create new Prometheus client: %s", err)
 	}
 
-	v1.NewAPI(c)
-
-	return nil, v1.Warnings{}, nil
+	api := v1.NewAPI(c)
+	return api.Query(ctx, query, ts)
 }

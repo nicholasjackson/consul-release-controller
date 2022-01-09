@@ -26,6 +26,9 @@ type Kubernetes interface {
 
 	// UpsertDeployment creates or updates the given Kubernetes Deployment
 	UpsertDeployment(d *appsv1.Deployment) error
+
+	// DeleteDeployment deletes the given Kubernetes Deployment
+	DeleteDeployment(name, namespace string) error
 }
 
 // NewKubernetes creates a new Kubernetes implementation
@@ -58,4 +61,8 @@ func (k *KubernetesImpl) UpsertDeployment(dep *appsv1.Deployment) error {
 
 	_, err := k.clientset.AppsV1().Deployments(dep.Namespace).Create(context.Background(), dep, v1.CreateOptions{})
 	return err
+}
+
+func (k *KubernetesImpl) DeleteDeployment(name, namespace string) error {
+	return k.clientset.AppsV1().Deployments(namespace).Delete(context.Background(), name, v1.DeleteOptions{})
 }

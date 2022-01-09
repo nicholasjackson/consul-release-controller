@@ -32,7 +32,7 @@ func setupPlugin(t *testing.T, config string) (*Plugin, *clients.PrometheusMock)
 func TestPluginReturnsErrorWhenPresetNotFound(t *testing.T) {
 	p, pm := setupPlugin(t, twoDefaultQueriesInvalidPreset)
 
-	err := p.Check(context.Background())
+	err := p.Check(context.Background(), "api", "default", 30*time.Second)
 	require.Error(t, err)
 
 	pm.AssertNotCalled(t, "Query")
@@ -44,7 +44,7 @@ func TestPluginReturnsErrorWhenQueryValueLessThanMin(t *testing.T) {
 	testutils.ClearMockCall(&pm.Mock, "Query")
 	pm.On("Query", mock.Anything, mock.Anything, mock.Anything, mock.Anything).Return(&model.Scalar{Value: 1, Timestamp: model.Time(time.Now().Unix())}, v1.Warnings{}, nil)
 
-	err := p.Check(context.Background())
+	err := p.Check(context.Background(), "api", "default", 30*time.Second)
 	require.Error(t, err)
 
 	pm.AssertNumberOfCalls(t, "Query", 1)
@@ -56,7 +56,7 @@ func TestPluginReturnsErrorWhenQueryValueGreaterThanMax(t *testing.T) {
 	testutils.ClearMockCall(&pm.Mock, "Query")
 	pm.On("Query", mock.Anything, mock.Anything, mock.Anything, mock.Anything).Return(&model.Scalar{Value: 201, Timestamp: model.Time(time.Now().Unix())}, v1.Warnings{}, nil)
 
-	err := p.Check(context.Background())
+	err := p.Check(context.Background(), "api", "default", 30*time.Second)
 	require.Error(t, err)
 
 	pm.AssertNumberOfCalls(t, "Query", 2)
@@ -65,10 +65,22 @@ func TestPluginReturnsErrorWhenQueryValueGreaterThanMax(t *testing.T) {
 func TestPluginExecutesQueriesAndChecksValue(t *testing.T) {
 	p, pm := setupPlugin(t, twoDefaultQueries)
 
-	err := p.Check(context.Background())
+	err := p.Check(context.Background(), "api", "default", 30*time.Second)
 	require.NoError(t, err)
 
 	pm.AssertNumberOfCalls(t, "Query", 2)
+
+	// check that the query interpolation was added correctly
+	call1Args := pm.Calls[0].Arguments[1]
+	call2Args := pm.Calls[1].Arguments[1]
+
+	require.Contains(t, call1Args, `namespace="default"`)
+	require.Contains(t, call1Args, `pod=~"api-deployment-[0-9a-zA-Z]+(-[0-9a-zA-Z]+)"`)
+	require.Contains(t, call1Args, `[30s]`)
+
+	require.Contains(t, call2Args, `namespace="default"`)
+	require.Contains(t, call2Args, `pod=~"api-deployment-[0-9a-zA-Z]+(-[0-9a-zA-Z]+)"`)
+	require.Contains(t, call2Args, `[30s]`)
 }
 
 const twoDefaultQueries = `
@@ -77,12 +89,12 @@ const twoDefaultQueries = `
 	"queries": [
 	  {
 	    "name": "request-success",
-	    "preset": "envoy-request-success",
+	    "preset": "kubernetes-envoy-request-success",
 	    "min":99
 	  },
 	  {
 	    "name": "request-duration",
-	    "preset": "envoy-request-duration",
+	    "preset": "kubernetes-envoy-request-duration",
 	    "min":20,
 	    "max": 200
 	  }
@@ -96,7 +108,7 @@ const twoDefaultQueriesInvalidPreset = `
 	"queries": [
 	  {
 	    "name": "request-success",
-	    "preset": "envoy-request-success",
+	    "preset": "kubernetes-envoy-request-success",
 	    "min":99
 	  },
 	  {

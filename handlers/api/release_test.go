@@ -8,7 +8,6 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
-	"time"
 
 	"github.com/nicholasjackson/consul-canary-controller/metrics"
 	"github.com/nicholasjackson/consul-canary-controller/plugins/mocks"
@@ -62,24 +61,6 @@ func TestReleaseHandlerPostWithNoErrorReturnsOk(t *testing.T) {
 	r := httptest.NewRequest("POST", "/", bytes.NewBuffer(td))
 
 	d.Post(rw, r)
-
-	assert.Equal(t, http.StatusOK, rw.Code)
-}
-
-func TestReleaseHandlerPostCallsConfigure(t *testing.T) {
-	d, rw, s, _ := setupRelease(t)
-	s.On("UpsertRelease", mock.Anything).Return(nil)
-
-	td := testutils.GetTestData(t, "valid_kubernetes_release.json")
-	r := httptest.NewRequest("POST", "/", bytes.NewBuffer(td))
-
-	d.Post(rw, r)
-
-	// work is done in the background check t
-	assert.Eventually(t, func() bool {
-		d := s.Calls[0].Arguments[0].(*models.Release)
-		return d.StateIs(models.StateIdle)
-	}, 100*time.Millisecond, 1*time.Millisecond)
 
 	assert.Equal(t, http.StatusOK, rw.Code)
 }

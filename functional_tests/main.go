@@ -36,6 +36,8 @@ var server *controller.Release
 
 var environment map[string]string
 
+var createEnvironment = flag.Bool("create-environment", true, "Create and destroy the test environment when running tests?")
+
 func main() {
 	godog.BindFlags("godog.", flag.CommandLine, opts)
 	flag.Parse()
@@ -65,6 +67,7 @@ func initializeScenario(ctx *godog.ScenarioContext) {
 	ctx.Step(`^a Kubernetes deployment called "([^"]*)" should be created$`, aKubernetesDeploymentCalledShouldBeCreated)
 	ctx.Step(`^I create a new Canary "([^"]*)"$`, iCreateANewCanary)
 	ctx.Step(`^I create a new version of the Kubernetes Deployment "([^"]*)"$`, iDeployANewVersionOfTheKubernetesDeployment)
+	ctx.Step(`^a call to the URL "([^"]*)" contains the text "([^"]*)"$`, aCallToTheURLContainsTheText)
 
 	ctx.After(func(ctx context.Context, sc *godog.Scenario, scenarioError error) (context.Context, error) {
 		showLog := false
@@ -79,9 +82,12 @@ func initializeScenario(ctx *godog.ScenarioContext) {
 			}
 		}
 
-		err := executeCommand([]string{"/usr/local/bin/shipyard", "destroy"})
-		if err != nil {
-			showLog = true
+		// only destroy the environment when the flag is true
+		if *createEnvironment {
+			err := executeCommand([]string{"/usr/local/bin/shipyard", "destroy"})
+			if err != nil {
+				showLog = true
+			}
 		}
 
 		if showLog {
@@ -120,41 +126,6 @@ func startServer() error {
 	return err
 }
 
-func theControllerIsRunningOnKubernetes() error {
-	err := executeCommand([]string{"/usr/local/bin/shipyard", "run", "./shipyard/kubernetes"})
-	if err != nil {
-		return fmt.Errorf("unable to create Kubernetes environment: %s", err)
-	}
-
-	// set the shipyard environment variables
-	environment["TLS_CERT"] = path.Join(os.Getenv("HOME"), ".shipyard", "data", "kube_setup", "tls.crt")
-	environment["TLS_KEY"] = path.Join(os.Getenv("HOME"), ".shipyard", "data", "kube_setup", "tls.key")
-
-	// get the variables from shipyard
-	output := &strings.Builder{}
-	cmd := exec.Command("/usr/local/bin/shipyard", "output")
-	cmd.Dir = "../"
-	cmd.Stdout = output
-	cmd.Stderr = output
-
-	err = cmd.Run()
-	if err != nil {
-		return fmt.Errorf("unable to get output variables from shipyard: %s", err)
-	}
-
-	shipyardOutput := map[string]string{}
-	err = json.Unmarshal([]byte(output.String()), &shipyardOutput)
-	if err != nil {
-		return fmt.Errorf("unable to parse shipyard output: %s", err)
-	}
-
-	for k, v := range shipyardOutput {
-		environment[k] = v
-	}
-
-	return startServer()
-}
-
 func retryOperation(f func() error) error {
 	attempt := 0
 	maxAttempts := 10
@@ -175,6 +146,45 @@ func retryOperation(f func() error) error {
 
 func getKubernetesClient() (clients.Kubernetes, error) {
 	return clients.NewKubernetes(os.Getenv("KUBECONFIG"))
+}
+
+func theControllerIsRunningOnKubernetes() error {
+
+	// only create the environment when the flag is true
+	if *createEnvironment {
+		err := executeCommand([]string{"/usr/local/bin/shipyard", "run", "./shipyard/kubernetes"})
+		if err != nil {
+			return fmt.Errorf("unable to create Kubernetes environment: %s", err)
+		}
+	}
+
+	// set the shipyard environment variables
+	environment["TLS_CERT"] = path.Join(os.Getenv("HOME"), ".shipyard", "data", "kube_setup", "tls.crt")
+	environment["TLS_KEY"] = path.Join(os.Getenv("HOME"), ".shipyard", "data", "kube_setup", "tls.key")
+
+	// get the variables from shipyard
+	output := &strings.Builder{}
+	cmd := exec.Command("/usr/local/bin/shipyard", "output")
+	cmd.Dir = "../"
+	cmd.Stdout = output
+	cmd.Stderr = output
+
+	err := cmd.Run()
+	if err != nil {
+		return fmt.Errorf("unable to get output variables from shipyard: %s", err)
+	}
+
+	shipyardOutput := map[string]string{}
+	err = json.Unmarshal([]byte(output.String()), &shipyardOutput)
+	if err != nil {
+		return fmt.Errorf("unable to parse shipyard output: %s", err)
+	}
+
+	for k, v := range shipyardOutput {
+		environment[k] = v
+	}
+
+	return startServer()
 }
 
 func aConsulCalledShouldBeCreated(arg1, arg2 string) error {
@@ -268,4 +278,25 @@ func iDeployANewVersionOfTheKubernetesDeployment(arg1 string) error {
 	}
 
 	return err
+}
+
+func aCallToTheURLContainsTheText(addr, text string) error {
+	return retryOperation(func() error {
+		r, err := http.Get(addr)
+		if err != nil {
+			return err
+		}
+		defer r.Body.Close()
+
+		b, err := ioutil.ReadAll(r.Body)
+		if err != nil {
+			return err
+		}
+
+		if !strings.Contains(string(b), text) {
+			return fmt.Errorf("request body does not contain: %s", text)
+		}
+
+		return nil
+	})
 }

@@ -5,6 +5,7 @@ Feature: Kubernetes
   @k8s
   Scenario: Simple Canary Deployment
     Given the controller is running on Kubernetes
+    And a call to the URL "http://localhost:18080" contains the text "API V1"
     When I create a new Canary "../example/kubernetes/canary/api.json"
     And I create a new version of the Kubernetes Deployment "../example/kubernetes/canary/api.yaml"
     Then a Kubernetes deployment called "api-deployment-primary" should be created

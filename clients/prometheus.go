@@ -8,6 +8,7 @@ import (
 	"github.com/prometheus/client_golang/api"
 	v1 "github.com/prometheus/client_golang/api/prometheus/v1"
 	"github.com/prometheus/common/model"
+	"github.com/sethvargo/go-retry"
 )
 
 // Prometheus defines an interface that can query a prometheus API
@@ -32,5 +33,29 @@ func (p *PrometheusImpl) Query(ctx context.Context, address, query string, ts ti
 	}
 
 	api := v1.NewAPI(c)
-	return api.Query(ctx, query, ts)
+
+	var value model.Value
+	var warn v1.Warnings
+	var queryErr error
+
+	// define a max retry duration
+	ctxQuery, cancel := context.WithTimeout(ctx, 30*time.Second)
+	defer cancel()
+
+	// if there is an error when attempting the query, retry, the server might be temporarily unavailable
+	queryErr = retry.Fibonacci(ctxQuery, 1*time.Second, func(ctx context.Context) error {
+		// has the max duration elapsed
+		if ctx.Err() != nil {
+			return ctx.Err()
+		}
+
+		value, warn, err = api.Query(ctx, query, ts)
+		if err != nil {
+			return retry.RetryableError(fmt.Errorf("error querying prometheus server: %s", err))
+		}
+
+		return nil
+	})
+
+	return value, warn, queryErr
 }

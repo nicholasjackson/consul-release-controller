@@ -4,8 +4,8 @@ Feature: Kubernetes
 
   @k8s
   Scenario: Simple Canary Deployment
-    Given I create a new version of the Kubernetes Deployment "../example/kubernetes/api.yaml"
-    And the controller is running on Kubernetes
+    Given the controller is running on Kubernetes
+    And I create a new version of the Kubernetes Deployment "../example/kubernetes/api.yaml"
     And a call to the URL "http://localhost:18080" contains the text 
       """
       API V1

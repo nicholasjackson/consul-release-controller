@@ -21,6 +21,7 @@ import (
 	"github.com/hashicorp/go-hclog"
 	"github.com/nicholasjackson/consul-canary-controller/clients"
 	"github.com/nicholasjackson/consul-canary-controller/controller"
+	"github.com/sethvargo/go-retry"
 	appsv1 "k8s.io/api/apps/v1"
 	"k8s.io/apimachinery/pkg/util/yaml"
 )
@@ -282,6 +283,27 @@ func iDeployANewVersionOfTheKubernetesDeployment(arg1 string) error {
 	if err != nil {
 		return fmt.Errorf("unable to create Kubernetes deployment, error: %s", err)
 	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 60*time.Second)
+	defer cancel()
+
+	err = retry.Fibonacci(ctx, 1*time.Second, func(ctx context.Context) error {
+		logger.Info("Checking health", "name", dep.Name, "namespace", dep.Namespace)
+
+		d, err := cs.GetDeployment(dep.Name, dep.Namespace)
+		if err != nil {
+			logger.Debug("Kubernetes deployment not found", "name", dep.Name, "namespace", dep.Namespace, "error", err)
+			return retry.RetryableError(fmt.Errorf("unable to find deployment: %s", err))
+		}
+
+		if d.Status.ReadyReplicas != *d.Spec.Replicas {
+			logger.Debug("Kubernetes deployment not healthy", "name", dep.Name, "namespace", dep.Namespace)
+			return retry.RetryableError(fmt.Errorf("deployment not healthy: %s", err))
+		}
+
+		logger.Debug("Deployment healthy", "name", dep.Name, "namespace", dep.Namespace)
+		return nil
+	})
 
 	return err
 }

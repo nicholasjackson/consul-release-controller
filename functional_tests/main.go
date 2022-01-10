@@ -67,7 +67,7 @@ func initializeScenario(ctx *godog.ScenarioContext) {
 	ctx.Step(`^a Kubernetes deployment called "([^"]*)" should be created$`, aKubernetesDeploymentCalledShouldBeCreated)
 	ctx.Step(`^I create a new Canary "([^"]*)"$`, iCreateANewCanary)
 	ctx.Step(`^I create a new version of the Kubernetes Deployment "([^"]*)"$`, iDeployANewVersionOfTheKubernetesDeployment)
-	ctx.Step(`^a call to the URL "([^"]*)" contains the text "([^"]*)"$`, aCallToTheURLContainsTheText)
+	ctx.Step(`^a call to the URL "([^"]*)" contains the text$`, aCallToTheURLContainsTheText)
 
 	ctx.After(func(ctx context.Context, sc *godog.Scenario, scenarioError error) (context.Context, error) {
 		showLog := false
@@ -127,8 +127,9 @@ func startServer() error {
 }
 
 func retryOperation(f func() error) error {
+	// max time to wait 300s
 	attempt := 0
-	maxAttempts := 10
+	maxAttempts := 60
 	delay := 5 * time.Second
 
 	var funcError error
@@ -188,7 +189,6 @@ func theControllerIsRunningOnKubernetes() error {
 }
 
 func aConsulCalledShouldBeCreated(arg1, arg2 string) error {
-
 	client, err := api.NewClient(api.DefaultConfig())
 	if err != nil {
 		return fmt.Errorf("unable to create Consul client: %s", err)
@@ -203,7 +203,6 @@ func aConsulCalledShouldBeCreated(arg1, arg2 string) error {
 }
 
 func aKubernetesDeploymentCalledShouldBeCreated(arg1 string) error {
-
 	cs, err := getKubernetesClient()
 	if err != nil {
 		return fmt.Errorf("unable to create Kubernetes client, error: %s", err)
@@ -267,6 +266,13 @@ func iDeployANewVersionOfTheKubernetesDeployment(arg1 string) error {
 		return fmt.Errorf("unable to decode Kubernetes deployment: %s", err)
 	}
 
+	// force the update
+	if dep.Annotations == nil {
+		dep.Annotations = map[string]string{}
+	}
+
+	dep.Annotations["updated"] = time.Now().String()
+
 	cs, err := getKubernetesClient()
 	if err != nil {
 		return fmt.Errorf("unable to create Kubernetes client, error: %s", err)
@@ -280,8 +286,9 @@ func iDeployANewVersionOfTheKubernetesDeployment(arg1 string) error {
 	return err
 }
 
-func aCallToTheURLContainsTheText(addr, text string) error {
+func aCallToTheURLContainsTheText(addr string, text *godog.DocString) error {
 	return retryOperation(func() error {
+		http.DefaultTransport.(*http.Transport).TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
 		r, err := http.Get(addr)
 		if err != nil {
 			return err
@@ -293,8 +300,8 @@ func aCallToTheURLContainsTheText(addr, text string) error {
 			return err
 		}
 
-		if !strings.Contains(string(b), text) {
-			return fmt.Errorf("request body does not contain: %s", text)
+		if !strings.Contains(string(b), text.Content) {
+			return fmt.Errorf("request body: %s does not contain: %s", string(b), text.Content)
 		}
 
 		return nil

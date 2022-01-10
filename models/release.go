@@ -100,6 +100,8 @@ func (d *Release) Build(pluginProvider interfaces.Provider) error {
 	// if we are rehydrating this we probably have an existing state
 	if d.CurrentState != "" {
 		d.state.SetState(d.CurrentState)
+	} else {
+		d.CurrentState = StateStart
 	}
 
 	return err
@@ -116,9 +118,6 @@ func (d *Release) FromJsonBody(r io.ReadCloser) error {
 
 // ToJson serializes the deployment to json
 func (d *Release) ToJson() []byte {
-	// serialize the current state
-	d.CurrentState = d.State()
-
 	data, err := json.Marshal(d)
 	if err != nil {
 		panic(err)
@@ -132,32 +131,10 @@ func (d *Release) RuntimePlugin() interfaces.Runtime {
 	return d.runtimePlugin
 }
 
-func (d *Release) SetState(s string) {
-	d.state.SetState(s)
-}
-
 // Save release to the datastore
 func (d *Release) Save(state string) {
 	d.StateHistory = append(d.StateHistory, StateHistory{Time: time.Now(), State: state})
 	d.CurrentState = state
-}
-
-// StateIs returns true when the internal state matches the check state
-func (d *Release) StateIs(s string) bool {
-	if d.state == nil {
-		return false
-	}
-
-	return d.state.Is(s)
-}
-
-// State returns the internal state of the deployment
-func (d *Release) State() string {
-	if d.state == nil {
-		return ""
-	}
-
-	return d.state.Current()
 }
 
 // Deploy the application

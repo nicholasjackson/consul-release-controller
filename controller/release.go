@@ -40,12 +40,12 @@ func (r *Release) Start() error {
 
 	store := state.NewInmemStore()
 
-	k8sHandler, _ := kubernetes.NewK8sWebhook(r.log, metrics, store, plugins.GetProvider())
-	healthHandler := api.NewHealthHandlers(r.log)
-	apiHandler := api.NewReleaseHandler(r.log, metrics, store, plugins.GetProvider())
+	k8sHandler, _ := kubernetes.NewK8sWebhook(r.log.Named("kubernetes-webhook"), metrics, store, plugins.GetProvider())
+	healthHandler := api.NewHealthHandlers(r.log.Named("health-handlers"))
+	apiHandler := api.NewReleaseHandler(r.log.Named("restful-api"), metrics, store, plugins.GetProvider())
 
 	r.log.Info("Starting controller")
-	httplogger := httplog.NewLogger("consul-canary")
+	httplogger := httplog.NewLogger("http-server")
 	httplogger = httplogger.Output(r.log.StandardWriter(&hclog.StandardLoggerOptions{ForceLevel: hclog.Trace}))
 
 	rtr := chi.NewRouter()

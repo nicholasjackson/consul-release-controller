@@ -4,8 +4,12 @@ Feature: Kubernetes
 
   @k8s
   Scenario: Simple Canary Deployment
-    Given the controller is running on Kubernetes
-    And a call to the URL "http://localhost:18080" contains the text "API V1"
+    Given I create a new version of the Kubernetes Deployment "../example/kubernetes/api.yaml"
+    And the controller is running on Kubernetes
+    And a call to the URL "http://localhost:18080" contains the text 
+      """
+      API V1
+      """
     When I create a new Canary "../example/kubernetes/canary/api.json"
     And I create a new version of the Kubernetes Deployment "../example/kubernetes/canary/api.yaml"
     Then a Kubernetes deployment called "api-deployment-primary" should be created
@@ -13,3 +17,11 @@ Feature: Kubernetes
     And a Consul "service-resolver" called "api" should be created
     And a Consul "service-splitter" called "api" should be created
     And a Consul "service-router" called "api" should be created
+    And a call to the URL "https://localhost:9443/v1/releases" contains the text
+      """
+      "status":"state_idle"
+      """
+    And a call to the URL "http://localhost:18080" contains the text
+      """
+      API V2
+      """

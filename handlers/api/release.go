@@ -60,8 +60,8 @@ func (d *ReleaseHandler) Post(rw http.ResponseWriter, req *http.Request) {
 }
 
 type GetResponse struct {
-	Name   string
-	Status string
+	Name   string `json:"name"`
+	Status string `json:"status"`
 }
 
 // Get handler lists current deployments
@@ -80,7 +80,7 @@ func (d *ReleaseHandler) Get(rw http.ResponseWriter, req *http.Request) {
 
 	resp := []GetResponse{}
 	for _, dep := range deps {
-		resp = append(resp, GetResponse{Name: dep.Name, Status: dep.State()})
+		resp = append(resp, GetResponse{Name: dep.Name, Status: dep.CurrentState})
 	}
 
 	json.NewEncoder(rw).Encode(resp)

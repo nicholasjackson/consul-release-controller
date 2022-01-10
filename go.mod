@@ -9,8 +9,10 @@ require (
 	github.com/go-chi/httplog v0.2.1
 	github.com/hashicorp/consul/api v1.3.0
 	github.com/hashicorp/go-hclog v1.0.0
+	github.com/kr/pretty v0.2.1
 	github.com/looplab/fsm v0.3.0
 	github.com/prometheus/client_golang v1.11.0
+	github.com/prometheus/common v0.26.0
 	github.com/sethvargo/go-retry v0.1.0
 	github.com/slok/kubewebhook/v2 v2.1.0
 	github.com/stretchr/testify v1.7.0
@@ -43,6 +45,7 @@ require (
 	github.com/hashicorp/serf v0.8.2 // indirect
 	github.com/imdario/mergo v0.3.11 // indirect
 	github.com/json-iterator/go v1.1.11 // indirect
+	github.com/kr/text v0.2.0 // indirect
 	github.com/mattn/go-colorable v0.1.7 // indirect
 	github.com/mattn/go-isatty v0.0.12 // indirect
 	github.com/matttproud/golang_protobuf_extensions v1.0.2-0.20181231171920-c182affec369 // indirect
@@ -53,7 +56,6 @@ require (
 	github.com/modern-go/reflect2 v1.0.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/prometheus/client_model v0.2.0 // indirect
-	github.com/prometheus/common v0.26.0 // indirect
 	github.com/prometheus/procfs v0.6.0 // indirect
 	github.com/rs/zerolog v1.18.1-0.20200514152719-663cbb4c8469 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect

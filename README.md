@@ -16,4 +16,27 @@ from on premise VMs to cloud based Nomad or Kubernetes).
 [ ] Cross platform deployments (e.g. ECS to Kubernetes, Virtual Machine to Nomad) 
 [ ] Enterprise feature support
 
+
+# Configuration
+
+The controller can be configured by setting the following environment variables:
+
+### TLS_CERT
+Path to the TLS certificate file for securing the main restful API.
+
+### TLS_KEY
+Path to the TLS key file for securing the main restful API.
+
+### KUBECONFIG
+Path to the kubeconfig file for connecting to the Kubernetes cluster.
+
+### CONSUL_HTTP_ADDR
+Address of the Consul cluster.
+
+### CONSUL_HTTP_TOKEN_FILE
+Path to the Consul token file containing a valid ACL token for the Consul cluster
+
+### CONSUL_CA_CERT
+Path to the CA certificate file for making requests to the Consul cluster.
+
 ## Developing

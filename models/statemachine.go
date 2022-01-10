@@ -104,7 +104,7 @@ func logEvent(l hclog.Logger) func(e *fsm.Event) {
 
 func saveRelease(r *Release, l hclog.Logger) func(e *fsm.Event) {
 	return func(e *fsm.Event) {
-		l.Debug("save release", "state", e.Src)
+		l.Debug("save release", "state", e.FSM.Current())
 
 		r.Save(e.Dst)
 	}

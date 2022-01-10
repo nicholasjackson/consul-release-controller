@@ -60,7 +60,7 @@ func TestBuildSetsUpPluginsAndState(t *testing.T) {
 	d.FromJsonBody(ioutil.NopCloser(data))
 	d.Build(mp)
 
-	require.Equal(t, StateStart, d.State())
+	require.Equal(t, StateStart, d.CurrentState)
 
 	// test with existing state
 	d = &Release{}
@@ -68,7 +68,7 @@ func TestBuildSetsUpPluginsAndState(t *testing.T) {
 	d.FromJsonBody(ioutil.NopCloser(data))
 	d.Build(mp)
 
-	require.Equal(t, StateIdle, d.State())
+	require.Equal(t, StateIdle, d.CurrentState)
 }
 
 func TestToJsonSerializesState(t *testing.T) {
@@ -102,7 +102,7 @@ func TestDeployWithErrorDoesNotMoveState(t *testing.T) {
 	d.Deploy()
 
 	require.Eventually(t, func() bool {
-		return d.StateIs(StateFail)
+		return d.CurrentState == StateFail
 	}, 100*time.Millisecond, 1*time.Millisecond)
 }
 
@@ -126,7 +126,7 @@ func TestEventDeployedWithErrorDoesNotMoveState(t *testing.T) {
 	d.state.Event(EventDeployed)
 
 	require.Eventually(t, func() bool {
-		return d.StateIs(StateFail)
+		return d.CurrentState == StateFail
 	}, 100*time.Millisecond, 1*time.Millisecond)
 }
 
@@ -150,7 +150,7 @@ func TestEventConfiguredWithScaleErrorDoesNotMoveState(t *testing.T) {
 	d.state.Event(EventConfigured)
 
 	require.Eventually(t, func() bool {
-		return d.StateIs(StateFail)
+		return d.CurrentState == StateFail
 	}, 100*time.Millisecond, 1*time.Millisecond)
 }
 

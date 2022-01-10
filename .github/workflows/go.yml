@@ -39,4 +39,4 @@ jobs:
         curl https://shipyard.run/install | bash
     - name: Run Functional Tests
       run: |
-        make functional_test 
+        make functional_tests_kubernetes

@@ -9,6 +9,7 @@ import (
 
 	"github.com/hashicorp/go-hclog"
 	"github.com/nicholasjackson/consul-canary-controller/clients"
+	"github.com/nicholasjackson/consul-canary-controller/plugins/interfaces"
 	"github.com/sethvargo/go-retry"
 )
 
@@ -19,8 +20,7 @@ type Plugin struct {
 }
 
 type PluginConfig struct {
-	Deployment string `hcl:"deployment" json:"deployment"`
-	Namespace  string `hcl:"namespace" json:"namespace"`
+	interfaces.RuntimeBaseConfig
 }
 
 func New(l hclog.Logger) (*Plugin, error) {
@@ -38,14 +38,16 @@ func (p *Plugin) Configure(data json.RawMessage) error {
 	return json.Unmarshal(data, p.config)
 }
 
-func (p *Plugin) GetConfig() interface{} {
-	return p.config
+func (p *Plugin) BaseConfig() interfaces.RuntimeBaseConfig {
+	return p.config.RuntimeBaseConfig
 }
 
 // Deploy the new test version to the platform
 func (p *Plugin) Deploy(ctx context.Context) error {
-	// if this is a first deployment we need to clone the original deployment to create a primary
-	p.log.Info("Creating kubernetes deployment", "name", p.config.Deployment, "namespace", p.config.Namespace)
+	// wait a few seconds for the deployment to converge on the server
+	time.Sleep(10 * time.Second)
+
+	p.log.Info("Setup Kubernetes deployment", "name", p.config.Deployment, "namespace", p.config.Namespace)
 
 	primaryName := fmt.Sprintf("%s-primary", p.config.Deployment)
 
@@ -56,8 +58,7 @@ func (p *Plugin) Deploy(ctx context.Context) error {
 			return ctx.Err()
 		}
 
-		p.log.Info("Cloning deployment", "name", p.config.Deployment, "namespace", p.config.Namespace)
-
+		// if this is a first deployment we need to clone the original deployment to create a primary
 		d, err := p.kubeClient.GetDeployment(p.config.Deployment, p.config.Namespace)
 		if err != nil {
 			p.log.Debug("Kubernetes deployment not found", "name", p.config.Deployment, "namespace", p.config.Namespace, "error", err)
@@ -72,6 +73,7 @@ func (p *Plugin) Deploy(ctx context.Context) error {
 		}
 
 		// create a new deployment appending primary to the deployment name
+		p.log.Debug("Cloning deployment", "name", p.config.Deployment, "namespace", p.config.Namespace)
 		nd := d.DeepCopy()
 		nd.Name = primaryName
 		nd.ResourceVersion = ""
@@ -83,7 +85,7 @@ func (p *Plugin) Deploy(ctx context.Context) error {
 			return retry.RetryableError(fmt.Errorf("unable to clone deployment: %s", err))
 		}
 
-		p.log.Info("Cloned kubernetes deployment", "name", nd.Name, "namespace", nd.Namespace)
+		p.log.Debug("Successfully cloned kubernetes deployment", "name", nd.Name, "namespace", nd.Namespace)
 
 		return nil
 	})
@@ -93,24 +95,13 @@ func (p *Plugin) Deploy(ctx context.Context) error {
 	}
 
 	// check the health of the new primary
-	err = retry.Fibonacci(ctx, 1*time.Second, func(ctx context.Context) error {
-		p.log.Info("Checking health", "name", primaryName, "namespace", p.config.Namespace)
+	err = p.checkDeploymentHealth(ctx, primaryName, p.config.Namespace)
+	if err != nil {
+		return err
+	}
 
-		d, err := p.kubeClient.GetDeployment(primaryName, p.config.Namespace)
-		if err != nil {
-			p.log.Debug("Kubernetes deployment not found", "name", primaryName, "namespace", p.config.Namespace, "error", err)
-			return retry.RetryableError(fmt.Errorf("unable to find deployment: %s", err))
-		}
-
-		if d.Status.ReadyReplicas != *d.Spec.Replicas {
-			p.log.Debug("Kubernetes deployment not healthy", "name", primaryName, "namespace", p.config.Namespace)
-			return retry.RetryableError(fmt.Errorf("deployment not healthy: %s", err))
-		}
-
-		p.log.Debug("Deployment healthy", "name", primaryName, "namespace", p.config.Namespace)
-		return nil
-	})
-
+	// check the health of the new canary
+	err = p.checkDeploymentHealth(ctx, p.config.Deployment, p.config.Namespace)
 	if err != nil {
 		return err
 	}
@@ -122,16 +113,10 @@ func (p *Plugin) Deploy(ctx context.Context) error {
 func (p *Plugin) Promote(ctx context.Context) error {
 	p.log.Info("Promote deployment", "name", p.config.Deployment, "namespace", p.config.Namespace)
 
-	// delete the primary and create a new primary
+	// delete the primary and create a new primary from the canary
 	primaryName := fmt.Sprintf("%s-primary", p.config.Deployment)
 
-	p.log.Debug("Delete old primary deployment", "name", primaryName, "namespace", p.config.Namespace)
-	err := p.kubeClient.DeleteDeployment(primaryName, p.config.Namespace)
-	if err != nil {
-		return err
-	}
-
-	// scale the canary to 0
+	// get the canary
 	d, err := p.kubeClient.GetDeployment(p.config.Deployment, p.config.Namespace)
 	if err != nil {
 		p.log.Error("Unable to get canary", "name", p.config.Deployment, "namespace", p.config.Namespace)
@@ -139,13 +124,73 @@ func (p *Plugin) Promote(ctx context.Context) error {
 		return err
 	}
 
-	// create the new deployment from the canary
-	err = p.Deploy(ctx)
+	// delete the old primary deployment
+	p.log.Debug("Delete existing primary deployment", "name", primaryName, "namespace", p.config.Namespace)
+	err = p.kubeClient.DeleteDeployment(primaryName, p.config.Namespace)
 	if err != nil {
-		p.log.Error("Unable to clone Kubernetes deployment", "name", p.config.Deployment, "namespace", p.config.Namespace, "error", err)
+		p.log.Error("Unable to remove Kubernetes deployment", "name", primaryName, "namespace", p.config.Namespace, "error", err)
+		return fmt.Errorf("unable to remove previous primary deployment: %s", err)
+	}
+
+	err = retry.Fibonacci(ctx, 1*time.Second, func(ctx context.Context) error {
+		p.log.Debug("Checking deployment has been deleted", "name", primaryName, "namespace", p.config.Namespace)
+
+		if ctx.Err() != nil {
+			return ctx.Err()
+		}
+
+		pd, err := p.kubeClient.GetDeployment(primaryName, p.config.Namespace)
+		if err == nil {
+			p.log.Debug("deployment still exists", "name", primaryName, "namespace", p.config.Namespace, "dep", pd)
+
+			return retry.RetryableError(fmt.Errorf("deployment still exists"))
+		}
+
+		return nil
+	})
+
+	if err != nil {
+		p.log.Error("Unable to remove Kubernetes deployment", "name", primaryName, "namespace", p.config.Namespace, "error", err)
+		return fmt.Errorf("unable to remove previous primary deployment: %s", err)
+	}
+
+	// create a new primary deployment from the canary
+	p.log.Debug("Creating primary deployment from", "name", p.config.Deployment, "namespace", p.config.Namespace)
+	nd := d.DeepCopy()
+	nd.Name = primaryName
+	nd.ResourceVersion = ""
+
+	// save the new deployment
+	err = p.kubeClient.UpsertDeployment(nd)
+	if err != nil {
+		p.log.Error("Unable to upsert Kubernetes deployment", "name", primaryName, "namespace", p.config.Namespace, "error", err)
+		return fmt.Errorf("unable to clone deployment: %s", err)
+	}
+
+	p.log.Debug("Successfully cloned kubernetes deployment", "name", primaryName, "namespace", nd.Namespace)
+
+	err = p.checkDeploymentHealth(ctx, primaryName, d.Namespace)
+	if err != nil {
+		p.log.Error("Kubernetes deployment not healthy", "name", primaryName, "namespace", p.config.Namespace, "error", err)
+		return fmt.Errorf("deployment not healthy: %s", err)
+	}
+
+	p.log.Info("Kubernetes promote complete", "name", p.config.Deployment, "namespace", p.config.Namespace)
+	return nil
+}
+
+func (p *Plugin) Cleanup(ctx context.Context) error {
+	p.log.Info("Cleanup old deployment", "name", p.config.Deployment, "namespace", p.config.Namespace)
+
+	// get the canary
+	d, err := p.kubeClient.GetDeployment(p.config.Deployment, p.config.Namespace)
+	if err != nil {
+		p.log.Error("Unable to get canary", "name", p.config.Deployment, "namespace", p.config.Namespace)
+
 		return err
 	}
 
+	// scale the canary to 0
 	zero := int32(0)
 	d.Spec.Replicas = &zero
 
@@ -162,4 +207,25 @@ func (p *Plugin) Promote(ctx context.Context) error {
 func (p *Plugin) Destroy(ctx context.Context) error {
 
 	return nil
+}
+
+func (p *Plugin) checkDeploymentHealth(ctx context.Context, name, namespace string) error {
+	return retry.Fibonacci(ctx, 1*time.Second, func(ctx context.Context) error {
+		p.log.Info("Checking health", "name", name, "namespace", namespace)
+
+		d, err := p.kubeClient.GetDeployment(name, namespace)
+		if err != nil {
+			p.log.Debug("Kubernetes deployment not found", "name", name, "namespace", namespace, "error", err)
+			return retry.RetryableError(fmt.Errorf("unable to find deployment: %s", err))
+		}
+
+		p.log.Debug("Deployment health", "name", name, "namespace", namespace, "Status", d.Status)
+		if d.Status.UnavailableReplicas > 0 || d.Status.AvailableReplicas < 1 {
+			p.log.Debug("Kubernetes deployment not healthy", "name", name, "namespace", namespace)
+			return retry.RetryableError(fmt.Errorf("deployment not healthy: %s", err))
+		}
+
+		p.log.Debug("Deployment healthy", "name", name, "namespace", namespace)
+		return nil
+	})
 }

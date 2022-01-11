@@ -10,8 +10,8 @@ import (
 type Monitor interface {
 
 	// Configure the plugin with the given json
-	Configure(config json.RawMessage) error
+	Configure(name, namespace, runtime string, config json.RawMessage) error
 
 	// Check the defined metrics to see that they are in tolerance
-	Check(ctx context.Context, name, namespace string, interval time.Duration) error
+	Check(ctx context.Context, interval time.Duration) error
 }

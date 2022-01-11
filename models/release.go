@@ -81,7 +81,8 @@ func (d *Release) Build(pluginProvider interfaces.Provider) error {
 	}
 
 	// configure the monitor plugin
-	monP.Configure(d.Monitor.Config)
+	rc := runP.BaseConfig()
+	monP.Configure(rc.Deployment, rc.Namespace, d.Runtime.Name, d.Monitor.Config)
 	d.monitorPlugin = monP
 
 	// configure the monitor plugin

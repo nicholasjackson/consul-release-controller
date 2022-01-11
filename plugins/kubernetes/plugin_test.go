@@ -16,7 +16,7 @@ import (
 var one = int32(1)
 var dep = &appsv1.Deployment{
 	ObjectMeta: v1.ObjectMeta{
-		Name:      "test",
+		Name:      "test-deployment",
 		Namespace: "testnamespace",
 	},
 	Status: appsv1.DeploymentStatus{ReadyReplicas: 1},
@@ -25,7 +25,7 @@ var dep = &appsv1.Deployment{
 
 var cloneDep = &appsv1.Deployment{
 	ObjectMeta: v1.ObjectMeta{
-		Name:      "test-primary",
+		Name:      "test-deployment-primary",
 		Namespace: "testnamespace",
 	},
 	Status: appsv1.DeploymentStatus{ReadyReplicas: 1},
@@ -36,9 +36,9 @@ func setupPlugin(t *testing.T) (*Plugin, *clients.KubernetesMock) {
 	l := hclog.Default()
 
 	km := &clients.KubernetesMock{}
-	km.On("GetDeployment", "test", mock.Anything).Return(dep, nil)
-	km.On("GetDeployment", "test-primary", mock.Anything).Once().Return(nil, nil)
-	km.On("GetDeployment", "test-primary", mock.Anything).Once().Return(cloneDep, nil)
+	km.On("GetDeployment", "test-deployment", mock.Anything).Return(dep, nil)
+	km.On("GetDeployment", "test-deployment-primary", mock.Anything).Once().Return(nil, nil)
+	km.On("GetDeployment", "test-deployment-primary", mock.Anything).Once().Return(cloneDep, nil)
 	km.On("UpsertDeployment", mock.Anything).Return(nil)
 	km.On("DeleteDeployment", mock.Anything, mock.Anything).Return(nil)
 
@@ -46,7 +46,9 @@ func setupPlugin(t *testing.T) (*Plugin, *clients.KubernetesMock) {
 
 	p.log = l
 	p.kubeClient = km
-	p.config = &PluginConfig{Deployment: "test", Namespace: "testnamespace"}
+	p.config = &PluginConfig{}
+	p.config.Deployment = "test-deployment"
+	p.config.Namespace = "testnamespace"
 
 	return p, km
 }
@@ -56,11 +58,11 @@ func TestDeployCreatesCloneWhenOriginalFound(t *testing.T) {
 
 	p.Deploy(context.Background())
 
-	km.AssertCalled(t, "GetDeployment", "test", "testnamespace")
+	km.AssertCalled(t, "GetDeployment", "test-deployment", "testnamespace")
 	km.AssertCalled(t, "UpsertDeployment", mock.Anything)
 
 	dep := km.Calls[2].Arguments[0].(*appsv1.Deployment)
-	require.Equal(t, "test-primary", dep.Name)
+	require.Equal(t, "test-deployment-primary", dep.Name)
 	require.Equal(t, "testnamespace", dep.Namespace)
 }
 
@@ -68,13 +70,13 @@ func TestDeployDoesNotCreatesCloneWhenPrimaryExists(t *testing.T) {
 	p, km := setupPlugin(t)
 
 	testutils.ClearMockCall(&km.Mock, "GetDeployment")
-	km.On("GetDeployment", "test", mock.Anything).Return(dep, nil)
-	km.On("GetDeployment", "test-primary", mock.Anything).Once().Return(cloneDep, nil)
-	km.On("GetDeployment", "test-primary", mock.Anything).Once().Return(cloneDep, nil)
+	km.On("GetDeployment", "test-deployment", mock.Anything).Return(dep, nil)
+	km.On("GetDeployment", "test-deployment-primary", mock.Anything).Once().Return(cloneDep, nil)
+	km.On("GetDeployment", "test-deployment-primary", mock.Anything).Once().Return(cloneDep, nil)
 
 	p.Deploy(context.Background())
 
-	km.AssertCalled(t, "GetDeployment", "test", "testnamespace")
+	km.AssertCalled(t, "GetDeployment", "test-deployment", "testnamespace")
 	km.AssertNotCalled(t, "UpsertDeployment", mock.Anything)
 }
 

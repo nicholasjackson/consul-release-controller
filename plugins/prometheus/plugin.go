@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"reflect"
 	"text/template"
 	"time"
 
@@ -15,9 +16,12 @@ import (
 )
 
 type Plugin struct {
-	log    hclog.Logger
-	config *PluginConfig
-	client clients.Prometheus
+	log       hclog.Logger
+	config    *PluginConfig
+	client    clients.Prometheus
+	runtime   string
+	name      string
+	namespace string
 }
 
 type PluginConfig struct {
@@ -46,7 +50,10 @@ func New(l hclog.Logger) (*Plugin, error) {
 	return &Plugin{log: l, client: c}, nil
 }
 
-func (s *Plugin) Configure(data json.RawMessage) error {
+func (s *Plugin) Configure(name, namespace, runtime string, data json.RawMessage) error {
+	s.runtime = runtime
+	s.name = name
+	s.namespace = namespace
 	s.config = &PluginConfig{}
 
 	err := json.Unmarshal(data, s.config)
@@ -59,12 +66,12 @@ func (s *Plugin) Configure(data json.RawMessage) error {
 
 // Check executes queries to the Prometheus server and returns an error if any of the queries
 // are not within the defined min and max thresholds
-func (s *Plugin) Check(ctx context.Context, name, namespace string, interval time.Duration) error {
+func (s *Plugin) Check(ctx context.Context, interval time.Duration) error {
 	querySQL := []string{}
 
 	// first check that the given queries have valid presets
 	for _, q := range s.config.Queries {
-		switch q.Preset {
+		switch fmt.Sprintf("%s-%s", s.runtime, q.Preset) {
 		case "kubernetes-envoy-request-success":
 			querySQL = append(querySQL, KubernetesEnvoyRequestSuccess)
 		case "kubernetes-envoy-request-duration":
@@ -89,8 +96,8 @@ func (s *Plugin) Check(ctx context.Context, name, namespace string, interval tim
 			Namespace string
 			Interval  string
 		}{
-			name,
-			namespace,
+			s.name,
+			s.namespace,
 			interval.String(),
 		}
 
@@ -109,23 +116,33 @@ func (s *Plugin) Check(ctx context.Context, name, namespace string, interval tim
 			return err
 		}
 
-		s.log.Debug("query value returned", "name", query.Name, "preset", query.Preset, "value", val, "warnings", warn)
+		s.log.Debug("query value returned", "name", query.Name, "preset", query.Preset, "value", val, "value_type", reflect.TypeOf(val), "warnings", warn)
 
-		if v, ok := val.(*model.Scalar); ok {
+		if v, ok := val.(model.Vector); ok {
 			checkFail := false
-			if query.Min != nil && int(v.Value) < *query.Min {
-				s.log.Debug("query value less than min", "name", query.Name, "preset", query.Preset, "value", v.Value)
+
+			if len(v) == 0 {
+				return fmt.Errorf("check failed for query %s using preset %s, null value returned by query: %v", query.Name, query.Preset, val)
+			}
+
+			value := int(v[0].Value)
+
+			if query.Min != nil && value < *query.Min {
+				s.log.Debug("query value less than min", "name", query.Name, "preset", query.Preset, "value", value)
 				checkFail = true
 			}
 
-			if query.Max != nil && int(v.Value) > *query.Max {
-				s.log.Debug("query value greater than max", "name", query.Name, "preset", query.Preset, "value", v.Value)
+			if query.Max != nil && int(v[0].Value) > *query.Max {
+				s.log.Debug("query value greater than max", "name", query.Name, "preset", query.Preset, "value", value)
 				checkFail = true
 			}
 
 			if checkFail {
-				return fmt.Errorf("check failed for query %s using preset %s, got value %d", query.Name, query.Preset, int(v.Value))
+				return fmt.Errorf("check failed for query %s using preset %s, got value %d", query.Name, query.Preset, value)
 			}
+		} else {
+			s.log.Error("invalid value returned from query", "name", query.Name, "preset", query.Preset, "value", val)
+			return fmt.Errorf("check failed for query %s using preset %s, got value %v", query.Name, query.Preset, val)
 		}
 	}
 

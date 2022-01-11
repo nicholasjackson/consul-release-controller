@@ -40,3 +40,8 @@ jobs:
     - name: Run Functional Tests
       run: |
         make functional_tests_kubernetes
+  
+  release:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2

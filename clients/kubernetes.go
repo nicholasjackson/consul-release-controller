@@ -64,5 +64,6 @@ func (k *KubernetesImpl) UpsertDeployment(dep *appsv1.Deployment) error {
 }
 
 func (k *KubernetesImpl) DeleteDeployment(name, namespace string) error {
-	return k.clientset.AppsV1().Deployments(namespace).Delete(context.Background(), name, v1.DeleteOptions{})
+	thirty := int64(30)
+	return k.clientset.AppsV1().Deployments(namespace).Delete(context.Background(), name, v1.DeleteOptions{GracePeriodSeconds: &thirty})
 }

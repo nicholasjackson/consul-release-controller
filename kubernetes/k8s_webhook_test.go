@@ -13,7 +13,7 @@ import (
 	"github.com/hashicorp/go-hclog"
 	"github.com/nicholasjackson/consul-canary-controller/metrics"
 	"github.com/nicholasjackson/consul-canary-controller/models"
-	"github.com/nicholasjackson/consul-canary-controller/plugins/kubernetes"
+	"github.com/nicholasjackson/consul-canary-controller/plugins/interfaces"
 	"github.com/nicholasjackson/consul-canary-controller/plugins/mocks"
 	"github.com/nicholasjackson/consul-canary-controller/state"
 	"github.com/nicholasjackson/consul-canary-controller/testutils"
@@ -38,13 +38,20 @@ func setupReleases(t *testing.T, pm *mocks.Mocks, s *state.MockStore, name strin
 	dep := &models.Release{}
 	dep.FromJsonBody(ioutil.NopCloser(bytes.NewBuffer(depData)))
 
-	pm.RuntimeMock.On("GetConfig").Return(&kubernetes.PluginConfig{Deployment: name, Namespace: "default"})
+	testutils.ClearMockCall(&pm.RuntimeMock.Mock, "BaseConfig")
+
+	pc := interfaces.RuntimeBaseConfig{}
+	pc.Deployment = name
+	pc.Namespace = "default"
+
+	pm.RuntimeMock.On("BaseConfig").Return(pc)
+
 	s.On("ListReleases", mock.Anything).Return([]*models.Release{dep}, nil)
 
 	return dep
 }
 
-func TestAddsAnnotationWhenDeploymentFound(t *testing.T) {
+func TestAddsAnnotationToDeploymentWhenReleaseFound(t *testing.T) {
 	h, s, pm := setupWebhook(t)
 	setupReleases(t, pm, s, "api-deployment")
 
@@ -64,7 +71,7 @@ func TestAddsAnnotationWhenDeploymentFound(t *testing.T) {
 	require.Contains(t, string(patch), "consul-releaser")
 }
 
-func TestCallsDeployWhenDeploymentFound(t *testing.T) {
+func TestCallsRuntimeDeployWhenReleaseFound(t *testing.T) {
 	h, s, pm := setupWebhook(t)
 	setupReleases(t, pm, s, "api-deployment")
 
@@ -86,7 +93,7 @@ func TestCallsDeployWhenDeploymentFound(t *testing.T) {
 	}, 100*time.Millisecond, 1*time.Millisecond)
 }
 
-func TestDoesNothingWhenNoDeploymentFound(t *testing.T) {
+func TestDoesNothingWhenNoReleaseFound(t *testing.T) {
 	h, s, pm := setupWebhook(t)
 	setupReleases(t, pm, s, "not-found")
 

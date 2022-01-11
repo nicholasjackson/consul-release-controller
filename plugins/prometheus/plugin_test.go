@@ -21,7 +21,7 @@ func setupPlugin(t *testing.T, config string) (*Plugin, *clients.PrometheusMock)
 	pm := &clients.PrometheusMock{}
 	pm.On("Query", mock.Anything, mock.Anything, mock.Anything, mock.Anything).Return(&model.Scalar{Value: 100, Timestamp: model.Time(time.Now().Unix())}, v1.Warnings{}, nil)
 
-	err := p.Configure([]byte(config))
+	err := p.Configure("api-deployment", "default", "kubernetes", []byte(config))
 	require.NoError(t, err)
 
 	p.client = pm
@@ -32,7 +32,7 @@ func setupPlugin(t *testing.T, config string) (*Plugin, *clients.PrometheusMock)
 func TestPluginReturnsErrorWhenPresetNotFound(t *testing.T) {
 	p, pm := setupPlugin(t, twoDefaultQueriesInvalidPreset)
 
-	err := p.Check(context.Background(), "api", "default", 30*time.Second)
+	err := p.Check(context.Background(), 30*time.Second)
 	require.Error(t, err)
 
 	pm.AssertNotCalled(t, "Query")
@@ -44,7 +44,7 @@ func TestPluginReturnsErrorWhenQueryValueLessThanMin(t *testing.T) {
 	testutils.ClearMockCall(&pm.Mock, "Query")
 	pm.On("Query", mock.Anything, mock.Anything, mock.Anything, mock.Anything).Return(&model.Scalar{Value: 1, Timestamp: model.Time(time.Now().Unix())}, v1.Warnings{}, nil)
 
-	err := p.Check(context.Background(), "api", "default", 30*time.Second)
+	err := p.Check(context.Background(), 30*time.Second)
 	require.Error(t, err)
 
 	pm.AssertNumberOfCalls(t, "Query", 1)
@@ -56,7 +56,7 @@ func TestPluginReturnsErrorWhenQueryValueGreaterThanMax(t *testing.T) {
 	testutils.ClearMockCall(&pm.Mock, "Query")
 	pm.On("Query", mock.Anything, mock.Anything, mock.Anything, mock.Anything).Return(&model.Scalar{Value: 201, Timestamp: model.Time(time.Now().Unix())}, v1.Warnings{}, nil)
 
-	err := p.Check(context.Background(), "api", "default", 30*time.Second)
+	err := p.Check(context.Background(), 30*time.Second)
 	require.Error(t, err)
 
 	pm.AssertNumberOfCalls(t, "Query", 2)
@@ -65,7 +65,7 @@ func TestPluginReturnsErrorWhenQueryValueGreaterThanMax(t *testing.T) {
 func TestPluginExecutesQueriesAndChecksValue(t *testing.T) {
 	p, pm := setupPlugin(t, twoDefaultQueries)
 
-	err := p.Check(context.Background(), "api", "default", 30*time.Second)
+	err := p.Check(context.Background(), 30*time.Second)
 	require.NoError(t, err)
 
 	pm.AssertNumberOfCalls(t, "Query", 2)
@@ -89,12 +89,12 @@ const twoDefaultQueries = `
 	"queries": [
 	  {
 	    "name": "request-success",
-	    "preset": "kubernetes-envoy-request-success",
+	    "preset": "envoy-request-success",
 	    "min":99
 	  },
 	  {
 	    "name": "request-duration",
-	    "preset": "kubernetes-envoy-request-duration",
+	    "preset": "envoy-request-duration",
 	    "min":20,
 	    "max": 200
 	  }
@@ -108,7 +108,7 @@ const twoDefaultQueriesInvalidPreset = `
 	"queries": [
 	  {
 	    "name": "request-success",
-	    "preset": "kubernetes-envoy-request-success",
+	    "preset": "envoy-request-success",
 	    "min":99
 	  },
 	  {

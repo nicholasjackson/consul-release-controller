@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 
+	"github.com/nicholasjackson/consul-canary-controller/plugins/interfaces"
 	"github.com/stretchr/testify/mock"
 )
 
@@ -17,10 +18,10 @@ func (r *RuntimeMock) Configure(c json.RawMessage) error {
 	return args.Error(0)
 }
 
-func (r *RuntimeMock) GetConfig() interface{} {
+func (r *RuntimeMock) BaseConfig() interfaces.RuntimeBaseConfig {
 	args := r.Called()
 
-	return args.Get(0)
+	return args.Get(0).(interfaces.RuntimeBaseConfig)
 }
 
 func (r *RuntimeMock) Deploy(ctx context.Context) error {

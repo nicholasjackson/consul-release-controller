@@ -25,12 +25,13 @@ func BuildMocks(t *testing.T) (*ProviderMock, *Mocks) {
 
 	runMock := &RuntimeMock{}
 	runMock.On("Configure", mock.Anything).Return(nil)
+	runMock.On("BaseConfig").Return(interfaces.RuntimeBaseConfig{Deployment: "api-deployment", Namespace: "default"})
 	runMock.On("Deploy", mock.Anything).Return(nil)
 	runMock.On("Promote", mock.Anything).Return(nil)
 
 	monMock := &MonitorMock{}
-	monMock.On("Configure", mock.Anything).Return(nil)
-	monMock.On("Check", mock.Anything, mock.Anything, mock.Anything, mock.Anything).Return(nil)
+	monMock.On("Configure", mock.Anything, mock.Anything, mock.Anything, mock.Anything).Return(nil)
+	monMock.On("Check", mock.Anything, mock.Anything).Return(nil)
 
 	stratMock := &StrategyMock{}
 	stratMock.On("Configure", mock.Anything, mock.Anything, mock.Anything).Return(nil)

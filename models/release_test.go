@@ -33,7 +33,7 @@ func setupDeployment(t *testing.T) (*Release, *mocks.Mocks) {
 	pm.RuntimeMock.AssertCalled(t, "Configure", d.Runtime.Config)
 
 	mp.AssertCalled(t, "CreateMonitor", d.Monitor.Name)
-	pm.MonitorMock.AssertCalled(t, "Configure", d.Monitor.Config)
+	pm.MonitorMock.AssertCalled(t, "Configure", "api-deployment", "default", d.Runtime.Name, d.Monitor.Config)
 
 	mp.AssertCalled(t, "CreateStrategy", d.Strategy.Name)
 	pm.StrategyMock.AssertCalled(t, "Configure", d.Name, d.Namespace, d.Strategy.Config)
@@ -134,10 +134,10 @@ func TestEventConfiguredWithNoErrorSetsInitialTrafficAndMovesState(t *testing.T)
 	d, pm := setupDeployment(t)
 
 	d.state.SetState(StateConfigure)
-	d.state.Event(EventConfigured, -1)
+	d.state.Event(EventConfigured)
 
-	require.Eventually(t, func() bool { return historyContains(d, StateScale) }, 100*time.Millisecond, 1*time.Millisecond)
-	pm.ReleaserMock.AssertCalled(t, "Scale", mock.Anything, -1)
+	require.Eventually(t, func() bool { return historyContains(d, StateMonitor) }, 100*time.Millisecond, 1*time.Millisecond)
+	pm.StrategyMock.AssertCalled(t, "Execute", mock.Anything)
 }
 
 func TestEventConfiguredWithScaleErrorDoesNotMoveState(t *testing.T) {

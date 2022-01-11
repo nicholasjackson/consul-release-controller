@@ -52,11 +52,11 @@ func newFSM(r *Release, pRel plugins.Releaser, pRun plugins.Runtime, pStrat plug
 	return fsm.NewFSM(
 		StateStart,
 		fsm.Events{
-			{Name: EventDeploy, Src: []string{StateStart}, Dst: StateDeploy},
+			{Name: EventDeploy, Src: []string{StateStart, StateIdle}, Dst: StateDeploy},
 			{Name: EventDeployed, Src: []string{StateDeploy}, Dst: StateConfigure},
-			{Name: EventConfigured, Src: []string{StateConfigure}, Dst: StateScale},
+			{Name: EventConfigured, Src: []string{StateConfigure}, Dst: StateMonitor},
 			{Name: EventScaled, Src: []string{StateScale}, Dst: StateMonitor},
-			{Name: EventHealthy, Src: []string{StateConfigure, StateMonitor}, Dst: StateScale},
+			{Name: EventHealthy, Src: []string{StateMonitor}, Dst: StateScale},
 			{Name: EventComplete, Src: []string{StateMonitor}, Dst: StatePromote},
 			{Name: EventPromoted, Src: []string{StatePromote}, Dst: StateIdle},
 			{Name: EventUnhealthy, Src: []string{StateMonitor}, Dst: StateRollback},
@@ -82,13 +82,13 @@ func newFSM(r *Release, pRel plugins.Releaser, pRun plugins.Runtime, pStrat plug
 		},
 		fsm.Callbacks{
 			"before_event":            logEvent(l),
-			"enter_" + StateDeploy:    doDeploy(pRun, r, l),          // new version of the application has been deployed
-			"enter_" + StateConfigure: doConfigure(pRel.Setup, r, l), // do the necessary work to setup the release
-			"enter_" + StateMonitor:   doMonitor(pStrat, r, l),       // start monitoring changes in the applications health
-			"enter_" + StateScale:     doScale(pRel, r, l),           // scale the release
-			"enter_" + StatePromote:   doPromote(pRun, pRel, r, l),   // promote the release to primary
-			"enter_" + StateRollback:  saveRelease(r, l),             // rollback the deployment
-			"enter_" + StateIdle:      saveRelease(r, l),             // everything is setup, wait for a deployment
+			"enter_" + StateDeploy:    doDeploy(pRun, r, l),        // new version of the application has been deployed
+			"enter_" + StateConfigure: doConfigure(pRel, r, l),     // do the necessary work to setup the release
+			"enter_" + StateMonitor:   doMonitor(pStrat, r, l),     // start monitoring changes in the applications health
+			"enter_" + StateScale:     doScale(pRel, r, l),         // scale the release
+			"enter_" + StatePromote:   doPromote(pRun, pRel, r, l), // promote the release to primary
+			"enter_" + StateRollback:  saveRelease(r, l),           // rollback the deployment
+			"enter_" + StateIdle:      saveRelease(r, l),           // everything is setup, wait for a deployment
 			"enter_" + StateFail:      saveRelease(r, l),
 		},
 	)
@@ -136,7 +136,7 @@ func doDeploy(pRun plugins.Runtime, r *Release, l hclog.Logger) func(e *fsm.Even
 	}
 }
 
-func doConfigure(f func(ctx context.Context) error, r *Release, l hclog.Logger) func(e *fsm.Event) {
+func doConfigure(pRel plugins.Releaser, r *Release, l hclog.Logger) func(e *fsm.Event) {
 	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
 
 	return func(e *fsm.Event) {
@@ -149,7 +149,7 @@ func doConfigure(f func(ctx context.Context) error, r *Release, l hclog.Logger) 
 			r.Save(e.FSM.Current())
 
 			// execute the work function
-			err := f(ctx)
+			err := pRel.Setup(ctx)
 
 			// work has failed, raise the failed event
 			if err != nil {
@@ -157,8 +157,7 @@ func doConfigure(f func(ctx context.Context) error, r *Release, l hclog.Logger) 
 				return
 			}
 
-			// call the EventConfigured setting the traffic to -1 so that initial traffic is set
-			e.FSM.Event(EventConfigured, -1)
+			e.FSM.Event(EventConfigured)
 		}()
 	}
 }
@@ -248,14 +247,35 @@ func doPromote(run plugins.Runtime, rel plugins.Releaser, r *Release, l hclog.Lo
 			// save the state
 			r.Save(e.FSM.Current())
 
-			err := run.Promote(ctx)
+			// scale all traffic to the canary before promoting
+			err := rel.Scale(ctx, 100)
 			if err != nil {
 				e.FSM.Event(EventFail)
 				return
 			}
 
+			time.Sleep(30 * time.Second)
+
+			// promote the canary to primary
+			err = run.Promote(ctx)
+			if err != nil {
+				e.FSM.Event(EventFail)
+				return
+			}
+
+			time.Sleep(30 * time.Second)
+
 			// scale all traffic to the primary
 			err = rel.Scale(ctx, 0)
+			if err != nil {
+				e.FSM.Event(EventFail)
+				return
+			}
+
+			time.Sleep(30 * time.Second)
+
+			// scale down the canary
+			err = run.Cleanup(ctx)
 			if err != nil {
 				e.FSM.Event(EventFail)
 				return

@@ -8,7 +8,7 @@ metadata:
   labels:
     app: api_v1
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: api

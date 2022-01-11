@@ -20,10 +20,27 @@ func setupPlugin(t *testing.T, config string) (*Plugin, *mocks.MonitorMock) {
 
 	p, _ := New(log, m.MonitorMock)
 
+	// set the traffic to initial traffic, this is the state after the first run
+	p.currentTraffic = 10
+
 	err := p.Configure("test", "testnamespace", []byte(config))
 	require.NoError(t, err)
 
 	return p, m.MonitorMock
+}
+
+func TestSetsIntitialTraficAndReturnsFirstRun(t *testing.T) {
+	p, mm := setupPlugin(t, canaryStrategy)
+	// reset the traffic to the initial state
+	p.currentTraffic = -1
+
+	status, traffic, err := p.Execute(context.Background())
+	require.NoError(t, err)
+
+	require.Equal(t, interfaces.StrategyStatusSuccess, string(status))
+	require.Equal(t, 10, traffic)
+
+	mm.AssertNotCalled(t, "Check", mock.Anything)
 }
 
 func TestCallsMonitorCheckAndReturnsWhenNoError(t *testing.T) {
@@ -33,20 +50,10 @@ func TestCallsMonitorCheckAndReturnsWhenNoError(t *testing.T) {
 	_, _, err := p.Execute(context.Background())
 	require.NoError(t, err)
 
-	mm.AssertCalled(t, "Check", mock.Anything, mock.Anything, mock.Anything, mock.Anything)
+	mm.AssertCalled(t, "Check", mock.Anything, 30*time.Millisecond)
 
 	et := time.Since(st)
 	require.Greater(t, et, 30*time.Millisecond, "Execute should sleep for interval before check")
-}
-
-func TestExecuteReturnsInitialTrafficFirstRun(t *testing.T) {
-	p, _ := setupPlugin(t, canaryStrategy)
-
-	state, traffic, err := p.Execute(context.Background())
-	require.NoError(t, err)
-
-	require.Equal(t, interfaces.StrategyStatusSuccess, string(state))
-	require.Equal(t, 10, traffic)
 }
 
 func TestExecuteReturnsIncrementsTrafficSubsequentRuns(t *testing.T) {

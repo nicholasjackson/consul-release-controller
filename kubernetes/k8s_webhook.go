@@ -9,7 +9,6 @@ import (
 	appmetrics "github.com/nicholasjackson/consul-canary-controller/metrics"
 	"github.com/nicholasjackson/consul-canary-controller/plugins"
 	"github.com/nicholasjackson/consul-canary-controller/plugins/interfaces"
-	pluginKubernetes "github.com/nicholasjackson/consul-canary-controller/plugins/kubernetes"
 	"github.com/nicholasjackson/consul-canary-controller/state"
 	kwhhttp "github.com/slok/kubewebhook/v2/pkg/http"
 	kwhlog "github.com/slok/kubewebhook/v2/pkg/log"
@@ -57,7 +56,7 @@ func (k *K8sWebhook) Mutating() func(w http.ResponseWriter, r *http.Request) {
 			}
 
 			rp := r.RuntimePlugin()
-			conf := rp.GetConfig().(*pluginKubernetes.PluginConfig)
+			conf := rp.BaseConfig()
 
 			if conf.Deployment == deployment.Name && conf.Namespace == deployment.ObjectMeta.Namespace {
 				// Mutate our object with the required annotations.

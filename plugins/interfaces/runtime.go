@@ -5,22 +5,30 @@ import (
 	"encoding/json"
 )
 
+// RuntimeBaseConfig is the base configuration that all runtime plugins must implement
+type RuntimeBaseConfig struct {
+	Deployment string `hcl:"deployment" json:"deployment"`
+	Namespace  string `hcl:"namespace" json:"namespace"`
+}
+
 // Runtime defines an interface that all concrete platforms like Kubernetes must
 // implement
 type Runtime interface {
 	// Configure the plugin with the given json
 	Configure(config json.RawMessage) error
 
-	// GetConfig returns the plugin config
-	// this is returned as an interface as every Runtime plugin can
-	// have different config
-	GetConfig() interface{}
+	// BaseConfig returns the base Runtime config
+	// all Runtime plugins should embed RuntimeBaseConfig in their own config
+	BaseConfig() RuntimeBaseConfig
 
 	// Deploy the new test version to the platform
 	Deploy(ctx context.Context) error
 
 	// Promote the new test version to primary
 	Promote(ctx context.Context) error
+
+	// Cleanup the test version saving resources
+	Cleanup(ctx context.Context) error
 
 	// Destroy removes any configuration that was created with the Deploy method
 	Destroy(ctx context.Context) error

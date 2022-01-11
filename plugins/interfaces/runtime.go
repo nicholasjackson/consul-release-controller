@@ -5,6 +5,13 @@ import (
 	"encoding/json"
 )
 
+type RuntimeDeploymentStatus string
+
+const (
+	RuntimeDeploymentUpdate   RuntimeDeploymentStatus = "runtime_deployment_update"
+	RuntimeDeploymentNotFound RuntimeDeploymentStatus = "runtime_deployment_not_found"
+)
+
 // RuntimeBaseConfig is the base configuration that all runtime plugins must implement
 type RuntimeBaseConfig struct {
 	Deployment string `hcl:"deployment" json:"deployment"`
@@ -22,7 +29,7 @@ type Runtime interface {
 	BaseConfig() RuntimeBaseConfig
 
 	// Deploy the new test version to the platform
-	Deploy(ctx context.Context) error
+	Deploy(ctx context.Context, status RuntimeDeploymentStatus) error
 
 	// Promote the new test version to primary
 	Promote(ctx context.Context) error

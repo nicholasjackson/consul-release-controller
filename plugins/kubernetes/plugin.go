@@ -42,11 +42,27 @@ func (p *Plugin) BaseConfig() interfaces.RuntimeBaseConfig {
 	return p.config.RuntimeBaseConfig
 }
 
-// Deploy the new test version to the platform
-func (p *Plugin) Deploy(ctx context.Context) error {
-	// wait a few seconds for the deployment to converge on the server
-	time.Sleep(10 * time.Second)
+// If primary deployment does not exist and the canary does (first run existing app)
+//		copy the existing deployment and create a primary
+//		wait until healthy
+//		scale the traffic to the primary
+//		monitor
+// EventDeployed
 
+// If primary deployment does not exist and the canary does not (first run no app)
+//		copy the new deployment and create a primary
+//		wait until healthy
+//		scale the traffic to the primary
+//		promote
+// EventComplete
+
+// If primary deployment exists (subsequent run existing app)
+//		scale the traffic to the primary
+//		monitor
+// EventDeployed
+
+// Deploy the new test version to the platform
+func (p *Plugin) Deploy(ctx context.Context, status interfaces.RuntimeDeploymentStatus) error {
 	p.log.Info("Setup Kubernetes deployment", "name", p.config.Deployment, "namespace", p.config.Namespace)
 
 	primaryName := fmt.Sprintf("%s-primary", p.config.Deployment)
@@ -58,27 +74,27 @@ func (p *Plugin) Deploy(ctx context.Context) error {
 			return ctx.Err()
 		}
 
-		// if this is a first deployment we need to clone the original deployment to create a primary
+		// grab a reference to the new deployment
 		d, err := p.kubeClient.GetDeployment(p.config.Deployment, p.config.Namespace)
 		if err != nil {
 			p.log.Debug("Kubernetes deployment not found", "name", p.config.Deployment, "namespace", p.config.Namespace, "error", err)
 			return retry.RetryableError(fmt.Errorf("unable to find deployment: %s", err))
 		}
 
-		// have we already created the primary, if so return
+		// have we already created the primary? if so return
 		pd, err := p.kubeClient.GetDeployment(primaryName, p.config.Namespace)
 		if err == nil && pd != nil {
 			p.log.Debug("Kubernetes primary deployment already exists", "name", primaryName, "namespace", p.config.Namespace)
 			return nil
 		}
 
-		// create a new deployment appending primary to the deployment name
+		// create a new primary appending primary to the deployment name
 		p.log.Debug("Cloning deployment", "name", p.config.Deployment, "namespace", p.config.Namespace)
 		nd := d.DeepCopy()
 		nd.Name = primaryName
 		nd.ResourceVersion = ""
 
-		// save the new deployment
+		// save the new primary
 		err = p.kubeClient.UpsertDeployment(nd)
 		if err != nil {
 			p.log.Debug("Unable to upsert Kubernetes deployment", "name", primaryName, "namespace", p.config.Namespace, "error", err)

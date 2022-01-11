@@ -7,6 +7,7 @@ import (
 
 	"github.com/hashicorp/go-hclog"
 	"github.com/looplab/fsm"
+	"github.com/nicholasjackson/consul-canary-controller/plugins/interfaces"
 	plugins "github.com/nicholasjackson/consul-canary-controller/plugins/interfaces"
 )
 
@@ -36,30 +37,20 @@ const (
 	StateDestroy   = "state_destroy"   // state when the release is being destroyed
 )
 
-/*
-inactive
-	-> *initalize -> initializing
-
-initializing
-	-> *fail -> failed
-	-> *initialized -> initialized
-
-initialized
-	-> *cancel -> canceling
-*/
-
 func newFSM(r *Release, pRel plugins.Releaser, pRun plugins.Runtime, pStrat plugins.Strategy, l hclog.Logger) *fsm.FSM {
 	return fsm.NewFSM(
 		StateStart,
 		fsm.Events{
-			{Name: EventDeploy, Src: []string{StateStart, StateIdle}, Dst: StateDeploy},
-			{Name: EventDeployed, Src: []string{StateDeploy}, Dst: StateConfigure},
-			{Name: EventConfigured, Src: []string{StateConfigure}, Dst: StateMonitor},
-			{Name: EventScaled, Src: []string{StateScale}, Dst: StateMonitor},
+			{Name: EventConfigure, Src: []string{StateStart}, Dst: StateConfigure},
+			{Name: EventConfigured, Src: []string{StateConfigure}, Dst: StateIdle},
+			{Name: EventDeploy, Src: []string{StateIdle}, Dst: StateDeploy},
+			{Name: EventDeployed, Src: []string{StateDeploy}, Dst: StateMonitor},
 			{Name: EventHealthy, Src: []string{StateMonitor}, Dst: StateScale},
+			{Name: EventScaled, Src: []string{StateScale}, Dst: StateMonitor},
 			{Name: EventComplete, Src: []string{StateMonitor}, Dst: StatePromote},
 			{Name: EventPromoted, Src: []string{StatePromote}, Dst: StateIdle},
 			{Name: EventUnhealthy, Src: []string{StateMonitor}, Dst: StateRollback},
+			{Name: EventComplete, Src: []string{StateDeploy}, Dst: StateIdle},
 			{Name: EventComplete, Src: []string{StateRollback}, Dst: StateIdle},
 			{Name: EventFail, Src: []string{
 				StateStart,
@@ -82,8 +73,8 @@ func newFSM(r *Release, pRel plugins.Releaser, pRun plugins.Runtime, pStrat plug
 		},
 		fsm.Callbacks{
 			"before_event":            logEvent(l),
-			"enter_" + StateDeploy:    doDeploy(pRun, r, l),        // new version of the application has been deployed
 			"enter_" + StateConfigure: doConfigure(pRel, r, l),     // do the necessary work to setup the release
+			"enter_" + StateDeploy:    doDeploy(pRun, pRel, r, l),  // new version of the application has been deployed
 			"enter_" + StateMonitor:   doMonitor(pStrat, r, l),     // start monitoring changes in the applications health
 			"enter_" + StateScale:     doScale(pRel, r, l),         // scale the release
 			"enter_" + StatePromote:   doPromote(pRun, pRel, r, l), // promote the release to primary
@@ -110,7 +101,7 @@ func saveRelease(r *Release, l hclog.Logger) func(e *fsm.Event) {
 	}
 }
 
-func doDeploy(pRun plugins.Runtime, r *Release, l hclog.Logger) func(e *fsm.Event) {
+func doDeploy(pRun plugins.Runtime, pRel plugins.Releaser, r *Release, l hclog.Logger) func(e *fsm.Event) {
 	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
 
 	return func(e *fsm.Event) {
@@ -122,15 +113,35 @@ func doDeploy(pRun plugins.Runtime, r *Release, l hclog.Logger) func(e *fsm.Even
 
 			r.Save(e.FSM.Current())
 
-			// execute the work function
-			err := pRun.Deploy(ctx)
+			// get the existing deployment status
+			status := e.Args[0].(interfaces.RuntimeDeploymentStatus)
 
+			// execute the work function
+			err := pRun.Deploy(ctx, status)
 			// work has failed, raise the failed event
 			if err != nil {
 				e.FSM.Event(EventFail)
 				return
 			}
 
+			// now the primary has been created send 100 of traffic there
+			time.Sleep(10 * time.Second)
+			err = pRel.Scale(ctx, 0)
+			// work has failed, raise the failed event
+			if err != nil {
+				e.FSM.Event(EventFail)
+				return
+			}
+
+			if status == interfaces.RuntimeDeploymentNotFound {
+				// do nothing with this deployment, as it is the first one, immediately promote
+				time.Sleep(30 * time.Second)
+				pRun.Cleanup(ctx)
+				e.FSM.Event(EventComplete)
+				return
+			}
+
+			// new deployment run the strategy
 			e.FSM.Event(EventDeployed)
 		}()
 	}
@@ -254,7 +265,7 @@ func doPromote(run plugins.Runtime, rel plugins.Releaser, r *Release, l hclog.Lo
 				return
 			}
 
-			time.Sleep(30 * time.Second)
+			time.Sleep(10 * time.Second)
 
 			// promote the canary to primary
 			err = run.Promote(ctx)
@@ -263,7 +274,7 @@ func doPromote(run plugins.Runtime, rel plugins.Releaser, r *Release, l hclog.Lo
 				return
 			}
 
-			time.Sleep(30 * time.Second)
+			time.Sleep(10 * time.Second)
 
 			// scale all traffic to the primary
 			err = rel.Scale(ctx, 0)
@@ -272,7 +283,7 @@ func doPromote(run plugins.Runtime, rel plugins.Releaser, r *Release, l hclog.Lo
 				return
 			}
 
-			time.Sleep(30 * time.Second)
+			time.Sleep(10 * time.Second)
 
 			// scale down the canary
 			err = run.Cleanup(ctx)

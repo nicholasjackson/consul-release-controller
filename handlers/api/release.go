@@ -56,6 +56,15 @@ func (d *ReleaseHandler) Post(rw http.ResponseWriter, req *http.Request) {
 		return
 	}
 
+	// trigger the configuration of the config
+	err = dep.Configure()
+	if err != nil {
+		d.logger.Error("unable to configure release", "deployment", *dep, "error", err)
+		mFinal(http.StatusInternalServerError)
+
+		http.Error(rw, "unable to configure release", http.StatusInternalServerError)
+	}
+
 	mFinal(http.StatusOK)
 }
 

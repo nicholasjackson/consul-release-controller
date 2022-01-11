@@ -138,7 +138,12 @@ func (d *Release) Save(state string) {
 	d.CurrentState = state
 }
 
+// Configure the application
+func (d *Release) Configure() error {
+	return d.state.Event(EventConfigure)
+}
+
 // Deploy the application
-func (d *Release) Deploy() error {
-	return d.state.Event(EventDeploy)
+func (d *Release) Deploy(status interfaces.RuntimeDeploymentStatus) error {
+	return d.state.Event(EventDeploy, status)
 }

@@ -44,9 +44,10 @@ spec:
         metrics: enabled
       annotations:
         consul.hashicorp.com/connect-inject: 'true'
-        consul.hashicorp.com/transparent-proxy: 'true'
-        consul.hashicorp.com/transparent-proxy-overwrite-probes: 'true'
-        consul.hashicorp.com/transparent-proxy-exclude-inbound-ports: '9090'
+        consul.hashicorp.com/connect-service-upstreams: 'api:9091'
+        #consul.hashicorp.com/transparent-proxy: 'true'
+        #consul.hashicorp.com/transparent-proxy-overwrite-probes: 'true'
+        #consul.hashicorp.com/transparent-proxy-exclude-inbound-ports: '9090'
     spec:  
       serviceAccountName: web
       automountServiceAccountToken: true
@@ -62,7 +63,7 @@ spec:
             - name: "LISTEN_ADDR"
               value: "0.0.0.0:9090"
             - name: "UPSTREAM_URIS"
-              value: "http://api.default.svc:9090"
+              value: "http://localhost:9091"
             - name: "TIMING_50_PERCENTILE"
               value: "10ms"
             - name: "TRACING_ZIPKIN"

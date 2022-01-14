@@ -67,3 +67,16 @@ func (m *InmemStore) DeleteRelease(name string) error {
 
 	return nil
 }
+
+func (m *InmemStore) GetRelease(name string) (*models.Release, error) {
+	m.m.Lock()
+	defer m.m.Unlock()
+
+	for _, r := range m.releases {
+		if r.Name == name {
+			return r, nil
+		}
+	}
+
+	return nil, ReleaseNotFound
+}

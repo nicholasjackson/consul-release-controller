@@ -2,12 +2,9 @@ package kubernetes
 
 import (
 	"context"
-	"fmt"
 	"net/http"
-	"os"
 
 	"github.com/hashicorp/go-hclog"
-	"github.com/nicholasjackson/consul-canary-controller/clients"
 	"github.com/nicholasjackson/consul-canary-controller/metrics"
 	appmetrics "github.com/nicholasjackson/consul-canary-controller/metrics"
 	"github.com/nicholasjackson/consul-canary-controller/plugins"
@@ -51,13 +48,6 @@ func (k *K8sWebhook) Mutating() func(w http.ResponseWriter, r *http.Request) {
 		}
 
 		for _, r := range rel {
-			err := r.Build(k.pluginProviders)
-			if err != nil {
-				k.logger.Error("Unable to build plugin", "error", err)
-
-				return &kwhmutating.MutatorResult{}, nil
-			}
-
 			rp := r.RuntimePlugin()
 			conf := rp.BaseConfig()
 
@@ -69,23 +59,9 @@ func (k *K8sWebhook) Mutating() func(w http.ResponseWriter, r *http.Request) {
 
 				deployment.Annotations["consul-releaser"] = "true"
 
-				// check if this is the first deploy of this application
-				kc, err := clients.NewKubernetes(os.Getenv("KUBECONFIG"))
-				if err != nil {
-					k.logger.Error("Unable to create a Kubernetes client", "error", err)
-					return &kwhmutating.MutatorResult{}, fmt.Errorf("unable to create client: %s", err)
-				}
-
-				var status interfaces.RuntimeDeploymentStatus = interfaces.RuntimeDeploymentNotFound
-
-				_, err = kc.GetDeployment(deployment.Name, deployment.Namespace)
-				if err == nil {
-					status = interfaces.RuntimeDeploymentUpdate
-				}
-
 				// trigger the deployment actions for the plugins, this is an async call
 				k.logger.Info("Calling plugin deploy for kubernetes deployment", "deployment", deployment.Name, "namespace", deployment.Namespace)
-				r.Deploy(status)
+				r.Deploy()
 
 				return &kwhmutating.MutatorResult{MutatedObject: deployment}, nil
 			}

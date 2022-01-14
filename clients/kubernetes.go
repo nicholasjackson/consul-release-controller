@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	appsv1 "k8s.io/api/apps/v1"
+	"k8s.io/apimachinery/pkg/api/errors"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
@@ -13,6 +14,8 @@ import (
 const (
 	DeploymentNotFound = "deployment_not_found"
 )
+
+var ErrDeploymentNotFound = fmt.Errorf(DeploymentNotFound)
 
 // Kubernetes is a high level functional interface for interacting with the Kubernetes API
 type Kubernetes interface {
@@ -50,20 +53,37 @@ type KubernetesImpl struct {
 }
 
 func (k *KubernetesImpl) GetDeployment(name, namespace string) (*appsv1.Deployment, error) {
-	return k.clientset.AppsV1().Deployments(namespace).Get(context.Background(), name, v1.GetOptions{})
+	d, err := k.clientset.AppsV1().Deployments(namespace).Get(context.Background(), name, v1.GetOptions{})
+
+	if errors.IsNotFound(err) {
+		return nil, ErrDeploymentNotFound
+	}
+
+	return d, err
 }
 
 func (k *KubernetesImpl) UpsertDeployment(dep *appsv1.Deployment) error {
-	if d, err := k.clientset.AppsV1().Deployments(dep.Namespace).Get(context.Background(), dep.Name, v1.GetOptions{}); err == nil && d != nil {
-		_, err := k.clientset.AppsV1().Deployments(dep.Namespace).Update(context.Background(), dep, v1.UpdateOptions{})
+	_, err := k.GetDeployment(dep.Name, dep.Namespace)
+	if err != nil && err == ErrDeploymentNotFound {
+		_, err = k.clientset.AppsV1().Deployments(dep.Namespace).Create(context.Background(), dep, v1.CreateOptions{})
 		return err
 	}
 
-	_, err := k.clientset.AppsV1().Deployments(dep.Namespace).Create(context.Background(), dep, v1.CreateOptions{})
+	if err != nil {
+		return err
+	}
+
+	_, err = k.clientset.AppsV1().Deployments(dep.Namespace).Update(context.Background(), dep, v1.UpdateOptions{})
 	return err
 }
 
 func (k *KubernetesImpl) DeleteDeployment(name, namespace string) error {
 	thirty := int64(30)
-	return k.clientset.AppsV1().Deployments(namespace).Delete(context.Background(), name, v1.DeleteOptions{GracePeriodSeconds: &thirty})
+	err := k.clientset.AppsV1().Deployments(namespace).Delete(context.Background(), name, v1.DeleteOptions{GracePeriodSeconds: &thirty})
+
+	if errors.IsNotFound(err) {
+		return ErrDeploymentNotFound
+	}
+
+	return err
 }

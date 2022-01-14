@@ -8,8 +8,10 @@ import (
 type RuntimeDeploymentStatus string
 
 const (
-	RuntimeDeploymentUpdate   RuntimeDeploymentStatus = "runtime_deployment_update"
-	RuntimeDeploymentNotFound RuntimeDeploymentStatus = "runtime_deployment_not_found"
+	RuntimeDeploymentUpdate        RuntimeDeploymentStatus = "runtime_deployment_update"
+	RuntimeDeploymentNoAction      RuntimeDeploymentStatus = "runtime_deployment_no_action"
+	RuntimeDeploymentNotFound      RuntimeDeploymentStatus = "runtime_deployment_not_found"
+	RuntimeDeploymentInternalError RuntimeDeploymentStatus = "runtime_deployment_internal_error"
 )
 
 // RuntimeBaseConfig is the base configuration that all runtime plugins must implement
@@ -29,14 +31,20 @@ type Runtime interface {
 	BaseConfig() RuntimeBaseConfig
 
 	// Deploy the new test version to the platform
-	Deploy(ctx context.Context, status RuntimeDeploymentStatus) error
+	InitPrimary(ctx context.Context) (RuntimeDeploymentStatus, error)
 
 	// Promote the new test version to primary
-	Promote(ctx context.Context) error
+	// returns RunTimeDeploymentUpdate when the canary has been successfully promoted to primary
+	// returns RuntimeDeploymentNotFound when the canary does not exist
+	// returned errors indicate an internal error
+	PromoteCanary(ctx context.Context) (RuntimeDeploymentStatus, error)
 
 	// Cleanup the test version saving resources
-	Cleanup(ctx context.Context) error
+	RemoveCanary(ctx context.Context) error
 
-	// Destroy removes any configuration that was created with the Deploy method
-	Destroy(ctx context.Context) error
+	// RestoreCanary re-instates the original deployment
+	RestoreCanary(ctx context.Context) error
+
+	// RemovePrimary removes the Primary deployment that is a clone of the original
+	RemovePrimary(ctx context.Context) error
 }

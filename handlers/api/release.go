@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/go-chi/chi/v5"
 	"github.com/hashicorp/go-hclog"
 	appmetrics "github.com/nicholasjackson/consul-canary-controller/metrics"
 	"github.com/nicholasjackson/consul-canary-controller/models"
@@ -98,21 +99,40 @@ func (d *ReleaseHandler) Get(rw http.ResponseWriter, req *http.Request) {
 
 // Delete handler deletes a deployment
 func (d *ReleaseHandler) Delete(rw http.ResponseWriter, req *http.Request) {
-	name := req.Context().Value("name").(string)
+	name := chi.URLParam(req, "name")
 
 	d.logger.Info("Release DELETE handler called", "name", name)
 	mFinal := d.metrics.HandleRequest("deployment/delete", nil)
 
-	err := d.store.DeleteRelease(name)
+	rel, err := d.store.GetRelease(name)
 
 	if err == state.ReleaseNotFound {
-		d.logger.Error("unable to delete release, not found", "name", name)
+		d.logger.Error("unable to find release, not found", "name", name)
 		mFinal(http.StatusNotFound)
 
 		http.Error(rw, fmt.Sprintf("release %s not found", name), http.StatusNotFound)
 		return
 	}
 
+	if err != nil {
+		d.logger.Error("unable to get release", "error", err)
+		mFinal(http.StatusInternalServerError)
+
+		http.Error(rw, "unable to delete release", http.StatusInternalServerError)
+		return
+	}
+
+	// cleanup any config
+	err = rel.Destroy()
+	if err != nil {
+		d.logger.Error("unable to cleanup config", "error", err)
+		mFinal(http.StatusInternalServerError)
+
+		http.Error(rw, "unable to delete release", http.StatusInternalServerError)
+		return
+	}
+
+	err = d.store.DeleteRelease(name)
 	if err != nil {
 		d.logger.Error("unable to delete release", "error", err)
 		mFinal(http.StatusInternalServerError)

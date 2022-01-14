@@ -22,6 +22,24 @@ variable "consul_acls_enabled" {
   default     = true
 }
 
+variable "consul_image" {
+  default = "hashicorp/consul:1.9.13"
+}
+
+variable "consul_envoy_image" {
+  default     = "envoyproxy/envoy:v1.16.5"
+  description = "Using the debian base images as alpine does not support arm"
+}
+
+//variable "consul_image" {
+//  default = "hashicorp/consul:1.11.1"
+//}
+//
+//variable "consul_envoy_image" {
+//  default     = "envoyproxy/envoy:v1.20.0"
+//  description = "Using the debian base images as alpine does not support arm"
+//}
+
 variable "consul_tls_enabled" {
   description = "Enable TLS to secure the Consul server"
   default     = true
@@ -29,7 +47,7 @@ variable "consul_tls_enabled" {
 
 variable "consul_debug" {
   description = "Log debug mode"
-  default     = false
+  default     = true
 }
 
 network "dc1" {

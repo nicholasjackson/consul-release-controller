@@ -28,8 +28,6 @@ type ProviderImpl struct {
 }
 
 func (p *ProviderImpl) CreateReleaser(pluginName string) (interfaces.Releaser, error) {
-	p.log.Debug("Creating setup plugin", "name", pluginName)
-
 	return consul.New(p.log.Named("consul-plugin"))
 }
 

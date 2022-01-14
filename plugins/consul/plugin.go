@@ -3,7 +3,6 @@ package consul
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 
 	"github.com/hashicorp/go-hclog"
 	"github.com/nicholasjackson/consul-canary-controller/clients"
@@ -36,10 +35,10 @@ func (s *Plugin) Configure(data json.RawMessage) error {
 
 // initialize is an internal function triggered by the initialize event
 func (p *Plugin) Setup(ctx context.Context) error {
-	p.log.Info("initializing deployment", "service", p.config.ConsulService)
+	p.log.Info("Initializing deployment", "service", p.config.ConsulService)
 
 	// create the service defaults for the main service
-	p.log.Debug("create service defaults", "service", p.config.ConsulService)
+	p.log.Debug("Create service defaults", "service", p.config.ConsulService)
 	err := p.consulClient.CreateServiceDefaults(p.config.ConsulService)
 	if err != nil {
 		p.log.Error("Unable to create Consul ServiceDefaults", "name", p.config.ConsulService, "error", err)
@@ -49,7 +48,7 @@ func (p *Plugin) Setup(ctx context.Context) error {
 
 	// create the service resolver
 	// creating the service resolver will interupt the application traffic temporarily
-	p.log.Debug("create service resolver", "service", p.config.ConsulService)
+	p.log.Debug("Create service resolver", "service", p.config.ConsulService)
 	err = p.consulClient.CreateServiceResolver(p.config.ConsulService)
 	if err != nil {
 		p.log.Error("Unable to create Consul ServiceResolver", "name", p.config.ConsulService, "error", err)
@@ -59,7 +58,7 @@ func (p *Plugin) Setup(ctx context.Context) error {
 
 	// create the service spiltter set to 100% the canary as this config is created before the primary has
 	// been clone from the existing deployment
-	p.log.Debug("create service splitter", "service", p.config.ConsulService)
+	p.log.Debug("Create service splitter", "service", p.config.ConsulService)
 	err = p.consulClient.CreateServiceSplitter(p.config.ConsulService, 0, 100)
 	if err != nil {
 		p.log.Error("Unable to create Consul ServiceSplitter", "name", p.config.ConsulService, "error", err)
@@ -68,7 +67,7 @@ func (p *Plugin) Setup(ctx context.Context) error {
 	}
 
 	// create the service router
-	p.log.Debug("create service router", "service", p.config.ConsulService)
+	p.log.Debug("Create service router", "service", p.config.ConsulService)
 	err = p.consulClient.CreateServiceRouter(p.config.ConsulService)
 	if err != nil {
 		p.log.Error("Unable to create Consul ServiceRouter", "name", p.config.ConsulService, "error", err)
@@ -80,14 +79,48 @@ func (p *Plugin) Setup(ctx context.Context) error {
 }
 
 func (p *Plugin) Destroy(ctx context.Context) error {
-	return fmt.Errorf("not implemented")
+	p.log.Info("Remove Consul config", "name", p.config.ConsulService)
+
+	p.log.Debug("Delete router", "name", p.config.ConsulService)
+	err := p.consulClient.DeleteRouter(p.config.ConsulService)
+	if err != nil {
+		p.log.Error("Unable to delete Consul ServiceRouter", "name", p.config.ConsulService, "error", err)
+
+		return err
+	}
+
+	p.log.Debug("Delete splitter", "name", p.config.ConsulService)
+	err = p.consulClient.DeleteSplitter(p.config.ConsulService)
+	if err != nil {
+		p.log.Error("Unable to delete Consul ServiceSplitter", "name", p.config.ConsulService, "error", err)
+
+		return err
+	}
+
+	p.log.Debug("Delete resolver", "name", p.config.ConsulService)
+	err = p.consulClient.DeleteResolver(p.config.ConsulService)
+	if err != nil {
+		p.log.Error("Unable to delete Consul ServiceResolver", "name", p.config.ConsulService, "error", err)
+
+		return err
+	}
+
+	p.log.Debug("Delete defaults", "name", p.config.ConsulService)
+	err = p.consulClient.DeleteDefaults(p.config.ConsulService)
+	if err != nil {
+		p.log.Error("Unable to delete Consul ServiceDefaults", "name", p.config.ConsulService, "error", err)
+
+		return err
+	}
+
+	return nil
 }
 
 func (p *Plugin) Scale(ctx context.Context, value int) error {
 	primaryTraffic := 100 - value
 	canaryTraffic := value
 
-	p.log.Info("scale deployment", "name", p.config.ConsulService, "traffic_primary", primaryTraffic, "traffic_canary", canaryTraffic)
+	p.log.Info("Scale deployment", "name", p.config.ConsulService, "traffic_primary", primaryTraffic, "traffic_canary", canaryTraffic)
 
 	// create the service spiltter set to 100% primary
 	err := p.consulClient.CreateServiceSplitter(p.config.ConsulService, primaryTraffic, canaryTraffic)

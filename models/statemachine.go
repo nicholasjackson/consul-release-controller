@@ -41,7 +41,7 @@ func newFSM(r *Release, pRel plugins.Releaser, pRun plugins.Runtime, pStrat plug
 	return fsm.NewFSM(
 		StateStart,
 		fsm.Events{
-			{Name: EventConfigure, Src: []string{StateStart}, Dst: StateConfigure},
+			{Name: EventConfigure, Src: []string{StateStart, StateIdle}, Dst: StateConfigure},
 			{Name: EventConfigured, Src: []string{StateConfigure}, Dst: StateIdle},
 			{Name: EventDeploy, Src: []string{StateIdle}, Dst: StateDeploy},
 			{Name: EventDeployed, Src: []string{StateDeploy}, Dst: StateMonitor},
@@ -61,6 +61,7 @@ func newFSM(r *Release, pRel plugins.Releaser, pRun plugins.Runtime, pStrat plug
 				StateScale,
 				StatePromote,
 				StateRollback,
+				StateDestroy,
 			}, Dst: StateFail},
 			{Name: EventDestroy, Src: []string{
 				StateIdle,
@@ -73,14 +74,17 @@ func newFSM(r *Release, pRel plugins.Releaser, pRun plugins.Runtime, pStrat plug
 		},
 		fsm.Callbacks{
 			"before_event":            logEvent(l),
-			"enter_" + StateConfigure: doConfigure(pRel, r, l),     // do the necessary work to setup the release
-			"enter_" + StateDeploy:    doDeploy(pRun, pRel, r, l),  // new version of the application has been deployed
-			"enter_" + StateMonitor:   doMonitor(pStrat, r, l),     // start monitoring changes in the applications health
-			"enter_" + StateScale:     doScale(pRel, r, l),         // scale the release
-			"enter_" + StatePromote:   doPromote(pRun, pRel, r, l), // promote the release to primary
-			"enter_" + StateRollback:  saveRelease(r, l),           // rollback the deployment
-			"enter_" + StateIdle:      saveRelease(r, l),           // everything is setup, wait for a deployment
+			"enter_" + StateConfigure: doConfigure(pRel, pRun, r, l), // do the necessary work to setup the release
+			"enter_" + StateDeploy:    doDeploy(pRun, pRel, r, l),    // new version of the application has been deployed
+			"enter_" + StateMonitor:   doMonitor(pStrat, r, l),       // start monitoring changes in the applications health
+			"enter_" + StateScale:     doScale(pRel, r, l),           // scale the release
+			"enter_" + StatePromote:   doPromote(pRun, pRel, r, l),   // promote the release to primary
+			"enter_" + StateRollback:  doRollback(pRun, pRel, r, l),  // rollback the deployment
+			"enter_" + StateIdle:      saveRelease(r, l),             // everything is setup, wait for a deployment
 			"enter_" + StateFail:      saveRelease(r, l),
+			"enter_" + StateDestroy:   doDestroy(pRun, pRel, r, l), // remove everything and revert to vanilla state
+			"enter_state":             logState(l, r),
+			"leave_state":             logState(l, r),
 		},
 	)
 }
@@ -93,11 +97,63 @@ func logEvent(l hclog.Logger) func(e *fsm.Event) {
 	}
 }
 
+func logState(l hclog.Logger, rel *Release) func(e *fsm.Event) {
+	return func(e *fsm.Event) {
+		l.Debug("log state", "event", e.Event, "state", e.FSM.Current())
+	}
+}
+
 func saveRelease(r *Release, l hclog.Logger) func(e *fsm.Event) {
 	return func(e *fsm.Event) {
 		l.Debug("save release", "state", e.FSM.Current())
 
-		r.Save(e.Dst)
+		r.Save(e.FSM.Current())
+	}
+}
+
+func doConfigure(pRel plugins.Releaser, pRun plugins.Runtime, r *Release, l hclog.Logger) func(e *fsm.Event) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+
+	return func(e *fsm.Event) {
+		l.Debug("configure", "state", e.FSM.Current())
+
+		go func() {
+			// clean up resources if we finish before timeout
+			defer cancel()
+			r.Save(e.FSM.Current())
+
+			// execute the work function
+			err := pRel.Setup(ctx)
+			if err != nil {
+				e.FSM.Event(EventFail)
+				return
+			}
+
+			// if a deployment already exists copy this to the primary
+			status, err := pRun.InitPrimary(ctx)
+			if err != nil {
+				e.FSM.Event(EventFail)
+				return
+			}
+
+			// if we created a new primary, scale all traffic to the new primary
+			if status == interfaces.RuntimeDeploymentUpdate || status == interfaces.RuntimeDeploymentNoAction {
+				err = pRel.Scale(ctx, 0)
+				if err != nil {
+					e.FSM.Event(EventFail)
+					return
+				}
+
+				// remove the canary
+				err = pRun.RemoveCanary(ctx)
+				if err != nil {
+					e.FSM.Event(EventFail)
+					return
+				}
+			}
+
+			e.FSM.Event(EventConfigured)
+		}()
 	}
 }
 
@@ -110,15 +166,10 @@ func doDeploy(pRun plugins.Runtime, pRel plugins.Releaser, r *Release, l hclog.L
 		go func() {
 			// clean up resources if we finish before timeout
 			defer cancel()
-
 			r.Save(e.FSM.Current())
 
-			// get the existing deployment status
-			status := e.Args[0].(interfaces.RuntimeDeploymentStatus)
-
-			// execute the work function
-			err := pRun.Deploy(ctx, status)
-			// work has failed, raise the failed event
+			// Create a primary if one does not exist
+			_, err := pRun.InitPrimary(ctx)
 			if err != nil {
 				e.FSM.Event(EventFail)
 				return
@@ -133,42 +184,8 @@ func doDeploy(pRun plugins.Runtime, pRel plugins.Releaser, r *Release, l hclog.L
 				return
 			}
 
-			if status == interfaces.RuntimeDeploymentNotFound {
-				// do nothing with this deployment, as it is the first one, immediately promote
-				time.Sleep(30 * time.Second)
-				pRun.Cleanup(ctx)
-				e.FSM.Event(EventComplete)
-				return
-			}
-
 			// new deployment run the strategy
 			e.FSM.Event(EventDeployed)
-		}()
-	}
-}
-
-func doConfigure(pRel plugins.Releaser, r *Release, l hclog.Logger) func(e *fsm.Event) {
-	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
-
-	return func(e *fsm.Event) {
-		l.Debug("configure", "state", e.FSM.Current())
-
-		go func() {
-			// clean up resources if we finish before timeout
-			defer cancel()
-
-			r.Save(e.FSM.Current())
-
-			// execute the work function
-			err := pRel.Setup(ctx)
-
-			// work has failed, raise the failed event
-			if err != nil {
-				e.FSM.Event(EventFail)
-				return
-			}
-
-			e.FSM.Event(EventConfigured)
 		}()
 	}
 }
@@ -182,8 +199,8 @@ func doMonitor(strat plugins.Strategy, r *Release, l hclog.Logger) func(e *fsm.E
 		go func() {
 			// clean up resources if we finish before timeout
 			defer cancel()
-
 			r.Save(e.FSM.Current())
+
 			result, traffic, err := strat.Execute(ctx)
 
 			// strategy has failed with an error
@@ -268,7 +285,7 @@ func doPromote(run plugins.Runtime, rel plugins.Releaser, r *Release, l hclog.Lo
 			time.Sleep(10 * time.Second)
 
 			// promote the canary to primary
-			err = run.Promote(ctx)
+			_, err = run.PromoteCanary(ctx)
 			if err != nil {
 				e.FSM.Event(EventFail)
 				return
@@ -286,13 +303,91 @@ func doPromote(run plugins.Runtime, rel plugins.Releaser, r *Release, l hclog.Lo
 			time.Sleep(10 * time.Second)
 
 			// scale down the canary
-			err = run.Cleanup(ctx)
+			err = run.RemoveCanary(ctx)
 			if err != nil {
 				e.FSM.Event(EventFail)
 				return
 			}
 
 			e.FSM.Event(EventPromoted)
+		}()
+	}
+}
+
+func doRollback(run plugins.Runtime, rel plugins.Releaser, r *Release, l hclog.Logger) func(e *fsm.Event) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+
+	return func(e *fsm.Event) {
+		l.Debug("rollback", "state", e.FSM.Current())
+
+		go func() {
+			// clean up resources if we finish before timeout
+			defer cancel()
+			// save the state
+			r.Save(e.FSM.Current())
+
+			// scale all traffic to the primary
+			err := rel.Scale(ctx, 0)
+			if err != nil {
+				e.FSM.Event(EventFail)
+				return
+			}
+
+			time.Sleep(10 * time.Second)
+
+			// scale down the canary
+			err = run.RemoveCanary(ctx)
+			if err != nil {
+				e.FSM.Event(EventFail)
+				return
+			}
+
+			e.FSM.Event(EventComplete)
+		}()
+	}
+}
+
+func doDestroy(run plugins.Runtime, rel plugins.Releaser, r *Release, l hclog.Logger) func(e *fsm.Event) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+
+	return func(e *fsm.Event) {
+		l.Debug("destroy", "state", e.FSM.Current())
+
+		go func() {
+			// clean up resources if we finish before timeout
+			defer cancel()
+			// save the state
+			r.Save(e.FSM.Current())
+
+			// restore the original deployment
+			err := run.RestoreCanary(ctx)
+			if err != nil {
+				e.FSM.Event(EventFail)
+				return
+			}
+
+			// scale all traffic to the canary
+			err = rel.Scale(ctx, 100)
+			if err != nil {
+				e.FSM.Event(EventFail)
+				return
+			}
+
+			// destroy the primary
+			err = run.RemovePrimary(ctx)
+			if err != nil {
+				e.FSM.Event(EventFail)
+				return
+			}
+
+			// remove the consul config
+			err = rel.Destroy(ctx)
+			if err != nil {
+				e.FSM.Event(EventFail)
+				return
+			}
+
+			e.FSM.Event(EventComplete)
 		}()
 	}
 }

@@ -40,6 +40,8 @@ spec:
               value: "http://tempo:9411"
             - name: "READY_CHECK_RESPONSE_DELAY"
               value: "10s"
+            - name: "ERROR_RATE"
+              value: "0.5"
           readinessProbe:
             httpGet:
               path: /ready

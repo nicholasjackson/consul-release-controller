@@ -36,6 +36,8 @@ type Release struct {
 	runtimePlugin  interfaces.Runtime
 	monitorPlugin  interfaces.Monitor
 	strategyPlugin interfaces.Strategy
+
+	stateLogger func()
 }
 
 type PluginConfig struct {
@@ -48,6 +50,7 @@ type PluginConfig struct {
 // has been de-serialzed
 func (d *Release) Build(pluginProvider interfaces.Provider) error {
 	d.StateHistory = []StateHistory{}
+	d.Created = time.Now()
 
 	// set the namespace to default if not set
 	if d.Namespace == "" {
@@ -136,6 +139,7 @@ func (d *Release) RuntimePlugin() interfaces.Runtime {
 func (d *Release) Save(state string) {
 	d.StateHistory = append(d.StateHistory, StateHistory{Time: time.Now(), State: state})
 	d.CurrentState = state
+	d.LastUpdated = time.Now()
 }
 
 // Configure the application
@@ -144,6 +148,11 @@ func (d *Release) Configure() error {
 }
 
 // Deploy the application
-func (d *Release) Deploy(status interfaces.RuntimeDeploymentStatus) error {
-	return d.state.Event(EventDeploy, status)
+func (d *Release) Deploy() error {
+	return d.state.Event(EventDeploy)
+}
+
+// Destroy the release and revert configuration
+func (d *Release) Destroy() error {
+	return d.state.Event(EventDestroy)
 }

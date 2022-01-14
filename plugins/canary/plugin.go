@@ -60,7 +60,7 @@ func (p *Plugin) Configure(name, namespace string, data json.RawMessage) error {
 
 // Execute the strategy
 func (p *Plugin) Execute(ctx context.Context) (interfaces.StrategyStatus, int, error) {
-	p.log.Info("executing strategy", "type", "canary", "traffic", p.currentTraffic)
+	p.log.Info("Executing strategy", "type", "canary", "traffic", p.currentTraffic)
 
 	// if this is the first run set the initial traffic and return
 	if p.currentTraffic == -1 {
@@ -71,9 +71,10 @@ func (p *Plugin) Execute(ctx context.Context) (interfaces.StrategyStatus, int, e
 			return interfaces.StrategyStatusFail, 0, fmt.Errorf("unable to parse initial delay: %s", err)
 		}
 
+		p.log.Debug("Waiting for initial grace before starting rollout", "type", "canary", "delay", d.Seconds())
 		time.Sleep(d)
 
-		p.log.Debug("strategy setup", "type", "canary", "traffic", p.currentTraffic)
+		p.log.Debug("Strategy setup", "type", "canary", "traffic", p.currentTraffic)
 		return interfaces.StrategyStatusSuccess, p.currentTraffic, nil
 	}
 
@@ -90,10 +91,11 @@ func (p *Plugin) Execute(ctx context.Context) (interfaces.StrategyStatus, int, e
 		queryCtx, done := context.WithTimeout(context.Background(), 30*time.Second)
 		defer done()
 
-		p.log.Debug("checking metrics", "type", "canary")
+		p.log.Debug("Checking metrics", "type", "canary")
+
 		err := p.monitoring.Check(queryCtx, d)
 		if err != nil {
-			p.log.Debug("check failed", "type", "canary", "error", err)
+			p.log.Debug("Check failed", "type", "canary", "error", err)
 			failCount++
 
 			if failCount >= p.config.ErrorThreshold {
@@ -107,12 +109,15 @@ func (p *Plugin) Execute(ctx context.Context) (interfaces.StrategyStatus, int, e
 
 		if p.currentTraffic >= p.config.MaxTraffic {
 			// strategy is complete
-			p.log.Debug("strategy complete", "type", "canary", "traffic", p.currentTraffic)
+			p.log.Debug("Strategy complete", "type", "canary", "traffic", p.currentTraffic)
+
+			// reset the state
+			p.currentTraffic = -1
 			return interfaces.StrategyStatusComplete, 100, nil
 		}
 
 		// step has been successful
-		p.log.Debug("strategy success", "type", "canary", "traffic", p.currentTraffic)
+		p.log.Debug("Strategy success", "type", "canary", "traffic", p.currentTraffic)
 		return interfaces.StrategyStatusSuccess, p.currentTraffic, nil
 	}
 }

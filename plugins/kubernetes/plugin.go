@@ -104,7 +104,7 @@ func (p *Plugin) InitPrimary(ctx context.Context) (interfaces.RuntimeDeploymentS
 	})
 
 	// if we have no Canary there is nothing we can do
-	if err != nil {
+	if canaryDeployment == nil {
 		return interfaces.RuntimeDeploymentNoAction, nil
 	}
 
@@ -134,7 +134,7 @@ func (p *Plugin) InitPrimary(ctx context.Context) (interfaces.RuntimeDeploymentS
 	return interfaces.RuntimeDeploymentUpdate, nil
 }
 
-func (p *Plugin) PromoteCanary(ctx context.Context) (interfaces.RuntimeDeploymentStatus, error) {
+func (p *Plugin) PromoteCandidate(ctx context.Context) (interfaces.RuntimeDeploymentStatus, error) {
 	p.log.Info("Promote deployment", "name", p.config.Deployment, "namespace", p.config.Namespace)
 
 	// delete the primary and create a new primary from the canary
@@ -241,7 +241,7 @@ func (p *Plugin) PromoteCanary(ctx context.Context) (interfaces.RuntimeDeploymen
 	return interfaces.RuntimeDeploymentUpdate, nil
 }
 
-func (p *Plugin) RemoveCanary(ctx context.Context) error {
+func (p *Plugin) RemoveCandidate(ctx context.Context) error {
 	p.log.Info("Cleanup old deployment", "name", p.config.Deployment, "namespace", p.config.Namespace)
 
 	// get the canary
@@ -274,7 +274,7 @@ func (p *Plugin) RemoveCanary(ctx context.Context) error {
 // RestoreOriginal restores the original deployment cloned to the primary
 // because the last deployed version might be different from the primary due to a rollback
 // we will copy the primary to the canary, rather than scale it up
-func (p *Plugin) RestoreCanary(ctx context.Context) error {
+func (p *Plugin) RestoreOriginal(ctx context.Context) error {
 	p.log.Info("Restore original deployment", "name", p.config.Deployment, "namespace", p.config.Namespace)
 
 	primaryName := fmt.Sprintf("%s-primary", p.config.Deployment)

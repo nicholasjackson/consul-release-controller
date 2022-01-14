@@ -37,13 +37,14 @@ type Runtime interface {
 	// returns RunTimeDeploymentUpdate when the canary has been successfully promoted to primary
 	// returns RuntimeDeploymentNotFound when the canary does not exist
 	// returned errors indicate an internal error
-	PromoteCanary(ctx context.Context) (RuntimeDeploymentStatus, error)
+	PromoteCandidate(ctx context.Context) (RuntimeDeploymentStatus, error)
 
 	// Cleanup the test version saving resources
-	RemoveCanary(ctx context.Context) error
+	// Candidate
+	RemoveCandidate(ctx context.Context) error
 
-	// RestoreCanary re-instates the original deployment
-	RestoreCanary(ctx context.Context) error
+	// RestoreOriginal re-instates the original deployment
+	RestoreOriginal(ctx context.Context) error
 
 	// RemovePrimary removes the Primary deployment that is a clone of the original
 	RemovePrimary(ctx context.Context) error

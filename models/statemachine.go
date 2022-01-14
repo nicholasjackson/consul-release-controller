@@ -41,9 +41,9 @@ func newFSM(r *Release, pRel plugins.Releaser, pRun plugins.Runtime, pStrat plug
 	return fsm.NewFSM(
 		StateStart,
 		fsm.Events{
-			{Name: EventConfigure, Src: []string{StateStart, StateIdle}, Dst: StateConfigure},
+			{Name: EventConfigure, Src: []string{StateStart, StateIdle, StateFail}, Dst: StateConfigure},
 			{Name: EventConfigured, Src: []string{StateConfigure}, Dst: StateIdle},
-			{Name: EventDeploy, Src: []string{StateIdle}, Dst: StateDeploy},
+			{Name: EventDeploy, Src: []string{StateIdle, StateFail}, Dst: StateDeploy},
 			{Name: EventDeployed, Src: []string{StateDeploy}, Dst: StateMonitor},
 			{Name: EventHealthy, Src: []string{StateMonitor}, Dst: StateScale},
 			{Name: EventScaled, Src: []string{StateScale}, Dst: StateMonitor},
@@ -93,19 +93,19 @@ var defaultTimeout = 30 * time.Minute
 
 func logEvent(l hclog.Logger) func(e *fsm.Event) {
 	return func(e *fsm.Event) {
-		l.Debug("handle event", "event", e.Event, "state", e.FSM.Current())
+		l.Debug("Handle event", "event", e.Event, "state", e.FSM.Current())
 	}
 }
 
 func logState(l hclog.Logger, rel *Release) func(e *fsm.Event) {
 	return func(e *fsm.Event) {
-		l.Debug("log state", "event", e.Event, "state", e.FSM.Current())
+		l.Debug("Log state", "event", e.Event, "state", e.FSM.Current())
 	}
 }
 
 func saveRelease(r *Release, l hclog.Logger) func(e *fsm.Event) {
 	return func(e *fsm.Event) {
-		l.Debug("save release", "state", e.FSM.Current())
+		l.Debug("Save release", "state", e.FSM.Current())
 
 		r.Save(e.FSM.Current())
 	}
@@ -115,7 +115,7 @@ func doConfigure(pRel plugins.Releaser, pRun plugins.Runtime, r *Release, l hclo
 	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
 
 	return func(e *fsm.Event) {
-		l.Debug("configure", "state", e.FSM.Current())
+		l.Debug("Configure", "state", e.FSM.Current())
 
 		go func() {
 			// clean up resources if we finish before timeout
@@ -145,7 +145,7 @@ func doConfigure(pRel plugins.Releaser, pRun plugins.Runtime, r *Release, l hclo
 				}
 
 				// remove the canary
-				err = pRun.RemoveCanary(ctx)
+				err = pRun.RemoveCandidate(ctx)
 				if err != nil {
 					e.FSM.Event(EventFail)
 					return
@@ -161,7 +161,7 @@ func doDeploy(pRun plugins.Runtime, pRel plugins.Releaser, r *Release, l hclog.L
 	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
 
 	return func(e *fsm.Event) {
-		l.Debug("deploy", "state", e.FSM.Current())
+		l.Debug("Deploy", "state", e.FSM.Current())
 
 		go func() {
 			// clean up resources if we finish before timeout
@@ -169,18 +169,23 @@ func doDeploy(pRun plugins.Runtime, pRel plugins.Releaser, r *Release, l hclog.L
 			r.Save(e.FSM.Current())
 
 			// Create a primary if one does not exist
-			_, err := pRun.InitPrimary(ctx)
+			status, err := pRun.InitPrimary(ctx)
 			if err != nil {
 				e.FSM.Event(EventFail)
 				return
 			}
 
 			// now the primary has been created send 100 of traffic there
-			time.Sleep(10 * time.Second)
 			err = pRel.Scale(ctx, 0)
 			// work has failed, raise the failed event
 			if err != nil {
 				e.FSM.Event(EventFail)
+				return
+			}
+
+			// if we created a primary this is the first deploy, no need to canary
+			if status == interfaces.RuntimeDeploymentUpdate {
+				e.FSM.Event(EventComplete)
 				return
 			}
 
@@ -194,7 +199,7 @@ func doMonitor(strat plugins.Strategy, r *Release, l hclog.Logger) func(e *fsm.E
 	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
 
 	return func(e *fsm.Event) {
-		l.Debug("monitor", "state", e.FSM.Current())
+		l.Debug("Monitor", "state", e.FSM.Current())
 
 		go func() {
 			// clean up resources if we finish before timeout
@@ -205,7 +210,7 @@ func doMonitor(strat plugins.Strategy, r *Release, l hclog.Logger) func(e *fsm.E
 
 			// strategy has failed with an error
 			if err != nil {
-				l.Error("monitor state failed", "error", err)
+				l.Error("Monitor state failed", "error", err)
 
 				e.FSM.Event(EventFail)
 			}
@@ -235,7 +240,7 @@ func doScale(rel plugins.Releaser, r *Release, l hclog.Logger) func(e *fsm.Event
 	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
 
 	return func(e *fsm.Event) {
-		l.Debug("scale", "state", e.FSM.Current())
+		l.Debug("Scale", "state", e.FSM.Current())
 
 		go func() {
 			// clean up resources if we finish before timeout
@@ -245,7 +250,8 @@ func doScale(rel plugins.Releaser, r *Release, l hclog.Logger) func(e *fsm.Event
 
 			// get the traffic from the event
 			if len(e.Args) != 1 {
-				l.Error("scale state failed", "error", fmt.Errorf("no traffic percentage in event payload"))
+				l.Error("Scale state failed", "error", fmt.Errorf("no traffic percentage in event payload"))
+
 				e.FSM.Event(EventFail)
 				return
 			}
@@ -267,7 +273,7 @@ func doPromote(run plugins.Runtime, rel plugins.Releaser, r *Release, l hclog.Lo
 	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
 
 	return func(e *fsm.Event) {
-		l.Debug("promote", "state", e.FSM.Current())
+		l.Debug("Promote", "state", e.FSM.Current())
 
 		go func() {
 			// clean up resources if we finish before timeout
@@ -282,16 +288,12 @@ func doPromote(run plugins.Runtime, rel plugins.Releaser, r *Release, l hclog.Lo
 				return
 			}
 
-			time.Sleep(10 * time.Second)
-
 			// promote the canary to primary
-			_, err = run.PromoteCanary(ctx)
+			_, err = run.PromoteCandidate(ctx)
 			if err != nil {
 				e.FSM.Event(EventFail)
 				return
 			}
-
-			time.Sleep(10 * time.Second)
 
 			// scale all traffic to the primary
 			err = rel.Scale(ctx, 0)
@@ -300,10 +302,8 @@ func doPromote(run plugins.Runtime, rel plugins.Releaser, r *Release, l hclog.Lo
 				return
 			}
 
-			time.Sleep(10 * time.Second)
-
 			// scale down the canary
-			err = run.RemoveCanary(ctx)
+			err = run.RemoveCandidate(ctx)
 			if err != nil {
 				e.FSM.Event(EventFail)
 				return
@@ -318,7 +318,7 @@ func doRollback(run plugins.Runtime, rel plugins.Releaser, r *Release, l hclog.L
 	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
 
 	return func(e *fsm.Event) {
-		l.Debug("rollback", "state", e.FSM.Current())
+		l.Debug("Rollback", "state", e.FSM.Current())
 
 		go func() {
 			// clean up resources if we finish before timeout
@@ -333,10 +333,8 @@ func doRollback(run plugins.Runtime, rel plugins.Releaser, r *Release, l hclog.L
 				return
 			}
 
-			time.Sleep(10 * time.Second)
-
 			// scale down the canary
-			err = run.RemoveCanary(ctx)
+			err = run.RemoveCandidate(ctx)
 			if err != nil {
 				e.FSM.Event(EventFail)
 				return
@@ -351,7 +349,7 @@ func doDestroy(run plugins.Runtime, rel plugins.Releaser, r *Release, l hclog.Lo
 	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
 
 	return func(e *fsm.Event) {
-		l.Debug("destroy", "state", e.FSM.Current())
+		l.Debug("Destroy", "state", e.FSM.Current())
 
 		go func() {
 			// clean up resources if we finish before timeout
@@ -360,7 +358,7 @@ func doDestroy(run plugins.Runtime, rel plugins.Releaser, r *Release, l hclog.Lo
 			r.Save(e.FSM.Current())
 
 			// restore the original deployment
-			err := run.RestoreCanary(ctx)
+			err := run.RestoreOriginal(ctx)
 			if err != nil {
 				e.FSM.Event(EventFail)
 				return

@@ -67,7 +67,7 @@ func (p *Plugin) Configure(name, namespace string, data json.RawMessage) error {
 		p.config.InitialDelay = p.config.Interval
 	}
 
-	// validate the plugin
+	// validate the plugin config
 	validate := validator.New()
 	validate.RegisterValidation("duration", validateDuration)
 	err = validate.Struct(p.config)

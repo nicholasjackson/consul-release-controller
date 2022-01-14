@@ -29,3 +29,28 @@ func (mc *ConsulMock) CreateServiceRouter(name string) error {
 
 	return args.Error(0)
 }
+
+func (mc *ConsulMock) DeleteServiceDefaults(name string) error {
+	args := mc.Called(name)
+
+	return args.Error(0)
+}
+
+func (mc *ConsulMock) DeleteServiceResolver(name string) error {
+	args := mc.Called(name)
+
+	return args.Error(0)
+
+}
+
+func (mc *ConsulMock) DeleteServiceSplitter(name string) error {
+	args := mc.Called(name)
+
+	return args.Error(0)
+}
+
+func (mc *ConsulMock) DeleteServiceRouter(name string) error {
+	args := mc.Called(name)
+
+	return args.Error(0)
+}

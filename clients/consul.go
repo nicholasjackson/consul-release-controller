@@ -17,10 +17,10 @@ type Consul interface {
 	CreateServiceSplitter(name string, primaryTraffic, canaryTraffic int) error
 	CreateServiceRouter(name string) error
 
-	DeleteDefaults(name string) error
-	DeleteResolver(name string) error
-	DeleteSplitter(name string) error
-	DeleteRouter(name string) error
+	DeleteServiceDefaults(name string) error
+	DeleteServiceResolver(name string) error
+	DeleteServiceSplitter(name string) error
+	DeleteServiceRouter(name string) error
 }
 
 func NewConsul() (Consul, error) {
@@ -166,7 +166,7 @@ func (c *ConsulImpl) CreateServiceRouter(name string) error {
 	return err
 }
 
-func (c *ConsulImpl) DeleteDefaults(name string) error {
+func (c *ConsulImpl) DeleteServiceDefaults(name string) error {
 	// check that we created this
 	ce, _, err := c.client.ConfigEntries().Get(api.ServiceDefaults, name, &api.QueryOptions{})
 	if err != nil && ce != nil {
@@ -186,17 +186,17 @@ func (c *ConsulImpl) DeleteDefaults(name string) error {
 	return err
 }
 
-func (c *ConsulImpl) DeleteResolver(name string) error {
+func (c *ConsulImpl) DeleteServiceResolver(name string) error {
 	_, err := c.client.ConfigEntries().Delete("service-resolver", name, &api.WriteOptions{})
 	return err
 }
 
-func (c *ConsulImpl) DeleteSplitter(name string) error {
+func (c *ConsulImpl) DeleteServiceSplitter(name string) error {
 	_, err := c.client.ConfigEntries().Delete("service-splitter", name, &api.WriteOptions{})
 	return err
 }
 
-func (c *ConsulImpl) DeleteRouter(name string) error {
+func (c *ConsulImpl) DeleteServiceRouter(name string) error {
 	_, err := c.client.ConfigEntries().Delete("service-router", name, &api.WriteOptions{})
 	return err
 }

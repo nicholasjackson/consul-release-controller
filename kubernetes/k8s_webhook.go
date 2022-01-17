@@ -61,7 +61,12 @@ func (k *K8sWebhook) Mutating() func(w http.ResponseWriter, r *http.Request) {
 
 				// trigger the deployment actions for the plugins, this is an async call
 				k.logger.Info("Calling plugin deploy for kubernetes deployment", "deployment", deployment.Name, "namespace", deployment.Namespace)
-				r.Deploy()
+				err := r.Deploy()
+				if err != nil {
+					k.logger.Error("Unable to trigger new deployment", "deployment", deployment.Name, "namespace", deployment.Namespace, "error", err)
+
+					return &kwhmutating.MutatorResult{}, nil
+				}
 
 				return &kwhmutating.MutatorResult{MutatedObject: deployment}, nil
 			}

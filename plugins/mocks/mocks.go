@@ -26,8 +26,11 @@ func BuildMocks(t *testing.T) (*ProviderMock, *Mocks) {
 	runMock := &RuntimeMock{}
 	runMock.On("Configure", mock.Anything).Return(nil)
 	runMock.On("BaseConfig").Return(interfaces.RuntimeBaseConfig{Deployment: "api-deployment", Namespace: "default"})
-	runMock.On("Deploy", mock.Anything).Return(nil)
-	runMock.On("Promote", mock.Anything).Return(nil)
+	runMock.On("InitPrimary", mock.Anything).Return(interfaces.RuntimeDeploymentUpdate, nil)
+	runMock.On("PromoteCandidate", mock.Anything).Return(interfaces.RuntimeDeploymentUpdate, nil)
+	runMock.On("RemoveCandidate", mock.Anything).Return(nil)
+	runMock.On("RestoreOriginal", mock.Anything).Return(nil)
+	runMock.On("RemovePrimary", mock.Anything).Return(nil)
 
 	monMock := &MonitorMock{}
 	monMock.On("Configure", mock.Anything, mock.Anything, mock.Anything, mock.Anything).Return(nil)

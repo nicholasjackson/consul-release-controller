@@ -21,7 +21,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func setupWebhook(t *testing.T) (func(w http.ResponseWriter, r *http.Request), *state.MockStore, *mocks.Mocks) {
+func setupWebhook(t *testing.T) (func(w http.ResponseWriter, r *http.Request), *state.MockStore, *mocks.ProviderMock, *mocks.Mocks) {
 	pp, pm := mocks.BuildMocks(t)
 	l := hclog.Default()
 	s := &state.MockStore{}
@@ -29,14 +29,18 @@ func setupWebhook(t *testing.T) (func(w http.ResponseWriter, r *http.Request), *
 
 	wh, _ := NewK8sWebhook(l, m, s, pp)
 
-	return wh.Mutating(), s, pm
+	return wh.Mutating(), s, pp, pm
 }
 
-func setupReleases(t *testing.T, pm *mocks.Mocks, s *state.MockStore, name string) *models.Release {
+func setupReleases(t *testing.T, pp *mocks.ProviderMock, pm *mocks.Mocks, s *state.MockStore, name string) *models.Release {
 	depData := testutils.GetTestData(t, "valid_kubernetes_release.json")
 
+	// the release is create when configuration is save by the server
+	// by the time the kubernetes hook runs, this object will exist
 	dep := &models.Release{}
 	dep.FromJsonBody(ioutil.NopCloser(bytes.NewBuffer(depData)))
+	dep.CurrentState = models.StateIdle // set the initial state to idle
+	dep.Build(pp)
 
 	testutils.ClearMockCall(&pm.RuntimeMock.Mock, "BaseConfig")
 
@@ -52,8 +56,8 @@ func setupReleases(t *testing.T, pm *mocks.Mocks, s *state.MockStore, name strin
 }
 
 func TestAddsAnnotationToDeploymentWhenReleaseFound(t *testing.T) {
-	h, s, pm := setupWebhook(t)
-	setupReleases(t, pm, s, "api-deployment")
+	h, s, pp, pm := setupWebhook(t)
+	setupReleases(t, pp, pm, s, "api-deployment")
 
 	data := testutils.GetTestData(t, "admission_review.json")
 	rr := httptest.NewRecorder()
@@ -72,8 +76,8 @@ func TestAddsAnnotationToDeploymentWhenReleaseFound(t *testing.T) {
 }
 
 func TestCallsRuntimeDeployWhenReleaseFound(t *testing.T) {
-	h, s, pm := setupWebhook(t)
-	setupReleases(t, pm, s, "api-deployment")
+	h, s, pp, pm := setupWebhook(t)
+	setupReleases(t, pp, pm, s, "api-deployment")
 
 	data := testutils.GetTestData(t, "admission_review.json")
 	rr := httptest.NewRecorder()
@@ -84,7 +88,7 @@ func TestCallsRuntimeDeployWhenReleaseFound(t *testing.T) {
 	require.Eventually(t, func() bool {
 		calls := pm.RuntimeMock.Calls
 		for _, c := range calls {
-			if c.Method == "Deploy" {
+			if c.Method == "InitPrimary" {
 				return true
 			}
 		}
@@ -94,8 +98,8 @@ func TestCallsRuntimeDeployWhenReleaseFound(t *testing.T) {
 }
 
 func TestDoesNothingWhenNoReleaseFound(t *testing.T) {
-	h, s, pm := setupWebhook(t)
-	setupReleases(t, pm, s, "not-found")
+	h, s, pp, pm := setupWebhook(t)
+	setupReleases(t, pp, pm, s, "not-found")
 
 	data := testutils.GetTestData(t, "admission_review.json")
 	rr := httptest.NewRecorder()

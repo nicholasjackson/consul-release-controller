@@ -24,24 +24,31 @@ func (r *RuntimeMock) BaseConfig() interfaces.RuntimeBaseConfig {
 	return args.Get(0).(interfaces.RuntimeBaseConfig)
 }
 
-func (r *RuntimeMock) Deploy(ctx context.Context) error {
+func (r *RuntimeMock) InitPrimary(ctx context.Context) (interfaces.RuntimeDeploymentStatus, error) {
 	args := r.Called(ctx)
 
-	err := args.Error(0)
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return args.Get(0).(interfaces.RuntimeDeploymentStatus), args.Error(1)
 }
 
-func (r *RuntimeMock) Promote(ctx context.Context) error {
+func (r *RuntimeMock) PromoteCandidate(ctx context.Context) (interfaces.RuntimeDeploymentStatus, error) {
+	args := r.Called(ctx)
+
+	return args.Get(0).(interfaces.RuntimeDeploymentStatus), args.Error(1)
+}
+
+func (r *RuntimeMock) RemoveCandidate(ctx context.Context) error {
 	args := r.Called(ctx)
 
 	return args.Error(0)
 }
 
-func (r *RuntimeMock) Destroy(ctx context.Context) error {
+func (r *RuntimeMock) RestoreOriginal(ctx context.Context) error {
+	args := r.Called(ctx)
+
+	return args.Error(0)
+}
+
+func (r *RuntimeMock) RemovePrimary(ctx context.Context) error {
 	args := r.Called(ctx)
 
 	return args.Error(0)

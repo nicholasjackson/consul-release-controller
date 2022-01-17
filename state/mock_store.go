@@ -29,3 +29,13 @@ func (m *MockStore) DeleteRelease(name string) error {
 	args := m.Called(name)
 	return args.Error(0)
 }
+
+func (m *MockStore) GetRelease(name string) (*models.Release, error) {
+	args := m.Called(name)
+
+	if r, ok := args.Get(0).(*models.Release); ok {
+		return r, args.Error(1)
+	}
+
+	return nil, args.Error(1)
+}

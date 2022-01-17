@@ -19,7 +19,13 @@ func setupPlugin(t *testing.T, config string) (*Plugin, *clients.PrometheusMock)
 	p, _ := New(l)
 
 	pm := &clients.PrometheusMock{}
-	pm.On("Query", mock.Anything, mock.Anything, mock.Anything, mock.Anything).Return(&model.Scalar{Value: 100, Timestamp: model.Time(time.Now().Unix())}, v1.Warnings{}, nil)
+	pm.On("Query", mock.Anything, mock.Anything, mock.Anything, mock.Anything).Return(
+		model.Vector{
+			&model.Sample{Value: 100, Timestamp: model.Time(time.Now().Unix())},
+		},
+		v1.Warnings{},
+		nil,
+	)
 
 	err := p.Configure("api-deployment", "default", "kubernetes", []byte(config))
 	require.NoError(t, err)
@@ -38,11 +44,49 @@ func TestPluginReturnsErrorWhenPresetNotFound(t *testing.T) {
 	pm.AssertNotCalled(t, "Query")
 }
 
+func TestPluginReturnsErrorWhenNilValue(t *testing.T) {
+	p, pm := setupPlugin(t, twoDefaultQueriesInvalidPreset)
+
+	testutils.ClearMockCall(&pm.Mock, "Query")
+	pm.On("Query", mock.Anything, mock.Anything, mock.Anything, mock.Anything).Return(
+		nil,
+		v1.Warnings{},
+		nil,
+	)
+
+	err := p.Check(context.Background(), 30*time.Second)
+	require.Error(t, err)
+
+	pm.AssertNotCalled(t, "Query")
+}
+
+func TestPluginReturnsErrorWhenEmptyVector(t *testing.T) {
+	p, pm := setupPlugin(t, twoDefaultQueriesInvalidPreset)
+
+	testutils.ClearMockCall(&pm.Mock, "Query")
+	pm.On("Query", mock.Anything, mock.Anything, mock.Anything, mock.Anything).Return(
+		model.Vector{},
+		v1.Warnings{},
+		nil,
+	)
+
+	err := p.Check(context.Background(), 30*time.Second)
+	require.Error(t, err)
+
+	pm.AssertNotCalled(t, "Query")
+}
+
 func TestPluginReturnsErrorWhenQueryValueLessThanMin(t *testing.T) {
 	p, pm := setupPlugin(t, twoDefaultQueries)
 
 	testutils.ClearMockCall(&pm.Mock, "Query")
-	pm.On("Query", mock.Anything, mock.Anything, mock.Anything, mock.Anything).Return(&model.Scalar{Value: 1, Timestamp: model.Time(time.Now().Unix())}, v1.Warnings{}, nil)
+	pm.On("Query", mock.Anything, mock.Anything, mock.Anything, mock.Anything).Return(
+		model.Vector{
+			&model.Sample{Value: model.SampleValue(1), Timestamp: model.Time(time.Now().Unix())},
+		},
+		v1.Warnings{},
+		nil,
+	)
 
 	err := p.Check(context.Background(), 30*time.Second)
 	require.Error(t, err)
@@ -54,7 +98,13 @@ func TestPluginReturnsErrorWhenQueryValueGreaterThanMax(t *testing.T) {
 	p, pm := setupPlugin(t, twoDefaultQueries)
 
 	testutils.ClearMockCall(&pm.Mock, "Query")
-	pm.On("Query", mock.Anything, mock.Anything, mock.Anything, mock.Anything).Return(&model.Scalar{Value: 201, Timestamp: model.Time(time.Now().Unix())}, v1.Warnings{}, nil)
+	pm.On("Query", mock.Anything, mock.Anything, mock.Anything, mock.Anything).Return(
+		model.Vector{
+			&model.Sample{Value: model.SampleValue(201), Timestamp: model.Time(time.Now().Unix())},
+		},
+		v1.Warnings{},
+		nil,
+	)
 
 	err := p.Check(context.Background(), 30*time.Second)
 	require.Error(t, err)

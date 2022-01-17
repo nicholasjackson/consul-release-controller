@@ -10,9 +10,11 @@ import (
 	"github.com/hashicorp/go-hclog"
 	"github.com/nicholasjackson/consul-canary-controller/clients"
 	"github.com/nicholasjackson/consul-canary-controller/plugins/interfaces"
-	"github.com/sethvargo/go-retry"
 	v1 "k8s.io/api/apps/v1"
 )
+
+var retryTimeout = 30 * time.Second
+var retryInterval = 1 * time.Second
 
 type Plugin struct {
 	log        hclog.Logger
@@ -25,7 +27,7 @@ type PluginConfig struct {
 }
 
 func New(l hclog.Logger) (*Plugin, error) {
-	kc, err := clients.NewKubernetes(os.Getenv("KUBECONFIG"))
+	kc, err := clients.NewKubernetes(os.Getenv("KUBECONFIG"), 30*time.Second, 1*time.Second, l.Named("kubernetes-client"))
 	if err != nil {
 		return nil, err
 	}
@@ -70,60 +72,40 @@ func (p *Plugin) InitPrimary(ctx context.Context) (interfaces.RuntimeDeploymentS
 	primaryName := fmt.Sprintf("%s-primary", p.config.Deployment)
 
 	var primaryDeployment *v1.Deployment
-	var canaryDeployment *v1.Deployment
+	var candidateDeployment *v1.Deployment
 	var err error
 
 	// have we already created the primary? if so return
-	_, err = p.kubeClient.GetDeployment(primaryName, p.config.Namespace)
+	_, err = p.kubeClient.GetDeployment(ctx, primaryName, p.config.Namespace)
 	if err == nil {
-		p.log.Debug("Kubernetes primary deployment already exists", "name", primaryName, "namespace", p.config.Namespace)
+		p.log.Debug("Primary deployment already exists", "name", primaryName, "namespace", p.config.Namespace)
 
 		return interfaces.RuntimeDeploymentNoAction, nil
 	}
 
-	// we need to attempt this operation in a loop as the deployment might not have yet been created if this call comes from the
-	// mutating webhook
-	retryContext, cancel := context.WithTimeout(ctx, 30*time.Second)
-	defer cancel()
-	err = retry.Fibonacci(retryContext, 1*time.Second, func(ctx context.Context) error {
-		// if the context has timed out or been cancelled, return
-		if ctx.Err() != nil {
-			return ctx.Err()
-		}
+	candidateDeployment, err = p.kubeClient.GetHealthyDeployment(ctx, p.config.Deployment, p.config.Namespace)
 
-		// grab a reference to the new deployment
-		var getErr error
-		canaryDeployment, getErr = p.kubeClient.GetDeployment(p.config.Deployment, p.config.Namespace)
-		if getErr != nil {
-			p.log.Debug("Canary deployment not found", "name", p.config.Deployment, "namespace", p.config.Namespace, "error", getErr)
-
-			return retry.RetryableError(fmt.Errorf("unable to find deployment: %s", err))
-		}
-
-		return nil
-	})
-
-	// if we have no Canary there is nothing we can do
-	if canaryDeployment == nil {
+	// if we have no Candidate there is nothing we can do
+	if err != nil || candidateDeployment == nil {
 		return interfaces.RuntimeDeploymentNoAction, nil
 	}
 
 	// create a new primary appending primary to the deployment name
 	p.log.Debug("Cloning deployment", "name", p.config.Deployment, "namespace", p.config.Namespace)
-	primaryDeployment = canaryDeployment.DeepCopy()
+	primaryDeployment = candidateDeployment.DeepCopy()
 	primaryDeployment.Name = primaryName
 	primaryDeployment.ResourceVersion = ""
 
 	// save the new primary
-	err = p.kubeClient.UpsertDeployment(primaryDeployment)
+	err = p.kubeClient.UpsertDeployment(ctx, primaryDeployment)
 	if err != nil {
-		p.log.Debug("Unable to upsert Kubernetes deployment", "name", primaryName, "namespace", p.config.Namespace, "error", err)
+		p.log.Debug("Unable to create Primary deployment", "name", primaryName, "namespace", p.config.Namespace, "error", err)
 
 		return interfaces.RuntimeDeploymentInternalError, fmt.Errorf("unable to clone deployment: %s", err)
 	}
 
 	// check the health of the primary
-	err = p.checkDeploymentHealth(ctx, primaryName, p.config.Namespace)
+	_, err = p.kubeClient.GetHealthyDeployment(ctx, primaryName, p.config.Namespace)
 	if err != nil {
 		return interfaces.RuntimeDeploymentInternalError, err
 	}
@@ -140,103 +122,54 @@ func (p *Plugin) PromoteCandidate(ctx context.Context) (interfaces.RuntimeDeploy
 	// delete the primary and create a new primary from the canary
 	primaryName := fmt.Sprintf("%s-primary", p.config.Deployment)
 
-	var canary *v1.Deployment
-
 	// the deployment might not yet exist due to eventual consistency
-	retryContext, cancel := context.WithTimeout(ctx, 30*time.Second)
-	defer cancel()
-
-	err := retry.Fibonacci(retryContext, 1*time.Second, func(ctx context.Context) error {
-		var err error
-		canary, err = p.kubeClient.GetDeployment(p.config.Deployment, p.config.Namespace)
-		if err != nil {
-			return retry.RetryableError(err)
-		}
-
-		return nil
-	})
+	candidate, err := p.kubeClient.GetHealthyDeployment(ctx, p.config.Deployment, p.config.Namespace)
 
 	if err == clients.ErrDeploymentNotFound {
-		p.log.Debug("Canary deployment does not exist", "name", p.config.Deployment, "namespace", p.config.Namespace)
+		p.log.Debug("Candidate deployment does not exist", "name", p.config.Deployment, "namespace", p.config.Namespace)
 
 		return interfaces.RuntimeDeploymentNotFound, nil
 	}
 
 	if err != nil {
-		p.log.Error("Unable to get canary", "name", p.config.Deployment, "namespace", p.config.Namespace, "error", err)
+		p.log.Error("Unable to get Candidate", "name", p.config.Deployment, "namespace", p.config.Namespace, "error", err)
 
 		return interfaces.RuntimeDeploymentInternalError, err
 	}
 
 	// delete the old primary deployment if exists
-	_, err = p.kubeClient.GetDeployment(primaryName, p.config.Namespace)
-	if err != nil && err != clients.ErrDeploymentNotFound {
-		p.log.Error("Unable to get details for primary deployment", "name", primaryName, "namespace", p.config.Namespace, "error", err)
-
-		return interfaces.RuntimeDeploymentInternalError, err
-	}
-
-	// we have a primary so delete it
-	if err == nil {
-		p.log.Debug("Delete existing primary deployment", "name", primaryName, "namespace", p.config.Namespace)
-		err = p.kubeClient.DeleteDeployment(primaryName, p.config.Namespace)
-		if err != nil {
-			p.log.Error("Unable to remove Kubernetes deployment", "name", primaryName, "namespace", p.config.Namespace, "error", err)
-			return interfaces.RuntimeDeploymentInternalError, fmt.Errorf("unable to remove previous primary deployment: %s", err)
-		}
-
-		retryContext, cancel := context.WithTimeout(ctx, 30*time.Second)
-		defer cancel()
-		err = retry.Fibonacci(retryContext, 1*time.Second, func(ctx context.Context) error {
-			p.log.Debug("Checking deployment has been deleted", "name", primaryName, "namespace", p.config.Namespace)
-
-			if ctx.Err() != nil {
-				return ctx.Err()
-			}
-
-			pd, err := p.kubeClient.GetDeployment(primaryName, p.config.Namespace)
-			if err == nil || err != clients.ErrDeploymentNotFound {
-				p.log.Debug("deployment still exists", "name", primaryName, "namespace", p.config.Namespace, "dep", pd)
-
-				return retry.RetryableError(fmt.Errorf("deployment still exists"))
-			}
-
-			if err == clients.ErrDeploymentNotFound {
-				return nil
-			}
-
-			return nil
-		})
-
-		if err != nil {
-			p.log.Error("Unable to remove Kubernetes deployment", "name", primaryName, "namespace", p.config.Namespace, "error", err)
-			return interfaces.RuntimeDeploymentInternalError, fmt.Errorf("unable to remove previous primary deployment: %s", err)
-		}
+	p.log.Debug("Delete existing primary deployment", "name", primaryName, "namespace", p.config.Namespace)
+	err = p.kubeClient.DeleteDeployment(ctx, primaryName, p.config.Namespace)
+	if err != nil {
+		p.log.Error("Unable to remove Kubernetes deployment", "name", primaryName, "namespace", p.config.Namespace, "error", err)
+		return interfaces.RuntimeDeploymentInternalError, fmt.Errorf("unable to remove previous primary deployment: %s", err)
 	}
 
 	// create a new primary deployment from the canary
 	p.log.Debug("Creating primary deployment from", "name", p.config.Deployment, "namespace", p.config.Namespace)
-	nd := canary.DeepCopy()
-	nd.Name = primaryName
-	nd.ResourceVersion = ""
+	primary := candidate.DeepCopy()
+	primary.Name = primaryName
+	primary.ResourceVersion = ""
 
 	// save the new deployment
-	err = p.kubeClient.UpsertDeployment(nd)
+	err = p.kubeClient.UpsertDeployment(ctx, primary)
 	if err != nil {
-		p.log.Error("Unable to upsert Kubernetes deployment", "name", primaryName, "namespace", p.config.Namespace, "dep", nd, "error", err)
+		p.log.Error("Unable to create Primary deployment", "name", primaryName, "namespace", p.config.Namespace, "dep", primary, "error", err)
 
 		return interfaces.RuntimeDeploymentInternalError, fmt.Errorf("unable to clone deployment: %s", err)
 	}
 
-	p.log.Debug("Successfully cloned kubernetes deployment", "name", primaryName, "namespace", nd.Namespace)
+	p.log.Debug("Successfully created new Primary deployment", "name", primaryName, "namespace", primary.Namespace)
 
-	err = p.checkDeploymentHealth(ctx, primaryName, canary.Namespace)
+	// wait for deployment healthy
+	_, err = p.kubeClient.GetHealthyDeployment(ctx, primaryName, primary.Namespace)
 	if err != nil {
-		p.log.Error("Kubernetes deployment not healthy", "name", primaryName, "namespace", p.config.Namespace, "error", err)
+		p.log.Error("Primary deployment not healthy", "name", primaryName, "namespace", p.config.Namespace, "error", err)
+
 		return interfaces.RuntimeDeploymentInternalError, fmt.Errorf("deployment not healthy: %s", err)
 	}
 
-	p.log.Info("Kubernetes promote complete", "name", p.config.Deployment, "namespace", p.config.Namespace)
+	p.log.Info("Promote complete", "name", p.config.Deployment, "namespace", p.config.Namespace)
 
 	return interfaces.RuntimeDeploymentUpdate, nil
 }
@@ -245,7 +178,7 @@ func (p *Plugin) RemoveCandidate(ctx context.Context) error {
 	p.log.Info("Cleanup old deployment", "name", p.config.Deployment, "namespace", p.config.Namespace)
 
 	// get the canary
-	d, err := p.kubeClient.GetDeployment(p.config.Deployment, p.config.Namespace)
+	d, err := p.kubeClient.GetDeployment(ctx, p.config.Deployment, p.config.Namespace)
 	if err == clients.ErrDeploymentNotFound {
 		p.log.Debug("Canary not found", "name", p.config.Deployment, "namespace", p.config.Namespace, "error", err)
 
@@ -262,7 +195,7 @@ func (p *Plugin) RemoveCandidate(ctx context.Context) error {
 	zero := int32(0)
 	d.Spec.Replicas = &zero
 
-	err = p.kubeClient.UpsertDeployment(d)
+	err = p.kubeClient.UpsertDeployment(ctx, d)
 	if err != nil {
 		p.log.Error("Unable to scale Kubernetes deployment", "name", p.config.Deployment, "namespace", p.config.Namespace, "error", err)
 		return err
@@ -280,7 +213,7 @@ func (p *Plugin) RestoreOriginal(ctx context.Context) error {
 	primaryName := fmt.Sprintf("%s-primary", p.config.Deployment)
 
 	// get the primary
-	primaryDeployment, err := p.kubeClient.GetDeployment(primaryName, p.config.Namespace)
+	primaryDeployment, err := p.kubeClient.GetDeployment(ctx, primaryName, p.config.Namespace)
 
 	// if there is no primary, return, nothing we can do
 	if err == clients.ErrDeploymentNotFound {
@@ -296,39 +229,13 @@ func (p *Plugin) RestoreOriginal(ctx context.Context) error {
 		return err
 	}
 
-	p.log.Debug("Delete existing canary deployment", "name", p.config.Deployment, "namespace", p.config.Namespace)
+	p.log.Debug("Delete existing candidate deployment", "name", p.config.Deployment, "namespace", p.config.Namespace)
 
-	err = p.kubeClient.DeleteDeployment(p.config.Deployment, p.config.Namespace)
+	err = p.kubeClient.DeleteDeployment(ctx, p.config.Deployment, p.config.Namespace)
 	if err != nil && err != clients.ErrDeploymentNotFound {
-		p.log.Error("Unable to remove existing canary deployment", "name", primaryName, "namespace", p.config.Namespace, "error", err)
+		p.log.Error("Unable to remove existing candidate deployment", "name", primaryName, "namespace", p.config.Namespace, "error", err)
 
-		return fmt.Errorf("unable to remove previous canary deployment: %s", err)
-	}
-
-	// check the deployment has been fully removed
-	retryContext, cancel := context.WithTimeout(ctx, 30*time.Second)
-	defer cancel()
-	err = retry.Fibonacci(retryContext, 1*time.Second, func(ctx context.Context) error {
-		p.log.Debug("Checking canary has been deleted", "name", p.config.Deployment, "namespace", p.config.Namespace)
-
-		if ctx.Err() != nil {
-			return ctx.Err()
-		}
-
-		_, err := p.kubeClient.GetDeployment(p.config.Deployment, p.config.Namespace)
-		if err == clients.ErrDeploymentNotFound {
-			return nil
-		}
-
-		p.log.Debug("Deployment still exists", "name", p.config.Deployment, "namespace", p.config.Namespace)
-
-		return retry.RetryableError(fmt.Errorf("deployment still exists"))
-	})
-
-	if err != nil {
-		p.log.Error("Unable to remove Kubernetes deployment", "name", primaryName, "namespace", p.config.Namespace, "error", err)
-
-		return fmt.Errorf("unable to remove previous canary deployment: %s", err)
+		return fmt.Errorf("unable to remove previous candidate deployment: %s", err)
 	}
 
 	// create canary from the current primary
@@ -338,7 +245,7 @@ func (p *Plugin) RestoreOriginal(ctx context.Context) error {
 
 	p.log.Debug("Clone primary to create canary deployment", "name", p.config.Deployment, "namespace", p.config.Namespace, "dep", cd)
 
-	err = p.kubeClient.UpsertDeployment(cd)
+	err = p.kubeClient.UpsertDeployment(ctx, cd)
 	if err != nil {
 		p.log.Error("Unable to create new canary deployment", "name", p.config.Deployment, "namespace", p.config.Namespace, "error", err)
 
@@ -346,7 +253,7 @@ func (p *Plugin) RestoreOriginal(ctx context.Context) error {
 	}
 
 	// wait for health checks
-	err = p.checkDeploymentHealth(ctx, cd.Name, cd.Namespace)
+	_, err = p.kubeClient.GetHealthyDeployment(ctx, cd.Name, cd.Namespace)
 	if err != nil {
 		p.log.Error("Canary deployment not healthy", "name", p.config.Deployment, "namespace", p.config.Namespace, "error", err)
 
@@ -361,50 +268,20 @@ func (p *Plugin) RemovePrimary(ctx context.Context) error {
 
 	primaryName := fmt.Sprintf("%s-primary", p.config.Deployment)
 
-	// get the primary
-	pd, err := p.kubeClient.GetDeployment(primaryName, p.config.Namespace)
-
-	// if a general error is returned from the get operation, fail
-	if err != nil && err != clients.ErrDeploymentNotFound {
-		p.log.Error("Unable to get primary", "name", primaryName, "namespace", p.config.Namespace, "error", err, "dep", pd)
-
-		return err
-	}
-
+	// delete the primary
+	err := p.kubeClient.DeleteDeployment(ctx, primaryName, p.config.Namespace)
 	// if there is no primary, return, nothing we can do
 	if err == clients.ErrDeploymentNotFound {
 		p.log.Debug("Primary does not exist, exiting", "name", primaryName, "namespace", p.config.Namespace)
+
 		return nil
 	}
 
-	// delete the primary
-	err = p.kubeClient.DeleteDeployment(primaryName, pd.Namespace)
 	if err != nil {
-		p.log.Error("Unable to delete primary", "name", pd.Name, "namespace", pd.Namespace, "error", err)
+		p.log.Error("Unable to delete primary", "name", primaryName, "namespace", p.config.Namespace, "error", err)
+
 		return err
 	}
 
 	return nil
-}
-
-func (p *Plugin) checkDeploymentHealth(ctx context.Context, name, namespace string) error {
-	return retry.Fibonacci(ctx, 1*time.Second, func(ctx context.Context) error {
-		p.log.Debug("Checking health", "name", name, "namespace", namespace)
-
-		d, err := p.kubeClient.GetDeployment(name, namespace)
-		if err != nil {
-			p.log.Debug("Kubernetes deployment not found", "name", name, "namespace", namespace, "error", err)
-			return retry.RetryableError(fmt.Errorf("unable to find deployment: %s", err))
-		}
-
-		p.log.Debug("Deployment health", "name", name, "namespace", namespace, "status_replicas", d.Status.AvailableReplicas, "desired_replicas", d.Status.Replicas)
-
-		if d.Status.UnavailableReplicas > 0 || d.Status.AvailableReplicas < 1 {
-			p.log.Debug("Kubernetes deployment not healthy", "name", name, "namespace", namespace)
-			return retry.RetryableError(fmt.Errorf("deployment not healthy: %s", err))
-		}
-
-		p.log.Debug("Deployment healthy", "name", name, "namespace", namespace)
-		return nil
-	})
 }

@@ -2,10 +2,13 @@ package kubernetes
 
 import (
 	"context"
+	"fmt"
 	"testing"
+	"time"
 
 	"github.com/hashicorp/go-hclog"
 	"github.com/nicholasjackson/consul-canary-controller/clients"
+	"github.com/nicholasjackson/consul-canary-controller/plugins/interfaces"
 	"github.com/nicholasjackson/consul-canary-controller/testutils"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
@@ -19,7 +22,7 @@ var dep = &appsv1.Deployment{
 		Name:      "test-deployment",
 		Namespace: "testnamespace",
 	},
-	Status: appsv1.DeploymentStatus{ReadyReplicas: 1},
+	Status: appsv1.DeploymentStatus{ReadyReplicas: 1, UnavailableReplicas: 0, AvailableReplicas: 1},
 	Spec:   appsv1.DeploymentSpec{Replicas: &one},
 }
 
@@ -28,19 +31,18 @@ var cloneDep = &appsv1.Deployment{
 		Name:      "test-deployment-primary",
 		Namespace: "testnamespace",
 	},
-	Status: appsv1.DeploymentStatus{ReadyReplicas: 1},
+	Status: appsv1.DeploymentStatus{ReadyReplicas: 1, UnavailableReplicas: 0, AvailableReplicas: 1},
 	Spec:   appsv1.DeploymentSpec{Replicas: &one},
 }
 
 func setupPlugin(t *testing.T) (*Plugin, *clients.KubernetesMock) {
-	l := hclog.Default()
+
+	retryTimeout = 10 * time.Millisecond
+	retryInterval = 1 * time.Millisecond
+
+	l := hclog.New(&hclog.LoggerOptions{Level: hclog.Debug})
 
 	km := &clients.KubernetesMock{}
-	km.On("GetDeployment", "test-deployment", mock.Anything).Return(dep, nil)
-	km.On("GetDeployment", "test-deployment-primary", mock.Anything).Once().Return(nil, nil)
-	km.On("GetDeployment", "test-deployment-primary", mock.Anything).Once().Return(cloneDep, nil)
-	km.On("UpsertDeployment", mock.Anything).Return(nil)
-	km.On("DeleteDeployment", mock.Anything, mock.Anything).Return(nil)
 
 	p := &Plugin{}
 
@@ -53,39 +55,166 @@ func setupPlugin(t *testing.T) (*Plugin, *clients.KubernetesMock) {
 	return p, km
 }
 
-func TestDeployCreatesCloneWhenOriginalFound(t *testing.T) {
-	p, km := setupPlugin(t)
-
-	p.Deploy(context.Background())
-
-	km.AssertCalled(t, "GetDeployment", "test-deployment", "testnamespace")
-	km.AssertCalled(t, "UpsertDeployment", mock.Anything)
-
-	dep := km.Calls[2].Arguments[0].(*appsv1.Deployment)
-	require.Equal(t, "test-deployment-primary", dep.Name)
-	require.Equal(t, "testnamespace", dep.Namespace)
-}
-
-func TestDeployDoesNotCreatesCloneWhenPrimaryExists(t *testing.T) {
+func TestInitPrimaryDoesNothingWhenPrimaryExistsFound(t *testing.T) {
 	p, km := setupPlugin(t)
 
 	testutils.ClearMockCall(&km.Mock, "GetDeployment")
-	km.On("GetDeployment", "test-deployment", mock.Anything).Return(dep, nil)
-	km.On("GetDeployment", "test-deployment-primary", mock.Anything).Once().Return(cloneDep, nil)
-	km.On("GetDeployment", "test-deployment-primary", mock.Anything).Once().Return(cloneDep, nil)
+	km.On("GetDeployment", mock.Anything, "test-deployment-primary", "testnamespace").Return(cloneDep, nil)
 
-	p.Deploy(context.Background())
+	status, err := p.InitPrimary(context.Background())
+	require.NoError(t, err)
+	require.Equal(t, interfaces.RuntimeDeploymentNoAction, status)
 
-	km.AssertCalled(t, "GetDeployment", "test-deployment", "testnamespace")
-	km.AssertNotCalled(t, "UpsertDeployment", mock.Anything)
+	km.AssertCalled(t, "GetDeployment", mock.Anything, "test-deployment-primary", "testnamespace")
+	km.AssertNotCalled(t, "UpsertDeployment", mock.Anything, mock.Anything)
 }
 
-func TestPromoteClonesCanaryToCreateNewPrimary(t *testing.T) {
+func TestInitPrimaryDoesNothingWhenCandidateDoesNotExist(t *testing.T) {
 	p, km := setupPlugin(t)
 
-	err := p.Promote(context.Background())
+	testutils.ClearMockCall(&km.Mock, "GetDeployment")
+	km.On("GetDeployment", mock.Anything, "test-deployment-primary", "testnamespace").Return(nil, fmt.Errorf("Primary not found"))
+	km.On("GetHealthyDeployment", mock.Anything, "test-deployment", "testnamespace").Return(nil, fmt.Errorf("Candidate not Found"))
+
+	status, err := p.InitPrimary(context.Background())
+	require.NoError(t, err)
+	require.Equal(t, interfaces.RuntimeDeploymentNoAction, status)
+}
+
+func TestInitPrimaryCreatesPrimaryWhenCandidateExists(t *testing.T) {
+	p, km := setupPlugin(t)
+
+	testutils.ClearMockCall(&km.Mock, "GetDeployment")
+	km.On("GetDeployment", mock.Anything, "test-deployment-primary", "testnamespace").Once().Return(nil, fmt.Errorf("Primary not found"))
+	km.On("GetHealthyDeployment", mock.Anything, "test-deployment", "testnamespace").Return(dep, nil)
+	km.On("UpsertDeployment", mock.Anything, mock.Anything).Once().Return(nil)
+	km.On("GetHealthyDeployment", mock.Anything, "test-deployment-primary", "testnamespace").Return(cloneDep, nil)
+
+	status, err := p.InitPrimary(context.Background())
+	require.NoError(t, err)
+	require.Equal(t, interfaces.RuntimeDeploymentUpdate, status)
+
+	km.AssertCalled(t, "UpsertDeployment", mock.Anything, mock.Anything)
+}
+
+func TestPromoteCandidateDoesNothingWhenCandidateNotExists(t *testing.T) {
+	p, km := setupPlugin(t)
+
+	testutils.ClearMockCall(&km.Mock, "GetDeployment")
+	km.On("GetHealthyDeployment", mock.Anything, "test-deployment", "testnamespace").Return(nil, clients.ErrDeploymentNotFound)
+
+	status, err := p.PromoteCandidate(context.Background())
+	require.NoError(t, err)
+	require.Equal(t, interfaces.RuntimeDeploymentNotFound, status)
+
+	km.AssertCalled(t, "GetHealthyDeployment", mock.Anything, "test-deployment", "testnamespace")
+}
+
+func TestPromoteCandidateDeletesExistingPrimaryAndUpserts(t *testing.T) {
+	p, km := setupPlugin(t)
+
+	testutils.ClearMockCall(&km.Mock, "GetDeployment")
+	km.On("GetHealthyDeployment", mock.Anything, "test-deployment", "testnamespace").Once().Return(dep, nil)
+	km.On("DeleteDeployment", mock.Anything, "test-deployment-primary", "testnamespace").Return(nil)
+	km.On("UpsertDeployment", mock.Anything, mock.Anything).Once().Return(nil)
+	km.On("GetHealthyDeployment", mock.Anything, "test-deployment-primary", "testnamespace").Once().Return(dep, nil)
+
+	status, err := p.PromoteCandidate(context.Background())
+	require.NoError(t, err)
+	require.Equal(t, interfaces.RuntimeDeploymentUpdate, status)
+
+	km.AssertCalled(t, "DeleteDeployment", mock.Anything, "test-deployment-primary", "testnamespace")
+	km.AssertCalled(t, "UpsertDeployment", mock.Anything, mock.Anything)
+}
+
+func TestRemoveCandidateDoesNothingWhenCandidateNotFound(t *testing.T) {
+	p, km := setupPlugin(t)
+
+	testutils.ClearMockCall(&km.Mock, "GetDeployment")
+	km.On("GetDeployment", mock.Anything, "test-deployment", "testnamespace").Once().Return(nil, clients.ErrDeploymentNotFound)
+
+	err := p.RemoveCandidate(context.Background())
 	require.NoError(t, err)
 
-	km.AssertCalled(t, "DeleteDeployment", mock.Anything, mock.Anything)
-	km.AssertCalled(t, "UpsertDeployment", mock.Anything)
+	km.AssertNotCalled(t, "UpsertDeployment", mock.Anything, mock.Anything)
+}
+
+func TestRemoveCandidateScalesWhenCandidateFound(t *testing.T) {
+	p, km := setupPlugin(t)
+
+	testutils.ClearMockCall(&km.Mock, "GetDeployment")
+	km.On("GetDeployment", mock.Anything, "test-deployment", "testnamespace").Once().Return(dep, nil)
+	km.On("UpsertDeployment", mock.Anything, mock.Anything).Once().Return(nil)
+
+	err := p.RemoveCandidate(context.Background())
+	require.NoError(t, err)
+
+	require.Equal(t, int32(0), *dep.Spec.Replicas)
+	km.AssertCalled(t, "UpsertDeployment", mock.Anything, dep)
+}
+
+func TestRestoreDoesNothingWhenNoPrimaryFound(t *testing.T) {
+	p, km := setupPlugin(t)
+
+	testutils.ClearMockCall(&km.Mock, "GetDeployment")
+	km.On("GetDeployment", mock.Anything, "test-deployment-primary", "testnamespace").Once().Return(nil, clients.ErrDeploymentNotFound)
+
+	err := p.RestoreOriginal(context.Background())
+	require.NoError(t, err)
+}
+
+func TestRestoreCallsDeleteWhenPrimaryFound(t *testing.T) {
+	p, km := setupPlugin(t)
+
+	testutils.ClearMockCall(&km.Mock, "GetDeployment")
+	km.On("GetDeployment", mock.Anything, "test-deployment-primary", "testnamespace").Once().Return(cloneDep, nil)
+	km.On("DeleteDeployment", mock.Anything, "test-deployment", "testnamespace").Once().Return(nil)
+	km.On("UpsertDeployment", mock.Anything, mock.Anything).Once().Return(nil)
+	km.On("GetHealthyDeployment", mock.Anything, "test-deployment", "testnamespace").Once().Return(nil, nil)
+
+	err := p.RestoreOriginal(context.Background())
+	require.NoError(t, err)
+}
+
+func TestRestoreProceedesWhenExistingCandidateNotFound(t *testing.T) {
+	p, km := setupPlugin(t)
+
+	testutils.ClearMockCall(&km.Mock, "GetDeployment")
+	km.On("GetDeployment", mock.Anything, "test-deployment-primary", "testnamespace").Once().Return(cloneDep, nil)
+	km.On("DeleteDeployment", mock.Anything, "test-deployment", "testnamespace").Once().Return(clients.ErrDeploymentNotFound)
+	km.On("UpsertDeployment", mock.Anything, mock.Anything).Once().Return(nil)
+	km.On("GetHealthyDeployment", mock.Anything, "test-deployment", "testnamespace").Once().Return(nil, nil)
+
+	err := p.RestoreOriginal(context.Background())
+	require.NoError(t, err)
+}
+
+func TestRemovePrimaryCallsDelete(t *testing.T) {
+	p, km := setupPlugin(t)
+
+	testutils.ClearMockCall(&km.Mock, "GetDeployment")
+	km.On("DeleteDeployment", mock.Anything, "test-deployment-primary", "testnamespace").Once().Return(nil)
+
+	err := p.RemovePrimary(context.Background())
+	require.NoError(t, err)
+}
+
+func TestRemovePrimaryReturnsErrorWhenDeleteIsGenericError(t *testing.T) {
+	p, km := setupPlugin(t)
+
+	testutils.ClearMockCall(&km.Mock, "GetDeployment")
+	km.On("DeleteDeployment", mock.Anything, "test-deployment-primary", "testnamespace").Once().Return(fmt.Errorf("test"))
+
+	err := p.RemovePrimary(context.Background())
+	require.Error(t, err)
+}
+
+func TestRemovePrimaryReturnsNoErrorWhenDeleteIsNotFoundError(t *testing.T) {
+	p, km := setupPlugin(t)
+
+	testutils.ClearMockCall(&km.Mock, "GetDeployment")
+	km.On("DeleteDeployment", mock.Anything, "test-deployment-primary", "testnamespace").Once().Return(clients.ErrDeploymentNotFound)
+
+	err := p.RemovePrimary(context.Background())
+	require.NoError(t, err)
 }

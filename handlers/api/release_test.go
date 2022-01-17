@@ -9,6 +9,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"github.com/go-chi/chi/v5"
 	"github.com/nicholasjackson/consul-canary-controller/metrics"
 	"github.com/nicholasjackson/consul-canary-controller/plugins/mocks"
 	"github.com/nicholasjackson/consul-canary-controller/testutils"
@@ -20,7 +21,7 @@ import (
 	"github.com/stretchr/testify/mock"
 )
 
-func setupRelease(t *testing.T) (*ReleaseHandler, *httptest.ResponseRecorder, *state.MockStore, *mocks.ProviderMock) {
+func setupRelease(t *testing.T) (http.Handler, *httptest.ResponseRecorder, *state.MockStore, *mocks.ProviderMock) {
 	l := hclog.Default()
 	s := &state.MockStore{}
 	m := &metrics.Null{}
@@ -28,15 +29,23 @@ func setupRelease(t *testing.T) (*ReleaseHandler, *httptest.ResponseRecorder, *s
 	pp, _ := mocks.BuildMocks(t)
 
 	rw := httptest.NewRecorder()
+	apiHandler := NewReleaseHandler(l, m, s, pp)
 
-	return NewReleaseHandler(l, m, s, pp), rw, s, pp
+	rtr := chi.NewRouter()
+
+	// configure the main API
+	rtr.Post("/v1/releases", apiHandler.Post)
+	rtr.Get("/v1/releases", apiHandler.Get)
+	rtr.Delete("/v1/releases/{name}", apiHandler.Delete)
+
+	return rtr, rw, s, pp
 }
 
 func TestReleaseHandlerPostWithInvalidBodyReturnsBadRequest(t *testing.T) {
 	d, rw, _, _ := setupRelease(t)
-	r := httptest.NewRequest("POST", "/", nil)
+	r := httptest.NewRequest("POST", "/v1/releases", nil)
 
-	d.Post(rw, r)
+	d.ServeHTTP(rw, r)
 
 	assert.Equal(t, http.StatusBadRequest, rw.Code)
 }
@@ -46,9 +55,9 @@ func TestReleaseHandlerPostWithStoreErrorReturnsError(t *testing.T) {
 	s.On("UpsertRelease", mock.Anything).Return(fmt.Errorf("boom"))
 
 	td := testutils.GetTestData(t, "valid_kubernetes_release.json")
-	r := httptest.NewRequest("POST", "/", bytes.NewBuffer(td))
+	r := httptest.NewRequest("POST", "/v1/releases", bytes.NewBuffer(td))
 
-	d.Post(rw, r)
+	d.ServeHTTP(rw, r)
 
 	assert.Equal(t, http.StatusInternalServerError, rw.Code)
 }
@@ -58,9 +67,9 @@ func TestReleaseHandlerPostWithNoErrorReturnsOk(t *testing.T) {
 	s.On("UpsertRelease", mock.Anything).Return(nil)
 
 	td := testutils.GetTestData(t, "valid_kubernetes_release.json")
-	r := httptest.NewRequest("POST", "/", bytes.NewBuffer(td))
+	r := httptest.NewRequest("POST", "/v1/releases", bytes.NewBuffer(td))
 
-	d.Post(rw, r)
+	d.ServeHTTP(rw, r)
 
 	assert.Equal(t, http.StatusOK, rw.Code)
 }
@@ -70,9 +79,9 @@ func TestReleaseHandlerGetWithErrorReturnsError(t *testing.T) {
 
 	s.On("ListReleases", mock.Anything).Return(nil, fmt.Errorf("boom"))
 
-	r := httptest.NewRequest("GET", "/", nil)
+	r := httptest.NewRequest("GET", "/v1/releases", nil)
 
-	d.Get(rw, r)
+	d.ServeHTTP(rw, r)
 
 	assert.Equal(t, http.StatusInternalServerError, rw.Code)
 }
@@ -100,8 +109,8 @@ func TestReleaseHandlerGetReturnsStatus(t *testing.T) {
 
 	s.On("ListReleases", mock.Anything).Return(deps, nil)
 
-	r := httptest.NewRequest("GET", "/", nil)
-	d.Get(rw, r)
+	r := httptest.NewRequest("GET", "/v1/releases", nil)
+	d.ServeHTTP(rw, r)
 
 	assert.Equal(t, http.StatusOK, rw.Code)
 
@@ -115,14 +124,13 @@ func TestReleaseHandlerGetReturnsStatus(t *testing.T) {
 	assert.Equal(t, "state_start", resp[1].Status)
 }
 
-func TestReleaseHandlerDeleteWithErrorReturnsError(t *testing.T) {
+func TestReleaseHandlerDeleteWithGetErrorReturnsError(t *testing.T) {
 	d, rw, s, _ := setupRelease(t)
 
-	s.On("DeleteRelease", "consul").Return(fmt.Errorf("boom"))
+	s.On("GetRelease", "consul").Return(nil, fmt.Errorf("boom"))
 
-	r := httptest.NewRequest("DELETE", "/consul", nil)
-	r = r.WithContext(context.WithValue(context.Background(), "name", "consul"))
-	d.Delete(rw, r)
+	r := httptest.NewRequest("DELETE", "/v1/releases/consul", nil)
+	d.ServeHTTP(rw, r)
 
 	assert.Equal(t, http.StatusInternalServerError, rw.Code)
 }
@@ -130,23 +138,33 @@ func TestReleaseHandlerDeleteWithErrorReturnsError(t *testing.T) {
 func TestReleaseHandlerDeleteWithNotFoundReturns404(t *testing.T) {
 	d, rw, s, _ := setupRelease(t)
 
-	s.On("DeleteRelease", "consul").Return(state.ReleaseNotFound)
+	s.On("GetRelease", "consul").Return(nil, state.ReleaseNotFound)
 
-	r := httptest.NewRequest("DELETE", "/consul", nil)
+	r := httptest.NewRequest("DELETE", "/v1/releases/consul", nil)
 	r = r.WithContext(context.WithValue(context.Background(), "name", "consul"))
-	d.Delete(rw, r)
+	d.ServeHTTP(rw, r)
 
 	assert.Equal(t, http.StatusNotFound, rw.Code)
 }
 
 func TestReleaseHandlerDeleteWithNoErrorReturnsOk(t *testing.T) {
-	d, rw, s, _ := setupRelease(t)
+	d, rw, s, pp := setupRelease(t)
+
+	m := &models.Release{}
+	m.Name = "test2"
+	m.Releaser = &models.PluginConfig{Name: "test", Config: []byte(`{}`)}
+	m.Runtime = &models.PluginConfig{Name: "test", Config: []byte(`{}`)}
+	m.Monitor = &models.PluginConfig{Name: "test", Config: []byte(`{}`)}
+	m.Strategy = &models.PluginConfig{Name: "test", Config: []byte(`{}`)}
+	m.CurrentState = models.StateIdle
+	m.Build(pp)
+
+	s.On("GetRelease", "consul").Return(m, nil)
 	s.On("DeleteRelease", "consul").Return(nil)
 
-	r := httptest.NewRequest("DELETE", "/consul", nil)
-	r = r.WithContext(context.WithValue(context.Background(), "name", "consul"))
+	r := httptest.NewRequest("DELETE", "/v1/releases/consul", nil)
 
-	d.Delete(rw, r)
+	d.ServeHTTP(rw, r)
 
 	assert.Equal(t, http.StatusOK, rw.Code)
 }

@@ -41,12 +41,12 @@ run_kubernetes: fetch_kubernetes_certs
 
 # Create the shipyard environment and run the functional tests
 functional_tests_kubernetes:
-	cd functional_tests && go run main.go
+	cd functional_tests && go run .
 
 # Run the functional tests, without creating the environment
 # the environment can be created manually by running shipyard run ./shipyard/kubernetes
 functional_tests_kubernetes_no_env:
-	cd functional_tests && go run main.go --create-environment=false
+	cd functional_tests && go run . --create-environment=false
 
 # Create a new release for kubernetes
 deploy_kubernetes_relase:

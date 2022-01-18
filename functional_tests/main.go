@@ -4,14 +4,12 @@ import (
 	"bytes"
 	"context"
 	"crypto/tls"
-	"encoding/json"
 	"flag"
 	"fmt"
 	"io/ioutil"
 	"net/http"
 	"os"
 	"os/exec"
-	"path"
 	"strings"
 	"time"
 
@@ -19,10 +17,7 @@ import (
 	"github.com/cucumber/godog/colors"
 	"github.com/hashicorp/consul/api"
 	"github.com/hashicorp/go-hclog"
-	"github.com/nicholasjackson/consul-canary-controller/clients"
 	"github.com/nicholasjackson/consul-canary-controller/controller"
-	appsv1 "k8s.io/api/apps/v1"
-	"k8s.io/apimachinery/pkg/util/yaml"
 )
 
 var opts = &godog.Options{
@@ -64,10 +59,13 @@ func initializeSuite(ctx *godog.TestSuiteContext) {
 func initializeScenario(ctx *godog.ScenarioContext) {
 	ctx.Step(`^the controller is running on Kubernetes$`, theControllerIsRunningOnKubernetes)
 	ctx.Step(`^a Consul "([^"]*)" called "([^"]*)" should be created$`, aConsulCalledShouldBeCreated)
-	ctx.Step(`^a Kubernetes deployment called "([^"]*)" should be created$`, aKubernetesDeploymentCalledShouldBeCreated)
 	ctx.Step(`^I create a new Canary "([^"]*)"$`, iCreateANewCanary)
 	ctx.Step(`^I create a new version of the Kubernetes Deployment "([^"]*)"$`, iDeployANewVersionOfTheKubernetesDeployment)
-	ctx.Step(`^a call to the URL "([^"]*)" contains the text$`, aCallToTheURLContainsTheText)
+
+	ctx.Step(`^a Kubernetes deployment called "([^"]*)" should exist$`, aKubernetesDeploymentCalledShouldExist)
+	ctx.Step(`^a Kubernetes deployment called "([^"]*)" should not exist$`, aKubernetesDeploymentCalledShouldNotExist)
+	ctx.Step(`^eventually a call to the URL "([^"]*)" contains the text$`, aCallToTheURLContainsTheText)
+	ctx.Step(`^I delete the Canary "([^"]*)"$`, iDeleteTheCanary)
 
 	ctx.After(func(ctx context.Context, sc *godog.Scenario, scenarioError error) (context.Context, error) {
 		showLog := false
@@ -145,49 +143,6 @@ func retryOperation(f func() error) error {
 	return funcError
 }
 
-func getKubernetesClient() (clients.Kubernetes, error) {
-	return clients.NewKubernetes(os.Getenv("KUBECONFIG"), 120*time.Second, 1*time.Second, logger)
-}
-
-func theControllerIsRunningOnKubernetes() error {
-
-	// only create the environment when the flag is true
-	if *createEnvironment {
-		err := executeCommand([]string{"/usr/local/bin/shipyard", "run", "./shipyard/kubernetes"})
-		if err != nil {
-			return fmt.Errorf("unable to create Kubernetes environment: %s", err)
-		}
-	}
-
-	// set the shipyard environment variables
-	environment["TLS_CERT"] = path.Join(os.Getenv("HOME"), ".shipyard", "data", "kube_setup", "tls.crt")
-	environment["TLS_KEY"] = path.Join(os.Getenv("HOME"), ".shipyard", "data", "kube_setup", "tls.key")
-
-	// get the variables from shipyard
-	output := &strings.Builder{}
-	cmd := exec.Command("/usr/local/bin/shipyard", "output")
-	cmd.Dir = "../"
-	cmd.Stdout = output
-	cmd.Stderr = output
-
-	err := cmd.Run()
-	if err != nil {
-		return fmt.Errorf("unable to get output variables from shipyard: %s", err)
-	}
-
-	shipyardOutput := map[string]string{}
-	err = json.Unmarshal([]byte(output.String()), &shipyardOutput)
-	if err != nil {
-		return fmt.Errorf("unable to parse shipyard output: %s", err)
-	}
-
-	for k, v := range shipyardOutput {
-		environment[k] = v
-	}
-
-	return startServer()
-}
-
 func aConsulCalledShouldBeCreated(arg1, arg2 string) error {
 	client, err := api.NewClient(api.DefaultConfig())
 	if err != nil {
@@ -198,20 +153,6 @@ func aConsulCalledShouldBeCreated(arg1, arg2 string) error {
 		_, _, err := client.ConfigEntries().Get(arg1, arg2, nil)
 		return err
 	})
-
-	return err
-}
-
-func aKubernetesDeploymentCalledShouldBeCreated(arg1 string) error {
-	cs, err := getKubernetesClient()
-	if err != nil {
-		return fmt.Errorf("unable to create Kubernetes client, error: %s", err)
-	}
-
-	_, err = cs.GetHealthyDeployment(context.Background(), arg1, "default")
-	if err != nil {
-		return fmt.Errorf("unable to get Kubernetes deployment, error: %s", err)
-	}
 
 	return err
 }
@@ -246,39 +187,25 @@ func iCreateANewCanary(file string) error {
 	return nil
 }
 
-func iDeployANewVersionOfTheKubernetesDeployment(arg1 string) error {
-	d, err := ioutil.ReadFile(arg1)
+func iDeleteTheCanary(name string) error {
+	req, err := http.NewRequest(http.MethodDelete, fmt.Sprintf("https://localhost:9443/v1/releases/%s", name), nil)
 	if err != nil {
-		return fmt.Errorf("unable to read Kubernetes deployment: %s", err)
+		return fmt.Errorf("unable to create request: %s", err)
 	}
 
-	dep := &appsv1.Deployment{}
-	err = yaml.Unmarshal(d, dep)
-	if err != nil {
-		return fmt.Errorf("unable to decode Kubernetes deployment: %s", err)
+	client := &http.Client{
+		Transport: &http.Transport{
+			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+		},
 	}
 
-	// force the update
-	if dep.Annotations == nil {
-		dep.Annotations = map[string]string{}
+	resp, err := client.Do(req)
+	if err != nil {
+		return fmt.Errorf("unable to write config: %s", err)
 	}
 
-	dep.Annotations["updated"] = time.Now().String()
-
-	cs, err := getKubernetesClient()
-	if err != nil {
-		return fmt.Errorf("unable to create Kubernetes client, error: %s", err)
-	}
-
-	err = cs.UpsertDeployment(context.Background(), dep)
-	if err != nil {
-		return fmt.Errorf("unable to create Kubernetes deployment, error: %s", err)
-	}
-
-	_, err = cs.GetHealthyDeployment(context.Background(), dep.Name, dep.Namespace)
-	if err != nil {
-		logger.Debug("Kubernetes deployment not found", "name", dep.Name, "namespace", dep.Namespace, "error", err)
-		return fmt.Errorf("unable to find deployment: %s", err)
+	if resp.StatusCode != http.StatusOK {
+		return fmt.Errorf("unable to write config: expected code 200, got %d", resp.StatusCode)
 	}
 
 	return nil

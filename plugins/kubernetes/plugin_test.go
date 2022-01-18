@@ -55,17 +55,19 @@ func setupPlugin(t *testing.T) (*Plugin, *clients.KubernetesMock) {
 	return p, km
 }
 
-func TestInitPrimaryDoesNothingWhenPrimaryExistsFound(t *testing.T) {
+func TestInitPrimaryDoesNothingWhenPrimaryExists(t *testing.T) {
 	p, km := setupPlugin(t)
 
 	testutils.ClearMockCall(&km.Mock, "GetDeployment")
 	km.On("GetDeployment", mock.Anything, "test-deployment-primary", "testnamespace").Return(cloneDep, nil)
+	km.On("GetHealthyDeployment", mock.Anything, "test-deployment", "testnamespace").Return(dep, nil)
 
 	status, err := p.InitPrimary(context.Background())
 	require.NoError(t, err)
 	require.Equal(t, interfaces.RuntimeDeploymentNoAction, status)
 
 	km.AssertCalled(t, "GetDeployment", mock.Anything, "test-deployment-primary", "testnamespace")
+	km.AssertCalled(t, "GetHealthyDeployment", mock.Anything, "test-deployment", "testnamespace")
 	km.AssertNotCalled(t, "UpsertDeployment", mock.Anything, mock.Anything)
 }
 

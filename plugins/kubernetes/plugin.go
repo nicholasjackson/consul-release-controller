@@ -13,7 +13,7 @@ import (
 	v1 "k8s.io/api/apps/v1"
 )
 
-var retryTimeout = 30 * time.Second
+var retryTimeout = 60 * time.Second
 var retryInterval = 1 * time.Second
 
 type Plugin struct {
@@ -27,7 +27,7 @@ type PluginConfig struct {
 }
 
 func New(l hclog.Logger) (*Plugin, error) {
-	kc, err := clients.NewKubernetes(os.Getenv("KUBECONFIG"), 30*time.Second, 1*time.Second, l.Named("kubernetes-client"))
+	kc, err := clients.NewKubernetes(os.Getenv("KUBECONFIG"), retryTimeout, retryInterval, l.Named("kubernetes-client"))
 	if err != nil {
 		return nil, err
 	}
@@ -76,14 +76,17 @@ func (p *Plugin) InitPrimary(ctx context.Context) (interfaces.RuntimeDeploymentS
 	var err error
 
 	// have we already created the primary? if so return
-	_, err = p.kubeClient.GetDeployment(ctx, primaryName, p.config.Namespace)
-	if err == nil {
+	_, primaryErr := p.kubeClient.GetDeployment(ctx, primaryName, p.config.Namespace)
+
+	// fetch the current deployment
+	candidateDeployment, err = p.kubeClient.GetHealthyDeployment(ctx, p.config.Deployment, p.config.Namespace)
+
+	// if we already have a primary exit
+	if primaryErr == nil {
 		p.log.Debug("Primary deployment already exists", "name", primaryName, "namespace", p.config.Namespace)
 
 		return interfaces.RuntimeDeploymentNoAction, nil
 	}
-
-	candidateDeployment, err = p.kubeClient.GetHealthyDeployment(ctx, p.config.Deployment, p.config.Namespace)
 
 	// if we have no Candidate there is nothing we can do
 	if err != nil || candidateDeployment == nil {
@@ -243,11 +246,11 @@ func (p *Plugin) RestoreOriginal(ctx context.Context) error {
 	cd.Name = p.config.Deployment
 	cd.ResourceVersion = ""
 
-	p.log.Debug("Clone primary to create canary deployment", "name", p.config.Deployment, "namespace", p.config.Namespace, "dep", cd)
+	p.log.Debug("Clone primary to create original deployment", "name", p.config.Deployment, "namespace", p.config.Namespace)
 
 	err = p.kubeClient.UpsertDeployment(ctx, cd)
 	if err != nil {
-		p.log.Error("Unable to create new canary deployment", "name", p.config.Deployment, "namespace", p.config.Namespace, "error", err)
+		p.log.Error("Unable to restore original deployment", "name", p.config.Deployment, "namespace", p.config.Namespace, "error", err)
 
 		return err
 	}
@@ -255,7 +258,7 @@ func (p *Plugin) RestoreOriginal(ctx context.Context) error {
 	// wait for health checks
 	_, err = p.kubeClient.GetHealthyDeployment(ctx, cd.Name, cd.Namespace)
 	if err != nil {
-		p.log.Error("Canary deployment not healthy", "name", p.config.Deployment, "namespace", p.config.Namespace, "error", err)
+		p.log.Error("Original deployment not healthy", "name", p.config.Deployment, "namespace", p.config.Namespace, "error", err)
 
 		return err
 	}

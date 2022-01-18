@@ -139,6 +139,8 @@ func (p *Plugin) Execute(ctx context.Context) (interfaces.StrategyStatus, int, e
 			failCount++
 
 			if failCount >= p.config.ErrorThreshold {
+				// reset the state
+				p.currentTraffic = -1
 				return interfaces.StrategyStatusFail, 0, nil
 			}
 

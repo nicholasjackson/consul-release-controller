@@ -521,7 +521,7 @@ data:
                   },
                   {
                     "color": "red",
-                    "value": 0
+                    "value": 1
                   }
                 ]
               }
@@ -718,6 +718,63 @@ data:
           "timeShift": null,
           "title": "Running Pods",
           "type": "timeseries"
+        },
+        {
+          "datasource": null,
+          "fieldConfig": {
+            "defaults": {
+              "mappings": [],
+              "noValue": "0",
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 1
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 11,
+            "w": 7,
+            "x": 17,
+            "y": 29
+          },
+          "id": 18,
+          "options": {
+            "orientation": "auto",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "showThresholdLabels": false,
+            "showThresholdMarkers": true,
+            "text": {}
+          },
+          "pluginVersion": "8.2.3",
+          "targets": [
+            {
+              "exemplar": true,
+              "expr": "sum(envoy_cluster_outlier_detection_ejections_active{consul_destination_service=\"api\"})",
+              "interval": "",
+              "legendFormat": "",
+              "refId": "A"
+            }
+          ],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "API Outlier Ejection",
+          "type": "gauge"
         },
         {
           "datasource": "Loki",

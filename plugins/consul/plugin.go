@@ -79,16 +79,6 @@ func (p *Plugin) Setup(ctx context.Context) error {
 		return err
 	}
 
-	// create the service spiltter set to 100% the canary as this config is created before the primary has
-	// been clone from the existing deployment
-	p.log.Debug("Create service splitter", "service", p.config.ConsulService)
-	err = p.consulClient.CreateServiceSplitter(p.config.ConsulService, 0, 100)
-	if err != nil {
-		p.log.Error("Unable to create Consul ServiceSplitter", "name", p.config.ConsulService, "error", err)
-
-		return err
-	}
-
 	// create the service router
 	p.log.Debug("Create service router", "service", p.config.ConsulService)
 	err = p.consulClient.CreateServiceRouter(p.config.ConsulService)

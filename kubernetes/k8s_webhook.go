@@ -7,6 +7,7 @@ import (
 	"github.com/hashicorp/go-hclog"
 	"github.com/nicholasjackson/consul-canary-controller/metrics"
 	appmetrics "github.com/nicholasjackson/consul-canary-controller/metrics"
+	"github.com/nicholasjackson/consul-canary-controller/models"
 	"github.com/nicholasjackson/consul-canary-controller/plugins"
 	"github.com/nicholasjackson/consul-canary-controller/plugins/interfaces"
 	"github.com/nicholasjackson/consul-canary-controller/state"
@@ -61,14 +62,16 @@ func (k *K8sWebhook) Mutating() func(w http.ResponseWriter, r *http.Request) {
 
 				// trigger the deployment actions for the plugins, this is an async call
 				k.logger.Info("Calling plugin deploy for kubernetes deployment", "deployment", deployment.Name, "namespace", deployment.Namespace)
-				err := r.Deploy()
-				if err != nil {
-					k.logger.Error("Unable to trigger new deployment", "deployment", deployment.Name, "namespace", deployment.Namespace, "error", err)
+				if r.CurrentState == models.StateIdle || r.CurrentState == models.StateFail {
+					err := r.Deploy()
+					if err != nil {
+						k.logger.Debug("Unable to trigger new deployment", "deployment", deployment.Name, "namespace", deployment.Namespace, "error", err)
 
-					return &kwhmutating.MutatorResult{}, nil
+						return &kwhmutating.MutatorResult{}, nil
+					}
+
+					return &kwhmutating.MutatorResult{MutatedObject: deployment}, nil
 				}
-
-				return &kwhmutating.MutatorResult{MutatedObject: deployment}, nil
 			}
 		}
 

@@ -35,6 +35,9 @@ func setupWebhook(t *testing.T) (func(w http.ResponseWriter, r *http.Request), *
 func setupReleases(t *testing.T, pp *mocks.ProviderMock, pm *mocks.Mocks, s *state.MockStore, name string) *models.Release {
 	depData := testutils.GetTestData(t, "valid_kubernetes_release.json")
 
+	// modify the step delay for tests
+	models.StepDelay = 1 * time.Millisecond
+
 	// the release is create when configuration is save by the server
 	// by the time the kubernetes hook runs, this object will exist
 	dep := &models.Release{}

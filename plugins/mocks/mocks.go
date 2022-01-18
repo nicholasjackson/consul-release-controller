@@ -22,6 +22,7 @@ func BuildMocks(t *testing.T) (*ProviderMock, *Mocks) {
 	relMock.On("Configure", mock.Anything).Return(nil)
 	relMock.On("Setup", mock.Anything).Return(nil)
 	relMock.On("Scale", mock.Anything, mock.Anything).Return(nil)
+	relMock.On("Destroy", mock.Anything, mock.Anything).Return(nil)
 
 	runMock := &RuntimeMock{}
 	runMock.On("Configure", mock.Anything).Return(nil)

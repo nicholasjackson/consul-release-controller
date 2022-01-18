@@ -6,7 +6,7 @@ Feature: Kubernetes
   Scenario: Simple Canary Deployment existing candidate
     Given the controller is running on Kubernetes
     And I create a new version of the Kubernetes Deployment "../example/kubernetes/api.yaml"
-    Then a Kubernetes deployment called "api-deployment" should not exist
+    Then a Kubernetes deployment called "api-deployment" should exist
       And eventually a call to the URL "http://localhost:18080" contains the text 
         """
         API V1

@@ -7,9 +7,9 @@ import (
 	"time"
 
 	"github.com/hashicorp/go-hclog"
-	"github.com/nicholasjackson/consul-canary-controller/clients"
-	"github.com/nicholasjackson/consul-canary-controller/plugins/interfaces"
-	"github.com/nicholasjackson/consul-canary-controller/testutils"
+	"github.com/nicholasjackson/consul-release-controller/clients"
+	"github.com/nicholasjackson/consul-release-controller/plugins/interfaces"
+	"github.com/nicholasjackson/consul-release-controller/testutils"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
 	appsv1 "k8s.io/api/apps/v1"

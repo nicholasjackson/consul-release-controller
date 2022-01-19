@@ -7,10 +7,10 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/hashicorp/go-hclog"
-	appmetrics "github.com/nicholasjackson/consul-canary-controller/metrics"
-	"github.com/nicholasjackson/consul-canary-controller/models"
-	plugins "github.com/nicholasjackson/consul-canary-controller/plugins/interfaces"
-	"github.com/nicholasjackson/consul-canary-controller/state"
+	appmetrics "github.com/nicholasjackson/consul-release-controller/metrics"
+	"github.com/nicholasjackson/consul-release-controller/models"
+	plugins "github.com/nicholasjackson/consul-release-controller/plugins/interfaces"
+	"github.com/nicholasjackson/consul-release-controller/state"
 )
 
 type ReleaseHandler struct {

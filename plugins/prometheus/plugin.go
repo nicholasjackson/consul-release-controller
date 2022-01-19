@@ -9,7 +9,7 @@ import (
 	"text/template"
 	"time"
 
-	"github.com/nicholasjackson/consul-canary-controller/clients"
+	"github.com/nicholasjackson/consul-release-controller/clients"
 	"github.com/prometheus/common/model"
 
 	"github.com/hashicorp/go-hclog"

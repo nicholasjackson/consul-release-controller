@@ -11,12 +11,12 @@ import (
 	"time"
 
 	"github.com/hashicorp/go-hclog"
-	"github.com/nicholasjackson/consul-canary-controller/metrics"
-	"github.com/nicholasjackson/consul-canary-controller/models"
-	"github.com/nicholasjackson/consul-canary-controller/plugins/interfaces"
-	"github.com/nicholasjackson/consul-canary-controller/plugins/mocks"
-	"github.com/nicholasjackson/consul-canary-controller/state"
-	"github.com/nicholasjackson/consul-canary-controller/testutils"
+	"github.com/nicholasjackson/consul-release-controller/metrics"
+	"github.com/nicholasjackson/consul-release-controller/models"
+	"github.com/nicholasjackson/consul-release-controller/plugins/interfaces"
+	"github.com/nicholasjackson/consul-release-controller/plugins/mocks"
+	"github.com/nicholasjackson/consul-release-controller/state"
+	"github.com/nicholasjackson/consul-release-controller/testutils"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
 )

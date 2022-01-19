@@ -12,19 +12,20 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/httplog"
 	"github.com/hashicorp/go-hclog"
-	"github.com/nicholasjackson/consul-canary-controller/handlers/api"
-	"github.com/nicholasjackson/consul-canary-controller/kubernetes"
-	promMetrics "github.com/nicholasjackson/consul-canary-controller/metrics"
-	"github.com/nicholasjackson/consul-canary-controller/plugins"
-	"github.com/nicholasjackson/consul-canary-controller/state"
+	"github.com/nicholasjackson/consul-release-controller/handlers/api"
+	kubernetes "github.com/nicholasjackson/consul-release-controller/kubernetes/controller"
+	promMetrics "github.com/nicholasjackson/consul-release-controller/metrics"
+	"github.com/nicholasjackson/consul-release-controller/plugins"
+	"github.com/nicholasjackson/consul-release-controller/state"
 	"golang.org/x/net/context"
 )
 
 type Release struct {
-	log      hclog.Logger
-	server   *http.Server
-	listener net.Listener
-	metrics  *promMetrics.Sink
+	log                  hclog.Logger
+	server               *http.Server
+	listener             net.Listener
+	metrics              *promMetrics.Sink
+	kubernetesController *kubernetes.Kubernetes
 }
 
 func New(log hclog.Logger) (*Release, error) {

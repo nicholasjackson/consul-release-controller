@@ -4,7 +4,7 @@ import (
 	"errors"
 	"sync"
 
-	"github.com/nicholasjackson/consul-canary-controller/models"
+	"github.com/nicholasjackson/consul-release-controller/models"
 )
 
 var ReleaseNotFound = errors.New("Release not found")

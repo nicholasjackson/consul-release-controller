@@ -1,6 +1,6 @@
 package state
 
-import "github.com/nicholasjackson/consul-canary-controller/models"
+import "github.com/nicholasjackson/consul-release-controller/models"
 
 type ListOptions struct {
 	Runtime string // the type of the runtime i.e kubernetes

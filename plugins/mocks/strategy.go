@@ -4,7 +4,7 @@ import (
 	"context"
 	"encoding/json"
 
-	"github.com/nicholasjackson/consul-canary-controller/plugins/interfaces"
+	"github.com/nicholasjackson/consul-release-controller/plugins/interfaces"
 	"github.com/stretchr/testify/mock"
 )
 

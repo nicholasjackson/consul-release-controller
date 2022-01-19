@@ -6,8 +6,8 @@ import (
 	"time"
 
 	"github.com/hashicorp/go-hclog"
-	"github.com/nicholasjackson/consul-canary-controller/clients"
-	"github.com/nicholasjackson/consul-canary-controller/testutils"
+	"github.com/nicholasjackson/consul-release-controller/clients"
+	"github.com/nicholasjackson/consul-release-controller/testutils"
 	v1 "github.com/prometheus/client_golang/api/prometheus/v1"
 	"github.com/prometheus/common/model"
 	"github.com/stretchr/testify/mock"

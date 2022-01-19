@@ -11,7 +11,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/nicholasjackson/consul-canary-controller/clients"
+	"github.com/nicholasjackson/consul-release-controller/clients"
 	"github.com/sethvargo/go-retry"
 	appsv1 "k8s.io/api/apps/v1"
 	"k8s.io/apimachinery/pkg/util/yaml"

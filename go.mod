@@ -1,4 +1,4 @@
-module github.com/nicholasjackson/consul-canary-controller
+module github.com/nicholasjackson/consul-release-controller
 
 go 1.17
 
@@ -22,7 +22,10 @@ require (
 	k8s.io/api v0.21.1
 	k8s.io/apimachinery v0.21.1
 	k8s.io/client-go v0.21.1
+  github.com/nicholasjackson/consul-release-controller/kubernetes v1.0.0
 )
+
+replace github.com/nicholasjackson/consul-release-controller/kubernetes/controller => ./kubernetes/controller
 
 require (
 	github.com/beorn7/perks v1.0.1 // indirect

@@ -10,13 +10,13 @@ import (
 	"testing"
 
 	"github.com/go-chi/chi/v5"
-	"github.com/nicholasjackson/consul-canary-controller/metrics"
-	"github.com/nicholasjackson/consul-canary-controller/plugins/mocks"
-	"github.com/nicholasjackson/consul-canary-controller/testutils"
+	"github.com/nicholasjackson/consul-release-controller/metrics"
+	"github.com/nicholasjackson/consul-release-controller/plugins/mocks"
+	"github.com/nicholasjackson/consul-release-controller/testutils"
 
 	"github.com/hashicorp/go-hclog"
-	"github.com/nicholasjackson/consul-canary-controller/models"
-	"github.com/nicholasjackson/consul-canary-controller/state"
+	"github.com/nicholasjackson/consul-release-controller/models"
+	"github.com/nicholasjackson/consul-release-controller/state"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 )

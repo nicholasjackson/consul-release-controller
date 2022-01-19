@@ -8,7 +8,7 @@ import (
 
 	"github.com/go-playground/validator/v10"
 	"github.com/hashicorp/go-hclog"
-	"github.com/nicholasjackson/consul-canary-controller/plugins/interfaces"
+	"github.com/nicholasjackson/consul-release-controller/plugins/interfaces"
 )
 
 type Plugin struct {

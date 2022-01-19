@@ -7,8 +7,8 @@ import (
 
 	"github.com/hashicorp/go-hclog"
 	"github.com/looplab/fsm"
-	"github.com/nicholasjackson/consul-canary-controller/plugins/interfaces"
-	plugins "github.com/nicholasjackson/consul-canary-controller/plugins/interfaces"
+	"github.com/nicholasjackson/consul-release-controller/plugins/interfaces"
+	plugins "github.com/nicholasjackson/consul-release-controller/plugins/interfaces"
 )
 
 // StepDelay is used to set the default delay between events

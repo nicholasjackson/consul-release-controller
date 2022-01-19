@@ -7,7 +7,7 @@ import (
 	"syscall"
 
 	"github.com/hashicorp/go-hclog"
-	"github.com/nicholasjackson/consul-canary-controller/controller"
+	"github.com/nicholasjackson/consul-release-controller/controller"
 )
 
 func main() {

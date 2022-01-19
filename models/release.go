@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/looplab/fsm"
-	"github.com/nicholasjackson/consul-canary-controller/plugins/interfaces"
+	"github.com/nicholasjackson/consul-release-controller/plugins/interfaces"
 )
 
 type StateHistory struct {

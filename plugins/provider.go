@@ -4,11 +4,11 @@ import (
 	"fmt"
 
 	"github.com/hashicorp/go-hclog"
-	"github.com/nicholasjackson/consul-canary-controller/plugins/canary"
-	"github.com/nicholasjackson/consul-canary-controller/plugins/consul"
-	"github.com/nicholasjackson/consul-canary-controller/plugins/interfaces"
-	"github.com/nicholasjackson/consul-canary-controller/plugins/kubernetes"
-	"github.com/nicholasjackson/consul-canary-controller/plugins/prometheus"
+	"github.com/nicholasjackson/consul-release-controller/plugins/canary"
+	"github.com/nicholasjackson/consul-release-controller/plugins/consul"
+	"github.com/nicholasjackson/consul-release-controller/plugins/interfaces"
+	"github.com/nicholasjackson/consul-release-controller/plugins/kubernetes"
+	"github.com/nicholasjackson/consul-release-controller/plugins/prometheus"
 )
 
 var prov interfaces.Provider

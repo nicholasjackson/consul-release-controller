@@ -17,7 +17,7 @@ import (
 	"github.com/cucumber/godog/colors"
 	"github.com/hashicorp/consul/api"
 	"github.com/hashicorp/go-hclog"
-	"github.com/nicholasjackson/consul-canary-controller/controller"
+	"github.com/nicholasjackson/consul-release-controller/controller"
 )
 
 var opts = &godog.Options{

@@ -46,7 +46,11 @@ func (r *Release) Start() error {
 
 	store := state.NewInmemStore()
 
-	k8sHandler, _ := kubernetes.NewK8sWebhook(r.log.Named("kubernetes-webhook"), r.metrics, store, plugins.GetProvider(r.log))
+	// create the kubernetes controller
+	kc := kubernetes.New(r.log.Named("kubernetes-controller"))
+	r.kubernetesController = kc
+	go kc.Start()
+
 	healthHandler := api.NewHealthHandlers(r.log.Named("health-handlers"))
 	apiHandler := api.NewReleaseHandler(r.log.Named("restful-api"), r.metrics, store, plugins.GetProvider(r.log))
 
@@ -60,9 +64,6 @@ func (r *Release) Start() error {
 	// add health and ready endpoints
 	rtr.Get("/v1/health", healthHandler.Health)
 	rtr.Get("/v1/ready", healthHandler.Ready)
-
-	// configure kubernetes webhooks
-	rtr.Post("/k8s/mutating", k8sHandler.Mutating())
 
 	// configure the main API
 	rtr.Post("/v1/releases", apiHandler.Post)
@@ -138,6 +139,9 @@ func (r *Release) Shutdown() error {
 		r.log.Error("Unable to shutdown metrics", "error", err)
 		return err
 	}
+
+	r.log.Info("Shutting down kubernetes controller")
+	r.kubernetesController.Stop()
 
 	return nil
 }

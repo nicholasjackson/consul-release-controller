@@ -90,7 +90,7 @@ func (k *Kubernetes) Start() error {
 	//+kubebuilder:scaffold:builder
 
 	setupLog.Info("Starting Kubernetes controller")
-	if err := mgr.Start(ctrl.SetupSignalHandler()); err != nil {
+	if err := mgr.Start(k.ctx); err != nil {
 		setupLog.Error(err, "problem running manager")
 		return err
 	}

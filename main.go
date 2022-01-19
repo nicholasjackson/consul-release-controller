@@ -6,15 +6,22 @@ import (
 	"os/signal"
 	"syscall"
 
+	"github.com/hashicorp/go-hclog"
 	"github.com/nicholasjackson/consul-canary-controller/controller"
 )
 
 func main() {
-	s := controller.New()
+	logger := hclog.New(&hclog.LoggerOptions{Level: hclog.Debug, Color: hclog.AutoColor})
+	s, err := controller.New(logger)
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
 
 	go func() {
 		err := s.Start()
 		if err != nil {
+			logger.Error("Start server error", "error", err)
 			os.Exit(1)
 		}
 	}()
@@ -25,7 +32,27 @@ func main() {
 
 	// Block until a signal is received.
 	sig := <-c
-	fmt.Println("Graceful shutdown, got signal:", sig)
+	logger.Info("Graceful shutdown", "signal:", sig)
 
-	s.Shutdown()
+	err = s.Shutdown()
+	if err != nil {
+		logger.Error("Unable to shutdown server", "error", err)
+	}
+
+	logger.Info("Restarting server")
+	go func() {
+		err = s.Start()
+		if err != nil {
+			logger.Error("Unable to restart server", "error", err)
+			os.Exit(1)
+		}
+	}()
+
+	sig = <-c
+	logger.Info("Graceful shutdown", "signal:", sig)
+
+	err = s.Shutdown()
+	if err != nil {
+		logger.Error("Unable to shutdown server", "error", err)
+	}
 }

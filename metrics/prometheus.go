@@ -1,6 +1,7 @@
 package metrics
 
 import (
+	"context"
 	"fmt"
 	"net/http"
 	"time"
@@ -12,11 +13,12 @@ import (
 )
 
 type Sink struct {
-	addr string
-	port int
-	path string
-	m    *metrics.Metrics
-	prom *prometheus.PrometheusSink
+	addr   string
+	port   int
+	path   string
+	m      *metrics.Metrics
+	prom   *prometheus.PrometheusSink
+	server *http.Server
 }
 
 func New(addr string, port int, path string) (*Sink, error) {
@@ -25,19 +27,20 @@ func New(addr string, port int, path string) (*Sink, error) {
 		return nil, err
 	}
 
-	m, err := metrics.NewGlobal(metrics.DefaultConfig("consul_canary_controller"), promSink)
+	m, err := metrics.New(metrics.DefaultConfig("consul_canary_controller"), promSink)
 	if err != nil {
 		return nil, err
 	}
 
 	m.EnableRuntimeMetrics = true
 
-	return &Sink{addr, port, path, m, promSink}, nil
+	return &Sink{addr: addr, port: port, path: path, m: m, prom: promSink}, nil
 }
 
 // StartServer exposes the metrics
 func (m *Sink) StartServer() error {
-	http.Handle(m.path, promhttp.Handler())
+	mux := &http.ServeMux{}
+	mux.Handle(m.path, promhttp.Handler())
 
 	err := make(chan error)
 	timeout := time.After(500 * time.Millisecond)
@@ -45,8 +48,12 @@ func (m *Sink) StartServer() error {
 	// start the server in the background but wait to
 	// check that it can bind correctly
 	// if not return an error
+	m.server = &http.Server{
+		Addr:    fmt.Sprintf("%s:%d", m.addr, m.port),
+		Handler: mux,
+	}
 	go func() {
-		err <- http.ListenAndServe(fmt.Sprintf("%s:%d", m.addr, m.port), nil)
+		err <- m.server.ListenAndServe()
 	}()
 
 	select {
@@ -56,6 +63,13 @@ func (m *Sink) StartServer() error {
 		return e
 	}
 
+}
+
+func (m *Sink) StopServer() error {
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	defer cancel()
+
+	return m.server.Shutdown(ctx)
 }
 
 func (m *Sink) ServiceStarting() {

@@ -41,7 +41,7 @@ run_kubernetes: fetch_kubernetes_certs
 
 # Create the shipyard environment and run the functional tests
 functional_tests_kubernetes:
-	cd functional_tests && go run .
+	cd functional_tests && go run . --always-log
 
 # Run the functional tests, without creating the environment
 # the environment can be created manually by running shipyard run ./shipyard/kubernetes

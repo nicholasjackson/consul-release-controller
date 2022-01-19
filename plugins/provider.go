@@ -14,9 +14,9 @@ import (
 var prov interfaces.Provider
 
 // GetProvider lazy instantiates a plugin provider and returns a reference
-func GetProvider() interfaces.Provider {
+func GetProvider(log hclog.Logger) interfaces.Provider {
 	if prov == nil {
-		prov = &ProviderImpl{hclog.New(&hclog.LoggerOptions{Level: hclog.Debug, Color: hclog.AutoColor})}
+		prov = &ProviderImpl{log}
 	}
 
 	return prov

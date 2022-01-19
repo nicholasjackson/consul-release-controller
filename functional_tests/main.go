@@ -32,6 +32,7 @@ var server *controller.Release
 var environment map[string]string
 
 var createEnvironment = flag.Bool("create-environment", true, "Create and destroy the test environment when running tests?")
+var alwaysLog = flag.Bool("always-log", false, "Always show the log output")
 
 func main() {
 	godog.BindFlags("godog.", flag.CommandLine, opts)
@@ -51,8 +52,20 @@ func initializeSuite(ctx *godog.TestSuiteContext) {
 	ctx.BeforeSuite(func() {
 		environment = map[string]string{}
 
-		logStore = *bytes.NewBufferString("")
-		logger = hclog.New(&hclog.LoggerOptions{Output: &logStore})
+		if *alwaysLog {
+			logger = hclog.New(&hclog.LoggerOptions{Level: hclog.Trace, Color: hclog.AutoColor})
+			logger.Info("Create standard logger")
+		} else {
+			logStore = *bytes.NewBufferString("")
+			logger = hclog.New(&hclog.LoggerOptions{Output: &logStore, Level: hclog.Trace})
+		}
+
+		var err error
+		server, err = controller.New(logger)
+		if err != nil {
+			logger.Error("Unable to create server", "error", err)
+			os.Exit(1)
+		}
 	})
 }
 
@@ -60,10 +73,12 @@ func initializeScenario(ctx *godog.ScenarioContext) {
 	ctx.Step(`^the controller is running on Kubernetes$`, theControllerIsRunningOnKubernetes)
 	ctx.Step(`^a Consul "([^"]*)" called "([^"]*)" should be created$`, aConsulCalledShouldBeCreated)
 	ctx.Step(`^I create a new Canary "([^"]*)"$`, iCreateANewCanary)
-	ctx.Step(`^I create a new version of the Kubernetes Deployment "([^"]*)"$`, iDeployANewVersionOfTheKubernetesDeployment)
 
+	ctx.Step(`^I create a new version of the Kubernetes deployment "([^"]*)"$`, iDeployANewVersionOfTheKubernetesDeployment)
+	ctx.Step(`^I delete the Kubernetes deployment "([^"]*)"$`, iDeleteTheKubernetesDeployment)
 	ctx.Step(`^a Kubernetes deployment called "([^"]*)" should exist$`, aKubernetesDeploymentCalledShouldExist)
 	ctx.Step(`^a Kubernetes deployment called "([^"]*)" should not exist$`, aKubernetesDeploymentCalledShouldNotExist)
+
 	ctx.Step(`^eventually a call to the URL "([^"]*)" contains the text$`, aCallToTheURLContainsTheText)
 	ctx.Step(`^I delete the Canary "([^"]*)"$`, iDeleteTheCanary)
 
@@ -76,6 +91,7 @@ func initializeScenario(ctx *godog.ScenarioContext) {
 		if server != nil {
 			err := server.Shutdown()
 			if err != nil {
+				logger.Error("Unable to shutdown server", "error", err)
 				showLog = true
 			}
 		}
@@ -84,11 +100,12 @@ func initializeScenario(ctx *godog.ScenarioContext) {
 		if *createEnvironment {
 			err := executeCommand([]string{"/usr/local/bin/shipyard", "destroy"})
 			if err != nil {
+				logger.Error("Unable to destroy shipyard resources", "error", err)
 				showLog = true
 			}
 		}
 
-		if showLog {
+		if showLog && !*alwaysLog {
 			fmt.Println(logStore.String())
 		}
 
@@ -113,10 +130,11 @@ func startServer() error {
 		os.Setenv(k, v)
 	}
 
-	server = controller.New()
-
 	go func() {
 		err = server.Start()
+		if err != nil {
+			logger.Error("Unable to start server", "error", err)
+		}
 	}()
 
 	// wait for the server to start and return any error

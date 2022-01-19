@@ -97,6 +97,24 @@ func iDeployANewVersionOfTheKubernetesDeployment(arg1 string) error {
 	return nil
 }
 
+func iDeleteTheKubernetesDeployment(name string) error {
+	cs, err := getKubernetesClient()
+	if err != nil {
+		return fmt.Errorf("unable to create Kubernetes client, error: %s", err)
+	}
+
+	err = cs.DeleteDeployment(context.Background(), name, "default")
+	if err == nil {
+		return nil
+	}
+
+	if err != clients.ErrDeploymentNotFound {
+		return fmt.Errorf("unable to delete deployment: %s", err)
+	}
+
+	return nil
+}
+
 func aKubernetesDeploymentCalledShouldExist(arg1 string) error {
 	cs, err := getKubernetesClient()
 	if err != nil {

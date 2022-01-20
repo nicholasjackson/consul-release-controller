@@ -24,8 +24,11 @@ jobs:
     - name: Test
       run: go test -v ./...
    
-  functional_test:
+  functional_tests:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        tags: ["@k8s,@canary_existing", "@k8s,@canary_none", "@k8s,@canary_rollback"]
     steps:
     - uses: actions/checkout@v2
 
@@ -39,7 +42,7 @@ jobs:
         curl https://shipyard.run/install | bash
     - name: Run Functional Tests
       run: |
-        make functional_tests_kubernetes
+        cd functional_tests && go run . --godog.tags="${{ matrix.tags }}"
   
   release:
     runs-on: ubuntu-latest

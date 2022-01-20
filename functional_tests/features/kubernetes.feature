@@ -3,7 +3,7 @@ Feature: Kubernetes
   In order to test a Canary Deployments on Kubernetes
   I need to ensure the code funcionality is working as specified
 
-  @canary_existing
+  @k8s_canary_existing
   Scenario: Canary Deployment existing candidate
     Given the controller is running on Kubernetes
     And I create a new version of the Kubernetes deployment "../example/kubernetes/api.yaml"
@@ -38,7 +38,7 @@ Feature: Kubernetes
         API V2
         """
 
-  @canary_none
+  @k8s_canary_none
   Scenario: Canary Deployment no candidate
     Given the controller is running on Kubernetes
     When I delete the Kubernetes deployment "api-deployment"
@@ -74,8 +74,8 @@ Feature: Kubernetes
         """
         API V2
         """
-  
-  @canary_rollback
+
+  @k8s_canary_rollback
   Scenario: Canary Deployment with Rollback
     Given the controller is running on Kubernetes
     When I delete the Kubernetes deployment "api-deployment"

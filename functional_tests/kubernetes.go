@@ -12,6 +12,7 @@ import (
 	"time"
 
 	"github.com/nicholasjackson/consul-release-controller/clients"
+	v1release "github.com/nicholasjackson/consul-release-controller/kubernetes/controller/api/v1"
 	"github.com/sethvargo/go-retry"
 	appsv1 "k8s.io/api/apps/v1"
 	"k8s.io/apimachinery/pkg/util/yaml"
@@ -155,4 +156,54 @@ func aKubernetesDeploymentCalledShouldNotExist(arg1 string) error {
 	})
 
 	return err
+}
+
+func iDeployANewVersionOfTheKubernetesRelease(arg1 string) error {
+	d, err := ioutil.ReadFile(arg1)
+	if err != nil {
+		return fmt.Errorf("unable to read Kubernetes release: %s", err)
+	}
+
+	rel := &v1release.Release{}
+	err = yaml.Unmarshal(d, rel)
+	if err != nil {
+		return fmt.Errorf("unable to decode Kubernetes release: %s", err)
+	}
+
+	// force the update
+	if rel.Annotations == nil {
+		rel.Annotations = map[string]string{}
+	}
+
+	rel.Annotations["updated"] = time.Now().String()
+
+	cs, err := getKubernetesClient()
+	if err != nil {
+		return fmt.Errorf("unable to create Kubernetes client, error: %s", err)
+	}
+
+	err = cs.InsertRelease(context.Background(), rel)
+	if err != nil {
+		return fmt.Errorf("unable to create Kubernetes release, error: %s", err)
+	}
+
+	return nil
+}
+
+func iDeleteTheKubernetesRelease(name string) error {
+	cs, err := getKubernetesClient()
+	if err != nil {
+		return fmt.Errorf("unable to create Kubernetes client, error: %s", err)
+	}
+
+	err = cs.DeleteRelease(context.Background(), name, "default")
+	if err == nil {
+		return nil
+	}
+
+	if err != clients.ErrDeploymentNotFound {
+		return fmt.Errorf("unable to delete release: %s", err)
+	}
+
+	return nil
 }

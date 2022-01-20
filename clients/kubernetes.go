@@ -7,12 +7,16 @@ import (
 	"time"
 
 	"github.com/hashicorp/go-hclog"
+	v1release "github.com/nicholasjackson/consul-release-controller/kubernetes/controller/api/v1"
 	"github.com/sethvargo/go-retry"
 	appsv1 "k8s.io/api/apps/v1"
 	"k8s.io/apimachinery/pkg/api/errors"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
+	"sigs.k8s.io/controller-runtime/pkg/client"
+	controller "sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 const (
@@ -45,6 +49,12 @@ type Kubernetes interface {
 	// returns a nill deployment and a ErrDeploymentNotHealthy error when the deployment exists but is not in a healthy state
 	// any other error type signifies an internal error
 	GetHealthyDeployment(ctx context.Context, name, namespace string) (*appsv1.Deployment, error)
+
+	// InsertRelease creates or updates the given Kubernetes Release
+	InsertRelease(ctx context.Context, dep *v1release.Release) error
+
+	// DeleteRelease deletes the given Kubernetes Release
+	DeleteRelease(ctx context.Context, name, namespace string) error
 }
 
 // NewKubernetes creates a new Kubernetes implementation
@@ -58,14 +68,23 @@ func NewKubernetes(configPath string, timeout, interval time.Duration, l hclog.L
 		return nil, fmt.Errorf("unable to create Kubernetes client, error: %s", err)
 	}
 
-	return &KubernetesImpl{clientset: cs, timeout: timeout, interval: interval, logger: l}, nil
+	scheme := runtime.NewScheme()
+	v1release.AddToScheme(scheme)
+
+	cc, err := controller.New(config, client.Options{Scheme: scheme})
+	if err != nil {
+		return nil, fmt.Errorf("unable to create controller client, error: %s", err)
+	}
+
+	return &KubernetesImpl{clientset: cs, controllerClient: cc, timeout: timeout, interval: interval, logger: l}, nil
 }
 
 type KubernetesImpl struct {
-	clientset *kubernetes.Clientset
-	timeout   time.Duration
-	interval  time.Duration
-	logger    hclog.Logger
+	clientset        *kubernetes.Clientset
+	controllerClient controller.Client
+	timeout          time.Duration
+	interval         time.Duration
+	logger           hclog.Logger
 }
 
 func (k *KubernetesImpl) GetDeployment(ctx context.Context, name, namespace string) (*appsv1.Deployment, error) {
@@ -154,4 +173,25 @@ func (k *KubernetesImpl) GetHealthyDeployment(ctx context.Context, name, namespa
 	}
 
 	return deployment, nil
+}
+
+func (k *KubernetesImpl) InsertRelease(ctx context.Context, release *v1release.Release) error {
+	err := k.controllerClient.Create(ctx, release)
+
+	return err
+}
+
+func (k *KubernetesImpl) DeleteRelease(ctx context.Context, name, namespace string) error {
+	obj := v1release.Release{
+		ObjectMeta: v1.ObjectMeta{Name: name, Namespace: namespace},
+	}
+
+	thirty := int64(30)
+	err := k.controllerClient.Delete(ctx, &obj, &controller.DeleteOptions{GracePeriodSeconds: &thirty})
+
+	if errors.IsNotFound(err) {
+		return ErrDeploymentNotFound
+	}
+
+	return err
 }

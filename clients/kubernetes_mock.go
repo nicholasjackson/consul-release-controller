@@ -3,6 +3,7 @@ package clients
 import (
 	"context"
 
+	v1release "github.com/nicholasjackson/consul-release-controller/kubernetes/controller/api/v1"
 	"github.com/stretchr/testify/mock"
 	appsv1 "k8s.io/api/apps/v1"
 )
@@ -43,4 +44,16 @@ func (k *KubernetesMock) GetHealthyDeployment(ctx context.Context, name, namespa
 	}
 
 	return nil, args.Error(1)
+}
+
+func (k *KubernetesMock) InsertRelease(ctx context.Context, dep *v1release.Release) error {
+	args := k.Called(ctx, dep)
+
+	return args.Error(0)
+}
+
+func (k *KubernetesMock) DeleteRelease(ctx context.Context, name, namespace string) error {
+	args := k.Called(ctx, name, namespace)
+
+	return args.Error(0)
 }

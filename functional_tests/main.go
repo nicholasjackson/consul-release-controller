@@ -33,6 +33,7 @@ var environment map[string]string
 
 var createEnvironment = flag.Bool("create-environment", true, "Create and destroy the test environment when running tests?")
 var alwaysLog = flag.Bool("always-log", false, "Always show the log output")
+var dontDestroy = flag.Bool("dont-destroy", false, "Do not destroy the environment after the scenario")
 
 func main() {
 	godog.BindFlags("godog.", flag.CommandLine, opts)
@@ -78,6 +79,8 @@ func initializeScenario(ctx *godog.ScenarioContext) {
 	ctx.Step(`^I delete the Kubernetes deployment "([^"]*)"$`, iDeleteTheKubernetesDeployment)
 	ctx.Step(`^a Kubernetes deployment called "([^"]*)" should exist$`, aKubernetesDeploymentCalledShouldExist)
 	ctx.Step(`^a Kubernetes deployment called "([^"]*)" should not exist$`, aKubernetesDeploymentCalledShouldNotExist)
+	ctx.Step(`^I create a new Kubernetes release "([^"]*)"$`, iDeployANewVersionOfTheKubernetesRelease)
+	ctx.Step(`^I delete the Kubernetes release "([^"]*)"$`, iDeleteTheKubernetesRelease)
 
 	ctx.Step(`^eventually a call to the URL "([^"]*)" contains the text$`, aCallToTheURLContainsTheText)
 	ctx.Step(`^I delete the Canary "([^"]*)"$`, iDeleteTheCanary)
@@ -97,7 +100,7 @@ func initializeScenario(ctx *godog.ScenarioContext) {
 		}
 
 		// only destroy the environment when the flag is true
-		if *createEnvironment {
+		if *createEnvironment && !*dontDestroy {
 			err := executeCommand([]string{"/usr/local/bin/shipyard", "destroy"})
 			if err != nil {
 				logger.Error("Unable to destroy shipyard resources", "error", err)
@@ -107,6 +110,15 @@ func initializeScenario(ctx *godog.ScenarioContext) {
 
 		if showLog && !*alwaysLog {
 			fmt.Println(logStore.String())
+		}
+
+		// exit after the scenario when don't destroy is set
+		if *dontDestroy {
+			if showLog {
+				os.Exit(1)
+			}
+
+			os.Exit(0)
 		}
 
 		return ctx, nil

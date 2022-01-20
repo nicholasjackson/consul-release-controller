@@ -3,6 +3,7 @@ Feature: Kubernetes
   In order to test a Canary Deployments on Kubernetes
   I need to ensure the code funcionality is working as specified
 
+  @canary_existing
   Scenario: Canary Deployment existing candidate
     Given the controller is running on Kubernetes
     And I create a new version of the Kubernetes deployment "../example/kubernetes/api.yaml"
@@ -11,7 +12,7 @@ Feature: Kubernetes
         """
         API V1
         """
-    When I create a new Canary "../example/kubernetes/canary/api.json"
+    When I create a new Kubernetes release "../example/kubernetes/canary/api_release.yaml"
       Then a Kubernetes deployment called "api-deployment-primary" should exist
       And a Kubernetes deployment called "api-deployment" should not exist
       And a Consul "service-defaults" called "api" should be created
@@ -29,7 +30,7 @@ Feature: Kubernetes
         """
         API V2
         """
-    When I delete the Canary "api"
+    When I delete the Kubernetes release "api"
       Then a Kubernetes deployment called "api-deployment-primary" should not exist
       And a Kubernetes deployment called "api-deployment" should exist
       And eventually a call to the URL "http://localhost:18080" contains the text 
@@ -37,10 +38,11 @@ Feature: Kubernetes
         API V2
         """
 
+  @canary_none
   Scenario: Canary Deployment no candidate
     Given the controller is running on Kubernetes
     When I delete the Kubernetes deployment "api-deployment"
-    And I create a new Canary "../example/kubernetes/canary/api.json"
+    And I create a new Kubernetes release "../example/kubernetes/canary/api_release.yaml"
       Then a Kubernetes deployment called "api-deployment-primary" should not exist
       And a Kubernetes deployment called "api-deployment" should not exist
     When I create a new version of the Kubernetes deployment "../example/kubernetes/api.yaml"
@@ -65,7 +67,7 @@ Feature: Kubernetes
         """
         API V2
         """
-    When I delete the Canary "api"
+    When I delete the Kubernetes release "api"
       Then a Kubernetes deployment called "api-deployment-primary" should not exist
       And a Kubernetes deployment called "api-deployment" should exist
       And eventually a call to the URL "http://localhost:18080" contains the text 
@@ -73,15 +75,17 @@ Feature: Kubernetes
         API V2
         """
   
+  @canary_rollback
   Scenario: Canary Deployment with Rollback
     Given the controller is running on Kubernetes
+    When I delete the Kubernetes deployment "api-deployment"
     And I create a new version of the Kubernetes deployment "../example/kubernetes/api.yaml"
     Then a Kubernetes deployment called "api-deployment" should exist
       And eventually a call to the URL "http://localhost:18080" contains the text 
         """
         API V1
         """
-    When I create a new Canary "../example/kubernetes/canary/api.json"
+    And I create a new Kubernetes release "../example/kubernetes/canary/api_release.yaml"
       Then a Kubernetes deployment called "api-deployment-primary" should exist
       And a Kubernetes deployment called "api-deployment" should not exist
       And a Consul "service-defaults" called "api" should be created
@@ -99,7 +103,7 @@ Feature: Kubernetes
         """
         API V1
         """
-    When I delete the Canary "api"
+    When I delete the Kubernetes release "api"
       Then a Kubernetes deployment called "api-deployment-primary" should not exist
       And a Kubernetes deployment called "api-deployment" should exist
       And eventually a call to the URL "http://localhost:18080" contains the text 

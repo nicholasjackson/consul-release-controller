@@ -101,7 +101,7 @@ func (d *ReleaseHandler) GetAll(rw http.ResponseWriter, req *http.Request) {
 func (d *ReleaseHandler) GetSingle(rw http.ResponseWriter, req *http.Request) {
 	name := chi.URLParam(req, "name")
 
-	d.logger.Info("Release GET handler called")
+	d.logger.Info("Release GET single handler called")
 	mFinal := d.metrics.HandleRequest("release/get", nil)
 
 	rel, err := d.store.GetRelease(name)

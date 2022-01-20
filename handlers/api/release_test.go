@@ -19,6 +19,7 @@ import (
 	"github.com/nicholasjackson/consul-release-controller/state"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
+	"github.com/stretchr/testify/require"
 )
 
 func setupRelease(t *testing.T) (http.Handler, *httptest.ResponseRecorder, *state.MockStore, *mocks.ProviderMock) {
@@ -35,7 +36,8 @@ func setupRelease(t *testing.T) (http.Handler, *httptest.ResponseRecorder, *stat
 
 	// configure the main API
 	rtr.Post("/v1/releases", apiHandler.Post)
-	rtr.Get("/v1/releases", apiHandler.Get)
+	rtr.Get("/v1/releases", apiHandler.GetAll)
+	rtr.Get("/v1/releases/{name}", apiHandler.GetSingle)
 	rtr.Delete("/v1/releases/{name}", apiHandler.Delete)
 
 	return rtr, rw, s, pp
@@ -122,6 +124,42 @@ func TestReleaseHandlerGetReturnsStatus(t *testing.T) {
 
 	assert.Equal(t, "test2", resp[1].Name)
 	assert.Equal(t, "state_start", resp[1].Status)
+}
+
+func TestReleaseHandlerGetSingleReturnsReleaseWhenExists(t *testing.T) {
+	d, rw, s, pp := setupRelease(t)
+
+	m1 := &models.Release{}
+	m1.Name = "test1"
+	m1.Releaser = &models.PluginConfig{Name: "test", Config: []byte(`{}`)}
+	m1.Runtime = &models.PluginConfig{Name: "test", Config: []byte(`{}`)}
+	m1.Monitor = &models.PluginConfig{Name: "test", Config: []byte(`{}`)}
+	m1.Strategy = &models.PluginConfig{Name: "test", Config: []byte(`{}`)}
+	m1.Build(pp)
+
+	s.On("GetRelease", mock.Anything).Return(m1, nil)
+
+	r := httptest.NewRequest("GET", "/v1/releases/test1", nil)
+	d.ServeHTTP(rw, r)
+
+	assert.Equal(t, http.StatusOK, rw.Code)
+
+	rel := models.Release{}
+	err := json.NewDecoder(rw.Body).Decode(&rel)
+
+	require.NoError(t, err)
+	require.Equal(t, m1.Name, rel.Name)
+}
+
+func TestReleaseHandlerGetSingleReturns404WhenNotFound(t *testing.T) {
+	d, rw, s, _ := setupRelease(t)
+
+	s.On("GetRelease", mock.Anything).Return(nil, state.ReleaseNotFound)
+
+	r := httptest.NewRequest("GET", "/v1/releases/test1", nil)
+	d.ServeHTTP(rw, r)
+
+	assert.Equal(t, http.StatusNotFound, rw.Code)
 }
 
 func TestReleaseHandlerDeleteWithGetErrorReturnsError(t *testing.T) {

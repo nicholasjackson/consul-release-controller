@@ -178,18 +178,18 @@ func (p *Plugin) PromoteCandidate(ctx context.Context) (interfaces.RuntimeDeploy
 }
 
 func (p *Plugin) RemoveCandidate(ctx context.Context) error {
-	p.log.Info("Cleanup old deployment", "name", p.config.Deployment, "namespace", p.config.Namespace)
+	p.log.Info("Remove candidate deployment", "name", p.config.Deployment, "namespace", p.config.Namespace)
 
-	// get the canary
+	// get the candidate
 	d, err := p.kubeClient.GetDeployment(ctx, p.config.Deployment, p.config.Namespace)
 	if err == clients.ErrDeploymentNotFound {
-		p.log.Debug("Canary not found", "name", p.config.Deployment, "namespace", p.config.Namespace, "error", err)
+		p.log.Debug("Candidate not found", "name", p.config.Deployment, "namespace", p.config.Namespace, "error", err)
 
 		return nil
 	}
 
 	if err != nil {
-		p.log.Error("Unable to get canary", "name", p.config.Deployment, "namespace", p.config.Namespace, "error", err)
+		p.log.Error("Unable to get candidate", "name", p.config.Deployment, "namespace", p.config.Namespace, "error", err)
 
 		return err
 	}

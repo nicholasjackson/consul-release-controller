@@ -15,6 +15,9 @@ type Store interface {
 	ListReleases(options *ListOptions) ([]*models.Release, error)
 
 	// GetRelease with the given name
+	// Returns a nil Release and ReleaseNotFound error when a Release with the given name does not
+	// exist in the store.
+	// Any other error indicates an internal problem fetching the Release
 	GetRelease(name string) (*models.Release, error)
 
 	// DeleteRelease with the given name

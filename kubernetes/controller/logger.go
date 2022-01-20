@@ -30,7 +30,7 @@ func (s *SinkLogger) Enabled(level int) bool {
 // only be called when Enabled(level) is true. See Logger.Info for more
 // details.
 func (s *SinkLogger) Info(level int, msg string, keysAndValues ...interface{}) {
-	s.log.Info(msg, keysAndValues...)
+	s.log.Debug(msg, keysAndValues...)
 }
 
 // Error logs an error, with the given message and key/value pairs as

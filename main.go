@@ -39,20 +39,20 @@ func main() {
 		logger.Error("Unable to shutdown server", "error", err)
 	}
 
-	logger.Info("Restarting server")
-	go func() {
-		err = s.Start()
-		if err != nil {
-			logger.Error("Unable to restart server", "error", err)
-			os.Exit(1)
-		}
-	}()
+	//logger.Info("Restarting server")
+	//go func() {
+	//	err = s.Start()
+	//	if err != nil {
+	//		logger.Error("Unable to restart server", "error", err)
+	//		os.Exit(1)
+	//	}
+	//}()
 
-	sig = <-c
-	logger.Info("Graceful shutdown", "signal:", sig)
+	//sig = <-c
+	//logger.Info("Graceful shutdown", "signal:", sig)
 
-	err = s.Shutdown()
-	if err != nil {
-		logger.Error("Unable to shutdown server", "error", err)
-	}
+	//err = s.Shutdown()
+	//if err != nil {
+	//	logger.Error("Unable to shutdown server", "error", err)
+	//}
 }

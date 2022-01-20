@@ -34,6 +34,8 @@ import (
 	"github.com/hashicorp/go-hclog"
 	consulreleasecontrollerv1 "github.com/nicholasjackson/consul-release-controller/kubernetes/controller/api/v1"
 	"github.com/nicholasjackson/consul-release-controller/kubernetes/controller/controllers"
+	"github.com/nicholasjackson/consul-release-controller/plugins/interfaces"
+	"github.com/nicholasjackson/consul-release-controller/state"
 	//+kubebuilder:scaffold:imports
 )
 
@@ -50,16 +52,18 @@ func init() {
 }
 
 type Kubernetes struct {
-	mngr   manager.Manager
-	ctx    context.Context
-	cancel context.CancelFunc
-	log    hclog.Logger
+	mngr     manager.Manager
+	ctx      context.Context
+	cancel   context.CancelFunc
+	log      hclog.Logger
+	store    state.Store
+	provider interfaces.Provider
 }
 
-func New(l hclog.Logger) *Kubernetes {
+func New(s state.Store, p interfaces.Provider, l hclog.Logger) *Kubernetes {
 	ctx, cancelFunc := context.WithCancel(context.Background())
 
-	return &Kubernetes{log: l, ctx: ctx, cancel: cancelFunc}
+	return &Kubernetes{ctx: ctx, cancel: cancelFunc, log: l, provider: p, store: s}
 }
 
 func (k *Kubernetes) Start() error {
@@ -81,8 +85,10 @@ func (k *Kubernetes) Start() error {
 	}
 
 	if err = (&controllers.ReleaseReconciler{
-		Client: mgr.GetClient(),
-		Scheme: mgr.GetScheme(),
+		Client:   mgr.GetClient(),
+		Scheme:   mgr.GetScheme(),
+		Provider: k.provider,
+		Store:    k.store,
 	}).SetupWithManager(mgr); err != nil {
 		setupLog.Error(err, "unable to create controller", "controller", "Release")
 		return err

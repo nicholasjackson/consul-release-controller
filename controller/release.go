@@ -45,14 +45,15 @@ func (r *Release) Start() error {
 	r.metrics.ServiceStarting()
 
 	store := state.NewInmemStore()
+	provider := plugins.GetProvider(r.log)
 
 	// create the kubernetes controller
-	kc := kubernetes.New(r.log.Named("kubernetes-controller"))
+	kc := kubernetes.New(store, provider, r.log.Named("kubernetes-controller"))
 	r.kubernetesController = kc
 	go kc.Start()
 
 	healthHandler := api.NewHealthHandlers(r.log.Named("health-handlers"))
-	apiHandler := api.NewReleaseHandler(r.log.Named("restful-api"), r.metrics, store, plugins.GetProvider(r.log))
+	apiHandler := api.NewReleaseHandler(r.log.Named("restful-api"), r.metrics, store, provider)
 
 	r.log.Info("Starting controller")
 	httplogger := httplog.NewLogger("http-server")
@@ -67,7 +68,8 @@ func (r *Release) Start() error {
 
 	// configure the main API
 	rtr.Post("/v1/releases", apiHandler.Post)
-	rtr.Get("/v1/releases", apiHandler.Get)
+	rtr.Get("/v1/releases", apiHandler.GetAll)
+	rtr.Get("/v1/releases/{name}", apiHandler.GetSingle)
 	rtr.Delete("/v1/releases/{name}", apiHandler.Delete)
 
 	certificate, err := tls.LoadX509KeyPair(os.Getenv("TLS_CERT"), os.Getenv("TLS_KEY"))

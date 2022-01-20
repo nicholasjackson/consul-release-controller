@@ -26,7 +26,7 @@ type PluginConfig struct {
 	// Interval between checks
 	Interval string `hcl:"interval,optional" json:"interval,omitempty" validate:"duration"`
 	// InitialTraffic percentage to send to the canary
-	InitialTraffic int `hcl:"initial_traffic,optional" json:"initial_traffic,omitempty" validate:"gte=0,lte=100,required"`
+	InitialTraffic int `hcl:"initial_traffic,optional" json:"initial_traffic,omitempty" validate:"gte=0,lte=100"`
 	// TrafficStep is the percentage of traffic to increase with every step
 	TrafficStep int `hcl:"traffic_step,optional" json:"traffic_step,omitempty" validate:"gte=1,lte=100,required"`
 	// MaxTraffic to send to the canary before promoting to primary
@@ -80,6 +80,8 @@ func (p *Plugin) Configure(name, namespace string, data json.RawMessage) error {
 				errorMessage += ErrInvalidInitialDelay.Error() + "\n"
 			case "PluginConfig.Interval":
 				errorMessage += ErrInvalidInterval.Error() + "\n"
+			case "PluginConfig.InitialTraffic":
+				errorMessage += ErrInvalidInitialTraffic.Error() + "\n"
 			case "PluginConfig.TrafficStep":
 				errorMessage += ErrTrafficStep.Error() + "\n"
 			case "PluginConfig.MaxTraffic":
@@ -105,6 +107,10 @@ func (p *Plugin) Execute(ctx context.Context) (interfaces.StrategyStatus, int, e
 	// if this is the first run set the initial traffic and return
 	if p.currentTraffic == -1 {
 		p.currentTraffic = p.config.InitialTraffic
+
+		if p.config.InitialTraffic == 0 {
+			p.currentTraffic = p.config.TrafficStep
+		}
 
 		d, err := time.ParseDuration(p.config.InitialDelay)
 		if err != nil {

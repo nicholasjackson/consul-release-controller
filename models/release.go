@@ -19,6 +19,8 @@ type Release struct {
 	Name      string `json:"name"`
 	Namespace string `json:"namespace"`
 
+	Version string `json:"version"`
+
 	Created     time.Time `json:"created"`
 	LastUpdated time.Time `json:"last_updated"`
 

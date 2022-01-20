@@ -67,6 +67,20 @@ func TestSetsIntitialTraficAndReturnsFirstRun(t *testing.T) {
 	mm.AssertNotCalled(t, "Check", mock.Anything)
 }
 
+func TestSetsIntitialTraficToTrafficStepWhenNotSetAndReturnsFirstRun(t *testing.T) {
+	p, mm := setupPlugin(t, canaryStrategyWithoutInitial)
+	// reset the traffic to the initial state
+	p.currentTraffic = -1
+
+	status, traffic, err := p.Execute(context.Background())
+	require.NoError(t, err)
+
+	require.Equal(t, interfaces.StrategyStatusSuccess, string(status))
+	require.Equal(t, 20, traffic)
+
+	mm.AssertNotCalled(t, "Check", mock.Anything)
+}
+
 func TestCallsMonitorCheckAndReturnsWhenNoError(t *testing.T) {
 	st := time.Now()
 	p, mm := setupPlugin(t, canaryStrategy)
@@ -134,6 +148,16 @@ const canaryStrategy = `
   "initial_traffic": 10,
   "initial_delay": "30ms",
   "traffic_step": 10,
+  "max_traffic": 90,
+  "error_threshold": 5
+}
+`
+
+const canaryStrategyWithoutInitial = `
+{
+  "interval": "30ms",
+  "initial_delay": "30ms",
+  "traffic_step": 20,
   "max_traffic": 90,
   "error_threshold": 5
 }

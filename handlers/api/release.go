@@ -70,12 +70,13 @@ func (d *ReleaseHandler) Post(rw http.ResponseWriter, req *http.Request) {
 }
 
 type GetResponse struct {
-	Name   string `json:"name"`
-	Status string `json:"status"`
+	Name    string `json:"name"`
+	Status  string `json:"status"`
+	Version string `json:"version"`
 }
 
 // Get handler lists current deployments
-func (d *ReleaseHandler) Get(rw http.ResponseWriter, req *http.Request) {
+func (d *ReleaseHandler) GetAll(rw http.ResponseWriter, req *http.Request) {
 	d.logger.Info("Release GET handler called")
 	mFinal := d.metrics.HandleRequest("release/get", nil)
 
@@ -90,10 +91,27 @@ func (d *ReleaseHandler) Get(rw http.ResponseWriter, req *http.Request) {
 
 	resp := []GetResponse{}
 	for _, dep := range deps {
-		resp = append(resp, GetResponse{Name: dep.Name, Status: dep.CurrentState})
+		resp = append(resp, GetResponse{Name: dep.Name, Status: dep.CurrentState, Version: dep.Version})
 	}
 
 	json.NewEncoder(rw).Encode(resp)
+	mFinal(http.StatusOK)
+}
+
+func (d *ReleaseHandler) GetSingle(rw http.ResponseWriter, req *http.Request) {
+	name := chi.URLParam(req, "name")
+
+	d.logger.Info("Release GET handler called")
+	mFinal := d.metrics.HandleRequest("release/get", nil)
+
+	rel, err := d.store.GetRelease(name)
+
+	if err == state.ReleaseNotFound {
+		rw.WriteHeader(http.StatusNotFound)
+		return
+	}
+
+	json.NewEncoder(rw).Encode(rel)
 	mFinal(http.StatusOK)
 }
 

@@ -80,7 +80,7 @@ func (k *KubernetesImpl) GetDeployment(ctx context.Context, name, namespace stri
 
 func (k *KubernetesImpl) UpsertDeployment(ctx context.Context, dep *appsv1.Deployment) error {
 	_, err := k.GetDeployment(ctx, dep.Name, dep.Namespace)
-	if err != nil && err == ErrDeploymentNotFound {
+	if err == ErrDeploymentNotFound {
 		_, err = k.clientset.AppsV1().Deployments(dep.Namespace).Create(ctx, dep, v1.CreateOptions{})
 		return err
 	}
@@ -112,7 +112,7 @@ func (k *KubernetesImpl) GetHealthyDeployment(ctx context.Context, name, namespa
 	var deployment *appsv1.Deployment
 	var lastError error
 
-	err := retry.Fibonacci(retryContext, k.interval, func(ctx context.Context) error {
+	err := retry.Constant(retryContext, k.interval, func(ctx context.Context) error {
 		k.logger.Debug("Checking health", "name", name, "namespace", namespace)
 
 		deployment, lastError = k.GetDeployment(ctx, name, namespace)

@@ -64,6 +64,9 @@ deploy_kubernetes_relase:
 	curl -k https://localhost:9443/v1/releases -XPOST -d @./example/kubernetes/canary/api.json
 
 generate_helm:
+	cd ./kubernetes/controller && make manifests
+	cd ./kubernetes/controller && make generate
+
 # First generate the Helm specific kustomize config that creates the RBAC and CRDs
 	kustomize build ./kubernetes/controller/config/helm -o ./deploy/kubernetes/charts/consul-release-controller/templates
 

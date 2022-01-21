@@ -167,7 +167,7 @@ func iDeployANewVersionOfTheKubernetesRelease(arg1 string) error {
 	rel := &v1release.Release{}
 	err = yaml.Unmarshal(d, rel)
 	if err != nil {
-		return fmt.Errorf("unable to decode Kubernetes release: %s", err)
+		return fmt.Errorf("unable to decode Kuberneteh release: %s", err)
 	}
 
 	// force the update

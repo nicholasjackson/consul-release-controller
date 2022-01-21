@@ -1,6 +1,12 @@
 DOCKER_REGISTRY ?= docker.io/nicholasjackson
-VERSION=v0.0.1
 
+ifeq "$(VERSION)"  ""
+	VERSION = $(shell git log --pretty=format:'%h' -n 1)
+else 
+	VERSION = $(VERSION)
+endif
+
+# Build and push the Arm64 and x64 images to the Docker registry
 build_docker:
 	docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
 	docker buildx create --name multi || true
@@ -13,18 +19,20 @@ build_docker:
 		--push
 	docker buildx rm multi
 
+# Build a x64 images and import into the local registry
 build_docker_dev:
 	docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
 	docker buildx create --name multi || true
 	docker buildx use multi
 	docker buildx inspect --bootstrap
 	docker buildx build --platform linux/amd64 \
-		-t ${DOCKER_REGISTRY}/consul-release-controller:dev \
+		-t ${DOCKER_REGISTRY}/consul-release-controller:${VERSION}.dev \
     -f ./Dockerfile \
     . \
 		--load
 	docker buildx rm multi
 
+# Fetch Kubernetes certificates needed to secure the server with TLS
 fetch_kubernetes_certs:
 	mkdir -p /tmp/k8s-webhook-server/serving-certs/
 	

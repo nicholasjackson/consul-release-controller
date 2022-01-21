@@ -40,6 +40,13 @@ jobs:
     - name: Run Functional Tests
       run: |
         cd functional_tests && go run . --godog.tags="${{ matrix.tags }}"
+      
+    - name: Send status to Discord
+      uses: sarisia/actions-status-discord@v1
+      if: always()
+      with:
+        webhook: ${{ secrets.DISCORD_WEBHOOK }}
+        description: "Executed functional test: ${{ matrix.tags }}"
 
   tag:
     name: Tag latest release
@@ -86,6 +93,14 @@ jobs:
         password: ${{ secrets.DOCKER_PASS }}
 
     - uses: actions/checkout@v2
-      name: Build and Push Docker Image
+      
+    - name: Build and Push Docker Image
       run: |
         make build_docker
+    
+    - name: Send status to Discord
+      uses: sarisia/actions-status-discord@v1
+      if: always()
+      with:
+        webhook: ${{ secrets.DISCORD_WEBHOOK }}
+        description: "Built new Docker image"

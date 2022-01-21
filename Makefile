@@ -18,7 +18,7 @@ build_docker:
 	docker buildx build --platform linux/arm/v6,linux/arm/v7,linux/arm64,linux/amd64 \
 		-t ${DOCKER_REGISTRY}/consul-release-controller:${VERSION} \
     -f ./Dockerfile \
-    ./bin \
+    .  \
 		--push
 	docker buildx rm multi
 

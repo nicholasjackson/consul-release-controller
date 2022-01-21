@@ -1,4 +1,7 @@
 DOCKER_REGISTRY ?= docker.io/nicholasjackson
+HELM_VERSION ?= 0.0.1
+SHELL := /bin/bash
+UNAME := $(shell uname)
 
 ifeq "$(VERSION)"  ""
 	VERSION = $(shell git log --pretty=format:'%h' -n 1)
@@ -59,3 +62,21 @@ functional_tests_kubernetes_no_env:
 # Create a new release for kubernetes
 deploy_kubernetes_relase:
 	curl -k https://localhost:9443/v1/releases -XPOST -d @./example/kubernetes/canary/api.json
+
+generate_helm:
+# First generate the Helm specific kustomize config that creates the RBAC and CRDs
+	kustomize build ./kubernetes/controller/config/helm -o ./deploy/kubernetes/charts/consul-release-controller/templates
+
+# Set the version in the chart
+	cp ./deploy/kubernetes/charts/consul-release-controller/Chart.tpl ./deploy/kubernetes/charts/consul-release-controller/Chart.yaml
+	sedi=(-i) && [ "$(UNAME)" == "Darwin" ] && sedi=(-i '') ; \
+	sed "$${sedi[@]}" -e 's/##VERSION##/${HELM_VERSION}/' ./deploy/kubernetes/charts/consul-release-controller/Chart.yaml
+
+# Now package the Helm chart into a tarball
+	helm package ./deploy/kubernetes/charts/consul-release-controller
+
+# Move it to the ./docs folder used to serve Github Pages
+	mv consul-release-controller-${HELM_VERSION}.tgz ./docs/
+
+# Generate the index
+	cd ./docs && helm repo index .

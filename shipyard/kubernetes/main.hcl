@@ -50,6 +50,11 @@ variable "consul_debug" {
   default     = true
 }
 
+variable "controller_enabled" {
+  description = "Should the controller be installed with the helm chart?"
+  default     = true
+}
+
 network "dc1" {
   subnet = "10.5.0.0/16"
 }

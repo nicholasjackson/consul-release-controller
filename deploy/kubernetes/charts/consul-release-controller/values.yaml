@@ -87,6 +87,7 @@ controller:
   affinity: {}
 
 webhook:
+  enabled: "false"
   type: ClusterIP
   port: 443
   service: consul-release-controller-webhook

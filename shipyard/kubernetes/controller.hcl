@@ -1,9 +1,13 @@
 template "controller_values" {
   source = <<EOF
 controller:
-  enabled: "false"
+  enabled: "${var.controller_enabled}"
+  container_config:
+    image:
+      tag: "0070590"
 
 webhook:
+  enabled: "false"
   type: ClusterIP
   port: 9443
   service: controller-webhook

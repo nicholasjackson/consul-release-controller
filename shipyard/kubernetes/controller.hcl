@@ -4,7 +4,7 @@ controller:
   enabled: "${var.controller_enabled}"
   container_config:
     image:
-      tag: "0070590"
+      tag: "${var.controller_version}"
 
 webhook:
   enabled: "false"

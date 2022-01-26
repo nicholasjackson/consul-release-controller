@@ -3,6 +3,7 @@ package clients
 import (
 	"context"
 	"fmt"
+	"os"
 	"time"
 
 	"github.com/prometheus/client_golang/api"
@@ -46,12 +47,16 @@ func (p *PrometheusImpl) Query(ctx context.Context, address, query string, ts ti
 	queryErr = retry.Fibonacci(ctxQuery, 1*time.Second, func(ctx context.Context) error {
 		// has the max duration elapsed
 		if ctx.Err() != nil {
+			if os.IsTimeout(ctx.Err()) {
+				return fmt.Errorf("timeout while trying to query prometheus server: %s", address)
+			}
+
 			return ctx.Err()
 		}
 
 		value, warn, err = api.Query(ctx, query, ts)
 		if err != nil {
-			return retry.RetryableError(fmt.Errorf("error querying prometheus server: %s", err))
+			return retry.RetryableError(fmt.Errorf("error querying prometheus server: %s, %s", address, err))
 		}
 
 		return nil

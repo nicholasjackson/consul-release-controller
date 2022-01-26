@@ -55,6 +55,11 @@ variable "controller_enabled" {
   default     = true
 }
 
+variable "controller_version" {
+  description = "Docker container version for the controlelr"
+  default     = "2d0d093.dev"
+}
+
 network "dc1" {
   subnet = "10.5.0.0/16"
 }
@@ -66,6 +71,10 @@ k8s_cluster "dc1" {
 
   network {
     name = "network.dc1"
+  }
+
+  image {
+    name = "nicholasjackson/consul-release-controller:${var.controller_version}"
   }
 }
 

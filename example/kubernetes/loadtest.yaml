@@ -48,22 +48,6 @@ data:
       sleep(randomIntBetween(0.2, 1.5));
     }
 
----
-# Service to expose loadtest for scraping
-apiVersion: v1
-kind: Service
-metadata:
-  name: loadtest-metrics
-  labels:
-    app: metrics
-spec:
-  selector:
-    group: loadtest
-  ports:
-  - name: metrics
-    protocol: TCP
-    port: 9102
-    targetPort: 9102
 
 ---
 # Load test

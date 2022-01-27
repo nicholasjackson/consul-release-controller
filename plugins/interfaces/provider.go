@@ -1,6 +1,9 @@
 package interfaces
 
-import "github.com/hashicorp/go-hclog"
+import (
+	"github.com/hashicorp/go-hclog"
+	"github.com/nicholasjackson/consul-release-controller/models"
+)
 
 // Provider loads and creates registered plugins
 type Provider interface {
@@ -20,4 +23,17 @@ type Provider interface {
 
 	// Gets an instance of the current logger
 	GetLogger() hclog.Logger
+
+	// Gets an instance of the metrics plugin
+	GetMetrics() Metrics
+
+	// Gets an instance of the data store plugin
+	GetDataStore() Store
+
+	// Gets the statemachine for the given release
+	// either creates a new or returns an existing statemachine
+	GetStateMachine(release *models.Release) (StateMachine, error)
+
+	// Deletes the statemachine for the given release
+	DeleteStateMachine(release *models.Release) error
 }

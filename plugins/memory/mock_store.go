@@ -1,7 +1,8 @@
-package state
+package memory
 
 import (
 	"github.com/nicholasjackson/consul-release-controller/models"
+	"github.com/nicholasjackson/consul-release-controller/plugins/interfaces"
 	"github.com/stretchr/testify/mock"
 )
 
@@ -14,7 +15,7 @@ func (m *MockStore) UpsertRelease(d *models.Release) error {
 	return args.Error(0)
 }
 
-func (m *MockStore) ListReleases(options *ListOptions) ([]*models.Release, error) {
+func (m *MockStore) ListReleases(options *interfaces.ListOptions) ([]*models.Release, error) {
 	args := m.Called(options)
 
 	var deps []*models.Release

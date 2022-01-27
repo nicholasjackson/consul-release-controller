@@ -1,25 +1,23 @@
-package state
+package memory
 
 import (
-	"errors"
 	"fmt"
 	"sync"
 
 	"github.com/nicholasjackson/consul-release-controller/models"
+	"github.com/nicholasjackson/consul-release-controller/plugins/interfaces"
 )
 
-var ReleaseNotFound = errors.New("Release not found")
-
-type InmemStore struct {
+type Store struct {
 	m        sync.Mutex
 	releases map[string]*models.Release
 }
 
-func NewInmemStore() *InmemStore {
-	return &InmemStore{m: sync.Mutex{}, releases: map[string]*models.Release{}}
+func NewStore() *Store {
+	return &Store{m: sync.Mutex{}, releases: map[string]*models.Release{}}
 }
 
-func (m *InmemStore) UpsertRelease(d *models.Release) error {
+func (m *Store) UpsertRelease(d *models.Release) error {
 	if d.Name == "" {
 		return fmt.Errorf("invalid name: %s for release", d.Name)
 	}
@@ -32,7 +30,7 @@ func (m *InmemStore) UpsertRelease(d *models.Release) error {
 	return nil
 }
 
-func (m *InmemStore) ListReleases(options *ListOptions) ([]*models.Release, error) {
+func (m *Store) ListReleases(options *interfaces.ListOptions) ([]*models.Release, error) {
 	m.m.Lock()
 	defer m.m.Unlock()
 
@@ -56,13 +54,13 @@ func (m *InmemStore) ListReleases(options *ListOptions) ([]*models.Release, erro
 	return ret, nil
 }
 
-func (m *InmemStore) DeleteRelease(name string) error {
+func (m *Store) DeleteRelease(name string) error {
 	m.m.Lock()
 	defer m.m.Unlock()
 
 	r, ok := m.releases[name]
 	if !ok {
-		return ReleaseNotFound
+		return interfaces.ReleaseNotFound
 	}
 
 	delete(m.releases, r.Name)
@@ -70,7 +68,7 @@ func (m *InmemStore) DeleteRelease(name string) error {
 	return nil
 }
 
-func (m *InmemStore) GetRelease(name string) (*models.Release, error) {
+func (m *Store) GetRelease(name string) (*models.Release, error) {
 	m.m.Lock()
 	defer m.m.Unlock()
 
@@ -80,5 +78,5 @@ func (m *InmemStore) GetRelease(name string) (*models.Release, error) {
 		}
 	}
 
-	return nil, ReleaseNotFound
+	return nil, interfaces.ReleaseNotFound
 }

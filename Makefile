@@ -63,6 +63,9 @@ functional_tests_kubernetes_no_env:
 deploy_kubernetes_relase:
 	curl -k https://localhost:9443/v1/releases -XPOST -d @./example/kubernetes/canary/api.json
 
+create_dev_env_local_controller:
+	shipyard run ./shipyard/kubernetes --var="controller_enabled=false"
+
 generate_helm:
 	cd ./kubernetes/controller && make manifests
 	cd ./kubernetes/controller && make generate

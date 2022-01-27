@@ -35,7 +35,6 @@ import (
 	consulreleasecontrollerv1 "github.com/nicholasjackson/consul-release-controller/kubernetes/controller/api/v1"
 	"github.com/nicholasjackson/consul-release-controller/kubernetes/controller/controllers"
 	"github.com/nicholasjackson/consul-release-controller/plugins/interfaces"
-	"github.com/nicholasjackson/consul-release-controller/state"
 	//+kubebuilder:scaffold:imports
 )
 
@@ -56,14 +55,13 @@ type Kubernetes struct {
 	ctx      context.Context
 	cancel   context.CancelFunc
 	log      hclog.Logger
-	store    state.Store
 	provider interfaces.Provider
 }
 
-func New(s state.Store, p interfaces.Provider, l hclog.Logger) *Kubernetes {
+func New(p interfaces.Provider) *Kubernetes {
 	ctx, cancelFunc := context.WithCancel(context.Background())
 
-	return &Kubernetes{ctx: ctx, cancel: cancelFunc, log: l, provider: p, store: s}
+	return &Kubernetes{ctx: ctx, cancel: cancelFunc, log: p.GetLogger().Named("kubernetes-controller"), provider: p}
 }
 
 func (k *Kubernetes) Start() error {
@@ -88,7 +86,6 @@ func (k *Kubernetes) Start() error {
 		Client:   mgr.GetClient(),
 		Scheme:   mgr.GetScheme(),
 		Provider: k.provider,
-		Store:    k.store,
 	}).SetupWithManager(mgr); err != nil {
 		setupLog.Error(err, "unable to create controller", "controller", "Release")
 		return err

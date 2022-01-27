@@ -43,6 +43,9 @@ spec:
             - name: http
               containerPort: 9443
               protocol: TCP
+            - name: metrics
+              containerPort: 9102
+              protocol: TCP
           volumeMounts:
             - name: tls-secret
               mountPath: /tmp/k8s-webhook-server/serving-certs

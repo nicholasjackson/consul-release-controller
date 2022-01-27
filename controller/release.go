@@ -14,9 +14,9 @@ import (
 	"github.com/hashicorp/go-hclog"
 	"github.com/nicholasjackson/consul-release-controller/handlers/api"
 	kubernetes "github.com/nicholasjackson/consul-release-controller/kubernetes/controller"
-	promMetrics "github.com/nicholasjackson/consul-release-controller/metrics"
 	"github.com/nicholasjackson/consul-release-controller/plugins"
-	"github.com/nicholasjackson/consul-release-controller/state"
+	"github.com/nicholasjackson/consul-release-controller/plugins/memory"
+	"github.com/nicholasjackson/consul-release-controller/plugins/prometheus"
 	"golang.org/x/net/context"
 )
 
@@ -24,12 +24,12 @@ type Release struct {
 	log                  hclog.Logger
 	server               *http.Server
 	listener             net.Listener
-	metrics              *promMetrics.Sink
+	metrics              *prometheus.Metrics
 	kubernetesController *kubernetes.Kubernetes
 }
 
 func New(log hclog.Logger) (*Release, error) {
-	metrics, err := promMetrics.New("0.0.0.0", 9102, "/metrics")
+	metrics, err := prometheus.NewMetrics("0.0.0.0", 9102, "/metrics")
 	if err != nil {
 		log.Error("failed to create metrics", "error", err)
 		return nil, err
@@ -44,16 +44,16 @@ func (r *Release) Start() error {
 	r.metrics.StartServer()
 	r.metrics.ServiceStarting()
 
-	store := state.NewInmemStore()
-	provider := plugins.GetProvider(r.log)
+	store := memory.NewStore()
+	provider := plugins.GetProvider(r.log, r.metrics, store)
 
 	// create the kubernetes controller
-	kc := kubernetes.New(store, provider, r.log.Named("kubernetes-controller"))
+	kc := kubernetes.New(provider)
 	r.kubernetesController = kc
 	go kc.Start()
 
 	healthHandler := api.NewHealthHandlers(r.log.Named("health-handlers"))
-	apiHandler := api.NewReleaseHandler(r.log.Named("restful-api"), r.metrics, store, provider)
+	apiHandler := api.NewReleaseHandler(r.log.Named("restful-api"), provider)
 
 	r.log.Info("Starting controller")
 	httplogger := httplog.NewLogger("http-server")

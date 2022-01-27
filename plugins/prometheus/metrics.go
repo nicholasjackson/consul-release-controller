@@ -27,7 +27,10 @@ func NewMetrics(addr string, port int, path string) (*Metrics, error) {
 		return nil, err
 	}
 
-	m, err := metrics.New(metrics.DefaultConfig("consul_canary_controller"), promSink)
+	config := metrics.DefaultConfig("consul_release_controller")
+	config.EnableHostname = false
+
+	m, err := metrics.New(config, promSink)
 	if err != nil {
 		return nil, err
 	}

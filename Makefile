@@ -66,6 +66,9 @@ deploy_kubernetes_relase:
 create_dev_env_local_controller:
 	shipyard run ./shipyard/kubernetes --var="controller_enabled=false"
 
+create_dev_env_docker_controller:
+	shipyard run ./shipyard/kubernetes --var="controller_enabled=true" --var="controller_version=${VERSION}.dev" 
+
 generate_helm:
 	cd ./kubernetes/controller && make manifests
 	cd ./kubernetes/controller && make generate

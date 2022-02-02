@@ -53,7 +53,7 @@ func (r *Release) Start() error {
 	go kc.Start()
 
 	healthHandler := api.NewHealthHandlers(r.log.Named("health-handlers"))
-	apiHandler := api.NewReleaseHandler(r.log.Named("restful-api"), provider)
+	apiHandler := api.NewReleaseHandler(provider)
 
 	r.log.Info("Starting controller")
 	httplogger := httplog.NewLogger("http-server")

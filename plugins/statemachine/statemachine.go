@@ -3,17 +3,17 @@ package statemachine
 import (
 	"context"
 	"fmt"
+	"net/http"
 	"time"
 
 	"github.com/hashicorp/go-hclog"
 	"github.com/looplab/fsm"
 	"github.com/nicholasjackson/consul-release-controller/models"
 	"github.com/nicholasjackson/consul-release-controller/plugins/interfaces"
-	plugins "github.com/nicholasjackson/consul-release-controller/plugins/interfaces"
 )
 
 // StepDelay is used to set the default delay between events
-var StepDelay = 10 * time.Second
+var stepDelay = 10 * time.Second
 
 // defaultTimeout is the default time that an event step can take before timing out
 var defaultTimeout = 30 * time.Minute
@@ -36,7 +36,7 @@ type StateMachine struct {
 
 func New(r *models.Release, pluginProvider interfaces.Provider) (*StateMachine, error) {
 	sm := &StateMachine{release: r}
-	sm.stateHistory = []interfaces.StateHistory{interfaces.StateHistory{Time: time.Now(), State: StateStart}}
+	sm.stateHistory = []interfaces.StateHistory{interfaces.StateHistory{Time: time.Now(), State: interfaces.StateStart}}
 	sm.logger = pluginProvider.GetLogger().Named("statemachine")
 	sm.metrics = pluginProvider.GetMetrics()
 
@@ -82,55 +82,55 @@ func New(r *models.Release, pluginProvider interfaces.Provider) (*StateMachine, 
 	sm.strategyPlugin = stratP
 
 	f := fsm.NewFSM(
-		StateStart,
+		interfaces.StateStart,
 		fsm.Events{
-			{Name: EventConfigure, Src: []string{StateStart, StateIdle, StateFail}, Dst: StateConfigure},
-			{Name: EventConfigured, Src: []string{StateConfigure}, Dst: StateIdle},
-			{Name: EventDeploy, Src: []string{StateIdle, StateFail}, Dst: StateDeploy},
-			{Name: EventDeployed, Src: []string{StateDeploy}, Dst: StateMonitor},
-			{Name: EventHealthy, Src: []string{StateMonitor}, Dst: StateScale},
-			{Name: EventScaled, Src: []string{StateScale}, Dst: StateMonitor},
-			{Name: EventComplete, Src: []string{StateMonitor}, Dst: StatePromote},
-			{Name: EventPromoted, Src: []string{StatePromote}, Dst: StateIdle},
-			{Name: EventUnhealthy, Src: []string{StateMonitor}, Dst: StateRollback},
-			{Name: EventComplete, Src: []string{StateDeploy}, Dst: StateIdle},
-			{Name: EventComplete, Src: []string{StateRollback}, Dst: StateIdle},
-			{Name: EventComplete, Src: []string{StateDestroy}, Dst: StateIdle},
-			{Name: EventFail, Src: []string{
-				StateStart,
-				StateConfigure,
-				StateIdle,
-				StateDeploy,
-				StateMonitor,
-				StateScale,
-				StatePromote,
-				StateRollback,
-				StateDestroy,
-			}, Dst: StateFail},
-			{Name: EventDestroy, Src: []string{
-				StateIdle,
-				StateDeploy,
-				StateMonitor,
-				StateScale,
-				StatePromote,
-				StateRollback,
-			}, Dst: StateDestroy},
+			{Name: interfaces.EventConfigure, Src: []string{interfaces.StateStart, interfaces.StateIdle, interfaces.StateFail}, Dst: interfaces.StateConfigure},
+			{Name: interfaces.EventConfigured, Src: []string{interfaces.StateConfigure}, Dst: interfaces.StateIdle},
+			{Name: interfaces.EventDeploy, Src: []string{interfaces.StateIdle, interfaces.StateFail}, Dst: interfaces.StateDeploy},
+			{Name: interfaces.EventDeployed, Src: []string{interfaces.StateDeploy}, Dst: interfaces.StateMonitor},
+			{Name: interfaces.EventHealthy, Src: []string{interfaces.StateMonitor}, Dst: interfaces.StateScale},
+			{Name: interfaces.EventScaled, Src: []string{interfaces.StateScale}, Dst: interfaces.StateMonitor},
+			{Name: interfaces.EventComplete, Src: []string{interfaces.StateMonitor}, Dst: interfaces.StatePromote},
+			{Name: interfaces.EventPromoted, Src: []string{interfaces.StatePromote}, Dst: interfaces.StateIdle},
+			{Name: interfaces.EventUnhealthy, Src: []string{interfaces.StateMonitor}, Dst: interfaces.StateRollback},
+			{Name: interfaces.EventComplete, Src: []string{interfaces.StateDeploy}, Dst: interfaces.StateIdle},
+			{Name: interfaces.EventComplete, Src: []string{interfaces.StateRollback}, Dst: interfaces.StateIdle},
+			{Name: interfaces.EventComplete, Src: []string{interfaces.StateDestroy}, Dst: interfaces.StateIdle},
+			{Name: interfaces.EventFail, Src: []string{
+				interfaces.StateStart,
+				interfaces.StateConfigure,
+				interfaces.StateIdle,
+				interfaces.StateDeploy,
+				interfaces.StateMonitor,
+				interfaces.StateScale,
+				interfaces.StatePromote,
+				interfaces.StateRollback,
+				interfaces.StateDestroy,
+			}, Dst: interfaces.StateFail},
+			{Name: interfaces.EventDestroy, Src: []string{
+				interfaces.StateIdle,
+				interfaces.StateDeploy,
+				interfaces.StateMonitor,
+				interfaces.StateScale,
+				interfaces.StatePromote,
+				interfaces.StateRollback,
+			}, Dst: interfaces.StateDestroy},
 		},
 		fsm.Callbacks{
-			"before_event":            sm.logEvent(),
-			"enter_" + StateConfigure: sm.doConfigure(), // do the necessary work to setup the release
-			"enter_" + StateDeploy:    sm.doDeploy(),    // new version of the application has been deployed
-			"enter_" + StateMonitor:   sm.doMonitor(),   // start monitoring changes in the applications health
-			"enter_" + StateScale:     sm.doScale(),     // scale the release
-			"enter_" + StatePromote:   sm.doPromote(),   // promote the release to primary
-			"enter_" + StateRollback:  sm.doRollback(),  // rollback the deployment
-			"enter_" + StateDestroy:   sm.doDestroy(),   // remove everything and revert to vanilla state
-			"enter_state":             sm.enterState(),
-			"leave_state":             sm.leaveState(),
+			"before_event":                       sm.logEvent(),
+			"enter_" + interfaces.StateConfigure: sm.doConfigure(), // do the necessary work to setup the release
+			"enter_" + interfaces.StateDeploy:    sm.doDeploy(),    // new version of the application has been deployed
+			"enter_" + interfaces.StateMonitor:   sm.doMonitor(),   // start monitoring changes in the applications health
+			"enter_" + interfaces.StateScale:     sm.doScale(),     // scale the release
+			"enter_" + interfaces.StatePromote:   sm.doPromote(),   // promote the release to primary
+			"enter_" + interfaces.StateRollback:  sm.doRollback(),  // rollback the deployment
+			"enter_" + interfaces.StateDestroy:   sm.doDestroy(),   // remove everything and revert to vanilla state
+			"enter_state":                        sm.enterState(),
+			"leave_state":                        sm.leaveState(),
 		},
 	)
 
-	f.SetState(StateStart)
+	f.SetState(interfaces.StateStart)
 	sm.FSM = f
 
 	return sm, nil
@@ -138,17 +138,17 @@ func New(r *models.Release, pluginProvider interfaces.Provider) (*StateMachine, 
 
 // Configure triggers the EventConfigure state
 func (s *StateMachine) Configure() error {
-	return s.Event(EventConfigure)
+	return s.Event(interfaces.EventConfigure)
 }
 
 // Deploy triggers the EventDeploy state
 func (s *StateMachine) Deploy() error {
-	return s.Event(EventDeploy)
+	return s.Event(interfaces.EventDeploy)
 }
 
 // Destroy triggers the event Destroy state
 func (s *StateMachine) Destroy() error {
-	return s.Event(EventDestroy)
+	return s.Event(interfaces.EventDestroy)
 }
 
 // CurrentState returns the current state of the machine
@@ -185,7 +185,12 @@ func (s *StateMachine) leaveState() func(e *fsm.Event) {
 
 		// when we leave the state call the timing done function
 		if s.metricsDone != nil {
-			s.metricsDone(1)
+			if e.Err != nil {
+				s.metricsDone(http.StatusInternalServerError)
+				return
+			}
+
+			s.metricsDone(http.StatusOK)
 		}
 	}
 }
@@ -204,7 +209,7 @@ func (s *StateMachine) doConfigure() func(e *fsm.Event) {
 			if err != nil {
 				s.logger.Error("Configure completed with error", "error", err)
 
-				e.FSM.Event(EventFail)
+				e.FSM.Event(interfaces.EventFail)
 				return
 			}
 
@@ -213,7 +218,7 @@ func (s *StateMachine) doConfigure() func(e *fsm.Event) {
 			if err != nil {
 				s.logger.Error("Configure completed with error", "status", status, "error", err)
 
-				e.FSM.Event(EventFail)
+				e.FSM.Event(interfaces.EventFail)
 				return
 			}
 
@@ -223,7 +228,7 @@ func (s *StateMachine) doConfigure() func(e *fsm.Event) {
 				if err != nil {
 					s.logger.Error("Configure completed with error", "error", err)
 
-					e.FSM.Event(EventFail)
+					e.FSM.Event(interfaces.EventFail)
 					return
 				}
 
@@ -232,14 +237,14 @@ func (s *StateMachine) doConfigure() func(e *fsm.Event) {
 				if err != nil {
 					s.logger.Error("Configure completed with error", "error", err)
 
-					e.FSM.Event(EventFail)
+					e.FSM.Event(interfaces.EventFail)
 					return
 				}
 			}
 
 			s.logger.Debug("Configure completed successfully")
 
-			e.FSM.Event(EventConfigured)
+			e.FSM.Event(interfaces.EventConfigured)
 		}()
 	}
 }
@@ -251,7 +256,7 @@ func (s *StateMachine) doDeploy() func(e *fsm.Event) {
 
 		go func() {
 			// wait a few seconds as deploy is called before the new deployment is admitted to the server
-			time.Sleep(StepDelay)
+			time.Sleep(stepDelay)
 
 			// clean up resources if we finish before timeout
 			defer cancel()
@@ -261,7 +266,7 @@ func (s *StateMachine) doDeploy() func(e *fsm.Event) {
 			if err != nil {
 				s.logger.Error("Deploy completed with error", "error", err)
 
-				e.FSM.Event(EventFail)
+				e.FSM.Event(interfaces.EventFail)
 				return
 			}
 
@@ -271,7 +276,7 @@ func (s *StateMachine) doDeploy() func(e *fsm.Event) {
 			if err != nil {
 				s.logger.Error("Deploy completed with error", "error", err)
 
-				e.FSM.Event(EventFail)
+				e.FSM.Event(interfaces.EventFail)
 				return
 			}
 
@@ -284,17 +289,17 @@ func (s *StateMachine) doDeploy() func(e *fsm.Event) {
 				if err != nil {
 					s.logger.Error("Deploy completed with error", "error", err)
 
-					e.FSM.Event(EventFail)
+					e.FSM.Event(interfaces.EventFail)
 					return
 				}
 
-				e.FSM.Event(EventComplete)
+				e.FSM.Event(interfaces.EventComplete)
 				return
 			}
 
 			// new deployment run the strategy
 			s.logger.Debug("Deploy completed, executing strategy")
-			e.FSM.Event(EventDeployed)
+			e.FSM.Event(interfaces.EventDeployed)
 		}()
 	}
 }
@@ -314,29 +319,29 @@ func (s *StateMachine) doMonitor() func(e *fsm.Event) {
 			if err != nil {
 				s.logger.Error("Monitor completed with error", "error", err)
 
-				e.FSM.Event(EventFail)
+				e.FSM.Event(interfaces.EventFail)
 			}
 
 			// strategy returned a response
 			switch result {
 			// when the strategy reports a healthy deployment
-			case plugins.StrategyStatusSuccess:
+			case interfaces.StrategyStatusSuccess:
 				// send the traffic with the healthy event so that it can be used for scaling
 				s.logger.Debug("Monitor checks completed, candidate healthy")
 
-				e.FSM.Event(EventHealthy, traffic)
+				e.FSM.Event(interfaces.EventHealthy, traffic)
 
 			// the strategy has completed the roll out promote the deployment
-			case plugins.StrategyStatusComplete:
+			case interfaces.StrategyStatusComplete:
 				s.logger.Debug("Monitor checks completed, strategy complete")
 
-				e.FSM.Event(EventComplete)
+				e.FSM.Event(interfaces.EventComplete)
 
 			// the strategy has reported that the deployment is unhealthy, rollback
-			case plugins.StrategyStatusFail:
+			case interfaces.StrategyStatusFail:
 				s.logger.Debug("Monitor checks completed, candidate unhealthy")
 
-				e.FSM.Event(EventUnhealthy)
+				e.FSM.Event(interfaces.EventUnhealthy)
 			}
 		}()
 	}
@@ -355,7 +360,7 @@ func (s *StateMachine) doScale() func(e *fsm.Event) {
 			if len(e.Args) != 1 {
 				s.logger.Error("Scale completed with error", "error", fmt.Errorf("no traffic percentage in event payload"))
 
-				e.FSM.Event(EventFail)
+				e.FSM.Event(interfaces.EventFail)
 				return
 			}
 
@@ -365,12 +370,12 @@ func (s *StateMachine) doScale() func(e *fsm.Event) {
 			if err != nil {
 				s.logger.Error("Scale completed with error", "error", err)
 
-				e.FSM.Event(EventFail)
+				e.FSM.Event(interfaces.EventFail)
 				return
 			}
 
 			s.logger.Debug("Scale completed successfully")
-			e.FSM.Event(EventScaled)
+			e.FSM.Event(interfaces.EventScaled)
 		}()
 	}
 }
@@ -387,32 +392,32 @@ func (s *StateMachine) doPromote() func(e *fsm.Event) {
 			// scale all traffic to the candidate before promoting
 			err := s.releaserPlugin.Scale(ctx, 100)
 			if err != nil {
-				e.FSM.Event(EventFail)
+				e.FSM.Event(interfaces.EventFail)
 				return
 			}
 
 			// promote the candidate to primary
 			_, err = s.runtimePlugin.PromoteCandidate(ctx)
 			if err != nil {
-				e.FSM.Event(EventFail)
+				e.FSM.Event(interfaces.EventFail)
 				return
 			}
 
 			// scale all traffic to the primary
 			err = s.releaserPlugin.Scale(ctx, 0)
 			if err != nil {
-				e.FSM.Event(EventFail)
+				e.FSM.Event(interfaces.EventFail)
 				return
 			}
 
 			// scale down the canary
 			err = s.runtimePlugin.RemoveCandidate(ctx)
 			if err != nil {
-				e.FSM.Event(EventFail)
+				e.FSM.Event(interfaces.EventFail)
 				return
 			}
 
-			e.FSM.Event(EventPromoted)
+			e.FSM.Event(interfaces.EventPromoted)
 		}()
 	}
 }
@@ -428,18 +433,18 @@ func (s *StateMachine) doRollback() func(e *fsm.Event) {
 			// scale all traffic to the primary
 			err := s.releaserPlugin.Scale(ctx, 0)
 			if err != nil {
-				e.FSM.Event(EventFail)
+				e.FSM.Event(interfaces.EventFail)
 				return
 			}
 
 			// scale down the canary
 			err = s.runtimePlugin.RemoveCandidate(ctx)
 			if err != nil {
-				e.FSM.Event(EventFail)
+				e.FSM.Event(interfaces.EventFail)
 				return
 			}
 
-			e.FSM.Event(EventComplete)
+			e.FSM.Event(interfaces.EventComplete)
 		}()
 	}
 }
@@ -455,32 +460,32 @@ func (s *StateMachine) doDestroy() func(e *fsm.Event) {
 			// restore the original deployment
 			err := s.runtimePlugin.RestoreOriginal(ctx)
 			if err != nil {
-				e.FSM.Event(EventFail)
+				e.FSM.Event(interfaces.EventFail)
 				return
 			}
 
 			// scale all traffic to the candidate
 			err = s.releaserPlugin.Scale(ctx, 100)
 			if err != nil {
-				e.FSM.Event(EventFail)
+				e.FSM.Event(interfaces.EventFail)
 				return
 			}
 
 			// destroy the primary
 			err = s.runtimePlugin.RemovePrimary(ctx)
 			if err != nil {
-				e.FSM.Event(EventFail)
+				e.FSM.Event(interfaces.EventFail)
 				return
 			}
 
 			// remove the consul config
 			err = s.releaserPlugin.Destroy(ctx)
 			if err != nil {
-				e.FSM.Event(EventFail)
+				e.FSM.Event(interfaces.EventFail)
 				return
 			}
 
-			e.FSM.Event(EventComplete)
+			e.FSM.Event(interfaces.EventComplete)
 		}()
 	}
 }

@@ -18,8 +18,8 @@ type ReleaseHandler struct {
 	pluginProviders interfaces.Provider
 }
 
-func NewReleaseHandler(l hclog.Logger, p interfaces.Provider) *ReleaseHandler {
-	return &ReleaseHandler{logger: l, metrics: p.GetMetrics(), store: p.GetDataStore(), pluginProviders: p}
+func NewReleaseHandler(p interfaces.Provider) *ReleaseHandler {
+	return &ReleaseHandler{logger: p.GetLogger().Named("release_handler"), metrics: p.GetMetrics(), store: p.GetDataStore(), pluginProviders: p}
 }
 
 // Post handler creates a new deployment

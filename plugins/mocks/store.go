@@ -1,4 +1,4 @@
-package memory
+package mocks
 
 import (
 	"github.com/nicholasjackson/consul-release-controller/models"
@@ -6,32 +6,31 @@ import (
 	"github.com/stretchr/testify/mock"
 )
 
-type MockStore struct {
+type StoreMock struct {
 	mock.Mock
 }
 
-func (m *MockStore) UpsertRelease(d *models.Release) error {
+func (m *StoreMock) UpsertRelease(d *models.Release) error {
 	args := m.Called(d)
 	return args.Error(0)
 }
 
-func (m *MockStore) ListReleases(options *interfaces.ListOptions) ([]*models.Release, error) {
+func (m *StoreMock) ListReleases(options *interfaces.ListOptions) ([]*models.Release, error) {
 	args := m.Called(options)
 
-	var deps []*models.Release
 	if d, ok := args.Get(0).([]*models.Release); ok {
-		deps = d
+		return d, args.Error(1)
 	}
 
-	return deps, args.Error(1)
+	return nil, args.Error(1)
 }
 
-func (m *MockStore) DeleteRelease(name string) error {
+func (m *StoreMock) DeleteRelease(name string) error {
 	args := m.Called(name)
 	return args.Error(0)
 }
 
-func (m *MockStore) GetRelease(name string) (*models.Release, error) {
+func (m *StoreMock) GetRelease(name string) (*models.Release, error) {
 	args := m.Called(name)
 
 	if r, ok := args.Get(0).(*models.Release); ok {

@@ -2,7 +2,6 @@ package api
 
 import (
 	"bytes"
-	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -10,27 +9,21 @@ import (
 	"testing"
 
 	"github.com/go-chi/chi/v5"
-	"github.com/nicholasjackson/consul-release-controller/metrics"
+	"github.com/nicholasjackson/consul-release-controller/plugins/interfaces"
 	"github.com/nicholasjackson/consul-release-controller/plugins/mocks"
 	"github.com/nicholasjackson/consul-release-controller/testutils"
 
-	"github.com/hashicorp/go-hclog"
 	"github.com/nicholasjackson/consul-release-controller/models"
-	"github.com/nicholasjackson/consul-release-controller/state"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
 )
 
-func setupRelease(t *testing.T) (http.Handler, *httptest.ResponseRecorder, *state.MockStore, *mocks.ProviderMock) {
-	l := hclog.Default()
-	s := &state.MockStore{}
-	m := &metrics.Null{}
-
-	pp, _ := mocks.BuildMocks(t)
+func setupRelease(t *testing.T) (http.Handler, *httptest.ResponseRecorder, *mocks.ProviderMock, *mocks.Mocks) {
+	pp, m := mocks.BuildMocks(t)
 
 	rw := httptest.NewRecorder()
-	apiHandler := NewReleaseHandler(l, m, s, pp)
+	apiHandler := NewReleaseHandler(pp)
 
 	rtr := chi.NewRouter()
 
@@ -40,7 +33,7 @@ func setupRelease(t *testing.T) (http.Handler, *httptest.ResponseRecorder, *stat
 	rtr.Get("/v1/releases/{name}", apiHandler.GetSingle)
 	rtr.Delete("/v1/releases/{name}", apiHandler.Delete)
 
-	return rtr, rw, s, pp
+	return rtr, rw, pp, m
 }
 
 func TestReleaseHandlerPostWithInvalidBodyReturnsBadRequest(t *testing.T) {
@@ -53,8 +46,10 @@ func TestReleaseHandlerPostWithInvalidBodyReturnsBadRequest(t *testing.T) {
 }
 
 func TestReleaseHandlerPostWithStoreErrorReturnsError(t *testing.T) {
-	d, rw, s, _ := setupRelease(t)
-	s.On("UpsertRelease", mock.Anything).Return(fmt.Errorf("boom"))
+	d, rw, _, m := setupRelease(t)
+
+	testutils.ClearMockCall(&m.StoreMock.Mock, "UpsertRelease")
+	m.StoreMock.On("UpsertRelease", mock.Anything).Return(fmt.Errorf("boom"))
 
 	td := testutils.GetTestData(t, "valid_kubernetes_release.json")
 	r := httptest.NewRequest("POST", "/v1/releases", bytes.NewBuffer(td))
@@ -65,8 +60,7 @@ func TestReleaseHandlerPostWithStoreErrorReturnsError(t *testing.T) {
 }
 
 func TestReleaseHandlerPostWithNoErrorReturnsOk(t *testing.T) {
-	d, rw, s, _ := setupRelease(t)
-	s.On("UpsertRelease", mock.Anything).Return(nil)
+	d, rw, _, m := setupRelease(t)
 
 	td := testutils.GetTestData(t, "valid_kubernetes_release.json")
 	r := httptest.NewRequest("POST", "/v1/releases", bytes.NewBuffer(td))
@@ -74,12 +68,14 @@ func TestReleaseHandlerPostWithNoErrorReturnsOk(t *testing.T) {
 	d.ServeHTTP(rw, r)
 
 	assert.Equal(t, http.StatusOK, rw.Code)
+	m.StoreMock.AssertCalled(t, "UpsertRelease", mock.Anything)
 }
 
 func TestReleaseHandlerGetWithErrorReturnsError(t *testing.T) {
-	d, rw, s, _ := setupRelease(t)
+	d, rw, _, m := setupRelease(t)
 
-	s.On("ListReleases", mock.Anything).Return(nil, fmt.Errorf("boom"))
+	testutils.ClearMockCall(&m.StoreMock.Mock, "ListReleases")
+	m.StoreMock.On("ListReleases", mock.Anything).Return(nil, fmt.Errorf("boom"))
 
 	r := httptest.NewRequest("GET", "/v1/releases", nil)
 
@@ -88,8 +84,8 @@ func TestReleaseHandlerGetWithErrorReturnsError(t *testing.T) {
 	assert.Equal(t, http.StatusInternalServerError, rw.Code)
 }
 
-func TestReleaseHandlerGetReturnsStatus(t *testing.T) {
-	d, rw, s, pp := setupRelease(t)
+func TestReleaseHandlerGetAllReturnsStatus(t *testing.T) {
+	d, rw, _, m := setupRelease(t)
 
 	m1 := &models.Release{}
 	m1.Name = "test1"
@@ -97,7 +93,6 @@ func TestReleaseHandlerGetReturnsStatus(t *testing.T) {
 	m1.Runtime = &models.PluginConfig{Name: "test", Config: []byte(`{}`)}
 	m1.Monitor = &models.PluginConfig{Name: "test", Config: []byte(`{}`)}
 	m1.Strategy = &models.PluginConfig{Name: "test", Config: []byte(`{}`)}
-	m1.Build(pp)
 
 	m2 := &models.Release{}
 	m2.Name = "test2"
@@ -105,29 +100,33 @@ func TestReleaseHandlerGetReturnsStatus(t *testing.T) {
 	m2.Runtime = &models.PluginConfig{Name: "test", Config: []byte(`{}`)}
 	m2.Monitor = &models.PluginConfig{Name: "test", Config: []byte(`{}`)}
 	m2.Strategy = &models.PluginConfig{Name: "test", Config: []byte(`{}`)}
-	m2.Build(pp)
 
-	deps := []*models.Release{m1, m2}
+	releases := []*models.Release{m1, m2}
 
-	s.On("ListReleases", mock.Anything).Return(deps, nil)
+	testutils.ClearMockCall(&m.StoreMock.Mock, "ListReleases")
+	m.StoreMock.On("ListReleases", mock.Anything).Return(releases, nil)
+
+	testutils.ClearMockCall(&m.StateMachineMock.Mock, "CurrentState")
+	m.StateMachineMock.On("CurrentState").Once().Return(interfaces.StateStart)
+	m.StateMachineMock.On("CurrentState").Once().Return(interfaces.StateIdle)
 
 	r := httptest.NewRequest("GET", "/v1/releases", nil)
 	d.ServeHTTP(rw, r)
 
 	assert.Equal(t, http.StatusOK, rw.Code)
 
-	resp := []GetResponse{}
+	resp := []GetAllResponse{}
 	json.Unmarshal(rw.Body.Bytes(), &resp)
 
-	assert.Equal(t, "test1", resp[0].Name)
-	assert.Equal(t, "state_start", resp[0].Status)
+	assert.Equal(t, releases[0].Name, resp[0].Name)
+	assert.Equal(t, interfaces.StateStart, resp[0].Status)
 
-	assert.Equal(t, "test2", resp[1].Name)
-	assert.Equal(t, "state_start", resp[1].Status)
+	assert.Equal(t, releases[1].Name, resp[1].Name)
+	assert.Equal(t, interfaces.StateIdle, resp[1].Status)
 }
 
 func TestReleaseHandlerGetSingleReturnsReleaseWhenExists(t *testing.T) {
-	d, rw, s, pp := setupRelease(t)
+	d, rw, _, m := setupRelease(t)
 
 	m1 := &models.Release{}
 	m1.Name = "test1"
@@ -135,9 +134,9 @@ func TestReleaseHandlerGetSingleReturnsReleaseWhenExists(t *testing.T) {
 	m1.Runtime = &models.PluginConfig{Name: "test", Config: []byte(`{}`)}
 	m1.Monitor = &models.PluginConfig{Name: "test", Config: []byte(`{}`)}
 	m1.Strategy = &models.PluginConfig{Name: "test", Config: []byte(`{}`)}
-	m1.Build(pp)
 
-	s.On("GetRelease", mock.Anything).Return(m1, nil)
+	testutils.ClearMockCall(&m.StoreMock.Mock, "GetRelease")
+	m.StoreMock.On("GetRelease", "test1").Return(m1, nil)
 
 	r := httptest.NewRequest("GET", "/v1/releases/test1", nil)
 	d.ServeHTTP(rw, r)
@@ -152,9 +151,10 @@ func TestReleaseHandlerGetSingleReturnsReleaseWhenExists(t *testing.T) {
 }
 
 func TestReleaseHandlerGetSingleReturns404WhenNotFound(t *testing.T) {
-	d, rw, s, _ := setupRelease(t)
+	d, rw, _, m := setupRelease(t)
 
-	s.On("GetRelease", mock.Anything).Return(nil, state.ReleaseNotFound)
+	testutils.ClearMockCall(&m.StoreMock.Mock, "GetRelease")
+	m.StoreMock.On("GetRelease", mock.Anything).Return(nil, interfaces.ReleaseNotFound)
 
 	r := httptest.NewRequest("GET", "/v1/releases/test1", nil)
 	d.ServeHTTP(rw, r)
@@ -163,9 +163,10 @@ func TestReleaseHandlerGetSingleReturns404WhenNotFound(t *testing.T) {
 }
 
 func TestReleaseHandlerDeleteWithGetErrorReturnsError(t *testing.T) {
-	d, rw, s, _ := setupRelease(t)
+	d, rw, _, m := setupRelease(t)
 
-	s.On("GetRelease", "consul").Return(nil, fmt.Errorf("boom"))
+	testutils.ClearMockCall(&m.StoreMock.Mock, "GetRelease")
+	m.StoreMock.On("GetRelease", "consul").Return(nil, fmt.Errorf("boom"))
 
 	r := httptest.NewRequest("DELETE", "/v1/releases/consul", nil)
 	d.ServeHTTP(rw, r)
@@ -174,31 +175,27 @@ func TestReleaseHandlerDeleteWithGetErrorReturnsError(t *testing.T) {
 }
 
 func TestReleaseHandlerDeleteWithNotFoundReturns404(t *testing.T) {
-	d, rw, s, _ := setupRelease(t)
+	d, rw, _, m := setupRelease(t)
 
-	s.On("GetRelease", "consul").Return(nil, state.ReleaseNotFound)
+	testutils.ClearMockCall(&m.StoreMock.Mock, "GetRelease")
+	m.StoreMock.On("GetRelease", mock.Anything).Return(nil, interfaces.ReleaseNotFound)
 
 	r := httptest.NewRequest("DELETE", "/v1/releases/consul", nil)
-	r = r.WithContext(context.WithValue(context.Background(), "name", "consul"))
 	d.ServeHTTP(rw, r)
 
 	assert.Equal(t, http.StatusNotFound, rw.Code)
 }
 
 func TestReleaseHandlerDeleteWithNoErrorReturnsOk(t *testing.T) {
-	d, rw, s, pp := setupRelease(t)
+	d, rw, _, m := setupRelease(t)
 
-	m := &models.Release{}
-	m.Name = "test2"
-	m.Releaser = &models.PluginConfig{Name: "test", Config: []byte(`{}`)}
-	m.Runtime = &models.PluginConfig{Name: "test", Config: []byte(`{}`)}
-	m.Monitor = &models.PluginConfig{Name: "test", Config: []byte(`{}`)}
-	m.Strategy = &models.PluginConfig{Name: "test", Config: []byte(`{}`)}
-	m.CurrentState = models.StateIdle
-	m.Build(pp)
+	rel := &models.Release{}
+	rel.Name = "test2"
 
-	s.On("GetRelease", "consul").Return(m, nil)
-	s.On("DeleteRelease", "consul").Return(nil)
+	testutils.ClearMockCall(&m.StoreMock.Mock, "GetRelease")
+	testutils.ClearMockCall(&m.StoreMock.Mock, "DeleteRelease")
+	m.StoreMock.On("GetRelease", "consul").Return(m, nil)
+	m.StoreMock.On("DeleteRelease", "consul").Return(nil)
 
 	r := httptest.NewRequest("DELETE", "/v1/releases/consul", nil)
 

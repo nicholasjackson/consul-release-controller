@@ -34,7 +34,6 @@ import (
 
 	"github.com/go-logr/logr"
 	"github.com/nicholasjackson/consul-release-controller/plugins/interfaces"
-	"github.com/nicholasjackson/consul-release-controller/plugins/statemachine"
 	appsv1 "k8s.io/api/apps/v1"
 
 	consulreleasecontrollerv1 "github.com/nicholasjackson/consul-release-controller/kubernetes/controller/api/v1"
@@ -272,7 +271,7 @@ func (r *ReleaseReconciler) updateRelease(rc *consulreleasecontrollerv1.Release,
 	// note this will also be triggered when a deployment updates.
 	// Unless the state is state_idle the Deploy function will just be ignored
 	// it is safe to call this method multiple times
-	if fmt.Sprintf("%d", rc.ObjectMeta.Generation) == rm.Version && sm.CurrentState() == statemachine.StateIdle {
+	if fmt.Sprintf("%d", rc.ObjectMeta.Generation) == rm.Version && sm.CurrentState() == interfaces.StateIdle {
 		log.Info("New deployment, trigger event", "name", rc.Name)
 		sm.Deploy()
 	}

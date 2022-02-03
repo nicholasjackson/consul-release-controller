@@ -32,8 +32,7 @@ build_docker_dev:
 		-t ${DOCKER_REGISTRY}/consul-release-controller:${VERSION}.dev \
     -f ./Dockerfile \
     . \
-		--load
-	docker buildx rm multi
+		--loadre	docker buildx rm multi
 
 # Fetch Kubernetes certificates needed to secure the server with TLS
 fetch_kubernetes_certs:

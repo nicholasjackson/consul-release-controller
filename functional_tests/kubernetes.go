@@ -25,7 +25,12 @@ func getKubernetesClient() (clients.Kubernetes, error) {
 func theControllerIsRunningOnKubernetes() error {
 	// only create the environment when the flag is true
 	if *createEnvironment {
-		err := executeCommand([]string{"/usr/local/bin/shipyard", "run", "./shipyard/kubernetes"})
+		err := executeCommand([]string{
+			"/usr/local/bin/shipyard",
+			"run",
+			"--var='controller_enabled=false'",
+			"./shipyard/kubernetes",
+		})
 		if err != nil {
 			return fmt.Errorf("unable to create Kubernetes environment: %s", err)
 		}

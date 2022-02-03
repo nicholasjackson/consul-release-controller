@@ -49,7 +49,10 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        tags: ["@k8s_canary_existing", "@k8s_canary_none", "@k8s_canary_rollback"]
+        tags:
+          - "@k8s_canary_existing"
+          - "@k8s_canary_none"
+          - "@k8s_canary_rollback"
     steps:
     - uses: actions/checkout@v2
 

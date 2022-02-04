@@ -57,7 +57,7 @@ func (r *Release) Start() error {
 
 	r.log.Info("Starting controller")
 	httplogger := httplog.NewLogger("http-server")
-	httplogger = httplogger.Output(r.log.StandardWriter(&hclog.StandardLoggerOptions{ForceLevel: hclog.Trace}))
+	httplogger = httplogger.Output(hclog.NewNullLogger().StandardWriter(&hclog.StandardLoggerOptions{ForceLevel: hclog.Trace}))
 
 	rtr := chi.NewRouter()
 	rtr.Use(httplog.RequestLogger(httplogger))
@@ -111,39 +111,52 @@ func (r *Release) Shutdown() error {
 	r.log.Info("Shutting down server gracefully")
 
 	// to reuse the listener the listeners file must be closed
-	lnFile, err := r.listener.(*net.TCPListener).File()
-	if err != nil {
-		r.log.Error("Unable to get file for listener", "error", err)
-		return err
+	var lnFile *os.File
+	var err error
+
+	if r.listener != nil {
+		lnFile, err = r.listener.(*net.TCPListener).File()
+		if err != nil {
+			r.log.Error("Unable to get file for listener", "error", err)
+			return err
+		}
 	}
 
-	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
-	defer cancel()
+	if r.server != nil {
+		ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+		defer cancel()
 
-	err = r.server.Shutdown(ctx)
+		err = r.server.Shutdown(ctx)
 
-	if err != nil {
-		r.log.Error("Unable to shutdown server", "error", err)
-		return err
+		if err != nil {
+			r.log.Error("Unable to shutdown server", "error", err)
+			return err
+		}
 	}
 
 	// close the listener for the server
-	r.log.Info("Shutting down listener")
-	err = lnFile.Close()
-	if err != nil {
-		r.log.Error("Unable to shutdown listener", "error", err)
-		return err
+	if lnFile != nil {
+		r.log.Info("Shutting down listener")
+		err = lnFile.Close()
+		if err != nil {
+			r.log.Error("Unable to shutdown listener", "error", err)
+			return err
+		}
 	}
 
-	r.log.Info("Shutting down metrics")
-	err = r.metrics.StopServer()
-	if err != nil {
-		r.log.Error("Unable to shutdown metrics", "error", err)
-		return err
+	if r.metrics != nil {
+		r.log.Info("Shutting down metrics")
+		err = r.metrics.StopServer()
+		if err != nil {
+			r.log.Error("Unable to shutdown metrics", "error", err)
+			return err
+		}
 	}
 
-	r.log.Info("Shutting down kubernetes controller")
-	r.kubernetesController.Stop()
+	if r.kubernetesController != nil {
+		r.log.Info("Shutting down kubernetes controller")
+		r.kubernetesController.Stop()
+	}
 
 	return nil
 }

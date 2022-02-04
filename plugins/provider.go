@@ -37,12 +37,12 @@ type ProviderImpl struct {
 }
 
 func (p *ProviderImpl) CreateReleaser(pluginName string) (interfaces.Releaser, error) {
-	return consul.New(p.log.Named("consul-plugin"))
+	return consul.New(p.log.Named("releaser-plugin-consul"))
 }
 
 func (p *ProviderImpl) CreateRuntime(pluginName string) (interfaces.Runtime, error) {
 	if pluginName == PluginRuntimeTypeKubernetes {
-		return kubernetes.New(p.log.Named("kubernetes-plugin"))
+		return kubernetes.New(p.log.Named("runtime-plugin-kubernetes"))
 	}
 
 	return nil, fmt.Errorf("not implemented")
@@ -50,7 +50,7 @@ func (p *ProviderImpl) CreateRuntime(pluginName string) (interfaces.Runtime, err
 
 func (p *ProviderImpl) CreateMonitor(pluginName string) (interfaces.Monitor, error) {
 	if pluginName == PluginMonitorTypePromethus {
-		return prometheus.New(p.log.Named("prometheus-plugin"))
+		return prometheus.New(p.log.Named("monitor-plugin-prometheus"))
 	}
 
 	return nil, fmt.Errorf("not implemented")
@@ -58,7 +58,7 @@ func (p *ProviderImpl) CreateMonitor(pluginName string) (interfaces.Monitor, err
 
 func (p *ProviderImpl) CreateStrategy(pluginName string, mp interfaces.Monitor) (interfaces.Strategy, error) {
 	if pluginName == PluginStrategyTypeCanary {
-		return canary.New(p.log.Named("canary-strategy-plugin"), mp)
+		return canary.New(p.log.Named("strategy-plugin-canary"), mp)
 	}
 
 	return nil, fmt.Errorf("not implemented")

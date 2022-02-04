@@ -6,6 +6,9 @@ Feature: Kubernetes
   @k8s_canary_existing
   Scenario: Canary Deployment existing candidate
     Given the controller is running on Kubernetes
+    When I delete the Kubernetes deployment "api-deployment"
+      Then a Kubernetes deployment called "api-deployment" should not exist
+      And a Kubernetes deployment called "api-deployment-primary" should not exist
     And I create a new version of the Kubernetes deployment "./config/api.yaml"
     Then a Kubernetes deployment called "api-deployment" should exist
       And eventually a call to the URL "http://localhost:18080" contains the text 
@@ -19,6 +22,10 @@ Feature: Kubernetes
       And a Consul "service-resolver" called "api" should be created
       And a Consul "service-router" called "api" should be created
       And a Consul "service-splitter" called "api" should be created
+      And eventually a call to the URL "https://localhost:9443/v1/releases" contains the text
+        """
+        "status":"state_idle"
+        """
     When I create a new version of the Kubernetes deployment "./config/api_canary.yaml"
       Then a Kubernetes deployment called "api-deployment-primary" should exist
       And a Kubernetes deployment called "api-deployment" should exist
@@ -58,6 +65,10 @@ Feature: Kubernetes
       And a Consul "service-resolver" called "api" should be created
       And a Consul "service-router" called "api" should be created
       And a Consul "service-splitter" called "api" should be created
+      And eventually a call to the URL "https://localhost:9443/v1/releases" contains the text
+        """
+        "status":"state_idle"
+        """
     When I create a new version of the Kubernetes deployment "./config/api_canary.yaml"
       Then a Kubernetes deployment called "api-deployment-primary" should exist
       And a Kubernetes deployment called "api-deployment" should exist
@@ -94,6 +105,10 @@ Feature: Kubernetes
       And a Consul "service-resolver" called "api" should be created
       And a Consul "service-router" called "api" should be created
       And a Consul "service-splitter" called "api" should be created
+      And eventually a call to the URL "https://localhost:9443/v1/releases" contains the text
+        """
+        "status":"state_idle"
+        """
     When I create a new version of the Kubernetes deployment "./config/api_with_error.yaml"
       Then a Kubernetes deployment called "api-deployment-primary" should exist
       And a Kubernetes deployment called "api-deployment" should exist

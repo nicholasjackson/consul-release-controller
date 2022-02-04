@@ -27,7 +27,7 @@ type PluginConfig struct {
 }
 
 func New(l hclog.Logger) (*Plugin, error) {
-	kc, err := clients.NewKubernetes(os.Getenv("KUBECONFIG"), retryTimeout, retryInterval, l.Named("kubernetes-client"))
+	kc, err := clients.NewKubernetes(os.Getenv("KUBECONFIG"), retryTimeout, retryInterval, l.ResetNamed("kubernetes-client"))
 	if err != nil {
 		return nil, err
 	}

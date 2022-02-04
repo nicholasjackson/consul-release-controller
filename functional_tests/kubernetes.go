@@ -19,7 +19,7 @@ import (
 )
 
 func getKubernetesClient() (clients.Kubernetes, error) {
-	return clients.NewKubernetes(os.Getenv("KUBECONFIG"), 120*time.Second, 1*time.Second, logger)
+	return clients.NewKubernetes(os.Getenv("KUBECONFIG"), 120*time.Second, 1*time.Second, logger.Named("kubernetes-client"))
 }
 
 func theControllerIsRunningOnKubernetes() error {

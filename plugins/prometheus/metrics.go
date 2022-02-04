@@ -69,6 +69,10 @@ func (m *Metrics) StartServer() error {
 }
 
 func (m *Metrics) StopServer() error {
+	if m.server == nil {
+		return nil
+	}
+
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 

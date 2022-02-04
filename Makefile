@@ -66,7 +66,7 @@ create_dev_env_local_controller:
 	shipyard run ./shipyard/kubernetes --var="controller_enabled=false"
 
 create_dev_env_docker_controller:
-	shipyard run ./shipyard/kubernetes --var="controller_enabled=true" --var="controller_version=${VERSION}.dev" 
+	shipyard run ./shipyard/kubernetes --var="controller_enabled=true" --var="controller_version=nicholasjackson/consul-release-controller${VERSION}.dev" 
 
 generate_helm:
 	cd ./kubernetes/controller && make manifests

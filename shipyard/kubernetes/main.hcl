@@ -50,6 +50,21 @@ variable "consul_debug" {
   default     = true
 }
 
+variable "controller_enabled" {
+  description = "Should the controller be installed with the helm chart?"
+  default     = true
+}
+
+variable "controller_version" {
+  description = "Docker container version for the controlelr"
+  default     = ""
+}
+
+//variable "controller_version" {
+//  description = "Docker container version for the controlelr"
+//  default     = "nicholasjackson/consul-release-controller:2d0d093.dev"
+//}
+
 network "dc1" {
   subnet = "10.5.0.0/16"
 }
@@ -61,6 +76,10 @@ k8s_cluster "dc1" {
 
   network {
     name = "network.dc1"
+  }
+
+  image {
+    name = var.controller_version
   }
 }
 

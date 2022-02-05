@@ -1,10 +1,6 @@
 name: Go
 
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+on: [push]
 
 jobs:
 
@@ -23,12 +19,40 @@ jobs:
 
     - name: Test
       run: go test -v ./...
+
+  check-kubebuilder:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Set up Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: 1.17
+
+    - name: Setup Kubebuilder
+      run: |
+        os=$(go env GOOS)
+        arch=$(go env GOARCH)
+        # download kubebuilder and extract it to tmp
+        curl -L https://github.com/kubernetes-sigs/kubebuilder/releases/download/v3.1.0/kubebuilder_linux_amd64 \
+             -o /tmp/kubebuilder
+        sudo mv /tmp/kubebuilder /usr/local/bin/kubebuilder
+   
+    - name: Check Kubebuilder can generate CRDs
+      run: cd kubernetes/controller && make manifests
+    
+    - name: Check Kubebuilder can generate deep copy objects
+      run: cd kubernetes/controller && make generate
    
   functional_tests:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        tags: ["@k8s_canary_existing", "@k8s_canary_none", "@k8s_canary_rollback"]
+        tags:
+          - "@k8s_canary_existing"
+          - "@k8s_canary_none"
+          - "@k8s_canary_rollback"
     steps:
     - uses: actions/checkout@v2
 
@@ -40,11 +64,107 @@ jobs:
     - name: Setup Functional Tests
       run: |
         curl https://shipyard.run/install | bash
+    
     - name: Run Functional Tests
       run: |
         cd functional_tests && go run . --godog.tags="${{ matrix.tags }}"
-  
-  release:
+      
+    - name: Send status to Discord
+      uses: sarisia/actions-status-discord@v1
+      if: always()
+      with:
+        webhook: ${{ secrets.DISCORD_WEBHOOK }}
+        description: "Executed functional test: ${{ matrix.tags }}"
+
+  tag:
+    name: Tag latest release
     runs-on: ubuntu-latest
+    needs:
+      - build
+      - functional_tests
+    if: ${{ github.ref == 'refs/heads/main' }}
+
     steps:
+      - name: Bump version and push tag
+        id: tag
+        uses: mathieudutour/github-tag-action@v5.2
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+    
+      - name: Remove v in Tag
+        id: version
+        uses: ashley-taylor/regex-property-action@v1.0
+        with:
+          value: ${{ steps.tag.outputs.new_tag }}
+          regex: "v"
+          replacement: ""
+      
+      - name: Send status to Discord
+        uses: sarisia/actions-status-discord@v1
+        if: always()
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          description: "Automatically tagged main branch with new tag: ${{ steps.tag_version.outputs.new_tag }}"
+
+    outputs:
+      new_tag: ${{ steps.tag.outputs.new_tag }}
+      new_version: ${{ steps.version.outputs.value }}
+  
+  dev-docker:
+    name: Build development Docker image
+    runs-on: ubuntu-latest
+    needs:
+      - build
+      - functional_tests
+    if: ${{ github.ref == 'refs/heads/dev' }}
+
+    steps:
+    - name: Login to DockerHub
+      uses: docker/login-action@v1 
+      with:
+        username: ${{ secrets.DOCKER_USER }}
+        password: ${{ secrets.DOCKER_PASS }}
+
     - uses: actions/checkout@v2
+      
+    - name: Build and Push Docker Image
+      run: |
+        make build_docker
+    
+    - name: Send status to Discord
+      uses: sarisia/actions-status-discord@v1
+      if: always()
+      with:
+        webhook: ${{ secrets.DISCORD_WEBHOOK }}
+        description: "Built new Docker image"
+
+  release:
+    name: Build production Docker image
+    runs-on: ubuntu-latest
+    needs:
+      - tag
+    if: ${{ github.ref == 'refs/heads/main' }}
+
+    steps:
+    - name: Login to DockerHub
+      uses: docker/login-action@v1 
+      with:
+        username: ${{ secrets.DOCKER_USER }}
+        password: ${{ secrets.DOCKER_PASS }}
+
+    - uses: actions/checkout@v2
+      with:
+        ref: ${{ needs.tag.outputs.new_tag }}
+      
+    - name: Build and Push Docker Image
+      run: |
+        make build_docker
+      env:
+        VERSION: ${{ needs.tag.outputs.new_tag }}
+    
+    - name: Send status to Discord
+      uses: sarisia/actions-status-discord@v1
+      if: always()
+      with:
+        webhook: ${{ secrets.DISCORD_WEBHOOK }}
+        description: "Built new Docker image"

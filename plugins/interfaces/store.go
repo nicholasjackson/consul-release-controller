@@ -1,11 +1,19 @@
-package state
+package interfaces
 
-import "github.com/nicholasjackson/consul-release-controller/models"
+import (
+	"errors"
 
+	"github.com/nicholasjackson/consul-release-controller/models"
+)
+
+var ReleaseNotFound = errors.New("Release not found")
+
+// ListOptions are used for querying releases
 type ListOptions struct {
 	Runtime string // the type of the runtime i.e kubernetes
 }
 
+// Store defines a datastore plugin
 type Store interface {
 	// UpsertRelease creates a new release if not already existing, or updates and existing release
 	UpsertRelease(d *models.Release) error

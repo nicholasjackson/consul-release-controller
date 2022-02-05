@@ -25,6 +25,16 @@ data:
               "type": "dashboard"
             },
             "type": "dashboard"
+          },
+          {
+            "datasource": "Prometheus",
+            "enable": true,
+            "expr": "consul_release_controller_state_changed_start_seconds{release=\"api\",state!=\"state_idle\"}",
+            "iconColor": "red",
+            "name": "State Change",
+            "step": "",
+            "tagKeys": "state",
+            "titleFormat": "state"
           }
         ]
       },
@@ -297,7 +307,7 @@ data:
           "targets": [
             {
               "exemplar": true,
-              "expr": "sum(rate(envoy_listener_http_downstream_rq_xx{local_cluster=\"ingress-gateway\", envoy_listener_address=\"0.0.0.0_18080\",envoy_response_code_class=~\"2|5\"}[$__rate_interval])) by (envoy_response_code_class)",
+              "expr": "sum(rate(envoy_http_18080_downstream_rq_xx{pod=~\"consul-ingress-gateway.*\", envoy_response_code_class=~\"2|5\"}[$__rate_interval])) by (envoy_response_code_class)",
               "hide": false,
               "interval": "",
               "legendFormat": "Downstream Response Code {{envoy_response_code_class}}xx",
@@ -365,7 +375,7 @@ data:
           "targets": [
             {
               "exemplar": true,
-              "expr": "sum(round(increase(envoy_listener_http_downstream_rq_xx{local_cluster=\"ingress-gateway\", envoy_listener_address=\"0.0.0.0_18080\", envoy_response_code_class=\"5\"}[$__rate_interval]),1))",
+              "expr": "sum(round(increase(envoy_http_18080_downstream_rq_xx{pod=~\"consul-ingress-gateway.*\", envoy_response_code_class=\"5\"}[$__rate_interval]),1))",
               "interval": "",
               "legendFormat": "",
               "refId": "A"
@@ -552,7 +562,7 @@ data:
           "targets": [
             {
               "exemplar": true,
-              "expr": "sum(rate(envoy_cluster_retry_upstream_rq{consul_destination_service=\"api\"}[$__rate_interval]))",
+              "expr": "sum(round(increase(envoy_cluster_upstream_rq_retry{consul_destination_service=\"api\"}[$__rate_interval]),1))",
               "interval": "",
               "legendFormat": "",
               "refId": "A"

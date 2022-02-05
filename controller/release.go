@@ -14,9 +14,9 @@ import (
 	"github.com/hashicorp/go-hclog"
 	"github.com/nicholasjackson/consul-release-controller/handlers/api"
 	kubernetes "github.com/nicholasjackson/consul-release-controller/kubernetes/controller"
-	promMetrics "github.com/nicholasjackson/consul-release-controller/metrics"
 	"github.com/nicholasjackson/consul-release-controller/plugins"
-	"github.com/nicholasjackson/consul-release-controller/state"
+	"github.com/nicholasjackson/consul-release-controller/plugins/memory"
+	"github.com/nicholasjackson/consul-release-controller/plugins/prometheus"
 	"golang.org/x/net/context"
 )
 
@@ -24,12 +24,12 @@ type Release struct {
 	log                  hclog.Logger
 	server               *http.Server
 	listener             net.Listener
-	metrics              *promMetrics.Sink
+	metrics              *prometheus.Metrics
 	kubernetesController *kubernetes.Kubernetes
 }
 
 func New(log hclog.Logger) (*Release, error) {
-	metrics, err := promMetrics.New("0.0.0.0", 9102, "/metrics")
+	metrics, err := prometheus.NewMetrics("0.0.0.0", 9102, "/metrics")
 	if err != nil {
 		log.Error("failed to create metrics", "error", err)
 		return nil, err
@@ -44,20 +44,20 @@ func (r *Release) Start() error {
 	r.metrics.StartServer()
 	r.metrics.ServiceStarting()
 
-	store := state.NewInmemStore()
-	provider := plugins.GetProvider(r.log)
+	store := memory.NewStore()
+	provider := plugins.GetProvider(r.log, r.metrics, store)
 
 	// create the kubernetes controller
-	kc := kubernetes.New(store, provider, r.log.Named("kubernetes-controller"))
+	kc := kubernetes.New(provider)
 	r.kubernetesController = kc
 	go kc.Start()
 
 	healthHandler := api.NewHealthHandlers(r.log.Named("health-handlers"))
-	apiHandler := api.NewReleaseHandler(r.log.Named("restful-api"), r.metrics, store, provider)
+	apiHandler := api.NewReleaseHandler(provider)
 
 	r.log.Info("Starting controller")
 	httplogger := httplog.NewLogger("http-server")
-	httplogger = httplogger.Output(r.log.StandardWriter(&hclog.StandardLoggerOptions{ForceLevel: hclog.Trace}))
+	httplogger = httplogger.Output(hclog.NewNullLogger().StandardWriter(&hclog.StandardLoggerOptions{ForceLevel: hclog.Trace}))
 
 	rtr := chi.NewRouter()
 	rtr.Use(httplog.RequestLogger(httplogger))
@@ -111,39 +111,52 @@ func (r *Release) Shutdown() error {
 	r.log.Info("Shutting down server gracefully")
 
 	// to reuse the listener the listeners file must be closed
-	lnFile, err := r.listener.(*net.TCPListener).File()
-	if err != nil {
-		r.log.Error("Unable to get file for listener", "error", err)
-		return err
+	var lnFile *os.File
+	var err error
+
+	if r.listener != nil {
+		lnFile, err = r.listener.(*net.TCPListener).File()
+		if err != nil {
+			r.log.Error("Unable to get file for listener", "error", err)
+			return err
+		}
 	}
 
-	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
-	defer cancel()
+	if r.server != nil {
+		ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+		defer cancel()
 
-	err = r.server.Shutdown(ctx)
+		err = r.server.Shutdown(ctx)
 
-	if err != nil {
-		r.log.Error("Unable to shutdown server", "error", err)
-		return err
+		if err != nil {
+			r.log.Error("Unable to shutdown server", "error", err)
+			return err
+		}
 	}
 
 	// close the listener for the server
-	r.log.Info("Shutting down listener")
-	err = lnFile.Close()
-	if err != nil {
-		r.log.Error("Unable to shutdown listener", "error", err)
-		return err
+	if lnFile != nil {
+		r.log.Info("Shutting down listener")
+		err = lnFile.Close()
+		if err != nil {
+			r.log.Error("Unable to shutdown listener", "error", err)
+			return err
+		}
 	}
 
-	r.log.Info("Shutting down metrics")
-	err = r.metrics.StopServer()
-	if err != nil {
-		r.log.Error("Unable to shutdown metrics", "error", err)
-		return err
+	if r.metrics != nil {
+		r.log.Info("Shutting down metrics")
+		err = r.metrics.StopServer()
+		if err != nil {
+			r.log.Error("Unable to shutdown metrics", "error", err)
+			return err
+		}
 	}
 
-	r.log.Info("Shutting down kubernetes controller")
-	r.kubernetesController.Stop()
+	if r.kubernetesController != nil {
+		r.log.Info("Shutting down kubernetes controller")
+		r.kubernetesController.Stop()
+	}
 
 	return nil
 }

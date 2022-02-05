@@ -14,6 +14,7 @@ import (
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/client-go/kubernetes"
+	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/clientcmd"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	controller "sigs.k8s.io/controller-runtime/pkg/client"
@@ -59,10 +60,23 @@ type Kubernetes interface {
 
 // NewKubernetes creates a new Kubernetes implementation
 func NewKubernetes(configPath string, timeout, interval time.Duration, l hclog.Logger) (Kubernetes, error) {
-	config, err := clientcmd.BuildConfigFromFlags("", configPath)
-	if err != nil {
-		return nil, fmt.Errorf("unable to build Kubernetes config using path: %s, error: %s", configPath, err)
+	var err error
+	var config *rest.Config
+
+	if configPath == "" {
+		// assume we are running in a cluster and have the correct permissions on the pod
+		config, err = rest.InClusterConfig()
+		if err != nil {
+			return nil, fmt.Errorf("unable to create Kubernetes config from in cluster config, please check the controller has the correct permissions")
+		}
+	} else {
+		// if whe have an explicit config file path, build the config from that
+		config, err = clientcmd.BuildConfigFromFlags("", configPath)
+		if err != nil {
+			return nil, fmt.Errorf("unable to build Kubernetes config using path: %s, error: %s", configPath, err)
+		}
 	}
+
 	cs, err := kubernetes.NewForConfig(config)
 	if err != nil {
 		return nil, fmt.Errorf("unable to create Kubernetes client, error: %s", err)

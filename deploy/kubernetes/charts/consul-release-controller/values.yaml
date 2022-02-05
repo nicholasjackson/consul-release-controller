@@ -13,15 +13,30 @@ controller:
       repository: nicholasjackson/consul-release-controller
       pullPolicy: IfNotPresent
       # Overrides the image tag whose default is the chart appVersion.
-      tag: "0.1.0"
+      tag: "0.0.1"
 
-    env: []
+    env:
+    - name: HOST_IP
+      valueFrom:
+        fieldRef:
+          fieldPath: status.hostIP
+    - name: CONSUL_HTTP_ADDR
+      value: https://$(HOST_IP):8501
+    - name: CONSUL_CAPATH
+      value: /consul/tls/client/ca/tls.crt
+    - name: CONSUL_HTTP_TOKEN
+      valueFrom: 
+        secretKeyRef:
+          name: consul-controller-acl-token
+          key: token 
       # Additional environment variables to add to the controller
       # deployment
       # - name: MYENV
       #   value: myvalue
 
-    volumeMounts: []
+    volumeMounts:
+      - mountPath: /consul/tls/client/ca
+        name: consul-auto-encrypt-ca-cert
       # Additional volume mounts to add to the container can be used to
       # mount configuration or certificates needed by the specific controller implementation.
       # - name: consul-ca
@@ -39,13 +54,43 @@ controller:
       #   cpu: 100m
       #   memory: 128Mi
 
-  additional_volumes: []
+  additional_volumes: 
+    - name: consul-server-ca
+      secret:
+        secretName: consul-server-cert
+    - name: consul-auto-encrypt-ca-cert
+      emptyDir:
+        medium: Memory
     # Additional volumes to add to the controller pod
     # - name: consul-ca
     #   secret:
     #     secretName: consul-ca-cert
 
-  additional-init-containers: []
+  additional_init_containers:
+    - command:
+      - /bin/sh
+      - -ec
+      - |
+        consul-k8s get-consul-client-ca \
+          -output-file=/consul/tls/client/ca/tls.crt \
+          -server-addr=consul-server \
+          -server-port=8501 \
+          -ca-file=/consul/tls/ca/tls.crt
+      image: hashicorp/consul-k8s:0.25.0
+      imagePullPolicy: IfNotPresent
+      name: get-auto-encrypt-client-ca
+      resources:
+        limits:
+          cpu: 50m
+          memory: 50Mi
+        requests:
+          cpu: 50m
+          memory: 50Mi
+      volumeMounts:
+      - mountPath: /consul/tls/ca
+        name: consul-server-ca
+      - mountPath: /consul/tls/client/ca
+        name: consul-auto-encrypt-ca-cert
     # Add additional init containers to the controller pod
     # - command:
     #   - /bin/sh
@@ -87,6 +132,7 @@ controller:
   affinity: {}
 
 webhook:
+  enabled: "false"
   type: ClusterIP
   port: 443
   service: consul-release-controller-webhook

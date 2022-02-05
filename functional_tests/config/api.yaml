@@ -31,7 +31,7 @@ spec:
             - containerPort: 9090
           env:
             - name: "NAME"
-              value: "API V3"
+              value: "API V1"
             - name: "LISTEN_ADDR"
               value: "0.0.0.0:9090"
             - name: "TIMING_50_PERCENTILE"

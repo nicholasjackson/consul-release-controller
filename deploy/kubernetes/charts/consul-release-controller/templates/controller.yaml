@@ -43,8 +43,8 @@ spec:
             - name: http
               containerPort: 9443
               protocol: TCP
-            - name: health
-              containerPort: 9444
+            - name: metrics
+              containerPort: 9102
               protocol: TCP
           volumeMounts:
             - name: tls-secret
@@ -54,16 +54,24 @@ spec:
             {{- end }}
           livenessProbe:
             httpGet:
-              path: /healthz
-              port: health
+              path: /v1/health
+              port: http
+              scheme: HTTPS
           readinessProbe:
             httpGet:
-              path: /readyz
-              port: health
+              path: /v1/ready
+              port: http
+              scheme: HTTPS
           resources:
             {{- toYaml .Values.controller.container_config.resources | nindent 12 }}
           env:
+            - name: TLS_CERT
+              value: /tmp/k8s-webhook-server/serving-certs/tls.crt
+            - name: TLS_KEY
+              value: /tmp/k8s-webhook-server/serving-certs/tls.key
+            {{- if .Values.controller.container_config.env }}
             {{- toYaml .Values.controller.container_config.env | nindent 12 }}
+            {{- end }}
       {{- with .Values.controller.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

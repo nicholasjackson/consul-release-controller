@@ -33,9 +33,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/source"
 
 	"github.com/go-logr/logr"
-	"github.com/nicholasjackson/consul-release-controller/models"
 	"github.com/nicholasjackson/consul-release-controller/plugins/interfaces"
-	"github.com/nicholasjackson/consul-release-controller/state"
 	appsv1 "k8s.io/api/apps/v1"
 
 	consulreleasecontrollerv1 "github.com/nicholasjackson/consul-release-controller/kubernetes/controller/api/v1"
@@ -50,7 +48,6 @@ const (
 type ReleaseReconciler struct {
 	client.Client
 	Scheme   *runtime.Scheme
-	Store    state.Store
 	Provider interfaces.Provider
 }
 
@@ -223,27 +220,31 @@ func (r *ReleaseReconciler) findObjectsForDeployment(deployment client.Object) [
 }
 
 func (r *ReleaseReconciler) updateRelease(rc *consulreleasecontrollerv1.Release, log logr.Logger) error {
+	var sm interfaces.StateMachine
+
 	// check to see if the release exists
-	rm, err := r.Store.GetRelease(rc.Name)
-	if err == state.ReleaseNotFound {
+	rm, err := r.Provider.GetDataStore().GetRelease(rc.Name)
+	if err == interfaces.ReleaseNotFound {
 		log.Info("Create new release", "name", rc.Name)
 
 		rm = rc.ConvertToModel()
-		err = rm.Build(r.Provider)
+
+		// Update the store
+		err = r.Provider.GetDataStore().UpsertRelease(rm)
 		if err != nil {
 			log.Error(err, "Unable to create new release", "name", rc.Name)
 			return err
 		}
 
-		// Update the store
-		err = r.Store.UpsertRelease(rm)
+		// get the statemachine
+		sm, err := r.Provider.GetStateMachine(rm)
 		if err != nil {
-			log.Error(err, "Unable to create new release", "name", rc.Name)
+			log.Error(err, "Unable to get statemachine", "name", rc.Name)
 			return err
 		}
 
 		// Configure the release
-		err = rm.Configure()
+		err = sm.Configure()
 		if err != nil {
 			log.Error(err, "Unable to configure new release", "name", rc.Name)
 			return err
@@ -253,8 +254,15 @@ func (r *ReleaseReconciler) updateRelease(rc *consulreleasecontrollerv1.Release,
 	}
 
 	if err != nil {
-		log.Error(err, "Unable to get releases", "name", rc.Name)
+		log.Error(err, "Unable to get release", "name", rc.Name)
 
+		return err
+	}
+
+	// get the statemachine
+	sm, err = r.Provider.GetStateMachine(rm)
+	if err != nil {
+		log.Error(err, "Unable to get statemachine", "name", rc.Name)
 		return err
 	}
 
@@ -263,9 +271,9 @@ func (r *ReleaseReconciler) updateRelease(rc *consulreleasecontrollerv1.Release,
 	// note this will also be triggered when a deployment updates.
 	// Unless the state is state_idle the Deploy function will just be ignored
 	// it is safe to call this method multiple times
-	if fmt.Sprintf("%d", rc.ObjectMeta.Generation) == rm.Version && rm.CurrentState == models.StateIdle {
+	if fmt.Sprintf("%d", rc.ObjectMeta.Generation) == rm.Version && sm.CurrentState() == interfaces.StateIdle {
 		log.Info("New deployment, trigger event", "name", rc.Name)
-		rm.Deploy()
+		sm.Deploy()
 	}
 
 	// update the resources
@@ -275,8 +283,8 @@ func (r *ReleaseReconciler) updateRelease(rc *consulreleasecontrollerv1.Release,
 }
 
 func (r *ReleaseReconciler) deleteRelease(rc *consulreleasecontrollerv1.Release, log logr.Logger) error {
-	rm, err := r.Store.GetRelease(rc.Name)
-	if err == state.ReleaseNotFound {
+	rm, err := r.Provider.GetDataStore().GetRelease(rc.Name)
+	if err == interfaces.ReleaseNotFound {
 		log.Info("Unable to delete release, not found", "name", rc.Name)
 
 		// nothing to do
@@ -289,13 +297,27 @@ func (r *ReleaseReconciler) deleteRelease(rc *consulreleasecontrollerv1.Release,
 		return err
 	}
 
+	// get the statemachine
+	sm, err := r.Provider.GetStateMachine(rm)
+	if err != nil {
+		log.Error(err, "Unable to get statemachine", "name", rc.Name)
+		return err
+	}
+
 	// cleanup
-	err = rm.Destroy()
+	err = sm.Destroy()
 	if err != nil {
 		log.Error(err, "Unable to delete release", "name", rc.Name)
 
 		return err
 	}
 
-	return r.Store.DeleteRelease(rc.Name)
+	r.Provider.DeleteStateMachine(rm)
+	if err != nil {
+		log.Error(err, "Unable to delete statemachine", "name", rc.Name)
+
+		return err
+	}
+
+	return r.Provider.GetDataStore().DeleteRelease(rm.Name)
 }

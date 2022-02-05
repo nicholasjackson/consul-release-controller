@@ -1,4 +1,4 @@
-package metrics
+package prometheus
 
 import (
 	"context"
@@ -12,7 +12,7 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
-type Sink struct {
+type Metrics struct {
 	addr   string
 	port   int
 	path   string
@@ -21,24 +21,27 @@ type Sink struct {
 	server *http.Server
 }
 
-func New(addr string, port int, path string) (*Sink, error) {
+func NewMetrics(addr string, port int, path string) (*Metrics, error) {
 	promSink, err := prometheus.NewPrometheusSink()
 	if err != nil {
 		return nil, err
 	}
 
-	m, err := metrics.New(metrics.DefaultConfig("consul_canary_controller"), promSink)
+	config := metrics.DefaultConfig("consul_release_controller")
+	config.EnableHostname = false
+
+	m, err := metrics.New(config, promSink)
 	if err != nil {
 		return nil, err
 	}
 
 	m.EnableRuntimeMetrics = true
 
-	return &Sink{addr: addr, port: port, path: path, m: m, prom: promSink}, nil
+	return &Metrics{addr: addr, port: port, path: path, m: m, prom: promSink}, nil
 }
 
 // StartServer exposes the metrics
-func (m *Sink) StartServer() error {
+func (m *Metrics) StartServer() error {
 	mux := &http.ServeMux{}
 	mux.Handle(m.path, promhttp.Handler())
 
@@ -65,18 +68,22 @@ func (m *Sink) StartServer() error {
 
 }
 
-func (m *Sink) StopServer() error {
+func (m *Metrics) StopServer() error {
+	if m.server == nil {
+		return nil
+	}
+
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 
 	return m.server.Shutdown(ctx)
 }
 
-func (m *Sink) ServiceStarting() {
+func (m *Metrics) ServiceStarting() {
 	m.m.IncrCounter([]string{"starting"}, 1)
 }
 
-func (m *Sink) HandleRequest(handler string, args map[string]string) func(status int) {
+func (m *Metrics) HandleRequest(handler string, args map[string]string) func(status int) {
 	st := time.Now()
 
 	return func(status int) {
@@ -89,5 +96,23 @@ func (m *Sink) HandleRequest(handler string, args map[string]string) func(status
 		labs = append(labs, metrics.Label{Name: "response_code", Value: fmt.Sprintf("%d", status)})
 
 		m.m.MeasureSinceWithLabels([]string{handler}, st, labs)
+	}
+}
+
+func (m *Metrics) StateChanged(release, state string, args map[string]string) func(status int) {
+	st := time.Now()
+
+	labs := []metrics.Label{metrics.Label{Name: "release", Value: release}, metrics.Label{Name: "state", Value: state}}
+	for k, v := range args {
+		labs = append(labs, metrics.Label{Name: k, Value: v})
+	}
+
+	m.m.SetGaugeWithLabels([]string{"state_changed_start_seconds"}, float32(time.Now().UnixNano()), labs)
+
+	return func(status int) {
+		// add the response code
+		labs = append(labs, metrics.Label{Name: "response_code", Value: fmt.Sprintf("%d", status)})
+
+		m.m.MeasureSinceWithLabels([]string{"state_change_duration"}, st, labs)
 	}
 }

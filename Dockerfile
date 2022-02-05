@@ -6,7 +6,7 @@ COPY . /go/src/github.com/nicholasjackson/consul-release-controller/
 
 WORKDIR /go/src/github.com/nicholasjackson/consul-release-controller
 
-RUN go get ./... && go build -o /bin/consul-release-controller
+RUN go get ./... && CGO_ENABLED=0 GOOS=linux go build -o /bin/consul-release-controller
 
 
 FROM alpine:latest

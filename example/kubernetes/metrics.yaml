@@ -37,3 +37,39 @@ spec:
       protocol: TCP
       port: 20200
       targetPort: 20200
+
+---
+# Service to expose loadtest for scraping
+apiVersion: v1
+kind: Service
+metadata:
+  name: loadtest-metrics
+  namespace: consul
+  labels:
+    app: metrics
+spec:
+  selector:
+    group: loadtest
+  ports:
+  - name: metrics
+    protocol: TCP
+    port: 9102
+    targetPort: 9102
+
+---
+# Service to expose loadtest for scraping
+apiVersion: v1
+kind: Service
+metadata:
+  name: controller-metrics
+  namespace: consul
+  labels:
+    app: metrics
+spec:
+  selector:
+    app.kubernetes.io/name: consul-release-controller
+  ports:
+  - name: metrics
+    protocol: TCP
+    port: 9102
+    targetPort: 9102

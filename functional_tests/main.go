@@ -54,7 +54,7 @@ func initializeSuite(ctx *godog.TestSuiteContext) {
 		environment = map[string]string{}
 
 		if *alwaysLog {
-			logger = hclog.New(&hclog.LoggerOptions{Level: hclog.Trace, Color: hclog.AutoColor})
+			logger = hclog.New(&hclog.LoggerOptions{Name: "functional-tests", Level: hclog.Trace, Color: hclog.AutoColor})
 			logger.Info("Create standard logger")
 		} else {
 			logStore = *bytes.NewBufferString("")

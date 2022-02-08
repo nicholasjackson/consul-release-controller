@@ -15,7 +15,7 @@ build_docker:
 	docker buildx create --name multi || true
 	docker buildx use multi
 	docker buildx inspect --bootstrap
-	docker buildx build --platform linux/arm/v6,linux/arm/v7,linux/arm64,linux/amd64 \
+	docker buildx build --platform linux/arm64,linux/amd64 \
 		-t ${DOCKER_REGISTRY}/consul-release-controller:${VERSION} \
     -f ./Dockerfile \
     .  \

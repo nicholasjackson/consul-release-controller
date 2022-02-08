@@ -100,7 +100,7 @@ k8s_config "cert-manager-controller" {
 }
 
 module "consul" {
-  source = "github.com/shipyard-run/blueprints?ref=8756e198e5b402ae93f23320c75b9ff519d38c2c/modules//kubernetes-consul"
+  source = "github.com/shipyard-run/blueprints?ref=e98af747dfa585cbdb88dc5269c99f8c269baaef/modules//kubernetes-consul"
 }
 
 ingress "web" {

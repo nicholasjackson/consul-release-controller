@@ -3,10 +3,10 @@ HELM_VERSION ?= 0.0.1
 SHELL := /bin/bash
 UNAME := $(shell uname)
 
-ifeq "$(VERSION)"  ""
+ifeq "$(VERSION_ENV)" ""
 	VERSION = $(shell git log --pretty=format:'%h' -n 1)
 else 
-	VERSION = $(VERSION)
+	VERSION = $(VERSION_ENV)
 endif
 
 # Build and push the Arm64 and x64 images to the Docker registry

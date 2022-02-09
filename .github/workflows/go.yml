@@ -1,6 +1,6 @@
 name: Go
 
-on: [push,pull_request]
+on: [push]
 
 jobs:
 
@@ -10,10 +10,15 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Check labels are assigned
-        uses: zwaldowski/match-label-action@v1
+      - name: Check PR labels action step
+        id: check_pr_labels
+        uses: shioyang/check-pr-labels-on-push-action@v1.0.3
         with:
-          allowed: major, minor, patch
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          labels: '["patch", "minor", "major"]'
+
+      - name: See result
+        run: echo "${{ steps.check_pr_labels.outputs.result }}"
 
       - name: Send status to Discord
         uses: sarisia/actions-status-discord@v1

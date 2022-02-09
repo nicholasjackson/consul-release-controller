@@ -3,9 +3,11 @@ SHELL := /bin/bash
 UNAME := $(shell uname)
 
 ifeq "$(VERSION_ENV)" ""
-	VERSION = $(shell git log --pretty=format:'%h' -n 1)
+	VERSION=$(shell git log --pretty=format:'%h' -n 1)
+	HELM_VERSION=0.0.3-dev
 else 
-	VERSION = $(VERSION_ENV)
+	VERSION=$(VERSION_ENV)
+	HELM_VERSION=$(VERSION_ENV)
 endif
 
 # Build and push the Arm64 and x64 images to the Docker registry
@@ -75,12 +77,18 @@ generate_helm:
 	kustomize build ./kubernetes/controller/config/helm -o ./deploy/kubernetes/charts/consul-release-controller/templates
 
 # Set the version in the chart
+
 	cp ./deploy/kubernetes/charts/consul-release-controller/Chart.tpl ./deploy/kubernetes/charts/consul-release-controller/Chart.yaml
 	sedi=(-i) && [ "$(UNAME)" == "Darwin" ] && sedi=(-i '') ; \
-	sed "$${sedi[@]}" -e 's/##VERSION##/${VERSION}/' ./deploy/kubernetes/charts/consul-release-controller/Chart.yaml
+		sed "$${sedi[@]}" -e 's/##VERSION##/${HELM_VERSION}/' ./deploy/kubernetes/charts/consul-release-controller/Chart.yaml
+	
+	cp ./deploy/kubernetes/charts/consul-release-controller/values.tpl ./deploy/kubernetes/charts/consul-release-controller/values.yaml
+	sedi=(-i) && [ "$(UNAME)" == "Darwin" ] && sedi=(-i '') ; \
+		sed "$${sedi[@]}" -e 's/##VERSION##/${VERSION}/' ./deploy/kubernetes/charts/consul-release-controller/values.yaml
 
 # Now package the Helm chart into a tarball
 	helm package ./deploy/kubernetes/charts/consul-release-controller
 
 # Generate the index using github releases as source for binaries
-	cd ./docs && helm repo index . --url=https://github.com/nicholasjackson/consul-release-controller/releases/download/${VERSION}/
+	helm repo index . --merge ./docs/index.yaml --url=https://github.com/nicholasjackson/consul-release-controller/releases/download/${VERSION}/
+	mv ./index.yaml ./docs/index.yaml

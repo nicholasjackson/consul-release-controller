@@ -1,14 +1,4 @@
 apiVersion: v1
 entries:
   consul-release-controller:
-  - apiVersion: v2
-    appVersion: 1.16.0
-    created: "2022-02-09T06:22:40.19745639Z"
-    description: A Helm chart for installing the Consul release controller
-    digest: 6d3e762a5049bad6756548bcf7833f1f30aa654f53300376f941124b8f02c94e
-    name: consul-release-controller
-    type: application
-    urls:
-    - https://github.com/nicholasjackson/consul-release-controller/releases/download/3568545/consul-release-controller-3568545.tgz
-    version: "3568545"
-generated: "2022-02-09T06:22:40.196736351Z"
+generated: "2022-02-10T06:58:45.300119895Z"

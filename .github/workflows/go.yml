@@ -174,7 +174,7 @@ jobs:
     
     - name: Generate the Helm release
       run: |
-        make helm_release
+        make generate_helm
       env:
         VERSION_ENV: ${{ steps.next_version.outputs.new_version }}
 

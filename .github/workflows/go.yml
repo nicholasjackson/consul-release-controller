@@ -22,7 +22,7 @@ jobs:
           echo pr labels: "${{ steps.check_pr_labels.outputs.labels }}"
 
       - name: Check labels
-        if: ${{ steps.check_pr_labels.outputs.result != "true" }}
+        if: ${{ steps.check_pr_labels.outputs.result != 'true' }}
         uses: andymckay/cancel-action@0.2
 
       - name: Send status to Discord

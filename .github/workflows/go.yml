@@ -19,8 +19,8 @@ jobs:
 
       - name: Echo
         run:  |
-          echo pr labels: "${{ steps.check_pr_labels.outputs.result }}"
-          echo pr labels: "${{ steps.check_pr_labels.outputs.labels }}"
+          echo "pr labels: ${{ steps.check_pr_labels.outputs.result }}"
+          echo "pr labels: ${{ steps.check_pr_labels.outputs.labels }}"
 
       - name: Check labels
         if: ${{ steps.check_pr_labels.outputs.result != 'true' }}

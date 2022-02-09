@@ -10,12 +10,19 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - uses: nicholasjackson/check-pr-labels-on-push-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          labels: '["patch", "minor", "major"]'
+          match-any: "true"
+
       - name: Echo
         run:  |
-          echo pr labels: "${{github.event.pull_request.labels.*.name[0]}}"
+          echo pr labels: "${{ steps.check_pr_labels.outputs.result }}"
+          echo pr labels: "${{ steps.check_pr_labels.outputs.labels }}"
 
       - name: Check labels
-        if: "!contains(github.event.pull_request.labels.*.name, 'patch') && !contains(github.event.pull_request.labels.*.name, 'minor') && !contains(github.event.pull_request.labels.*.name, 'major')"
+        if: ${{ steps.check_pr_labels.outputs.result != 'true' }}
         uses: andymckay/cancel-action@0.2
 
       - name: Send status to Discord

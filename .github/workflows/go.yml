@@ -21,7 +21,7 @@ jobs:
       - name: Echo test
         run: |
           echo "${{ steps.check_pr_labels.outputs.labels }}"
-          echo "${{ toJson(steps.check_pr_labels.outputs.labels)[0] }}"
+          echo "${{ fromJson(steps.check_pr_labels.outputs.labels)[0] }}"
 
       - name: Cancel Workflow
         if: ${{ steps.check_pr_labels.outputs.result == 'false' }}

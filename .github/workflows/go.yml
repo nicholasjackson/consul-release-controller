@@ -10,15 +10,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Check PR labels action step
-        id: check_pr_labels
-        uses: shioyang/check-pr-labels-on-push-action@v1.0.3
+      - name: Check labels are assigned
+        uses: zwaldowski/match-label-action@v1
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          labels: '["patch"]'
-
-      - name: See result
-        run: echo "${{ steps.check_pr_labels.outputs.result }}"
+          allowed_multiple: major, minor, patch
 
       - name: Send status to Discord
         uses: sarisia/actions-status-discord@v1

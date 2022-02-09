@@ -13,7 +13,7 @@ jobs:
       - name: Get PR labels
         id: pr-labels
         uses: joerick/pr-labels-action@v1.0.6
-      
+
       - name: Check labels
         if: !contains(steps.pr-labels.outputs.labels, 'patch') && !contains(steps.pr-labels.outputs.labels, 'minor') && !contains(steps.pr-labels.outputs.labels, 'major')
         uses: andymckay/cancel-action@0.2

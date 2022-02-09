@@ -10,6 +10,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Echo
+        run: |
+          echo pr labels: "${{github.event.pull_request.labels.*.name}}"
+
       - name: Get PR labels
         id: pr-labels
         uses: joerick/pr-labels-action@v1.0.6

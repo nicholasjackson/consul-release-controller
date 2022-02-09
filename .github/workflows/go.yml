@@ -1,6 +1,6 @@
 name: Go
 
-on: [push]
+on: [push,pull_request]
 
 jobs:
 
@@ -9,10 +9,12 @@ jobs:
     if: ${{ github.ref == 'refs/heads/main' }}
     steps:
       - uses: actions/checkout@v2
-      - id: bump
+
+      - name: Check labels are assigned
         uses: zwaldowski/match-label-action@v1
         with:
           allowed: major, minor, patch
+
       - name: Send status to Discord
         uses: sarisia/actions-status-discord@v1
         with:

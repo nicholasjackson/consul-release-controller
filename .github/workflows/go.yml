@@ -10,11 +10,12 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: nicholasjackson/check-pr-labels-on-push-action@master
+      - name: check_pr_labels
+        uses: nicholasjackson/check-pr-labels-on-push-action@master
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           labels: '["patch", "minor", "major"]'
-          match-any: "true"
+          match-any: 'true'
 
       - name: Echo
         run:  |

@@ -142,8 +142,7 @@ jobs:
     - id: bump
       uses: zwaldowski/match-label-action@v1
       with:
-        allowed: major, minor, patch
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+        allowed: patch
     
     - uses: zwaldowski/semver-release-action@v1
       id: next_version

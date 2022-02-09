@@ -10,10 +10,13 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Check labels are assigned
-        uses: zwaldowski/match-label-action@v1
-        with:
-          allowed: patch
+      - name: Get PR labels
+        id: pr-labels
+        uses: joerick/pr-labels-action@v1.0.6
+      
+      - name: Check labels
+        if: !contains(steps.pr-labels.outputs.labels, 'patch') && !contains(steps.pr-labels.outputs.labels, 'minor') && !contains(steps.pr-labels.outputs.labels, 'major')
+        uses: andymckay/cancel-action@0.2
 
       - name: Send status to Discord
         uses: sarisia/actions-status-discord@v1

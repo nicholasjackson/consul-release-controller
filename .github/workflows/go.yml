@@ -13,7 +13,8 @@ jobs:
       - name: Check labels are assigned
         uses: zwaldowski/match-label-action@v1
         with:
-          allowed_multiple: major, minor, patch
+          allowed: major, minor, patch
+          github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Send status to Discord
         uses: sarisia/actions-status-discord@v1
@@ -142,6 +143,7 @@ jobs:
       uses: zwaldowski/match-label-action@v1
       with:
         allowed: major, minor, patch
+        github_token: ${{ secrets.GITHUB_TOKEN }}
     
     - uses: zwaldowski/semver-release-action@v1
       id: next_version

@@ -11,15 +11,11 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Echo
-        run: |
-          echo pr labels: "${{github.event.pull_request.labels.*.name}}"
-
-      - name: Get PR labels
-        id: pr-labels
-        uses: joerick/pr-labels-action@v1.0.6
+        run:  |
+          echo pr labels: "${{github.event.pull_request.labels.*.name[0]}}"
 
       - name: Check labels
-        if: "!contains(steps.pr-labels.outputs.labels, 'patch') && !contains(steps.pr-labels.outputs.labels, 'minor') && !contains(steps.pr-labels.outputs.labels, 'major')"
+        if: "!contains(github.event.pull_request.labels.*.name, 'patch') && !contains(github.event.pull_request.labels.*.name, 'minor') && !contains(github.event.pull_request.labels.*.name, 'major')"
         uses: andymckay/cancel-action@0.2
 
       - name: Send status to Discord

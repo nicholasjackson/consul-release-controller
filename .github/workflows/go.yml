@@ -157,46 +157,48 @@ jobs:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         labels: '["patch", "minor", "major"]'
         match-any: 'true'
-    
-    - uses: zwaldowski/semver-release-action@v1
-      id: next_version
+
+    - name: Bump version and push tag
+      id: tag_version
+      uses: mathieudutour/github-tag-action@v6.0
       with:
+        github_token: ${{ secrets.GITHUB_TOKEN }} 
         dry_run: true
-        bump: ${{ fromJson(steps.check_pr_labels.outputs.labels)[0] }}
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+        default_bump: ${{ fromJson(steps.check_pr_labels.outputs.labels)[0] }}
      
     - name: Build and Push Docker Image
       run: |
         make build_docker
       env:
-        VERSION_ENV: ${{ steps.next_version.outputs.version }}
+        VERSION_ENV: ${{ steps.next_version.outputs.new_version }}
     
     - name: Generate the Helm release
       run: |
         make helm_release
       env:
-        VERSION_ENV: ${{ steps.next_version.outputs.version }}
+        VERSION_ENV: ${{ steps.next_version.outputs.new_version }}
 
     - name: Commit changes
       uses: EndBug/add-and-commit@v8
       with:
         default_author: github_actions
-        message: 'Update helm chart to version ${{ steps.next_version.outputs.version }}'
+        message: 'Update helm chart to version ${{ steps.next_version.outputs.new_version }}'
         add: '*.yaml' 
     
-    - uses: zwaldowski/semver-release-action@v1
-      id: tag
+    - name: Bump version and push tag
+      id: create_tag
+      uses: mathieudutour/github-tag-action@v6.0
       with:
-        bump: ${{ steps.check_pr_labels.outputs.labels[0] }}
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+        github_token: ${{ secrets.GITHUB_TOKEN }} 
+        default_bump: ${{ fromJson(steps.check_pr_labels.outputs.labels)[0] }}
 
     - name: Release
       uses: softprops/action-gh-release@v1
       with:
-        tag_name: ${{ steps.next_version.outputs.version }}
+        tag_name: ${{ steps.next_version.outputs.new_tag }}
         token: ${{ secrets.GH_TOKEN }}
         files: | 
-          ./consul-release-controller-${{ steps.next_version.outputs.version }}.tgz
+          ./consul-release-controller-${{ steps.next_version.outputs.new_version }}.tgz
 
     - name: Deploy Github pages
       uses: JamesIves/github-pages-deploy-action@v4.2.3

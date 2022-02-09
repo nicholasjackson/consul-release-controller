@@ -165,6 +165,12 @@ jobs:
         token: ${{ secrets.GH_TOKEN }}
         files: | 
           ./consul-release-controller-${{ steps.next_version.outputs.version }}.tgz
+
+    - name: Deploy Github pages
+      uses: JamesIves/github-pages-deploy-action@v4.2.3
+      with:
+        branch: gh-pages # The branch the action should deploy to.
+        folder: docs # The folder the action should deploy.
     
     - name: Send status to Discord
       uses: sarisia/actions-status-discord@v1

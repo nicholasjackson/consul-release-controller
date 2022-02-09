@@ -162,7 +162,7 @@ jobs:
       id: next_version
       with:
         dry_run: true
-        bump: ${{ steps.check_pr_labels.outputs.labels[0] }}
+        bump: ${{ fromJson(steps.check_pr_labels.outputs.labels)[0] }}
         github_token: ${{ secrets.GITHUB_TOKEN }}
      
     - name: Build and Push Docker Image

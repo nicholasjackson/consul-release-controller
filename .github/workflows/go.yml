@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: check_pr_labels
+      - id: check_pr_labels
         uses: nicholasjackson/check-pr-labels-on-push-action@master
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}

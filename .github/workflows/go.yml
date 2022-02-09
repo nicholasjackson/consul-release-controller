@@ -10,15 +10,21 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Check PR labels action step
-        id: check_pr_labels
-        uses: shioyang/check-pr-labels-on-push-action@v1.0.3
+      - id: check_pr_labels
+        uses: nicholasjackson/check-pr-labels-on-push-action@master
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           labels: '["patch", "minor", "major"]'
+          match-any: 'true'
 
-      - name: See result
-        run: echo "${{ steps.check_pr_labels.outputs.result }}"
+      - name: Echo
+        run:  |
+          echo "pr labels: ${{ steps.check_pr_labels.outputs.result }}"
+          echo "pr labels: ${{ steps.check_pr_labels.outputs.labels }}"
+
+      - name: Check labels
+        if: ${{ steps.check_pr_labels.outputs.result != 'true' }}
+        uses: andymckay/cancel-action@0.2
 
       - name: Send status to Discord
         uses: sarisia/actions-status-discord@v1
@@ -146,7 +152,7 @@ jobs:
     - id: bump
       uses: zwaldowski/match-label-action@v1
       with:
-        allowed: major, minor, patch
+        allowed: patch
     
     - uses: zwaldowski/semver-release-action@v1
       id: next_version

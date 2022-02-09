@@ -1,5 +1,4 @@
 DOCKER_REGISTRY ?= docker.io/nicholasjackson
-HELM_VERSION ?= 0.0.1
 SHELL := /bin/bash
 UNAME := $(shell uname)
 
@@ -78,13 +77,10 @@ generate_helm:
 # Set the version in the chart
 	cp ./deploy/kubernetes/charts/consul-release-controller/Chart.tpl ./deploy/kubernetes/charts/consul-release-controller/Chart.yaml
 	sedi=(-i) && [ "$(UNAME)" == "Darwin" ] && sedi=(-i '') ; \
-	sed "$${sedi[@]}" -e 's/##VERSION##/${HELM_VERSION}/' ./deploy/kubernetes/charts/consul-release-controller/Chart.yaml
+	sed "$${sedi[@]}" -e 's/##VERSION##/${VERSION}/' ./deploy/kubernetes/charts/consul-release-controller/Chart.yaml
 
 # Now package the Helm chart into a tarball
 	helm package ./deploy/kubernetes/charts/consul-release-controller
 
-# Move it to the ./docs folder used to serve Github Pages
-	mv consul-release-controller-${HELM_VERSION}.tgz ./docs/
-
-# Generate the index
-	cd ./docs && helm repo index .
+# Generate the index using github releases as source for binaries
+	cd ./docs && helm repo index . --url=https://github.com/nicholasjackson/consul-release-controller/releases/download/${VERSION}/

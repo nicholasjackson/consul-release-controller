@@ -15,7 +15,7 @@ jobs:
         uses: joerick/pr-labels-action@v1.0.6
 
       - name: Check labels
-        if: !contains(steps.pr-labels.outputs.labels, 'patch') && !contains(steps.pr-labels.outputs.labels, 'minor') && !contains(steps.pr-labels.outputs.labels, 'major')
+        if: "!contains(steps.pr-labels.outputs.labels, 'patch') && !contains(steps.pr-labels.outputs.labels, 'minor') && !contains(steps.pr-labels.outputs.labels, 'major')"
         uses: andymckay/cancel-action@0.2
 
       - name: Send status to Discord

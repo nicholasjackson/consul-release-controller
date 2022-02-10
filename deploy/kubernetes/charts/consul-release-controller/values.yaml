@@ -13,7 +13,7 @@ controller:
       repository: nicholasjackson/consul-release-controller
       pullPolicy: IfNotPresent
       # Overrides the image tag whose default is the chart appVersion.
-      tag: "6356bfc"
+      tag: "0.0.3"
 
     env:
     - name: HOST_IP

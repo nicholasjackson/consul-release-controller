@@ -137,9 +137,9 @@ jobs:
   release:
     name: Build production Docker image and release Helm chart
     runs-on: ubuntu-latest
-    #needs:
-    #  - build
-    #  - functional_tests
+    needs:
+      - build
+      - functional_tests
     if: ${{ github.ref == 'refs/heads/main' }}
     
     steps:

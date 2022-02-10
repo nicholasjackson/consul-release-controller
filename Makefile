@@ -4,7 +4,7 @@ UNAME := $(shell uname)
 
 ifeq "$(VERSION_ENV)" ""
 	VERSION=$(shell git log --pretty=format:'%h' -n 1)
-	HELM_VERSION=0.0.1-dev
+	HELM_VERSION=0.0.3-dev
 else 
 	VERSION=$(VERSION_ENV)
 	HELM_VERSION=$(VERSION_ENV)
@@ -90,4 +90,5 @@ generate_helm:
 	helm package ./deploy/kubernetes/charts/consul-release-controller
 
 # Generate the index using github releases as source for binaries
-	cd ./docs && helm repo index . --url=https://github.com/nicholasjackson/consul-release-controller/releases/download/${VERSION}/
+	helm repo index . --merge ./docs/index.yaml --url=https://github.com/nicholasjackson/consul-release-controller/releases/download/${VERSION}/
+	mv ./index.yaml ./docs/index.yaml

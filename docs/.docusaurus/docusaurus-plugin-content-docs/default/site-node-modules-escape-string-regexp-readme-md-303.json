@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/escape-string-regexp/readme",
+  "id": "node_modules/escape-string-regexp/readme",
+  "title": "escape-string-regexp [![Build Status](https://travis-ci.org/sindresorhus/escape-string-regexp.svg?branch=master)](https://travis-ci.org/sindresorhus/escape-string-regexp)",
+  "description": "Escape RegExp special characters",
+  "source": "@site/node_modules/escape-string-regexp/readme.md",
+  "sourceDirName": "node_modules/escape-string-regexp",
+  "slug": "/node_modules/escape-string-regexp/",
+  "permalink": "/consul-release-controller/node_modules/escape-string-regexp/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/escape-string-regexp/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "escape-html",
+    "permalink": "/consul-release-controller/node_modules/escape-html/"
+  },
+  "next": {
+    "title": "ESLint Scope",
+    "permalink": "/consul-release-controller/node_modules/eslint-scope/"
+  }
+}

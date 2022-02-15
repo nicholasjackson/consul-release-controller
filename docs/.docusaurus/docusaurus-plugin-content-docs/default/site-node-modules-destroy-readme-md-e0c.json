@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/destroy/README",
+  "id": "node_modules/destroy/README",
+  "title": "Destroy",
+  "description": "NPM version",
+  "source": "@site/node_modules/destroy/README.md",
+  "sourceDirName": "node_modules/destroy",
+  "slug": "/node_modules/destroy/",
+  "permalink": "/consul-release-controller/node_modules/destroy/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/destroy/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "1.1.2 / 2018-01-11",
+    "permalink": "/consul-release-controller/node_modules/depd/History"
+  },
+  "next": {
+    "title": "detab",
+    "permalink": "/consul-release-controller/node_modules/detab/"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/indent-string/readme",
+  "id": "node_modules/indent-string/readme",
+  "title": "indent-string [![Build Status](https://travis-ci.org/sindresorhus/indent-string.svg?branch=master)](https://travis-ci.org/sindresorhus/indent-string)",
+  "description": "Indent each line in a string",
+  "source": "@site/node_modules/indent-string/readme.md",
+  "sourceDirName": "node_modules/indent-string",
+  "slug": "/node_modules/indent-string/",
+  "permalink": "/consul-release-controller/node_modules/indent-string/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/indent-string/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "iMurmurHash.js",
+    "permalink": "/consul-release-controller/node_modules/imurmurhash/"
+  },
+  "next": {
+    "title": "inflight",
+    "permalink": "/consul-release-controller/node_modules/inflight/"
+  }
+}

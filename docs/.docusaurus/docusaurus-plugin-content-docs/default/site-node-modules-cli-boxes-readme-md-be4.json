@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/cli-boxes/readme",
+  "id": "node_modules/cli-boxes/readme",
+  "title": "cli-boxes [![Build Status](https://travis-ci.com/sindresorhus/cli-boxes.svg?branch=master)](https://travis-ci.com/github/sindresorhus/cli-boxes)",
+  "description": "Boxes for use in the terminal",
+  "source": "@site/node_modules/cli-boxes/readme.md",
+  "sourceDirName": "node_modules/cli-boxes",
+  "slug": "/node_modules/cli-boxes/",
+  "permalink": "/consul-release-controller/node_modules/cli-boxes/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/cli-boxes/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "clean-stack [![Build Status](https://travis-ci.org/sindresorhus/clean-stack.svg?branch=master)](https://travis-ci.org/sindresorhus/clean-stack)",
+    "permalink": "/consul-release-controller/node_modules/clean-stack/"
+  },
+  "next": {
+    "title": "clone-deep [![NPM version](https://img.shields.io/npm/v/clone-deep.svg?style=flat)](https://www.npmjs.com/package/clone-deep) [![NPM monthly downloads](https://img.shields.io/npm/dm/clone-deep.svg?style=flat)](https://npmjs.org/package/clone-deep) [![NPM total downloads](https://img.shields.io/npm/dt/clone-deep.svg?style=flat)](https://npmjs.org/package/clone-deep) [![Linux Build Status](https://img.shields.io/travis/jonschlinkert/clone-deep.svg?style=flat&label=Travis)](https://travis-ci.org/jonschlinkert/clone-deep)",
+    "permalink": "/consul-release-controller/node_modules/clone-deep/"
+  }
+}

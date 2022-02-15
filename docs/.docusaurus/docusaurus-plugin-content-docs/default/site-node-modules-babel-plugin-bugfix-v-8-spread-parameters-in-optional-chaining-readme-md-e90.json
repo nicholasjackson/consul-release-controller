@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@babel/plugin-bugfix-v8-spread-parameters-in-optional-chaining/README",
+  "id": "node_modules/@babel/plugin-bugfix-v8-spread-parameters-in-optional-chaining/README",
+  "title": "@babel/plugin-bugfix-v8-spread-parameters-in-optional-chaining",
+  "description": "Transform optional chaining operators to workaround https://crbug.com/v8/11558",
+  "source": "@site/node_modules/@babel/plugin-bugfix-v8-spread-parameters-in-optional-chaining/README.md",
+  "sourceDirName": "node_modules/@babel/plugin-bugfix-v8-spread-parameters-in-optional-chaining",
+  "slug": "/node_modules/@babel/plugin-bugfix-v8-spread-parameters-in-optional-chaining/",
+  "permalink": "/consul-release-controller/node_modules/@babel/plugin-bugfix-v8-spread-parameters-in-optional-chaining/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@babel/plugin-bugfix-v8-spread-parameters-in-optional-chaining/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "@babel/plugin-bugfix-safari-id-destructuring-collision-in-function-expression",
+    "permalink": "/consul-release-controller/node_modules/@babel/plugin-bugfix-safari-id-destructuring-collision-in-function-expression/"
+  },
+  "next": {
+    "title": "@babel/plugin-proposal-async-generator-functions",
+    "permalink": "/consul-release-controller/node_modules/@babel/plugin-proposal-async-generator-functions/"
+  }
+}

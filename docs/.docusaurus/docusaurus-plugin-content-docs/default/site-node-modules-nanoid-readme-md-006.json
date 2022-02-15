@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/nanoid/README",
+  "id": "node_modules/nanoid/README",
+  "title": "Nano ID",
+  "description": "<img src=\"https://ai.github.io/nanoid/logo.svg\" align=\"right\"",
+  "source": "@site/node_modules/nanoid/README.md",
+  "sourceDirName": "node_modules/nanoid",
+  "slug": "/node_modules/nanoid/",
+  "permalink": "/consul-release-controller/node_modules/nanoid/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/nanoid/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "multicast-dns-service-types",
+    "permalink": "/consul-release-controller/node_modules/multicast-dns-service-types/"
+  },
+  "next": {
+    "title": "negotiator",
+    "permalink": "/consul-release-controller/node_modules/negotiator/"
+  }
+}

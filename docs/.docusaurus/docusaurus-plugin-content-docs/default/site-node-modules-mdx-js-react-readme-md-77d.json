@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@mdx-js/react/readme",
+  "id": "node_modules/@mdx-js/react/readme",
+  "title": "@mdx-js/react",
+  "description": "Build Status",
+  "source": "@site/node_modules/@mdx-js/react/readme.md",
+  "sourceDirName": "node_modules/@mdx-js/react",
+  "slug": "/node_modules/@mdx-js/react/",
+  "permalink": "/consul-release-controller/node_modules/@mdx-js/react/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@mdx-js/react/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "@babel/helper-plugin-utils",
+    "permalink": "/consul-release-controller/node_modules/@mdx-js/mdx/node_modules/@babel/helper-plugin-utils/"
+  },
+  "next": {
+    "title": "@mdx-js/runtime",
+    "permalink": "/consul-release-controller/node_modules/@mdx-js/runtime/"
+  }
+}

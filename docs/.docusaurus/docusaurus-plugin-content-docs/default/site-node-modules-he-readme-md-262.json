@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/he/README",
+  "id": "node_modules/he/README",
+  "title": "he [![Build status](https://travis-ci.org/mathiasbynens/he.svg?branch=master)](https://travis-ci.org/mathiasbynens/he) [![Code coverage status](https://codecov.io/github/mathiasbynens/he/coverage.svg?branch=master)](https://codecov.io/github/mathiasbynens/he?branch=master) [![Dependency status](https://gemnasium.com/mathiasbynens/he.svg)](https://gemnasium.com/mathiasbynens/he)",
+  "description": "he (for “HTML entities”) is a robust HTML entity encoder/decoder written in JavaScript. It supports all standardized named character references as per HTML, handles ambiguous ampersands and other edge cases just like a browser would, has an extensive test suite, and — contrary to many other JavaScript solutions — he handles astral Unicode symbols just fine. An online demo is available.",
+  "source": "@site/node_modules/he/README.md",
+  "sourceDirName": "node_modules/he",
+  "slug": "/node_modules/he/",
+  "permalink": "/consul-release-controller/node_modules/he/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/he/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "hastscript",
+    "permalink": "/consul-release-controller/node_modules/hastscript/"
+  },
+  "next": {
+    "title": "history &middot; [![npm package][npm-badge]][npm] [![Travis][build-badge]][build]",
+    "permalink": "/consul-release-controller/node_modules/history/"
+  }
+}

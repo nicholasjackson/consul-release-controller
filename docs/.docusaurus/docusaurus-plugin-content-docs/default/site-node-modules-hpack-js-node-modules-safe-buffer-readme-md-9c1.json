@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/hpack.js/node_modules/safe-buffer/README",
+  "id": "node_modules/hpack.js/node_modules/safe-buffer/README",
+  "title": "safe-buffer [![travis][travis-image]][travis-url] [![npm][npm-image]][npm-url] [![downloads][downloads-image]][downloads-url] [![javascript style guide][standard-image]][standard-url]",
+  "description": "[travis-image]//img.shields.io/travis/feross/safe-buffer/master.svg",
+  "source": "@site/node_modules/hpack.js/node_modules/safe-buffer/README.md",
+  "sourceDirName": "node_modules/hpack.js/node_modules/safe-buffer",
+  "slug": "/node_modules/hpack.js/node_modules/safe-buffer/",
+  "permalink": "/consul-release-controller/node_modules/hpack.js/node_modules/safe-buffer/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/hpack.js/node_modules/safe-buffer/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "streams WG Meeting 2015-01-30",
+    "permalink": "/consul-release-controller/node_modules/hpack.js/node_modules/readable-stream/doc/wg-meetings/2015-01-30"
+  },
+  "next": {
+    "title": "string_decoder",
+    "permalink": "/consul-release-controller/node_modules/hpack.js/node_modules/string_decoder/"
+  }
+}

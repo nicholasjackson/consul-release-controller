@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/forwarded/HISTORY",
+  "id": "node_modules/forwarded/HISTORY",
+  "title": "0.2.0 / 2021-05-31",
+  "description": "* Use req.socket over deprecated req.connection",
+  "source": "@site/node_modules/forwarded/HISTORY.md",
+  "sourceDirName": "node_modules/forwarded",
+  "slug": "/node_modules/forwarded/HISTORY",
+  "permalink": "/consul-release-controller/node_modules/forwarded/HISTORY",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/forwarded/HISTORY.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "forwarded",
+    "permalink": "/consul-release-controller/node_modules/forwarded/"
+  },
+  "next": {
+    "title": "Fraction.js - ℚ in JavaScript",
+    "permalink": "/consul-release-controller/node_modules/fraction.js/"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/fork-ts-checker-webpack-plugin/node_modules/fs-extra/CHANGELOG",
+  "id": "node_modules/fork-ts-checker-webpack-plugin/node_modules/fs-extra/CHANGELOG",
+  "title": "CHANGELOG",
+  "description": "9.1.0 / 2021-01-19",
+  "source": "@site/node_modules/fork-ts-checker-webpack-plugin/node_modules/fs-extra/CHANGELOG.md",
+  "sourceDirName": "node_modules/fork-ts-checker-webpack-plugin/node_modules/fs-extra",
+  "slug": "/node_modules/fork-ts-checker-webpack-plugin/node_modules/fs-extra/CHANGELOG",
+  "permalink": "/consul-release-controller/node_modules/fork-ts-checker-webpack-plugin/node_modules/fs-extra/CHANGELOG",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/fork-ts-checker-webpack-plugin/node_modules/fs-extra/CHANGELOG.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Node.js: fs-extra",
+    "permalink": "/consul-release-controller/node_modules/fork-ts-checker-webpack-plugin/node_modules/fs-extra/"
+  },
+  "next": {
+    "title": "minimatch",
+    "permalink": "/consul-release-controller/node_modules/fork-ts-checker-webpack-plugin/node_modules/minimatch/"
+  }
+}

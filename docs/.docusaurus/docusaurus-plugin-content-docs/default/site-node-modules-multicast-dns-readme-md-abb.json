@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/multicast-dns/README",
+  "id": "node_modules/multicast-dns/README",
+  "title": "multicast-dns",
+  "description": "Low level multicast-dns implementation in pure javascript",
+  "source": "@site/node_modules/multicast-dns/README.md",
+  "sourceDirName": "node_modules/multicast-dns",
+  "slug": "/node_modules/multicast-dns/",
+  "permalink": "/consul-release-controller/node_modules/multicast-dns/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/multicast-dns/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "license",
+    "permalink": "/consul-release-controller/node_modules/ms/license"
+  },
+  "next": {
+    "title": "multicast-dns-service-types",
+    "permalink": "/consul-release-controller/node_modules/multicast-dns-service-types/"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/aggregate-error/readme",
+  "id": "node_modules/aggregate-error/readme",
+  "title": "aggregate-error [![Build Status](https://travis-ci.org/sindresorhus/aggregate-error.svg?branch=master)](https://travis-ci.org/sindresorhus/aggregate-error)",
+  "description": "Create an error from multiple errors",
+  "source": "@site/node_modules/aggregate-error/readme.md",
+  "sourceDirName": "node_modules/aggregate-error",
+  "slug": "/node_modules/aggregate-error/",
+  "permalink": "/consul-release-controller/node_modules/aggregate-error/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/aggregate-error/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "1.1.2 / 2019-08-26",
+    "permalink": "/consul-release-controller/node_modules/address/History"
+  },
+  "next": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/ajv/"
+  }
+}

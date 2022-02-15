@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/copy-webpack-plugin/node_modules/array-union/readme",
+  "id": "node_modules/copy-webpack-plugin/node_modules/array-union/readme",
+  "title": "array-union",
+  "description": "Create an array of unique values, in order, from the input arrays",
+  "source": "@site/node_modules/copy-webpack-plugin/node_modules/array-union/readme.md",
+  "sourceDirName": "node_modules/copy-webpack-plugin/node_modules/array-union",
+  "slug": "/node_modules/copy-webpack-plugin/node_modules/array-union/",
+  "permalink": "/consul-release-controller/node_modules/copy-webpack-plugin/node_modules/array-union/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/copy-webpack-plugin/node_modules/array-union/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "ajv-keywords",
+    "permalink": "/consul-release-controller/node_modules/copy-webpack-plugin/node_modules/ajv-keywords/"
+  },
+  "next": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/copy-webpack-plugin/node_modules/glob-parent/"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/binary-extensions/readme",
+  "id": "node_modules/binary-extensions/readme",
+  "title": "binary-extensions",
+  "description": "List of binary file extensions",
+  "source": "@site/node_modules/binary-extensions/readme.md",
+  "sourceDirName": "node_modules/binary-extensions",
+  "slug": "/node_modules/binary-extensions/",
+  "permalink": "/consul-release-controller/node_modules/binary-extensions/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/binary-extensions/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "CHANGELOG",
+    "permalink": "/consul-release-controller/node_modules/big.js/CHANGELOG"
+  },
+  "next": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/bluebird/"
+  }
+}

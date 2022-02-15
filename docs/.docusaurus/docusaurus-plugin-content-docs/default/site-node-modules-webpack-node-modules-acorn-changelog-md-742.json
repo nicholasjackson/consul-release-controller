@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/webpack/node_modules/acorn/CHANGELOG",
+  "id": "node_modules/webpack/node_modules/acorn/CHANGELOG",
+  "title": "CHANGELOG",
+  "description": "8.7.0 (2021-12-27)",
+  "source": "@site/node_modules/webpack/node_modules/acorn/CHANGELOG.md",
+  "sourceDirName": "node_modules/webpack/node_modules/acorn",
+  "slug": "/node_modules/webpack/node_modules/acorn/CHANGELOG",
+  "permalink": "/consul-release-controller/node_modules/webpack/node_modules/acorn/CHANGELOG",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/webpack/node_modules/acorn/CHANGELOG.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Acorn",
+    "permalink": "/consul-release-controller/node_modules/webpack/node_modules/acorn/"
+  },
+  "next": {
+    "title": "Support for import assertions in acorn",
+    "permalink": "/consul-release-controller/node_modules/webpack/node_modules/acorn-import-assertions/"
+  }
+}

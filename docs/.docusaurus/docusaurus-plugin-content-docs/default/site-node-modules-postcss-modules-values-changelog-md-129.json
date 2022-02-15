@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/postcss-modules-values/CHANGELOG",
+  "id": "node_modules/postcss-modules-values/CHANGELOG",
+  "title": "Change Log",
+  "description": "All notable changes to this project will be documented in this file.",
+  "source": "@site/node_modules/postcss-modules-values/CHANGELOG.md",
+  "sourceDirName": "node_modules/postcss-modules-values",
+  "slug": "/node_modules/postcss-modules-values/CHANGELOG",
+  "permalink": "/consul-release-controller/node_modules/postcss-modules-values/CHANGELOG",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/postcss-modules-values/CHANGELOG.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "CSS Modules: Values",
+    "permalink": "/consul-release-controller/node_modules/postcss-modules-values/"
+  },
+  "next": {
+    "title": "postcss-normalize-charset",
+    "permalink": "/consul-release-controller/node_modules/postcss-normalize-charset/"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/fs-extra/CHANGELOG",
+  "id": "node_modules/fs-extra/CHANGELOG",
+  "title": "CHANGELOG",
+  "description": "10.0.0 / 2021-05-03",
+  "source": "@site/node_modules/fs-extra/CHANGELOG.md",
+  "sourceDirName": "node_modules/fs-extra",
+  "slug": "/node_modules/fs-extra/CHANGELOG",
+  "permalink": "/consul-release-controller/node_modules/fs-extra/CHANGELOG",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/fs-extra/CHANGELOG.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Node.js: fs-extra",
+    "permalink": "/consul-release-controller/node_modules/fs-extra/"
+  },
+  "next": {
+    "title": "fs-monkey",
+    "permalink": "/consul-release-controller/node_modules/fs-monkey/"
+  }
+}

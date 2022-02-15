@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/define-lazy-prop/readme",
+  "id": "node_modules/define-lazy-prop/readme",
+  "title": "define-lazy-prop [![Build Status](https://travis-ci.org/sindresorhus/define-lazy-prop.svg?branch=master)](https://travis-ci.org/sindresorhus/define-lazy-prop)",
+  "description": "Define a lazily evaluated property on an object",
+  "source": "@site/node_modules/define-lazy-prop/readme.md",
+  "sourceDirName": "node_modules/define-lazy-prop",
+  "slug": "/node_modules/define-lazy-prop/",
+  "permalink": "/consul-release-controller/node_modules/define-lazy-prop/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/define-lazy-prop/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "defer-to-connect",
+    "permalink": "/consul-release-controller/node_modules/defer-to-connect/"
+  },
+  "next": {
+    "title": "define-properties <sup>[![Version Badge][npm-version-svg]][package-url]</sup>",
+    "permalink": "/consul-release-controller/node_modules/define-properties/"
+  }
+}

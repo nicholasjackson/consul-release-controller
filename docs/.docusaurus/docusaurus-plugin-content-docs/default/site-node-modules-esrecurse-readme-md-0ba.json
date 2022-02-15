@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/esrecurse/README",
+  "id": "node_modules/esrecurse/README",
+  "title": "README",
+  "description": "Esrecurse Build Status",
+  "source": "@site/node_modules/esrecurse/README.md",
+  "sourceDirName": "node_modules/esrecurse",
+  "slug": "/node_modules/esrecurse/",
+  "permalink": "/consul-release-controller/node_modules/esrecurse/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/esrecurse/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/esprima/"
+  },
+  "next": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/esrecurse/node_modules/estraverse/"
+  }
+}

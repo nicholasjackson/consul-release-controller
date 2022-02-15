@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/js-yaml/README",
+  "id": "node_modules/js-yaml/README",
+  "title": "JS-YAML - YAML 1.2 parser / writer for JavaScript",
+  "description": "CI",
+  "source": "@site/node_modules/js-yaml/README.md",
+  "sourceDirName": "node_modules/js-yaml",
+  "slug": "/node_modules/js-yaml/",
+  "permalink": "/consul-release-controller/node_modules/js-yaml/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/js-yaml/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "CHANGELOG",
+    "permalink": "/consul-release-controller/node_modules/js-tokens/CHANGELOG"
+  },
+  "next": {
+    "title": "Changelog",
+    "permalink": "/consul-release-controller/node_modules/js-yaml/CHANGELOG"
+  }
+}

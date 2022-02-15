@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/content-type/README",
+  "id": "node_modules/content-type/README",
+  "title": "content-type",
+  "description": "NPM Version",
+  "source": "@site/node_modules/content-type/README.md",
+  "sourceDirName": "node_modules/content-type",
+  "slug": "/node_modules/content-type/",
+  "permalink": "/consul-release-controller/node_modules/content-type/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/content-type/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "0.5.2 / 2016-12-08",
+    "permalink": "/consul-release-controller/node_modules/content-disposition/HISTORY"
+  },
+  "next": {
+    "title": "1.0.4 / 2017-09-11",
+    "permalink": "/consul-release-controller/node_modules/content-type/HISTORY"
+  }
+}

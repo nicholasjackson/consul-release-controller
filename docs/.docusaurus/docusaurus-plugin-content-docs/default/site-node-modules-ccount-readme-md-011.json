@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/ccount/readme",
+  "id": "node_modules/ccount/readme",
+  "title": "ccount",
+  "description": "Build",
+  "source": "@site/node_modules/ccount/readme.md",
+  "sourceDirName": "node_modules/ccount",
+  "slug": "/node_modules/ccount/",
+  "permalink": "/consul-release-controller/node_modules/ccount/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/ccount/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "caniuse-lite",
+    "permalink": "/consul-release-controller/node_modules/caniuse-lite/"
+  },
+  "next": {
+    "title": "readme",
+    "permalink": "/consul-release-controller/node_modules/chalk/"
+  }
+}

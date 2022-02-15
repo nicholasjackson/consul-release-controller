@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/ansi-align/CHANGELOG",
+  "id": "node_modules/ansi-align/CHANGELOG",
+  "title": "Changelog",
+  "description": "All notable changes to this project will be documented in this file. See standard-version for commit guidelines.",
+  "source": "@site/node_modules/ansi-align/CHANGELOG.md",
+  "sourceDirName": "node_modules/ansi-align",
+  "slug": "/node_modules/ansi-align/CHANGELOG",
+  "permalink": "/consul-release-controller/node_modules/ansi-align/CHANGELOG",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/ansi-align/CHANGELOG.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "ansi-align",
+    "permalink": "/consul-release-controller/node_modules/ansi-align/"
+  },
+  "next": {
+    "title": "ansi-html [![NPM version](https://badge.fury.io/js/ansi-html-community.svg)](http://badge.fury.io/js/ansi-html) [![Build Status](https://app.travis-ci.com/mahdyar/ansi-html-community.svg?branch=master)](https://app.travis-ci.com/mahdyar/ansi-html-community)",
+    "permalink": "/consul-release-controller/node_modules/ansi-html-community/"
+  }
+}

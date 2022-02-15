@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/uuid/CONTRIBUTING",
+  "id": "node_modules/uuid/CONTRIBUTING",
+  "title": "Contributing",
+  "description": "Please feel free to file GitHub Issues or propose Pull Requests. We're always happy to discuss improvements to this library!",
+  "source": "@site/node_modules/uuid/CONTRIBUTING.md",
+  "sourceDirName": "node_modules/uuid",
+  "slug": "/node_modules/uuid/CONTRIBUTING",
+  "permalink": "/consul-release-controller/node_modules/uuid/CONTRIBUTING",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/uuid/CONTRIBUTING.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Changelog",
+    "permalink": "/consul-release-controller/node_modules/uuid/CHANGELOG"
+  },
+  "next": {
+    "title": "LICENSE",
+    "permalink": "/consul-release-controller/node_modules/uuid/LICENSE"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/acorn-walk/CHANGELOG",
+  "id": "node_modules/acorn-walk/CHANGELOG",
+  "title": "CHANGELOG",
+  "description": "8.2.0 (2021-09-06)",
+  "source": "@site/node_modules/acorn-walk/CHANGELOG.md",
+  "sourceDirName": "node_modules/acorn-walk",
+  "slug": "/node_modules/acorn-walk/CHANGELOG",
+  "permalink": "/consul-release-controller/node_modules/acorn-walk/CHANGELOG",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/acorn-walk/CHANGELOG.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Acorn AST walker",
+    "permalink": "/consul-release-controller/node_modules/acorn-walk/"
+  },
+  "next": {
+    "title": "address",
+    "permalink": "/consul-release-controller/node_modules/address/"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/p-cancelable/readme",
+  "id": "node_modules/p-cancelable/readme",
+  "title": "p-cancelable [![Build Status](https://travis-ci.org/sindresorhus/p-cancelable.svg?branch=master)](https://travis-ci.org/sindresorhus/p-cancelable)",
+  "description": "Create a promise that can be canceled",
+  "source": "@site/node_modules/p-cancelable/readme.md",
+  "sourceDirName": "node_modules/p-cancelable",
+  "slug": "/node_modules/p-cancelable/",
+  "permalink": "/consul-release-controller/node_modules/p-cancelable/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/p-cancelable/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "It Opens Stuff",
+    "permalink": "/consul-release-controller/node_modules/opener/"
+  },
+  "next": {
+    "title": "p-limit [![Build Status](https://travis-ci.org/sindresorhus/p-limit.svg?branch=master)](https://travis-ci.org/sindresorhus/p-limit)",
+    "permalink": "/consul-release-controller/node_modules/p-limit/"
+  }
+}

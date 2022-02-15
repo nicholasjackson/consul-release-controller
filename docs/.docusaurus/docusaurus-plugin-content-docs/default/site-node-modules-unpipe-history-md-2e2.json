@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/unpipe/HISTORY",
+  "id": "node_modules/unpipe/HISTORY",
+  "title": "1.0.0 / 2015-06-14",
+  "description": "* Initial release",
+  "source": "@site/node_modules/unpipe/HISTORY.md",
+  "sourceDirName": "node_modules/unpipe",
+  "slug": "/node_modules/unpipe/HISTORY",
+  "permalink": "/consul-release-controller/node_modules/unpipe/HISTORY",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/unpipe/HISTORY.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "unpipe",
+    "permalink": "/consul-release-controller/node_modules/unpipe/"
+  },
+  "next": {
+    "title": "update-notifier",
+    "permalink": "/consul-release-controller/node_modules/update-notifier/"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/make-dir/readme",
+  "id": "node_modules/make-dir/readme",
+  "title": "make-dir [![Build Status](https://travis-ci.org/sindresorhus/make-dir.svg?branch=master)](https://travis-ci.org/sindresorhus/make-dir) [![codecov](https://codecov.io/gh/sindresorhus/make-dir/branch/master/graph/badge.svg)](https://codecov.io/gh/sindresorhus/make-dir)",
+  "description": "Make a directory and its parents if needed - Think mkdir -p",
+  "source": "@site/node_modules/make-dir/readme.md",
+  "sourceDirName": "node_modules/make-dir",
+  "slug": "/node_modules/make-dir/",
+  "permalink": "/consul-release-controller/node_modules/make-dir/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/make-dir/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "magic-string changelog",
+    "permalink": "/consul-release-controller/node_modules/magic-string/CHANGELOG"
+  },
+  "next": {
+    "title": "markdown-escapes",
+    "permalink": "/consul-release-controller/node_modules/markdown-escapes/"
+  }
+}

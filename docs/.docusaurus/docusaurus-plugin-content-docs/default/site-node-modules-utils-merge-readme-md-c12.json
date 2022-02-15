@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/utils-merge/README",
+  "id": "node_modules/utils-merge/README",
+  "title": "utils-merge",
+  "description": "Version",
+  "source": "@site/node_modules/utils-merge/README.md",
+  "sourceDirName": "node_modules/utils-merge",
+  "slug": "/node_modules/utils-merge/",
+  "permalink": "/consul-release-controller/node_modules/utils-merge/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/utils-merge/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Support",
+    "permalink": "/consul-release-controller/node_modules/utility-types/SUPPORT"
+  },
+  "next": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/uuid/"
+  }
+}

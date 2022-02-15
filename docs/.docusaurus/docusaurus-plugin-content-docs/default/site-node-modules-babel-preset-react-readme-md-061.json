@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@babel/preset-react/README",
+  "id": "node_modules/@babel/preset-react/README",
+  "title": "@babel/preset-react",
+  "description": "Babel preset for all React plugins.",
+  "source": "@site/node_modules/@babel/preset-react/README.md",
+  "sourceDirName": "node_modules/@babel/preset-react",
+  "slug": "/node_modules/@babel/preset-react/",
+  "permalink": "/consul-release-controller/node_modules/@babel/preset-react/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@babel/preset-react/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "@babel/preset-modules",
+    "permalink": "/consul-release-controller/node_modules/@babel/preset-modules/"
+  },
+  "next": {
+    "title": "@babel/preset-typescript",
+    "permalink": "/consul-release-controller/node_modules/@babel/preset-typescript/"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/immer/readme",
+  "id": "node_modules/immer/readme",
+  "title": "readme",
+  "description": "npm Build Status Coverage Status code style: prettier OpenCollective OpenCollective Gitpod Ready-to-Code",
+  "source": "@site/node_modules/immer/readme.md",
+  "sourceDirName": "node_modules/immer",
+  "slug": "/node_modules/immer/",
+  "permalink": "/consul-release-controller/node_modules/immer/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/immer/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "image-size",
+    "permalink": "/consul-release-controller/node_modules/image-size/"
+  },
+  "next": {
+    "title": "import-fresh",
+    "permalink": "/consul-release-controller/node_modules/import-fresh/"
+  }
+}

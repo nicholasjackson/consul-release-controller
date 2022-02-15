@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/eval/README",
+  "id": "node_modules/eval/README",
+  "title": "Eval - require() for module content!",
+  "description": "Overview",
+  "source": "@site/node_modules/eval/README.md",
+  "sourceDirName": "node_modules/eval",
+  "slug": "/node_modules/eval/",
+  "permalink": "/consul-release-controller/node_modules/eval/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/eval/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "1.8.1 / 2017-09-12",
+    "permalink": "/consul-release-controller/node_modules/etag/HISTORY"
+  },
+  "next": {
+    "title": "EventEmitter3",
+    "permalink": "/consul-release-controller/node_modules/eventemitter3/"
+  }
+}

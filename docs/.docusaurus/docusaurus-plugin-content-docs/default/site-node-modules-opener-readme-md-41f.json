@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/opener/README",
+  "id": "node_modules/opener/README",
+  "title": "It Opens Stuff",
+  "description": "That is, in your desktop environment. This will make actual windows pop up, with stuff in them:",
+  "source": "@site/node_modules/opener/README.md",
+  "sourceDirName": "node_modules/opener",
+  "slug": "/node_modules/opener/",
+  "permalink": "/consul-release-controller/node_modules/opener/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/opener/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "open",
+    "permalink": "/consul-release-controller/node_modules/open/"
+  },
+  "next": {
+    "title": "p-cancelable [![Build Status](https://travis-ci.org/sindresorhus/p-cancelable.svg?branch=master)](https://travis-ci.org/sindresorhus/p-cancelable)",
+    "permalink": "/consul-release-controller/node_modules/p-cancelable/"
+  }
+}

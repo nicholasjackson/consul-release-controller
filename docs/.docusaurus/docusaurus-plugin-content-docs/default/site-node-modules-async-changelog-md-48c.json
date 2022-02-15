@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/async/CHANGELOG",
+  "id": "node_modules/async/CHANGELOG",
+  "title": "v2.6.3",
+  "description": "- Updated lodash to squelch a security warning (#1675)",
+  "source": "@site/node_modules/async/CHANGELOG.md",
+  "sourceDirName": "node_modules/async",
+  "slug": "/node_modules/async/CHANGELOG",
+  "permalink": "/consul-release-controller/node_modules/async/CHANGELOG",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/async/CHANGELOG.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/async/"
+  },
+  "next": {
+    "title": "at-least-node",
+    "permalink": "/consul-release-controller/node_modules/at-least-node/"
+  }
+}

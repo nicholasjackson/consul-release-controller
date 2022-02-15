@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/postcss-reduce-transforms/README",
+  "id": "node_modules/postcss-reduce-transforms/README",
+  "title": "[postcss][postcss]-reduce-transforms",
+  "description": "Reduce transform functions with PostCSS.",
+  "source": "@site/node_modules/postcss-reduce-transforms/README.md",
+  "sourceDirName": "node_modules/postcss-reduce-transforms",
+  "slug": "/node_modules/postcss-reduce-transforms/",
+  "permalink": "/consul-release-controller/node_modules/postcss-reduce-transforms/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/postcss-reduce-transforms/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "[postcss][postcss]-reduce-initial",
+    "permalink": "/consul-release-controller/node_modules/postcss-reduce-initial/"
+  },
+  "next": {
+    "title": "postcss-selector-parser [![Build Status](https://travis-ci.org/postcss/postcss-selector-parser.svg?branch=master)](https://travis-ci.org/postcss/postcss-selector-parser)",
+    "permalink": "/consul-release-controller/node_modules/postcss-selector-parser/"
+  }
+}

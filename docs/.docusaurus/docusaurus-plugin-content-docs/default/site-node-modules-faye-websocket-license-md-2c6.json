@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/faye-websocket/LICENSE",
+  "id": "node_modules/faye-websocket/LICENSE",
+  "title": "LICENSE",
+  "description": "Copyright 2010-2021 James Coglan",
+  "source": "@site/node_modules/faye-websocket/LICENSE.md",
+  "sourceDirName": "node_modules/faye-websocket",
+  "slug": "/node_modules/faye-websocket/LICENSE",
+  "permalink": "/consul-release-controller/node_modules/faye-websocket/LICENSE",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/faye-websocket/LICENSE.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "CHANGELOG",
+    "permalink": "/consul-release-controller/node_modules/faye-websocket/CHANGELOG"
+  },
+  "next": {
+    "title": "EventEmitter",
+    "permalink": "/consul-release-controller/node_modules/fbemitter/"
+  }
+}

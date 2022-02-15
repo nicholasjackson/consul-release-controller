@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@babel/plugin-proposal-private-property-in-object/README",
+  "id": "node_modules/@babel/plugin-proposal-private-property-in-object/README",
+  "title": "@babel/plugin-proposal-private-property-in-object",
+  "description": "This plugin transforms checks for a private property in an object",
+  "source": "@site/node_modules/@babel/plugin-proposal-private-property-in-object/README.md",
+  "sourceDirName": "node_modules/@babel/plugin-proposal-private-property-in-object",
+  "slug": "/node_modules/@babel/plugin-proposal-private-property-in-object/",
+  "permalink": "/consul-release-controller/node_modules/@babel/plugin-proposal-private-property-in-object/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@babel/plugin-proposal-private-property-in-object/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "@babel/plugin-proposal-private-methods",
+    "permalink": "/consul-release-controller/node_modules/@babel/plugin-proposal-private-methods/"
+  },
+  "next": {
+    "title": "@babel/plugin-proposal-unicode-property-regex",
+    "permalink": "/consul-release-controller/node_modules/@babel/plugin-proposal-unicode-property-regex/"
+  }
+}

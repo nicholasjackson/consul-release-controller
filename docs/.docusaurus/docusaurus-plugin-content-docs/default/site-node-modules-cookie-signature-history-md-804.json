@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/cookie-signature/History",
+  "id": "node_modules/cookie-signature/History",
+  "title": "1.0.6 / 2015-02-03",
+  "description": "* use npm test instead of make test to run tests",
+  "source": "@site/node_modules/cookie-signature/History.md",
+  "sourceDirName": "node_modules/cookie-signature",
+  "slug": "/node_modules/cookie-signature/History",
+  "permalink": "/consul-release-controller/node_modules/cookie-signature/History",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/cookie-signature/History.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "cookie-signature",
+    "permalink": "/consul-release-controller/node_modules/cookie-signature/"
+  },
+  "next": {
+    "title": "copy-text-to-clipboard",
+    "permalink": "/consul-release-controller/node_modules/copy-text-to-clipboard/"
+  }
+}

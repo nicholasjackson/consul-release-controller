@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/postcss-reduce-idents/README",
+  "id": "node_modules/postcss-reduce-idents/README",
+  "title": "[postcss][postcss]-reduce-idents",
+  "description": "Reduce custom identifiers with PostCSS.",
+  "source": "@site/node_modules/postcss-reduce-idents/README.md",
+  "sourceDirName": "node_modules/postcss-reduce-idents",
+  "slug": "/node_modules/postcss-reduce-idents/",
+  "permalink": "/consul-release-controller/node_modules/postcss-reduce-idents/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/postcss-reduce-idents/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "[postcss][postcss]-ordered-values",
+    "permalink": "/consul-release-controller/node_modules/postcss-ordered-values/"
+  },
+  "next": {
+    "title": "[postcss][postcss]-reduce-initial",
+    "permalink": "/consul-release-controller/node_modules/postcss-reduce-initial/"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/is-whitespace-character/readme",
+  "id": "node_modules/is-whitespace-character/readme",
+  "title": "is-whitespace-character",
+  "description": "Build",
+  "source": "@site/node_modules/is-whitespace-character/readme.md",
+  "sourceDirName": "node_modules/is-whitespace-character",
+  "slug": "/node_modules/is-whitespace-character/",
+  "permalink": "/consul-release-controller/node_modules/is-whitespace-character/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/is-whitespace-character/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "LICENSE",
+    "permalink": "/consul-release-controller/node_modules/is-typedarray/LICENSE"
+  },
+  "next": {
+    "title": "is-word-character",
+    "permalink": "/consul-release-controller/node_modules/is-word-character/"
+  }
+}

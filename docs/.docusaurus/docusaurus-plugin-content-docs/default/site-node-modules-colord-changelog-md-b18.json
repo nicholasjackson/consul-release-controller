@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/colord/CHANGELOG",
+  "id": "node_modules/colord/CHANGELOG",
+  "title": "CHANGELOG",
+  "description": "2.9.2",
+  "source": "@site/node_modules/colord/CHANGELOG.md",
+  "sourceDirName": "node_modules/colord",
+  "slug": "/node_modules/colord/CHANGELOG",
+  "permalink": "/consul-release-controller/node_modules/colord/CHANGELOG",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/colord/CHANGELOG.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/colord/"
+  },
+  "next": {
+    "title": "LICENSE",
+    "permalink": "/consul-release-controller/node_modules/colord/LICENSE"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/prismjs/README",
+  "id": "node_modules/prismjs/README",
+  "title": "[Prism](https://prismjs.com/)",
+  "description": "Build Status",
+  "source": "@site/node_modules/prismjs/README.md",
+  "sourceDirName": "node_modules/prismjs",
+  "slug": "/node_modules/prismjs/",
+  "permalink": "/consul-release-controller/node_modules/prismjs/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/prismjs/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/prism-react-renderer/"
+  },
+  "next": {
+    "title": "Prism Changelog",
+    "permalink": "/consul-release-controller/node_modules/prismjs/CHANGELOG"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/etag/HISTORY",
+  "id": "node_modules/etag/HISTORY",
+  "title": "1.8.1 / 2017-09-12",
+  "description": "* perf: replace regular expression with substring",
+  "source": "@site/node_modules/etag/HISTORY.md",
+  "sourceDirName": "node_modules/etag",
+  "slug": "/node_modules/etag/HISTORY",
+  "permalink": "/consul-release-controller/node_modules/etag/HISTORY",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/etag/HISTORY.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "etag",
+    "permalink": "/consul-release-controller/node_modules/etag/"
+  },
+  "next": {
+    "title": "Eval - require() for module content!",
+    "permalink": "/consul-release-controller/node_modules/eval/"
+  }
+}

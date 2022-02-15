@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/fbemitter/README",
+  "id": "node_modules/fbemitter/README",
+  "title": "EventEmitter",
+  "description": "Facebook's EventEmitter is a simple emitter implementation that prioritizes speed and simplicity. It is conceptually similar to other emitters like Node's EventEmitter, but the precise APIs differ. More complex abstractions like the event systems used on facebook.com and m.facebook.com can be built on top of EventEmitter as well DOM event systems.",
+  "source": "@site/node_modules/fbemitter/README.md",
+  "sourceDirName": "node_modules/fbemitter",
+  "slug": "/node_modules/fbemitter/",
+  "permalink": "/consul-release-controller/node_modules/fbemitter/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/fbemitter/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "LICENSE",
+    "permalink": "/consul-release-controller/node_modules/faye-websocket/LICENSE"
+  },
+  "next": {
+    "title": "FBJS",
+    "permalink": "/consul-release-controller/node_modules/fbjs/"
+  }
+}

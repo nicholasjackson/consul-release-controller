@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/wbuf/README",
+  "id": "node_modules/wbuf/README",
+  "title": "wbuf",
+  "description": "LICENSE",
+  "source": "@site/node_modules/wbuf/README.md",
+  "sourceDirName": "node_modules/wbuf",
+  "slug": "/node_modules/wbuf/",
+  "permalink": "/consul-release-controller/node_modules/wbuf/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/wbuf/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "watchpack",
+    "permalink": "/consul-release-controller/node_modules/watchpack/"
+  },
+  "next": {
+    "title": "web-namespaces",
+    "permalink": "/consul-release-controller/node_modules/web-namespaces/"
+  }
+}

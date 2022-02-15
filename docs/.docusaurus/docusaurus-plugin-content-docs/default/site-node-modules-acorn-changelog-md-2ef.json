@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/acorn/CHANGELOG",
+  "id": "node_modules/acorn/CHANGELOG",
+  "title": "CHANGELOG",
+  "description": "6.4.0 (2019-11-26)",
+  "source": "@site/node_modules/acorn/CHANGELOG.md",
+  "sourceDirName": "node_modules/acorn",
+  "slug": "/node_modules/acorn/CHANGELOG",
+  "permalink": "/consul-release-controller/node_modules/acorn/CHANGELOG",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/acorn/CHANGELOG.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Acorn",
+    "permalink": "/consul-release-controller/node_modules/acorn/"
+  },
+  "next": {
+    "title": "Dynamic import support in acorn",
+    "permalink": "/consul-release-controller/node_modules/acorn-dynamic-import/"
+  }
+}

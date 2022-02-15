@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/core-js-pure/features/README",
+  "id": "node_modules/core-js-pure/features/README",
+  "title": "README",
+  "description": "This folder contains entry points for all core-js features with dependencies. It's the recommended way for usage only required features.",
+  "source": "@site/node_modules/core-js-pure/features/README.md",
+  "sourceDirName": "node_modules/core-js-pure/features",
+  "slug": "/node_modules/core-js-pure/features/",
+  "permalink": "/consul-release-controller/node_modules/core-js-pure/features/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/core-js-pure/features/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/core-js-pure/es/"
+  },
+  "next": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/core-js-pure/internals/"
+  }
+}

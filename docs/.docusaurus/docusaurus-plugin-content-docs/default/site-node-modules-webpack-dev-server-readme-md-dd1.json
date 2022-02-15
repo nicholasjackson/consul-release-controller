@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/webpack-dev-server/README",
+  "id": "node_modules/webpack-dev-server/README",
+  "title": "README",
+  "description": "npm",
+  "source": "@site/node_modules/webpack-dev-server/README.md",
+  "sourceDirName": "node_modules/webpack-dev-server",
+  "slug": "/node_modules/webpack-dev-server/",
+  "permalink": "/consul-release-controller/node_modules/webpack-dev-server/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/webpack-dev-server/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/webpack-dev-middleware/node_modules/schema-utils/"
+  },
+  "next": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/webpack-dev-server/node_modules/ajv/"
+  }
+}

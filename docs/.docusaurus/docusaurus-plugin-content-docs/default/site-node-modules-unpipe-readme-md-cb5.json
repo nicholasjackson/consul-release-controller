@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/unpipe/README",
+  "id": "node_modules/unpipe/README",
+  "title": "unpipe",
+  "description": "NPM Version",
+  "source": "@site/node_modules/unpipe/README.md",
+  "sourceDirName": "node_modules/unpipe",
+  "slug": "/node_modules/unpipe/",
+  "permalink": "/consul-release-controller/node_modules/unpipe/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/unpipe/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "universalify",
+    "permalink": "/consul-release-controller/node_modules/universalify/"
+  },
+  "next": {
+    "title": "1.0.0 / 2015-06-14",
+    "permalink": "/consul-release-controller/node_modules/unpipe/HISTORY"
+  }
+}

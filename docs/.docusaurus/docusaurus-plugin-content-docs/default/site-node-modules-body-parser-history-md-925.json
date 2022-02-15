@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/body-parser/HISTORY",
+  "id": "node_modules/body-parser/HISTORY",
+  "title": "1.19.1 / 2021-12-10",
+  "description": "* deps: bytes@3.1.1",
+  "source": "@site/node_modules/body-parser/HISTORY.md",
+  "sourceDirName": "node_modules/body-parser",
+  "slug": "/node_modules/body-parser/HISTORY",
+  "permalink": "/consul-release-controller/node_modules/body-parser/HISTORY",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/body-parser/HISTORY.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "body-parser",
+    "permalink": "/consul-release-controller/node_modules/body-parser/"
+  },
+  "next": {
+    "title": "Bytes utility",
+    "permalink": "/consul-release-controller/node_modules/body-parser/node_modules/bytes/"
+  }
+}

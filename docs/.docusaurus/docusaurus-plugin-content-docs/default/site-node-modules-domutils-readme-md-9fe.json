@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/domutils/readme",
+  "id": "node_modules/domutils/readme",
+  "title": "domutils [![Build Status](https://travis-ci.com/fb55/domutils.svg?branch=master)](https://travis-ci.com/fb55/domutils)",
+  "description": "Utilities for working with htmlparser2's DOM.",
+  "source": "@site/node_modules/domutils/readme.md",
+  "sourceDirName": "node_modules/domutils",
+  "slug": "/node_modules/domutils/",
+  "permalink": "/consul-release-controller/node_modules/domutils/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/domutils/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "domhandler [![Build Status](https://travis-ci.com/fb55/domhandler.svg?branch=master)](https://travis-ci.com/fb55/domhandler)",
+    "permalink": "/consul-release-controller/node_modules/domhandler/"
+  },
+  "next": {
+    "title": "dom-serializer [![Build Status](https://travis-ci.com/cheeriojs/dom-serializer.svg?branch=master)](https://travis-ci.com/cheeriojs/dom-serializer)",
+    "permalink": "/consul-release-controller/node_modules/domutils/node_modules/dom-serializer/"
+  }
+}

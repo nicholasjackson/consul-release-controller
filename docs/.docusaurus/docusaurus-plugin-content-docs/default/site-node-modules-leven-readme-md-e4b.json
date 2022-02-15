@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/leven/readme",
+  "id": "node_modules/leven/readme",
+  "title": "leven [![Build Status](https://travis-ci.org/sindresorhus/leven.svg?branch=master)](https://travis-ci.org/sindresorhus/leven)",
+  "description": "Measure the difference between two strings",
+  "source": "@site/node_modules/leven/readme.md",
+  "sourceDirName": "node_modules/leven",
+  "slug": "/node_modules/leven/",
+  "permalink": "/consul-release-controller/node_modules/leven/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/leven/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "latest-version [![Build Status](https://travis-ci.org/sindresorhus/latest-version.svg?branch=master)](https://travis-ci.org/sindresorhus/latest-version)",
+    "permalink": "/consul-release-controller/node_modules/latest-version/"
+  },
+  "next": {
+    "title": "Lilconfig ⚙️",
+    "permalink": "/consul-release-controller/node_modules/lilconfig/"
+  }
+}

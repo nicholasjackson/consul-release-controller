@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@sideway/address/README",
+  "id": "node_modules/@sideway/address/README",
+  "title": "@sideway/address",
+  "description": "Validate email address and domain.",
+  "source": "@site/node_modules/@sideway/address/README.md",
+  "sourceDirName": "node_modules/@sideway/address",
+  "slug": "/node_modules/@sideway/address/",
+  "permalink": "/consul-release-controller/node_modules/@sideway/address/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@sideway/address/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "@polka/url [![npm](https://badgen.now.sh/npm/v/@polka/url)](https://npmjs.org/package/@polka/url)",
+    "permalink": "/consul-release-controller/node_modules/@polka/url/"
+  },
+  "next": {
+    "title": "LICENSE",
+    "permalink": "/consul-release-controller/node_modules/@sideway/address/LICENSE"
+  }
+}

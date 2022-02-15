@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/mdast-util-to-string/readme",
+  "id": "node_modules/mdast-util-to-string/readme",
+  "title": "mdast-util-to-string",
+  "description": "Build",
+  "source": "@site/node_modules/mdast-util-to-string/readme.md",
+  "sourceDirName": "node_modules/mdast-util-to-string",
+  "slug": "/node_modules/mdast-util-to-string/",
+  "permalink": "/consul-release-controller/node_modules/mdast-util-to-string/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/mdast-util-to-string/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "mdast-util-to-hast",
+    "permalink": "/consul-release-controller/node_modules/mdast-util-to-hast/"
+  },
+  "next": {
+    "title": "MDN data",
+    "permalink": "/consul-release-controller/node_modules/mdn-data/"
+  }
+}

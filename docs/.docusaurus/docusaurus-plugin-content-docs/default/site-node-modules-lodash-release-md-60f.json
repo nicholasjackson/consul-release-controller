@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/lodash/release",
+  "id": "node_modules/lodash/release",
+  "title": "release",
+  "description": "npm run build",
+  "source": "@site/node_modules/lodash/release.md",
+  "sourceDirName": "node_modules/lodash",
+  "slug": "/node_modules/lodash/release",
+  "permalink": "/consul-release-controller/node_modules/lodash/release",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/lodash/release.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "lodash v4.17.21",
+    "permalink": "/consul-release-controller/node_modules/lodash/"
+  },
+  "next": {
+    "title": "lodash.defaults v4.2.0",
+    "permalink": "/consul-release-controller/node_modules/lodash.defaults/"
+  }
+}

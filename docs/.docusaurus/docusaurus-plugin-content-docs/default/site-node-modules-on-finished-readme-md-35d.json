@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/on-finished/README",
+  "id": "node_modules/on-finished/README",
+  "title": "on-finished",
+  "description": "NPM Version",
+  "source": "@site/node_modules/on-finished/README.md",
+  "sourceDirName": "node_modules/on-finished",
+  "slug": "/node_modules/on-finished/",
+  "permalink": "/consul-release-controller/node_modules/on-finished/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/on-finished/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "obuf - Offset buffer implementation.",
+    "permalink": "/consul-release-controller/node_modules/obuf/"
+  },
+  "next": {
+    "title": "2.3.0 / 2015-05-26",
+    "permalink": "/consul-release-controller/node_modules/on-finished/HISTORY"
+  }
+}

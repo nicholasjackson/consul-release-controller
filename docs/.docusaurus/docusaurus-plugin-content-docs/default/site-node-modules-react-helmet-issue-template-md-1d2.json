@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/react-helmet/ISSUE_TEMPLATE",
+  "id": "node_modules/react-helmet/ISSUE_TEMPLATE",
+  "title": "ISSUE_TEMPLATE",
+  "description": "Do you want to request a *feature* or report a *bug*?",
+  "source": "@site/node_modules/react-helmet/ISSUE_TEMPLATE.md",
+  "sourceDirName": "node_modules/react-helmet",
+  "slug": "/node_modules/react-helmet/ISSUE_TEMPLATE",
+  "permalink": "/consul-release-controller/node_modules/react-helmet/ISSUE_TEMPLATE",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/react-helmet/ISSUE_TEMPLATE.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Contributor Covenant Code of Conduct",
+    "permalink": "/consul-release-controller/node_modules/react-helmet/CODE_OF_CONDUCT"
+  },
+  "next": {
+    "title": "react-is",
+    "permalink": "/consul-release-controller/node_modules/react-is/"
+  }
+}

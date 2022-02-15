@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/source-map-js/README",
+  "id": "node_modules/source-map-js/README",
+  "title": "Source Map JS",
+  "description": "NPM",
+  "source": "@site/node_modules/source-map-js/README.md",
+  "sourceDirName": "node_modules/source-map-js",
+  "slug": "/node_modules/source-map-js/",
+  "permalink": "/consul-release-controller/node_modules/source-map-js/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/source-map-js/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Change Log",
+    "permalink": "/consul-release-controller/node_modules/source-map/CHANGELOG"
+  },
+  "next": {
+    "title": "Change Log",
+    "permalink": "/consul-release-controller/node_modules/source-map-js/CHANGELOG"
+  }
+}

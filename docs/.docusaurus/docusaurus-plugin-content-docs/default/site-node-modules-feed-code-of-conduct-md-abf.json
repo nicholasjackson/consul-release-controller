@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/feed/CODE_OF_CONDUCT",
+  "id": "node_modules/feed/CODE_OF_CONDUCT",
+  "title": "Code of Conduct",
+  "description": "1. Purpose",
+  "source": "@site/node_modules/feed/CODE_OF_CONDUCT.md",
+  "sourceDirName": "node_modules/feed",
+  "slug": "/node_modules/feed/CODE_OF_CONDUCT",
+  "permalink": "/consul-release-controller/node_modules/feed/CODE_OF_CONDUCT",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/feed/CODE_OF_CONDUCT.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Change Log",
+    "permalink": "/consul-release-controller/node_modules/feed/CHANGELOG"
+  },
+  "next": {
+    "title": "How to contribute",
+    "permalink": "/consul-release-controller/node_modules/feed/CONTRIBUTING"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@babel/plugin-transform-block-scoping/README",
+  "id": "node_modules/@babel/plugin-transform-block-scoping/README",
+  "title": "@babel/plugin-transform-block-scoping",
+  "description": "Compile ES2015 block scoping (const and let) to ES5",
+  "source": "@site/node_modules/@babel/plugin-transform-block-scoping/README.md",
+  "sourceDirName": "node_modules/@babel/plugin-transform-block-scoping",
+  "slug": "/node_modules/@babel/plugin-transform-block-scoping/",
+  "permalink": "/consul-release-controller/node_modules/@babel/plugin-transform-block-scoping/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@babel/plugin-transform-block-scoping/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "@babel/plugin-transform-block-scoped-functions",
+    "permalink": "/consul-release-controller/node_modules/@babel/plugin-transform-block-scoped-functions/"
+  },
+  "next": {
+    "title": "@babel/plugin-transform-classes",
+    "permalink": "/consul-release-controller/node_modules/@babel/plugin-transform-classes/"
+  }
+}

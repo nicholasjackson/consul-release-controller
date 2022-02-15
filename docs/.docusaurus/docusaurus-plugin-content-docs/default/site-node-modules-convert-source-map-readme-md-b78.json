@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/convert-source-map/README",
+  "id": "node_modules/convert-source-map/README",
+  "title": "convert-source-map [![build status](https://secure.travis-ci.org/thlorenz/convert-source-map.svg?branch=master)](http://travis-ci.org/thlorenz/convert-source-map)",
+  "description": "Converts a source-map from/to  different formats and allows adding/changing properties.",
+  "source": "@site/node_modules/convert-source-map/README.md",
+  "sourceDirName": "node_modules/convert-source-map",
+  "slug": "/node_modules/convert-source-map/",
+  "permalink": "/consul-release-controller/node_modules/convert-source-map/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/convert-source-map/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "1.0.4 / 2017-09-11",
+    "permalink": "/consul-release-controller/node_modules/content-type/HISTORY"
+  },
+  "next": {
+    "title": "safe-buffer [![travis][travis-image]][travis-url] [![npm][npm-image]][npm-url] [![downloads][downloads-image]][downloads-url] [![javascript style guide][standard-image]][standard-url]",
+    "permalink": "/consul-release-controller/node_modules/convert-source-map/node_modules/safe-buffer/"
+  }
+}

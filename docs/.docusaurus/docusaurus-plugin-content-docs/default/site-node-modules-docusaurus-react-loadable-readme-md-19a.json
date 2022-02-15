@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@docusaurus/react-loadable/README",
+  "id": "node_modules/@docusaurus/react-loadable/README",
+  "title": "README",
+  "description": "React Loadable",
+  "source": "@site/node_modules/@docusaurus/react-loadable/README.md",
+  "sourceDirName": "node_modules/@docusaurus/react-loadable",
+  "slug": "/node_modules/@docusaurus/react-loadable/",
+  "permalink": "/consul-release-controller/node_modules/@docusaurus/react-loadable/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@docusaurus/react-loadable/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "@docusaurus/preset-classic",
+    "permalink": "/consul-release-controller/node_modules/@docusaurus/preset-classic/"
+  },
+  "next": {
+    "title": "Docusaurus Theme Classic",
+    "permalink": "/consul-release-controller/node_modules/@docusaurus/theme-classic/"
+  }
+}

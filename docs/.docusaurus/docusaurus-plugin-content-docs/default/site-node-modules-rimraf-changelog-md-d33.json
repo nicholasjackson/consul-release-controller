@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/rimraf/CHANGELOG",
+  "id": "node_modules/rimraf/CHANGELOG",
+  "title": "v3.0",
+  "description": "- Add --preserve-root option to executable (default true)",
+  "source": "@site/node_modules/rimraf/CHANGELOG.md",
+  "sourceDirName": "node_modules/rimraf",
+  "slug": "/node_modules/rimraf/CHANGELOG",
+  "permalink": "/consul-release-controller/node_modules/rimraf/CHANGELOG",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/rimraf/CHANGELOG.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/rimraf/"
+  },
+  "next": {
+    "title": "rtl-detect",
+    "permalink": "/consul-release-controller/node_modules/rtl-detect/"
+  }
+}

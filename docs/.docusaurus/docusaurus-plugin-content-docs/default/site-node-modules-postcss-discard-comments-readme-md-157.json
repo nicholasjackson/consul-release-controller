@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/postcss-discard-comments/README",
+  "id": "node_modules/postcss-discard-comments/README",
+  "title": "[postcss][postcss]-discard-comments",
+  "description": "Discard comments in your CSS files with PostCSS.",
+  "source": "@site/node_modules/postcss-discard-comments/README.md",
+  "sourceDirName": "node_modules/postcss-discard-comments",
+  "slug": "/node_modules/postcss-discard-comments/",
+  "permalink": "/consul-release-controller/node_modules/postcss-discard-comments/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/postcss-discard-comments/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "[postcss][postcss]-convert-values",
+    "permalink": "/consul-release-controller/node_modules/postcss-convert-values/"
+  },
+  "next": {
+    "title": "[postcss][postcss]-discard-duplicates",
+    "permalink": "/consul-release-controller/node_modules/postcss-discard-duplicates/"
+  }
+}

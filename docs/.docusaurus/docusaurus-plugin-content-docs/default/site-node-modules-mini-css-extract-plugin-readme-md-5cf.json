@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/mini-css-extract-plugin/README",
+  "id": "node_modules/mini-css-extract-plugin/README",
+  "title": "README",
+  "description": "mini-css-extract-plugin",
+  "source": "@site/node_modules/mini-css-extract-plugin/README.md",
+  "sourceDirName": "node_modules/mini-css-extract-plugin",
+  "slug": "/node_modules/mini-css-extract-plugin/",
+  "permalink": "/consul-release-controller/node_modules/mini-css-extract-plugin/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/mini-css-extract-plugin/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "mini-create-react-context",
+    "permalink": "/consul-release-controller/node_modules/mini-create-react-context/"
+  },
+  "next": {
+    "title": "minimalistic-assert",
+    "permalink": "/consul-release-controller/node_modules/minimalistic-assert/"
+  }
+}

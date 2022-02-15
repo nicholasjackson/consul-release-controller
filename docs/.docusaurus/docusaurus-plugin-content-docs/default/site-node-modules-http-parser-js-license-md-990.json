@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/http-parser-js/LICENSE",
+  "id": "node_modules/http-parser-js/LICENSE",
+  "title": "LICENSE",
+  "description": "Copyright (c) 2015 Tim Caswell (https://github.com/creationix) and other",
+  "source": "@site/node_modules/http-parser-js/LICENSE.md",
+  "sourceDirName": "node_modules/http-parser-js",
+  "slug": "/node_modules/http-parser-js/LICENSE",
+  "permalink": "/consul-release-controller/node_modules/http-parser-js/LICENSE",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/http-parser-js/LICENSE.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/http-parser-js/"
+  },
+  "next": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/http-proxy/"
+  }
+}

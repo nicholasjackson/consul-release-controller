@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/has-yarn/readme",
+  "id": "node_modules/has-yarn/readme",
+  "title": "has-yarn [![Build Status](https://travis-ci.org/sindresorhus/has-yarn.svg?branch=master)](https://travis-ci.org/sindresorhus/has-yarn)",
+  "description": "Check if a project is using Yarn",
+  "source": "@site/node_modules/has-yarn/readme.md",
+  "sourceDirName": "node_modules/has-yarn",
+  "slug": "/node_modules/has-yarn/",
+  "permalink": "/consul-release-controller/node_modules/has-yarn/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/has-yarn/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Changelog",
+    "permalink": "/consul-release-controller/node_modules/has-tostringtag/CHANGELOG"
+  },
+  "next": {
+    "title": "hast-to-hyperscript",
+    "permalink": "/consul-release-controller/node_modules/hast-to-hyperscript/"
+  }
+}

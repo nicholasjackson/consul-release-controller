@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/is-stream/readme",
+  "id": "node_modules/is-stream/readme",
+  "title": "is-stream",
+  "description": "Check if something is a Node.js stream",
+  "source": "@site/node_modules/is-stream/readme.md",
+  "sourceDirName": "node_modules/is-stream",
+  "slug": "/node_modules/is-stream/",
+  "permalink": "/consul-release-controller/node_modules/is-stream/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/is-stream/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "is-root [![Build Status](https://travis-ci.org/sindresorhus/is-root.svg?branch=master)](https://travis-ci.org/sindresorhus/is-root)",
+    "permalink": "/consul-release-controller/node_modules/is-root/"
+  },
+  "next": {
+    "title": "is-typedarray [![locked](http://badges.github.io/stability-badges/dist/locked.svg)](http://github.com/badges/stability-badges)",
+    "permalink": "/consul-release-controller/node_modules/is-typedarray/"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/fork-ts-checker-webpack-plugin/CHANGELOG",
+  "id": "node_modules/fork-ts-checker-webpack-plugin/CHANGELOG",
+  "title": "CHANGELOG",
+  "description": "⚠️ Next versions are available only on the GitHub Releases page ⚠️",
+  "source": "@site/node_modules/fork-ts-checker-webpack-plugin/CHANGELOG.md",
+  "sourceDirName": "node_modules/fork-ts-checker-webpack-plugin",
+  "slug": "/node_modules/fork-ts-checker-webpack-plugin/CHANGELOG",
+  "permalink": "/consul-release-controller/node_modules/fork-ts-checker-webpack-plugin/CHANGELOG",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/fork-ts-checker-webpack-plugin/CHANGELOG.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/fork-ts-checker-webpack-plugin/"
+  },
+  "next": {
+    "title": "cosmiconfig",
+    "permalink": "/consul-release-controller/node_modules/fork-ts-checker-webpack-plugin/node_modules/cosmiconfig/"
+  }
+}

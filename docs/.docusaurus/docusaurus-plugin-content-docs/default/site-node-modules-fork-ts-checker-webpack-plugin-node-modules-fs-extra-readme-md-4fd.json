@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/fork-ts-checker-webpack-plugin/node_modules/fs-extra/README",
+  "id": "node_modules/fork-ts-checker-webpack-plugin/node_modules/fs-extra/README",
+  "title": "Node.js: fs-extra",
+  "description": "fs-extra adds file system methods that aren't included in the native fs module and adds promise support to the fs methods. It also uses graceful-fs to prevent EMFILE errors. It should be a drop in replacement for fs.",
+  "source": "@site/node_modules/fork-ts-checker-webpack-plugin/node_modules/fs-extra/README.md",
+  "sourceDirName": "node_modules/fork-ts-checker-webpack-plugin/node_modules/fs-extra",
+  "slug": "/node_modules/fork-ts-checker-webpack-plugin/node_modules/fs-extra/",
+  "permalink": "/consul-release-controller/node_modules/fork-ts-checker-webpack-plugin/node_modules/fs-extra/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/fork-ts-checker-webpack-plugin/node_modules/fs-extra/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Changelog",
+    "permalink": "/consul-release-controller/node_modules/fork-ts-checker-webpack-plugin/node_modules/cosmiconfig/CHANGELOG"
+  },
+  "next": {
+    "title": "CHANGELOG",
+    "permalink": "/consul-release-controller/node_modules/fork-ts-checker-webpack-plugin/node_modules/fs-extra/CHANGELOG"
+  }
+}

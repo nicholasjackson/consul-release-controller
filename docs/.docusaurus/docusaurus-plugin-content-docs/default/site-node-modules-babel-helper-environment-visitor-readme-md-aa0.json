@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@babel/helper-environment-visitor/README",
+  "id": "node_modules/@babel/helper-environment-visitor/README",
+  "title": "@babel/helper-environment-visitor",
+  "description": "Helper visitor to only visit nodes in the current 'this' context",
+  "source": "@site/node_modules/@babel/helper-environment-visitor/README.md",
+  "sourceDirName": "node_modules/@babel/helper-environment-visitor",
+  "slug": "/node_modules/@babel/helper-environment-visitor/",
+  "permalink": "/consul-release-controller/node_modules/@babel/helper-environment-visitor/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@babel/helper-environment-visitor/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "license",
+    "permalink": "/consul-release-controller/node_modules/@babel/helper-define-polyfill-provider/node_modules/ms/license"
+  },
+  "next": {
+    "title": "@babel/helper-explode-assignable-expression",
+    "permalink": "/consul-release-controller/node_modules/@babel/helper-explode-assignable-expression/"
+  }
+}

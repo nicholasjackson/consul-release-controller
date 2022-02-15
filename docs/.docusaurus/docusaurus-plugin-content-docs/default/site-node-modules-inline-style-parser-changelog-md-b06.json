@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/inline-style-parser/CHANGELOG",
+  "id": "node_modules/inline-style-parser/CHANGELOG",
+  "title": "Changelog",
+  "description": "All notable changes to this project will be documented in this file. See standard-version for commit guidelines.",
+  "source": "@site/node_modules/inline-style-parser/CHANGELOG.md",
+  "sourceDirName": "node_modules/inline-style-parser",
+  "slug": "/node_modules/inline-style-parser/CHANGELOG",
+  "permalink": "/consul-release-controller/node_modules/inline-style-parser/CHANGELOG",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/inline-style-parser/CHANGELOG.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "inline-style-parser",
+    "permalink": "/consul-release-controller/node_modules/inline-style-parser/"
+  },
+  "next": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/interpret/"
+  }
+}

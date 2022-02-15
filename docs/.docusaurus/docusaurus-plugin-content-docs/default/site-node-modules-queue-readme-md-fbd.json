@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/queue/readme",
+  "id": "node_modules/queue/readme",
+  "title": "readme",
+  "description": "Asynchronous function queue with adjustable concurrency.",
+  "source": "@site/node_modules/queue/readme.md",
+  "sourceDirName": "node_modules/queue",
+  "slug": "/node_modules/queue/",
+  "permalink": "/consul-release-controller/node_modules/queue/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/queue/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "License",
+    "permalink": "/consul-release-controller/node_modules/querystring/License"
+  },
+  "next": {
+    "title": "queue-microtask [![ci][ci-image]][ci-url] [![npm][npm-image]][npm-url] [![downloads][downloads-image]][downloads-url] [![javascript style guide][standard-image]][standard-url]",
+    "permalink": "/consul-release-controller/node_modules/queue-microtask/"
+  }
+}

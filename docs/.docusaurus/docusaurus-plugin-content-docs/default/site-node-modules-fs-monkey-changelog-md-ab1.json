@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/fs-monkey/CHANGELOG",
+  "id": "node_modules/fs-monkey/CHANGELOG",
+  "title": "CHANGELOG",
+  "description": "1.0.3 (2021-04-05)",
+  "source": "@site/node_modules/fs-monkey/CHANGELOG.md",
+  "sourceDirName": "node_modules/fs-monkey",
+  "slug": "/node_modules/fs-monkey/CHANGELOG",
+  "permalink": "/consul-release-controller/node_modules/fs-monkey/CHANGELOG",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/fs-monkey/CHANGELOG.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "fs-monkey",
+    "permalink": "/consul-release-controller/node_modules/fs-monkey/"
+  },
+  "next": {
+    "title": "patchFs(vol[, fs])",
+    "permalink": "/consul-release-controller/node_modules/fs-monkey/docs/api/patchFs"
+  }
+}

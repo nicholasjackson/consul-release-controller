@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/unicode-canonical-property-names-ecmascript/README",
+  "id": "node_modules/unicode-canonical-property-names-ecmascript/README",
+  "title": "unicode-canonical-property-names-ecmascript [![Build status](https://travis-ci.org/mathiasbynens/unicode-canonical-property-names-ecmascript.svg?branch=main)](https://travis-ci.org/mathiasbynens/unicode-canonical-property-names-ecmascript) [![unicode-canonical-property-names-ecmascript on npm](https://img.shields.io/npm/v/unicode-canonical-property-names-ecmascript)](https://www.npmjs.com/package/unicode-canonical-property-names-ecmascript)",
+  "description": "unicode-canonical-property-names-ecmascript exports the set of canonical Unicode property names that are supported in ECMAScript RegExp property escapes.",
+  "source": "@site/node_modules/unicode-canonical-property-names-ecmascript/README.md",
+  "sourceDirName": "node_modules/unicode-canonical-property-names-ecmascript",
+  "slug": "/node_modules/unicode-canonical-property-names-ecmascript/",
+  "permalink": "/consul-release-controller/node_modules/unicode-canonical-property-names-ecmascript/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/unicode-canonical-property-names-ecmascript/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "unherit",
+    "permalink": "/consul-release-controller/node_modules/unherit/"
+  },
+  "next": {
+    "title": "unicode-match-property-ecmascript [![Build status](https://travis-ci.org/mathiasbynens/unicode-match-property-ecmascript.svg?branch=main)](https://travis-ci.org/mathiasbynens/unicode-match-property-ecmascript) [![unicode-match-property-ecmascript on npm](https://img.shields.io/npm/v/unicode-match-property-ecmascript)](https://www.npmjs.com/package/unicode-match-property-ecmascript)",
+    "permalink": "/consul-release-controller/node_modules/unicode-match-property-ecmascript/"
+  }
+}

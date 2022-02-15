@@ -22,25 +22,10 @@ controller:
           fieldPath: status.hostIP
     - name: CONSUL_HTTP_ADDR
       value: https://$(HOST_IP):8501
-    - name: CONSUL_CAPATH
-      value: /consul/tls/client/ca/tls.crt
-    - name: CONSUL_HTTP_TOKEN
-      valueFrom: 
-        secretKeyRef:
-          name: consul-controller-acl-token
-          key: token 
-      # Additional environment variables to add to the controller
-      # deployment
-      # - name: MYENV
-      #   value: myvalue
 
-    volumeMounts:
+    additional_volume_mounts:
       - mountPath: /consul/tls/client/ca
         name: consul-auto-encrypt-ca-cert
-      # Additional volume mounts to add to the container can be used to
-      # mount configuration or certificates needed by the specific controller implementation.
-      # - name: consul-ca
-      #   mountPath: /tmp/consul/ca
 
     resources: {}
       # We usually recommend not to specify default resources and to leave this as a conscious
@@ -61,10 +46,6 @@ controller:
     - name: consul-auto-encrypt-ca-cert
       emptyDir:
         medium: Memory
-    # Additional volumes to add to the controller pod
-    # - name: consul-ca
-    #   secret:
-    #     secretName: consul-ca-cert
 
   additional_init_containers:
     - command:
@@ -91,19 +72,6 @@ controller:
         name: consul-server-ca
       - mountPath: /consul/tls/client/ca
         name: consul-auto-encrypt-ca-cert
-    # Add additional init containers to the controller pod
-    # - command:
-    #   - /bin/sh
-    #   - -ec
-    #   - |
-    #     consul-k8s get-consul-client-ca \
-    #       -output-file=/consul/tls/client/ca/tls.crt \
-    #       -server-addr=consul-server \
-    #       -server-port=8501 \
-    #       -ca-file=/consul/tls/ca/tls.crt
-    #   image: hashicorp/consul-k8s:0.25.0
-    #   imagePullPolicy: IfNotPresent
-    #   name: get-auto-encrypt-client-ca
 
   podAnnotations: {}
 
@@ -156,3 +124,12 @@ serviceAccount:
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
   name: ""
+
+auto_encrypt_ca_env:
+    - name: CONSUL_CAPATH
+      value: /consul/tls/client/ca/tls.crt
+    - name: CONSUL_HTTP_TOKEN
+      valueFrom: 
+        secretKeyRef:
+          name: consul-controller-acl-token
+          key: token 

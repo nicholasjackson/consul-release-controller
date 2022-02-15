@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/webpack-dev-server/node_modules/ansi-regex/readme",
+  "id": "node_modules/webpack-dev-server/node_modules/ansi-regex/readme",
+  "title": "ansi-regex",
+  "description": "Regular expression for matching ANSI escape codes",
+  "source": "@site/node_modules/webpack-dev-server/node_modules/ansi-regex/readme.md",
+  "sourceDirName": "node_modules/webpack-dev-server/node_modules/ansi-regex",
+  "slug": "/node_modules/webpack-dev-server/node_modules/ansi-regex/",
+  "permalink": "/consul-release-controller/node_modules/webpack-dev-server/node_modules/ansi-regex/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/webpack-dev-server/node_modules/ansi-regex/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "ajv-keywords",
+    "permalink": "/consul-release-controller/node_modules/webpack-dev-server/node_modules/ajv-keywords/"
+  },
+  "next": {
+    "title": "json-schema-traverse",
+    "permalink": "/consul-release-controller/node_modules/webpack-dev-server/node_modules/json-schema-traverse/"
+  }
+}

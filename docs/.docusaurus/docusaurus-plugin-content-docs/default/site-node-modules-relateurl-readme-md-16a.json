@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/relateurl/README",
+  "id": "node_modules/relateurl/README",
+  "title": "relateurl [![NPM Version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][david-image]][david-url]",
+  "description": "Minify URLs by converting them from absolute to relative.",
+  "source": "@site/node_modules/relateurl/README.md",
+  "sourceDirName": "node_modules/relateurl",
+  "slug": "/node_modules/relateurl/",
+  "permalink": "/consul-release-controller/node_modules/relateurl/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/relateurl/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/rehype-parse/node_modules/parse5/"
+  },
+  "next": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/remark-admonitions/"
+  }
+}

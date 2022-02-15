@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/compressible/README",
+  "id": "node_modules/compressible/README",
+  "title": "compressible",
+  "description": "NPM Version",
+  "source": "@site/node_modules/compressible/README.md",
+  "sourceDirName": "node_modules/compressible",
+  "slug": "/node_modules/compressible/",
+  "permalink": "/consul-release-controller/node_modules/compressible/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/compressible/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Changelog",
+    "permalink": "/consul-release-controller/node_modules/commander/CHANGELOG"
+  },
+  "next": {
+    "title": "2.0.18 / 2020-01-05",
+    "permalink": "/consul-release-controller/node_modules/compressible/HISTORY"
+  }
+}

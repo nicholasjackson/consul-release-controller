@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/cssnano-preset-default/README",
+  "id": "node_modules/cssnano-preset-default/README",
+  "title": "cssnano-preset-default",
+  "description": "Safe defaults for cssnano which require minimal configuration.",
+  "source": "@site/node_modules/cssnano-preset-default/README.md",
+  "sourceDirName": "node_modules/cssnano-preset-default",
+  "slug": "/node_modules/cssnano-preset-default/",
+  "permalink": "/consul-release-controller/node_modules/cssnano-preset-default/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/cssnano-preset-default/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "cssnano-preset-advanced",
+    "permalink": "/consul-release-controller/node_modules/cssnano-preset-advanced/"
+  },
+  "next": {
+    "title": "cssnano-utils",
+    "permalink": "/consul-release-controller/node_modules/cssnano-utils/"
+  }
+}

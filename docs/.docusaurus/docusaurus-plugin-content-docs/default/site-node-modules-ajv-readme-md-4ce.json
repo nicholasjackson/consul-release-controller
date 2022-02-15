@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/ajv/README",
+  "id": "node_modules/ajv/README",
+  "title": "README",
+  "description": "The fastest JSON Schema validator for Node.js and browser. Supports draft-04/06/07.",
+  "source": "@site/node_modules/ajv/README.md",
+  "sourceDirName": "node_modules/ajv",
+  "slug": "/node_modules/ajv/",
+  "permalink": "/consul-release-controller/node_modules/ajv/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/ajv/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "aggregate-error [![Build Status](https://travis-ci.org/sindresorhus/aggregate-error.svg?branch=master)](https://travis-ci.org/sindresorhus/aggregate-error)",
+    "permalink": "/consul-release-controller/node_modules/aggregate-error/"
+  },
+  "next": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/ajv/lib/dotjs/"
+  }
+}

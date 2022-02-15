@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/mime-db/HISTORY",
+  "id": "node_modules/mime-db/HISTORY",
+  "title": "1.51.0 / 2021-11-08",
+  "description": "* Add new upstream MIME types",
+  "source": "@site/node_modules/mime-db/HISTORY.md",
+  "sourceDirName": "node_modules/mime-db",
+  "slug": "/node_modules/mime-db/HISTORY",
+  "permalink": "/consul-release-controller/node_modules/mime-db/HISTORY",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/mime-db/HISTORY.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "mime-db",
+    "permalink": "/consul-release-controller/node_modules/mime-db/"
+  },
+  "next": {
+    "title": "mime-types",
+    "permalink": "/consul-release-controller/node_modules/mime-types/"
+  }
+}

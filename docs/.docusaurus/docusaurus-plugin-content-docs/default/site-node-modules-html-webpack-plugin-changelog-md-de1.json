@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/html-webpack-plugin/CHANGELOG",
+  "id": "node_modules/html-webpack-plugin/CHANGELOG",
+  "title": "Changelog",
+  "description": "All notable changes to this project will be documented in this file. See standard-version for commit guidelines.",
+  "source": "@site/node_modules/html-webpack-plugin/CHANGELOG.md",
+  "sourceDirName": "node_modules/html-webpack-plugin",
+  "slug": "/node_modules/html-webpack-plugin/CHANGELOG",
+  "permalink": "/consul-release-controller/node_modules/html-webpack-plugin/CHANGELOG",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/html-webpack-plugin/CHANGELOG.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/html-webpack-plugin/"
+  },
+  "next": {
+    "title": "htmlparser2",
+    "permalink": "/consul-release-controller/node_modules/htmlparser2/"
+  }
+}

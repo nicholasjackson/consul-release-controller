@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/depd/Readme",
+  "id": "node_modules/depd/Readme",
+  "title": "depd",
+  "description": "NPM Version",
+  "source": "@site/node_modules/depd/Readme.md",
+  "sourceDirName": "node_modules/depd",
+  "slug": "/node_modules/depd/",
+  "permalink": "/consul-release-controller/node_modules/depd/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/depd/Readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "del [![Build Status](https://travis-ci.com/sindresorhus/del.svg?branch=master)](https://travis-ci.com/github/sindresorhus/del) [![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/xojs/xo)",
+    "permalink": "/consul-release-controller/node_modules/del/"
+  },
+  "next": {
+    "title": "1.1.2 / 2018-01-11",
+    "permalink": "/consul-release-controller/node_modules/depd/History"
+  }
+}

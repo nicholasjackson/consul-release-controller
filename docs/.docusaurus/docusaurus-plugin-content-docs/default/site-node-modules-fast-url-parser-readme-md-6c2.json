@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/fast-url-parser/README",
+  "id": "node_modules/fast-url-parser/README",
+  "title": "Introduction",
+  "description": "Fast implementation of an url parser for node.js.",
+  "source": "@site/node_modules/fast-url-parser/README.md",
+  "sourceDirName": "node_modules/fast-url-parser",
+  "slug": "/node_modules/fast-url-parser/",
+  "permalink": "/consul-release-controller/node_modules/fast-url-parser/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/fast-url-parser/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "fast-json-stable-stringify",
+    "permalink": "/consul-release-controller/node_modules/fast-json-stable-stringify/"
+  },
+  "next": {
+    "title": "Punycode.js [![Build status](https://travis-ci.org/bestiejs/punycode.js.svg?branch=master)](https://travis-ci.org/bestiejs/punycode.js) [![Code coverage status](http://img.shields.io/coveralls/bestiejs/punycode.js/master.svg)](https://coveralls.io/r/bestiejs/punycode.js) [![Dependency status](https://gemnasium.com/bestiejs/punycode.js.svg)](https://gemnasium.com/bestiejs/punycode.js)",
+    "permalink": "/consul-release-controller/node_modules/fast-url-parser/node_modules/punycode/"
+  }
+}

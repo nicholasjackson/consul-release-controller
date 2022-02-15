@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/timsort/README",
+  "id": "node_modules/timsort/README",
+  "title": "Node-TimSort: Fast Sorting for Node.js",
+  "description": "Build Status",
+  "source": "@site/node_modules/timsort/README.md",
+  "sourceDirName": "node_modules/timsort",
+  "slug": "/node_modules/timsort/",
+  "permalink": "/consul-release-controller/node_modules/timsort/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/timsort/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "thunky",
+    "permalink": "/consul-release-controller/node_modules/thunky/"
+  },
+  "next": {
+    "title": "LICENSE",
+    "permalink": "/consul-release-controller/node_modules/timsort/LICENSE"
+  }
+}

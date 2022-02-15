@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/parseurl/HISTORY",
+  "id": "node_modules/parseurl/HISTORY",
+  "title": "1.3.3 / 2019-04-15",
+  "description": "* Fix Node.js 0.8 return value inconsistencies",
+  "source": "@site/node_modules/parseurl/HISTORY.md",
+  "sourceDirName": "node_modules/parseurl",
+  "slug": "/node_modules/parseurl/HISTORY",
+  "permalink": "/consul-release-controller/node_modules/parseurl/HISTORY",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/parseurl/HISTORY.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "parseurl",
+    "permalink": "/consul-release-controller/node_modules/parseurl/"
+  },
+  "next": {
+    "title": "Pascal Case",
+    "permalink": "/consul-release-controller/node_modules/pascal-case/"
+  }
+}

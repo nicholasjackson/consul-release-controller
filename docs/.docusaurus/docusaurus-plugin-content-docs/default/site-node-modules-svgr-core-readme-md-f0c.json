@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@svgr/core/README",
+  "id": "node_modules/@svgr/core/README",
+  "title": "@svgr/core",
+  "description": "Build Status",
+  "source": "@site/node_modules/@svgr/core/README.md",
+  "sourceDirName": "node_modules/@svgr/core",
+  "slug": "/node_modules/@svgr/core/",
+  "permalink": "/consul-release-controller/node_modules/@svgr/core/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@svgr/core/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "@svgr/babel-preset",
+    "permalink": "/consul-release-controller/node_modules/@svgr/babel-preset/"
+  },
+  "next": {
+    "title": "@svgr/hast-util-to-babel-ast",
+    "permalink": "/consul-release-controller/node_modules/@svgr/hast-util-to-babel-ast/"
+  }
+}

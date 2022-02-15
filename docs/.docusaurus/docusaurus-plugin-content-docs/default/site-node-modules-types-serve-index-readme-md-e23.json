@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@types/serve-index/README",
+  "id": "node_modules/@types/serve-index/README",
+  "title": "Installation",
+  "description": "npm install --save @types/serve-index",
+  "source": "@site/node_modules/@types/serve-index/README.md",
+  "sourceDirName": "node_modules/@types/serve-index",
+  "slug": "/node_modules/@types/serve-index/",
+  "permalink": "/consul-release-controller/node_modules/@types/serve-index/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@types/serve-index/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Installation",
+    "permalink": "/consul-release-controller/node_modules/@types/scheduler/"
+  },
+  "next": {
+    "title": "Installation",
+    "permalink": "/consul-release-controller/node_modules/@types/serve-static/"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/p-limit/readme",
+  "id": "node_modules/p-limit/readme",
+  "title": "p-limit [![Build Status](https://travis-ci.org/sindresorhus/p-limit.svg?branch=master)](https://travis-ci.org/sindresorhus/p-limit)",
+  "description": "Run multiple promise-returning & async functions with limited concurrency",
+  "source": "@site/node_modules/p-limit/readme.md",
+  "sourceDirName": "node_modules/p-limit",
+  "slug": "/node_modules/p-limit/",
+  "permalink": "/consul-release-controller/node_modules/p-limit/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/p-limit/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "p-cancelable [![Build Status](https://travis-ci.org/sindresorhus/p-cancelable.svg?branch=master)](https://travis-ci.org/sindresorhus/p-cancelable)",
+    "permalink": "/consul-release-controller/node_modules/p-cancelable/"
+  },
+  "next": {
+    "title": "p-locate [![Build Status](https://travis-ci.com/sindresorhus/p-locate.svg?branch=master)](https://travis-ci.com/github/sindresorhus/p-locate)",
+    "permalink": "/consul-release-controller/node_modules/p-locate/"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/registry-auth-token/CHANGELOG",
+  "id": "node_modules/registry-auth-token/CHANGELOG",
+  "title": "Change Log",
+  "description": "All notable changes will be documented in this file.",
+  "source": "@site/node_modules/registry-auth-token/CHANGELOG.md",
+  "sourceDirName": "node_modules/registry-auth-token",
+  "slug": "/node_modules/registry-auth-token/CHANGELOG",
+  "permalink": "/consul-release-controller/node_modules/registry-auth-token/CHANGELOG",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/registry-auth-token/CHANGELOG.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "registry-auth-token",
+    "permalink": "/consul-release-controller/node_modules/registry-auth-token/"
+  },
+  "next": {
+    "title": "registry-url [![Build Status](https://travis-ci.org/sindresorhus/registry-url.svg?branch=master)](https://travis-ci.org/sindresorhus/registry-url)",
+    "permalink": "/consul-release-controller/node_modules/registry-url/"
+  }
+}

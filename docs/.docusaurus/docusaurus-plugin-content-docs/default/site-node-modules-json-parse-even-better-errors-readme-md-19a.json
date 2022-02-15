@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/json-parse-even-better-errors/README",
+  "id": "node_modules/json-parse-even-better-errors/README",
+  "title": "json-parse-even-better-errors",
+  "description": "json-parse-even-better-errors",
+  "source": "@site/node_modules/json-parse-even-better-errors/README.md",
+  "sourceDirName": "node_modules/json-parse-even-better-errors",
+  "slug": "/node_modules/json-parse-even-better-errors/",
+  "permalink": "/consul-release-controller/node_modules/json-parse-even-better-errors/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/json-parse-even-better-errors/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "LICENSE",
+    "permalink": "/consul-release-controller/node_modules/json-parse-better-errors/LICENSE"
+  },
+  "next": {
+    "title": "Change Log",
+    "permalink": "/consul-release-controller/node_modules/json-parse-even-better-errors/CHANGELOG"
+  }
+}

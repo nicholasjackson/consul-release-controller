@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@babel/plugin-bugfix-safari-id-destructuring-collision-in-function-expression/README",
+  "id": "node_modules/@babel/plugin-bugfix-safari-id-destructuring-collision-in-function-expression/README",
+  "title": "@babel/plugin-bugfix-safari-id-destructuring-collision-in-function-expression",
+  "description": "Rename destructuring parameter to workaround https://bugs.webkit.org/show_bug.cgi?id=220517",
+  "source": "@site/node_modules/@babel/plugin-bugfix-safari-id-destructuring-collision-in-function-expression/README.md",
+  "sourceDirName": "node_modules/@babel/plugin-bugfix-safari-id-destructuring-collision-in-function-expression",
+  "slug": "/node_modules/@babel/plugin-bugfix-safari-id-destructuring-collision-in-function-expression/",
+  "permalink": "/consul-release-controller/node_modules/@babel/plugin-bugfix-safari-id-destructuring-collision-in-function-expression/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@babel/plugin-bugfix-safari-id-destructuring-collision-in-function-expression/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Changelog",
+    "permalink": "/consul-release-controller/node_modules/@babel/parser/CHANGELOG"
+  },
+  "next": {
+    "title": "@babel/plugin-bugfix-v8-spread-parameters-in-optional-chaining",
+    "permalink": "/consul-release-controller/node_modules/@babel/plugin-bugfix-v8-spread-parameters-in-optional-chaining/"
+  }
+}

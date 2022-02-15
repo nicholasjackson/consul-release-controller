@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/duplexer3/README",
+  "id": "node_modules/duplexer3/README",
+  "title": "duplexer3 [![Build Status](https://travis-ci.org/floatdrop/duplexer3.svg?branch=master)](https://travis-ci.org/floatdrop/duplexer3) [![Coverage Status](https://coveralls.io/repos/floatdrop/duplexer3/badge.svg?branch=master&service=github)](https://coveralls.io/github/floatdrop/duplexer3?branch=master)",
+  "description": "Like duplexer2 but using Streams3 without readable-stream dependency",
+  "source": "@site/node_modules/duplexer3/README.md",
+  "sourceDirName": "node_modules/duplexer3",
+  "slug": "/node_modules/duplexer3/",
+  "permalink": "/consul-release-controller/node_modules/duplexer3/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/duplexer3/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "duplexer",
+    "permalink": "/consul-release-controller/node_modules/duplexer/"
+  },
+  "next": {
+    "title": "Copyright (c) 2013, Deoxxa Development",
+    "permalink": "/consul-release-controller/node_modules/duplexer3/LICENSE"
+  }
+}

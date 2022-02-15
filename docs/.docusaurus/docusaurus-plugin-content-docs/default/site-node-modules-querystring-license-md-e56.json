@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/querystring/License",
+  "id": "node_modules/querystring/License",
+  "title": "License",
+  "description": "Copyright 2012 Irakli Gozalishvili. All rights reserved.",
+  "source": "@site/node_modules/querystring/License.md",
+  "sourceDirName": "node_modules/querystring",
+  "slug": "/node_modules/querystring/License",
+  "permalink": "/consul-release-controller/node_modules/querystring/License",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/querystring/License.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "0.2.0 / 2013-02-21",
+    "permalink": "/consul-release-controller/node_modules/querystring/History"
+  },
+  "next": {
+    "title": "readme",
+    "permalink": "/consul-release-controller/node_modules/queue/"
+  }
+}

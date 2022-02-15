@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/prepend-http/readme",
+  "id": "node_modules/prepend-http/readme",
+  "title": "prepend-http [![Build Status](https://travis-ci.org/sindresorhus/prepend-http.svg?branch=master)](https://travis-ci.org/sindresorhus/prepend-http)",
+  "description": "Prepend http:// to humanized URLs like todomvc.com and localhost",
+  "source": "@site/node_modules/prepend-http/readme.md",
+  "sourceDirName": "node_modules/prepend-http",
+  "slug": "/node_modules/prepend-http/",
+  "permalink": "/consul-release-controller/node_modules/prepend-http/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/prepend-http/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "[postcss][postcss]-zindex",
+    "permalink": "/consul-release-controller/node_modules/postcss-zindex/"
+  },
+  "next": {
+    "title": "pretty-error",
+    "permalink": "/consul-release-controller/node_modules/pretty-error/"
+  }
+}

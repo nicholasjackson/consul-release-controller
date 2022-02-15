@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/detect-port/README",
+  "id": "node_modules/detect-port/README",
+  "title": "README",
+  "description": "logo",
+  "source": "@site/node_modules/detect-port/README.md",
+  "sourceDirName": "node_modules/detect-port",
+  "slug": "/node_modules/detect-port/",
+  "permalink": "/consul-release-controller/node_modules/detect-port/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/detect-port/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Readme",
+    "permalink": "/consul-release-controller/node_modules/detect-node/"
+  },
+  "next": {
+    "title": "1.3.0 / 2018-11-20",
+    "permalink": "/consul-release-controller/node_modules/detect-port/HISTORY"
+  }
+}

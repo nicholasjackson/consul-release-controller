@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/dom-converter/README",
+  "id": "node_modules/dom-converter/README",
+  "title": "README",
+  "description": "Converts bare objects to DOM objects, compatible with htmlparser2's DOM objects.",
+  "source": "@site/node_modules/dom-converter/README.md",
+  "sourceDirName": "node_modules/dom-converter",
+  "slug": "/node_modules/dom-converter/",
+  "permalink": "/consul-release-controller/node_modules/dom-converter/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/dom-converter/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "dns-txt",
+    "permalink": "/consul-release-controller/node_modules/dns-txt/"
+  },
+  "next": {
+    "title": "readme",
+    "permalink": "/consul-release-controller/node_modules/domelementtype/"
+  }
+}

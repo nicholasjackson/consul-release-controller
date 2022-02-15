@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/node-emoji/README",
+  "id": "node_modules/node-emoji/README",
+  "title": "node-emoji",
+  "description": "NPM version (1.0.3) NPM Downloads Build Status Dependencies https://paypal.me/DanielBugl/9",
+  "source": "@site/node_modules/node-emoji/README.md",
+  "sourceDirName": "node_modules/node-emoji",
+  "slug": "/node_modules/node-emoji/",
+  "permalink": "/consul-release-controller/node_modules/node-emoji/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/node-emoji/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "No Case",
+    "permalink": "/consul-release-controller/node_modules/no-case/"
+  },
+  "next": {
+    "title": "node-fetch",
+    "permalink": "/consul-release-controller/node_modules/node-fetch/"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/sitemap/CODE_OF_CONDUCT",
+  "id": "node_modules/sitemap/CODE_OF_CONDUCT",
+  "title": "Contributor Covenant Code of Conduct",
+  "description": "Our Pledge",
+  "source": "@site/node_modules/sitemap/CODE_OF_CONDUCT.md",
+  "sourceDirName": "node_modules/sitemap",
+  "slug": "/node_modules/sitemap/CODE_OF_CONDUCT",
+  "permalink": "/consul-release-controller/node_modules/sitemap/CODE_OF_CONDUCT",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/sitemap/CODE_OF_CONDUCT.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Changelog",
+    "permalink": "/consul-release-controller/node_modules/sitemap/CHANGELOG"
+  },
+  "next": {
+    "title": "API",
+    "permalink": "/consul-release-controller/node_modules/sitemap/api"
+  }
+}

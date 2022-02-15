@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@mdx-js/mdx/node_modules/@babel/helper-plugin-utils/README",
+  "id": "node_modules/@mdx-js/mdx/node_modules/@babel/helper-plugin-utils/README",
+  "title": "@babel/helper-plugin-utils",
+  "description": "General utilities for plugins to use",
+  "source": "@site/node_modules/@mdx-js/mdx/node_modules/@babel/helper-plugin-utils/README.md",
+  "sourceDirName": "node_modules/@mdx-js/mdx/node_modules/@babel/helper-plugin-utils",
+  "slug": "/node_modules/@mdx-js/mdx/node_modules/@babel/helper-plugin-utils/",
+  "permalink": "/consul-release-controller/node_modules/@mdx-js/mdx/node_modules/@babel/helper-plugin-utils/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@mdx-js/mdx/node_modules/@babel/helper-plugin-utils/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "@babel/core",
+    "permalink": "/consul-release-controller/node_modules/@mdx-js/mdx/node_modules/@babel/core/"
+  },
+  "next": {
+    "title": "@mdx-js/react",
+    "permalink": "/consul-release-controller/node_modules/@mdx-js/react/"
+  }
+}

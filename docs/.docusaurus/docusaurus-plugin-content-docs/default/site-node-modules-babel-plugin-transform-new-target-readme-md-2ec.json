@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@babel/plugin-transform-new-target/README",
+  "id": "node_modules/@babel/plugin-transform-new-target/README",
+  "title": "@babel/plugin-transform-new-target",
+  "description": "Transforms new.target meta property",
+  "source": "@site/node_modules/@babel/plugin-transform-new-target/README.md",
+  "sourceDirName": "node_modules/@babel/plugin-transform-new-target",
+  "slug": "/node_modules/@babel/plugin-transform-new-target/",
+  "permalink": "/consul-release-controller/node_modules/@babel/plugin-transform-new-target/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@babel/plugin-transform-new-target/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "@babel/plugin-transform-named-capturing-groups-regex",
+    "permalink": "/consul-release-controller/node_modules/@babel/plugin-transform-named-capturing-groups-regex/"
+  },
+  "next": {
+    "title": "@babel/plugin-transform-object-super",
+    "permalink": "/consul-release-controller/node_modules/@babel/plugin-transform-object-super/"
+  }
+}

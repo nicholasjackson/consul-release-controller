@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/react-router/node_modules/path-to-regexp/Readme",
+  "id": "node_modules/react-router/node_modules/path-to-regexp/Readme",
+  "title": "Path-to-RegExp",
+  "description": "Turn an Express-style path string such as /user/:name into a regular expression.",
+  "source": "@site/node_modules/react-router/node_modules/path-to-regexp/Readme.md",
+  "sourceDirName": "node_modules/react-router/node_modules/path-to-regexp",
+  "slug": "/node_modules/react-router/node_modules/path-to-regexp/",
+  "permalink": "/consul-release-controller/node_modules/react-router/node_modules/path-to-regexp/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/react-router/node_modules/path-to-regexp/Readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "react-router",
+    "permalink": "/consul-release-controller/node_modules/react-router/"
+  },
+  "next": {
+    "title": "1.7.0 / 2016-11-08",
+    "permalink": "/consul-release-controller/node_modules/react-router/node_modules/path-to-regexp/History"
+  }
+}

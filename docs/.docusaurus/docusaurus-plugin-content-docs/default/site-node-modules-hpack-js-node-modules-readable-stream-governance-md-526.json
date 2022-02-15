@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/hpack.js/node_modules/readable-stream/GOVERNANCE",
+  "id": "node_modules/hpack.js/node_modules/readable-stream/GOVERNANCE",
+  "title": "GOVERNANCE",
+  "description": "Streams Working Group",
+  "source": "@site/node_modules/hpack.js/node_modules/readable-stream/GOVERNANCE.md",
+  "sourceDirName": "node_modules/hpack.js/node_modules/readable-stream",
+  "slug": "/node_modules/hpack.js/node_modules/readable-stream/GOVERNANCE",
+  "permalink": "/consul-release-controller/node_modules/hpack.js/node_modules/readable-stream/GOVERNANCE",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/hpack.js/node_modules/readable-stream/GOVERNANCE.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Developer's Certificate of Origin 1.1",
+    "permalink": "/consul-release-controller/node_modules/hpack.js/node_modules/readable-stream/CONTRIBUTING"
+  },
+  "next": {
+    "title": "streams WG Meeting 2015-01-30",
+    "permalink": "/consul-release-controller/node_modules/hpack.js/node_modules/readable-stream/doc/wg-meetings/2015-01-30"
+  }
+}

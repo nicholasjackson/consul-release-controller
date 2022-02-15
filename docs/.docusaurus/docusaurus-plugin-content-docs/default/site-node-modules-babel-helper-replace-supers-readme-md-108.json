@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@babel/helper-replace-supers/README",
+  "id": "node_modules/@babel/helper-replace-supers/README",
+  "title": "@babel/helper-replace-supers",
+  "description": "Helper function to replace supers",
+  "source": "@site/node_modules/@babel/helper-replace-supers/README.md",
+  "sourceDirName": "node_modules/@babel/helper-replace-supers",
+  "slug": "/node_modules/@babel/helper-replace-supers/",
+  "permalink": "/consul-release-controller/node_modules/@babel/helper-replace-supers/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@babel/helper-replace-supers/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "@babel/helper-remap-async-to-generator",
+    "permalink": "/consul-release-controller/node_modules/@babel/helper-remap-async-to-generator/"
+  },
+  "next": {
+    "title": "@babel/helper-simple-access",
+    "permalink": "/consul-release-controller/node_modules/@babel/helper-simple-access/"
+  }
+}

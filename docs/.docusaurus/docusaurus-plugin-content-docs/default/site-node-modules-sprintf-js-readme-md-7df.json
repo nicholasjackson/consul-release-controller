@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/sprintf-js/README",
+  "id": "node_modules/sprintf-js/README",
+  "title": "sprintf.js",
+  "description": "sprintf.js is a complete open source JavaScript sprintf implementation for the browser and node.js.",
+  "source": "@site/node_modules/sprintf-js/README.md",
+  "sourceDirName": "node_modules/sprintf-js",
+  "slug": "/node_modules/sprintf-js/",
+  "permalink": "/consul-release-controller/node_modules/sprintf-js/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/sprintf-js/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "license",
+    "permalink": "/consul-release-controller/node_modules/spdy-transport/node_modules/ms/license"
+  },
+  "next": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/stable/"
+  }
+}

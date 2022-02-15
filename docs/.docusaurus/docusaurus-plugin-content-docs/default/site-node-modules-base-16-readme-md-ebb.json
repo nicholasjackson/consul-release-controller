@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/base16/README",
+  "id": "node_modules/base16/README",
+  "title": "base16-js",
+  "description": "Base16 color schemes as JS objects.",
+  "source": "@site/node_modules/base16/README.md",
+  "sourceDirName": "node_modules/base16",
+  "slug": "/node_modules/base16/",
+  "permalink": "/consul-release-controller/node_modules/base16/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/base16/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "LICENSE",
+    "permalink": "/consul-release-controller/node_modules/balanced-match/LICENSE"
+  },
+  "next": {
+    "title": "LICENSE",
+    "permalink": "/consul-release-controller/node_modules/base16/LICENSE"
+  }
+}

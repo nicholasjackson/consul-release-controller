@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/copy-text-to-clipboard/readme",
+  "id": "node_modules/copy-text-to-clipboard/readme",
+  "title": "copy-text-to-clipboard",
+  "description": "Copy text to the clipboard in modern browsers (0.2 kB)",
+  "source": "@site/node_modules/copy-text-to-clipboard/readme.md",
+  "sourceDirName": "node_modules/copy-text-to-clipboard",
+  "slug": "/node_modules/copy-text-to-clipboard/",
+  "permalink": "/consul-release-controller/node_modules/copy-text-to-clipboard/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/copy-text-to-clipboard/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "1.0.6 / 2015-02-03",
+    "permalink": "/consul-release-controller/node_modules/cookie-signature/History"
+  },
+  "next": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/copy-webpack-plugin/"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/joi/LICENSE",
+  "id": "node_modules/joi/LICENSE",
+  "title": "LICENSE",
+  "description": "Copyright (c) 2012-2020, Sideway. Inc, and project contributors.",
+  "source": "@site/node_modules/joi/LICENSE.md",
+  "sourceDirName": "node_modules/joi",
+  "slug": "/node_modules/joi/LICENSE",
+  "permalink": "/consul-release-controller/node_modules/joi/LICENSE",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/joi/LICENSE.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "joi",
+    "permalink": "/consul-release-controller/node_modules/joi/"
+  },
+  "next": {
+    "title": "Overview [![Build Status](https://travis-ci.org/lydell/js-tokens.svg?branch=master)](https://travis-ci.org/lydell/js-tokens)",
+    "permalink": "/consul-release-controller/node_modules/js-tokens/"
+  }
+}

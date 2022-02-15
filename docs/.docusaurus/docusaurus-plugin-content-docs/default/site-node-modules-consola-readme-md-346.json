@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/consola/README",
+  "id": "node_modules/consola/README",
+  "title": "README",
+  "description": "consola",
+  "source": "@site/node_modules/consola/README.md",
+  "sourceDirName": "node_modules/consola",
+  "slug": "/node_modules/consola/",
+  "permalink": "/consul-release-controller/node_modules/consola/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/consola/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Changelog",
+    "permalink": "/consul-release-controller/node_modules/connect-history-api-fallback/CHANGELOG"
+  },
+  "next": {
+    "title": "Changelog",
+    "permalink": "/consul-release-controller/node_modules/consola/CHANGELOG"
+  }
+}

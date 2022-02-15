@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/big.js/README",
+  "id": "node_modules/big.js/README",
+  "title": "big.js",
+  "description": "A small, fast JavaScript library for arbitrary-precision decimal arithmetic.",
+  "source": "@site/node_modules/big.js/README.md",
+  "sourceDirName": "node_modules/big.js",
+  "slug": "/node_modules/big.js/",
+  "permalink": "/consul-release-controller/node_modules/big.js/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/big.js/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "0.6.1 / 2017-05-16",
+    "permalink": "/consul-release-controller/node_modules/batch/History"
+  },
+  "next": {
+    "title": "CHANGELOG",
+    "permalink": "/consul-release-controller/node_modules/big.js/CHANGELOG"
+  }
+}

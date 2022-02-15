@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/safer-buffer/Readme",
+  "id": "node_modules/safer-buffer/Readme",
+  "title": "safer-buffer [![travis][travis-image]][travis-url] [![npm][npm-image]][npm-url] [![javascript style guide][standard-image]][standard-url] [![Security Responsible Disclosure][secuirty-image]][secuirty-url]",
+  "description": "[travis-image]//travis-ci.org/ChALkeR/safer-buffer.svg?branch=master",
+  "source": "@site/node_modules/safer-buffer/Readme.md",
+  "sourceDirName": "node_modules/safer-buffer",
+  "slug": "/node_modules/safer-buffer/",
+  "permalink": "/consul-release-controller/node_modules/safer-buffer/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/safer-buffer/Readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "safe-buffer [![travis][travis-image]][travis-url] [![npm][npm-image]][npm-url] [![downloads][downloads-image]][downloads-url] [![javascript style guide][standard-image]][standard-url]",
+    "permalink": "/consul-release-controller/node_modules/safe-buffer/"
+  },
+  "next": {
+    "title": "Porting to the Buffer.from/Buffer.alloc API",
+    "permalink": "/consul-release-controller/node_modules/safer-buffer/Porting-Buffer"
+  }
+}

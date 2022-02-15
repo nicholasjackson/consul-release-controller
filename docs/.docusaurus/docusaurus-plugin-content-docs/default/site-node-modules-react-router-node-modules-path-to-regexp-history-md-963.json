@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/react-router/node_modules/path-to-regexp/History",
+  "id": "node_modules/react-router/node_modules/path-to-regexp/History",
+  "title": "1.7.0 / 2016-11-08",
+  "description": "* Allow a delimiter option to be passed in with tokensToRegExp which will be used for \"non-ending\" token match situations",
+  "source": "@site/node_modules/react-router/node_modules/path-to-regexp/History.md",
+  "sourceDirName": "node_modules/react-router/node_modules/path-to-regexp",
+  "slug": "/node_modules/react-router/node_modules/path-to-regexp/History",
+  "permalink": "/consul-release-controller/node_modules/react-router/node_modules/path-to-regexp/History",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/react-router/node_modules/path-to-regexp/History.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Path-to-RegExp",
+    "permalink": "/consul-release-controller/node_modules/react-router/node_modules/path-to-regexp/"
+  },
+  "next": {
+    "title": "React Router Config",
+    "permalink": "/consul-release-controller/node_modules/react-router-config/"
+  }
+}

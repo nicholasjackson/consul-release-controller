@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/on-finished/HISTORY",
+  "id": "node_modules/on-finished/HISTORY",
+  "title": "2.3.0 / 2015-05-26",
+  "description": "* Add defined behavior for HTTP CONNECT requests",
+  "source": "@site/node_modules/on-finished/HISTORY.md",
+  "sourceDirName": "node_modules/on-finished",
+  "slug": "/node_modules/on-finished/HISTORY",
+  "permalink": "/consul-release-controller/node_modules/on-finished/HISTORY",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/on-finished/HISTORY.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "on-finished",
+    "permalink": "/consul-release-controller/node_modules/on-finished/"
+  },
+  "next": {
+    "title": "on-headers",
+    "permalink": "/consul-release-controller/node_modules/on-headers/"
+  }
+}

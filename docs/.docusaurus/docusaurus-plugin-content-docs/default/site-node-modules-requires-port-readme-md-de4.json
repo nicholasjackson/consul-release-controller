@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/requires-port/README",
+  "id": "node_modules/requires-port/README",
+  "title": "requires-port",
+  "description": "Made by unshiftVersion npmBuild StatusDependenciesCoverage StatusIRC channel",
+  "source": "@site/node_modules/requires-port/README.md",
+  "sourceDirName": "node_modules/requires-port",
+  "slug": "/node_modules/requires-port/",
+  "permalink": "/consul-release-controller/node_modules/requires-port/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/requires-port/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "require-like",
+    "permalink": "/consul-release-controller/node_modules/require-like/"
+  },
+  "next": {
+    "title": "Security",
+    "permalink": "/consul-release-controller/node_modules/resolve/SECURITY"
+  }
+}

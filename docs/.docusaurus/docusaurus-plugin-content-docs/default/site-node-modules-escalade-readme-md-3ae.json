@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/escalade/readme",
+  "id": "node_modules/escalade/readme",
+  "title": "escalade [![CI](https://github.com/lukeed/escalade/workflows/CI/badge.svg)](https://github.com/lukeed/escalade/actions) [![codecov](https://badgen.now.sh/codecov/c/github/lukeed/escalade)](https://codecov.io/gh/lukeed/escalade)",
+  "description": "A tiny (183B to 210B) and fast utility to ascend parent directories",
+  "source": "@site/node_modules/escalade/readme.md",
+  "sourceDirName": "node_modules/escalade",
+  "slug": "/node_modules/escalade/",
+  "permalink": "/consul-release-controller/node_modules/escalade/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/escalade/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "ES Module Lexer",
+    "permalink": "/consul-release-controller/node_modules/es-module-lexer/"
+  },
+  "next": {
+    "title": "readme",
+    "permalink": "/consul-release-controller/node_modules/escape-goat/"
+  }
+}

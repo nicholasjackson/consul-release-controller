@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@ampproject/remapping/README",
+  "id": "node_modules/@ampproject/remapping/README",
+  "title": "@ampproject/remapping",
+  "description": "Remap sequential sourcemaps through transformations to point at the original source code",
+  "source": "@site/node_modules/@ampproject/remapping/README.md",
+  "sourceDirName": "node_modules/@ampproject/remapping",
+  "slug": "/node_modules/@ampproject/remapping/",
+  "permalink": "/consul-release-controller/node_modules/@ampproject/remapping/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@ampproject/remapping/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "4.0.1 (2021-11-24)",
+    "permalink": "/consul-release-controller/node_modules/@algolia/events/History"
+  },
+  "next": {
+    "title": "@docsearch/css",
+    "permalink": "/consul-release-controller/node_modules/@docsearch/css/"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@babel/plugin-transform-computed-properties/README",
+  "id": "node_modules/@babel/plugin-transform-computed-properties/README",
+  "title": "@babel/plugin-transform-computed-properties",
+  "description": "Compile ES2015 computed properties to ES5",
+  "source": "@site/node_modules/@babel/plugin-transform-computed-properties/README.md",
+  "sourceDirName": "node_modules/@babel/plugin-transform-computed-properties",
+  "slug": "/node_modules/@babel/plugin-transform-computed-properties/",
+  "permalink": "/consul-release-controller/node_modules/@babel/plugin-transform-computed-properties/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@babel/plugin-transform-computed-properties/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "@babel/plugin-transform-classes",
+    "permalink": "/consul-release-controller/node_modules/@babel/plugin-transform-classes/"
+  },
+  "next": {
+    "title": "@babel/plugin-transform-destructuring",
+    "permalink": "/consul-release-controller/node_modules/@babel/plugin-transform-destructuring/"
+  }
+}

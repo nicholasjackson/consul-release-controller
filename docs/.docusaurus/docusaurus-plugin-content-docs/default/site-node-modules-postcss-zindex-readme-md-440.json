@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/postcss-zindex/README",
+  "id": "node_modules/postcss-zindex/README",
+  "title": "[postcss][postcss]-zindex",
+  "description": "Reduce z-index values with PostCSS.",
+  "source": "@site/node_modules/postcss-zindex/README.md",
+  "sourceDirName": "node_modules/postcss-zindex",
+  "slug": "/node_modules/postcss-zindex/",
+  "permalink": "/consul-release-controller/node_modules/postcss-zindex/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/postcss-zindex/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "postcss-value-parser",
+    "permalink": "/consul-release-controller/node_modules/postcss-value-parser/"
+  },
+  "next": {
+    "title": "prepend-http [![Build Status](https://travis-ci.org/sindresorhus/prepend-http.svg?branch=master)](https://travis-ci.org/sindresorhus/prepend-http)",
+    "permalink": "/consul-release-controller/node_modules/prepend-http/"
+  }
+}

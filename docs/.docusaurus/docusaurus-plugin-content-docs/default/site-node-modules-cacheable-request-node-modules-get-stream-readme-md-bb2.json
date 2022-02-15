@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/cacheable-request/node_modules/get-stream/readme",
+  "id": "node_modules/cacheable-request/node_modules/get-stream/readme",
+  "title": "get-stream [![Build Status](https://travis-ci.com/sindresorhus/get-stream.svg?branch=master)](https://travis-ci.com/github/sindresorhus/get-stream)",
+  "description": "Get a stream as a string, buffer, or array",
+  "source": "@site/node_modules/cacheable-request/node_modules/get-stream/readme.md",
+  "sourceDirName": "node_modules/cacheable-request/node_modules/get-stream",
+  "slug": "/node_modules/cacheable-request/node_modules/get-stream/",
+  "permalink": "/consul-release-controller/node_modules/cacheable-request/node_modules/get-stream/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/cacheable-request/node_modules/get-stream/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "cacheable-request",
+    "permalink": "/consul-release-controller/node_modules/cacheable-request/"
+  },
+  "next": {
+    "title": "lowercase-keys [![Build Status](https://travis-ci.org/sindresorhus/lowercase-keys.svg?branch=master)](https://travis-ci.org/sindresorhus/lowercase-keys)",
+    "permalink": "/consul-release-controller/node_modules/cacheable-request/node_modules/lowercase-keys/"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/timsort/LICENSE",
+  "id": "node_modules/timsort/LICENSE",
+  "title": "LICENSE",
+  "description": "The MIT License",
+  "source": "@site/node_modules/timsort/LICENSE.md",
+  "sourceDirName": "node_modules/timsort",
+  "slug": "/node_modules/timsort/LICENSE",
+  "permalink": "/consul-release-controller/node_modules/timsort/LICENSE",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/timsort/LICENSE.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Node-TimSort: Fast Sorting for Node.js",
+    "permalink": "/consul-release-controller/node_modules/timsort/"
+  },
+  "next": {
+    "title": "tiny-invariant 🔬💥",
+    "permalink": "/consul-release-controller/node_modules/tiny-invariant/"
+  }
+}

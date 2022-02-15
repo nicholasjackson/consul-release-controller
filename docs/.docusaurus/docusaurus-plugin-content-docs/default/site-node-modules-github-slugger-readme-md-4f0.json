@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/github-slugger/README",
+  "id": "node_modules/github-slugger/README",
+  "title": "github-slugger",
+  "description": "npm",
+  "source": "@site/node_modules/github-slugger/README.md",
+  "sourceDirName": "node_modules/github-slugger",
+  "slug": "/node_modules/github-slugger/",
+  "permalink": "/consul-release-controller/node_modules/github-slugger/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/github-slugger/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "get-stream",
+    "permalink": "/consul-release-controller/node_modules/get-stream/"
+  },
+  "next": {
+    "title": "Glob",
+    "permalink": "/consul-release-controller/node_modules/glob/"
+  }
+}

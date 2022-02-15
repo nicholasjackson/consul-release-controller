@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/html-entities/CHANGELOG",
+  "id": "node_modules/html-entities/CHANGELOG",
+  "title": "CHANGELOG",
+  "description": "2.3.2",
+  "source": "@site/node_modules/html-entities/CHANGELOG.md",
+  "sourceDirName": "node_modules/html-entities",
+  "slug": "/node_modules/html-entities/CHANGELOG",
+  "permalink": "/consul-release-controller/node_modules/html-entities/CHANGELOG",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/html-entities/CHANGELOG.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "html-entities",
+    "permalink": "/consul-release-controller/node_modules/html-entities/"
+  },
+  "next": {
+    "title": "HTMLMinifier",
+    "permalink": "/consul-release-controller/node_modules/html-minifier-terser/"
+  }
+}

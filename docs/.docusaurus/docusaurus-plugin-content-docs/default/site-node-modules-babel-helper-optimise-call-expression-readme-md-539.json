@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@babel/helper-optimise-call-expression/README",
+  "id": "node_modules/@babel/helper-optimise-call-expression/README",
+  "title": "@babel/helper-optimise-call-expression",
+  "description": "Helper function to optimise call expression",
+  "source": "@site/node_modules/@babel/helper-optimise-call-expression/README.md",
+  "sourceDirName": "node_modules/@babel/helper-optimise-call-expression",
+  "slug": "/node_modules/@babel/helper-optimise-call-expression/",
+  "permalink": "/consul-release-controller/node_modules/@babel/helper-optimise-call-expression/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@babel/helper-optimise-call-expression/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "@babel/helper-module-transforms",
+    "permalink": "/consul-release-controller/node_modules/@babel/helper-module-transforms/"
+  },
+  "next": {
+    "title": "@babel/helper-plugin-utils",
+    "permalink": "/consul-release-controller/node_modules/@babel/helper-plugin-utils/"
+  }
+}

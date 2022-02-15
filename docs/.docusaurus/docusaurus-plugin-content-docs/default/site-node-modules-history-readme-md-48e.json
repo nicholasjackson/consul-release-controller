@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/history/README",
+  "id": "node_modules/history/README",
+  "title": "history &middot; [![npm package][npm-badge]][npm] [![Travis][build-badge]][build]",
+  "description": "[npm-badge]//img.shields.io/npm/v/history.svg?style=flat-square",
+  "source": "@site/node_modules/history/README.md",
+  "sourceDirName": "node_modules/history",
+  "slug": "/node_modules/history/",
+  "permalink": "/consul-release-controller/node_modules/history/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/history/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "he [![Build status](https://travis-ci.org/mathiasbynens/he.svg?branch=master)](https://travis-ci.org/mathiasbynens/he) [![Code coverage status](https://codecov.io/github/mathiasbynens/he/coverage.svg?branch=master)](https://codecov.io/github/mathiasbynens/he?branch=master) [![Dependency status](https://gemnasium.com/mathiasbynens/he.svg)](https://gemnasium.com/mathiasbynens/he)",
+    "permalink": "/consul-release-controller/node_modules/he/"
+  },
+  "next": {
+    "title": "hoist-non-react-statics",
+    "permalink": "/consul-release-controller/node_modules/hoist-non-react-statics/"
+  }
+}

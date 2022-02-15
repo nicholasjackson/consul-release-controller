@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/remark-mdx-remove-exports/readme",
+  "id": "node_modules/remark-mdx-remove-exports/readme",
+  "title": "[remark][]-[mdx][]-remove-exports",
+  "description": "Build Status",
+  "source": "@site/node_modules/remark-mdx-remove-exports/readme.md",
+  "sourceDirName": "node_modules/remark-mdx-remove-exports",
+  "slug": "/node_modules/remark-mdx-remove-exports/",
+  "permalink": "/consul-release-controller/node_modules/remark-mdx-remove-exports/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/remark-mdx-remove-exports/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "@babel/helper-plugin-utils",
+    "permalink": "/consul-release-controller/node_modules/remark-mdx/node_modules/@babel/plugin-proposal-object-rest-spread/node_modules/@babel/helper-plugin-utils/"
+  },
+  "next": {
+    "title": "[remark][]-[mdx][]-remove-imports",
+    "permalink": "/consul-release-controller/node_modules/remark-mdx-remove-imports/"
+  }
+}

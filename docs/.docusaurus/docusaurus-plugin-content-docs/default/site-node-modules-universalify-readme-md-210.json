@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/universalify/README",
+  "id": "node_modules/universalify/README",
+  "title": "universalify",
+  "description": "Travis branch",
+  "source": "@site/node_modules/universalify/README.md",
+  "sourceDirName": "node_modules/universalify",
+  "slug": "/node_modules/universalify/",
+  "permalink": "/consul-release-controller/node_modules/universalify/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/universalify/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "unist-util-visit-parents",
+    "permalink": "/consul-release-controller/node_modules/unist-util-visit-parents/"
+  },
+  "next": {
+    "title": "unpipe",
+    "permalink": "/consul-release-controller/node_modules/unpipe/"
+  }
+}

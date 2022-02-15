@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/serve-index/node_modules/inherits/README",
+  "id": "node_modules/serve-index/node_modules/inherits/README",
+  "title": "README",
+  "description": "Browser-friendly inheritance fully compatible with standard node.js",
+  "source": "@site/node_modules/serve-index/node_modules/inherits/README.md",
+  "sourceDirName": "node_modules/serve-index/node_modules/inherits",
+  "slug": "/node_modules/serve-index/node_modules/inherits/",
+  "permalink": "/consul-release-controller/node_modules/serve-index/node_modules/inherits/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/serve-index/node_modules/inherits/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "2018-03-29 / 1.6.3",
+    "permalink": "/consul-release-controller/node_modules/serve-index/node_modules/http-errors/HISTORY"
+  },
+  "next": {
+    "title": "Polyfill for `Object.setPrototypeOf`",
+    "permalink": "/consul-release-controller/node_modules/serve-index/node_modules/setprototypeof/"
+  }
+}

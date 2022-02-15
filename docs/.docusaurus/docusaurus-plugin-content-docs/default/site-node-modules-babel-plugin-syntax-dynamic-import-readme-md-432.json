@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@babel/plugin-syntax-dynamic-import/README",
+  "id": "node_modules/@babel/plugin-syntax-dynamic-import/README",
+  "title": "@babel/plugin-syntax-dynamic-import",
+  "description": "Allow parsing of import()",
+  "source": "@site/node_modules/@babel/plugin-syntax-dynamic-import/README.md",
+  "sourceDirName": "node_modules/@babel/plugin-syntax-dynamic-import",
+  "slug": "/node_modules/@babel/plugin-syntax-dynamic-import/",
+  "permalink": "/consul-release-controller/node_modules/@babel/plugin-syntax-dynamic-import/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@babel/plugin-syntax-dynamic-import/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "@babel/plugin-syntax-class-static-block",
+    "permalink": "/consul-release-controller/node_modules/@babel/plugin-syntax-class-static-block/"
+  },
+  "next": {
+    "title": "@babel/plugin-syntax-export-namespace-from",
+    "permalink": "/consul-release-controller/node_modules/@babel/plugin-syntax-export-namespace-from/"
+  }
+}

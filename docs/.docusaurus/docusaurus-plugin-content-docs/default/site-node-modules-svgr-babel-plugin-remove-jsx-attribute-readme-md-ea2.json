@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@svgr/babel-plugin-remove-jsx-attribute/README",
+  "id": "node_modules/@svgr/babel-plugin-remove-jsx-attribute/README",
+  "title": "@svgr/babel-plugin-remove-jsx-attribute",
+  "description": "Install",
+  "source": "@site/node_modules/@svgr/babel-plugin-remove-jsx-attribute/README.md",
+  "sourceDirName": "node_modules/@svgr/babel-plugin-remove-jsx-attribute",
+  "slug": "/node_modules/@svgr/babel-plugin-remove-jsx-attribute/",
+  "permalink": "/consul-release-controller/node_modules/@svgr/babel-plugin-remove-jsx-attribute/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@svgr/babel-plugin-remove-jsx-attribute/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Change Log",
+    "permalink": "/consul-release-controller/node_modules/@svgr/babel-plugin-add-jsx-attribute/CHANGELOG"
+  },
+  "next": {
+    "title": "@svgr/babel-plugin-remove-jsx-empty-expression",
+    "permalink": "/consul-release-controller/node_modules/@svgr/babel-plugin-remove-jsx-empty-expression/"
+  }
+}

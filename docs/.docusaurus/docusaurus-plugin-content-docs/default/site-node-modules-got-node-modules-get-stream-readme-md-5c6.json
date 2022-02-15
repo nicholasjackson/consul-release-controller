@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/got/node_modules/get-stream/readme",
+  "id": "node_modules/got/node_modules/get-stream/readme",
+  "title": "get-stream [![Build Status](https://travis-ci.org/sindresorhus/get-stream.svg?branch=master)](https://travis-ci.org/sindresorhus/get-stream)",
+  "description": "Get a stream as a string, buffer, or array",
+  "source": "@site/node_modules/got/node_modules/get-stream/readme.md",
+  "sourceDirName": "node_modules/got/node_modules/get-stream",
+  "slug": "/node_modules/got/node_modules/get-stream/",
+  "permalink": "/consul-release-controller/node_modules/got/node_modules/get-stream/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/got/node_modules/get-stream/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "readme",
+    "permalink": "/consul-release-controller/node_modules/got/"
+  },
+  "next": {
+    "title": "graceful-fs",
+    "permalink": "/consul-release-controller/node_modules/graceful-fs/"
+  }
+}

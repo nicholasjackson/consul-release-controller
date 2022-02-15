@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/fork-ts-checker-webpack-plugin/node_modules/cosmiconfig/CHANGELOG",
+  "id": "node_modules/fork-ts-checker-webpack-plugin/node_modules/cosmiconfig/CHANGELOG",
+  "title": "Changelog",
+  "description": "6.0.0",
+  "source": "@site/node_modules/fork-ts-checker-webpack-plugin/node_modules/cosmiconfig/CHANGELOG.md",
+  "sourceDirName": "node_modules/fork-ts-checker-webpack-plugin/node_modules/cosmiconfig",
+  "slug": "/node_modules/fork-ts-checker-webpack-plugin/node_modules/cosmiconfig/CHANGELOG",
+  "permalink": "/consul-release-controller/node_modules/fork-ts-checker-webpack-plugin/node_modules/cosmiconfig/CHANGELOG",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/fork-ts-checker-webpack-plugin/node_modules/cosmiconfig/CHANGELOG.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "cosmiconfig",
+    "permalink": "/consul-release-controller/node_modules/fork-ts-checker-webpack-plugin/node_modules/cosmiconfig/"
+  },
+  "next": {
+    "title": "Node.js: fs-extra",
+    "permalink": "/consul-release-controller/node_modules/fork-ts-checker-webpack-plugin/node_modules/fs-extra/"
+  }
+}

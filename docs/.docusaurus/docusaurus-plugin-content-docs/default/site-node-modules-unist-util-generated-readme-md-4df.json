@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/unist-util-generated/readme",
+  "id": "node_modules/unist-util-generated/readme",
+  "title": "unist-util-generated",
+  "description": "Build",
+  "source": "@site/node_modules/unist-util-generated/readme.md",
+  "sourceDirName": "node_modules/unist-util-generated",
+  "slug": "/node_modules/unist-util-generated/",
+  "permalink": "/consul-release-controller/node_modules/unist-util-generated/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/unist-util-generated/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "unist-builder",
+    "permalink": "/consul-release-controller/node_modules/unist-builder/"
+  },
+  "next": {
+    "title": "unist-util-is",
+    "permalink": "/consul-release-controller/node_modules/unist-util-is/"
+  }
+}

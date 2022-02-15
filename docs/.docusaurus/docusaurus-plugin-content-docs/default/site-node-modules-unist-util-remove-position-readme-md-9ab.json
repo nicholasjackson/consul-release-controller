@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/unist-util-remove-position/readme",
+  "id": "node_modules/unist-util-remove-position/readme",
+  "title": "unist-util-remove-position",
+  "description": "Build",
+  "source": "@site/node_modules/unist-util-remove-position/readme.md",
+  "sourceDirName": "node_modules/unist-util-remove-position",
+  "slug": "/node_modules/unist-util-remove-position/",
+  "permalink": "/consul-release-controller/node_modules/unist-util-remove-position/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/unist-util-remove-position/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "unist-util-remove",
+    "permalink": "/consul-release-controller/node_modules/unist-util-remove/"
+  },
+  "next": {
+    "title": "unist-util-stringify-position",
+    "permalink": "/consul-release-controller/node_modules/unist-util-stringify-position/"
+  }
+}

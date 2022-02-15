@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/async/README",
+  "id": "node_modules/async/README",
+  "title": "README",
+  "description": "Async Logo",
+  "source": "@site/node_modules/async/README.md",
+  "sourceDirName": "node_modules/async",
+  "slug": "/node_modules/async/",
+  "permalink": "/consul-release-controller/node_modules/async/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/async/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "LICENSE",
+    "permalink": "/consul-release-controller/node_modules/asap/LICENSE"
+  },
+  "next": {
+    "title": "v2.6.3",
+    "permalink": "/consul-release-controller/node_modules/async/CHANGELOG"
+  }
+}

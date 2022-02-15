@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/remark-mdx/node_modules/@babel/plugin-proposal-object-rest-spread/node_modules/@babel/helper-plugin-utils/README",
+  "id": "node_modules/remark-mdx/node_modules/@babel/plugin-proposal-object-rest-spread/node_modules/@babel/helper-plugin-utils/README",
+  "title": "@babel/helper-plugin-utils",
+  "description": "General utilities for plugins to use",
+  "source": "@site/node_modules/remark-mdx/node_modules/@babel/plugin-proposal-object-rest-spread/node_modules/@babel/helper-plugin-utils/README.md",
+  "sourceDirName": "node_modules/remark-mdx/node_modules/@babel/plugin-proposal-object-rest-spread/node_modules/@babel/helper-plugin-utils",
+  "slug": "/node_modules/remark-mdx/node_modules/@babel/plugin-proposal-object-rest-spread/node_modules/@babel/helper-plugin-utils/",
+  "permalink": "/consul-release-controller/node_modules/remark-mdx/node_modules/@babel/plugin-proposal-object-rest-spread/node_modules/@babel/helper-plugin-utils/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/remark-mdx/node_modules/@babel/plugin-proposal-object-rest-spread/node_modules/@babel/helper-plugin-utils/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "@babel/plugin-proposal-object-rest-spread",
+    "permalink": "/consul-release-controller/node_modules/remark-mdx/node_modules/@babel/plugin-proposal-object-rest-spread/"
+  },
+  "next": {
+    "title": "[remark][]-[mdx][]-remove-exports",
+    "permalink": "/consul-release-controller/node_modules/remark-mdx-remove-exports/"
+  }
+}

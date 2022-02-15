@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@babel/plugin-syntax-async-generators/README",
+  "id": "node_modules/@babel/plugin-syntax-async-generators/README",
+  "title": "@babel/plugin-syntax-async-generators",
+  "description": "Allow parsing of async generator functions",
+  "source": "@site/node_modules/@babel/plugin-syntax-async-generators/README.md",
+  "sourceDirName": "node_modules/@babel/plugin-syntax-async-generators",
+  "slug": "/node_modules/@babel/plugin-syntax-async-generators/",
+  "permalink": "/consul-release-controller/node_modules/@babel/plugin-syntax-async-generators/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@babel/plugin-syntax-async-generators/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "@babel/plugin-proposal-unicode-property-regex",
+    "permalink": "/consul-release-controller/node_modules/@babel/plugin-proposal-unicode-property-regex/"
+  },
+  "next": {
+    "title": "@babel/plugin-syntax-class-properties",
+    "permalink": "/consul-release-controller/node_modules/@babel/plugin-syntax-class-properties/"
+  }
+}

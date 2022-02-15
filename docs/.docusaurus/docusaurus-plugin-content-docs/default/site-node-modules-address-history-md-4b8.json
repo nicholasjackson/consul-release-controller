@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/address/History",
+  "id": "node_modules/address/History",
+  "title": "1.1.2 / 2019-08-26",
+  "description": "fixes",
+  "source": "@site/node_modules/address/History.md",
+  "sourceDirName": "node_modules/address",
+  "slug": "/node_modules/address/History",
+  "permalink": "/consul-release-controller/node_modules/address/History",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/address/History.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "address",
+    "permalink": "/consul-release-controller/node_modules/address/"
+  },
+  "next": {
+    "title": "aggregate-error [![Build Status](https://travis-ci.org/sindresorhus/aggregate-error.svg?branch=master)](https://travis-ci.org/sindresorhus/aggregate-error)",
+    "permalink": "/consul-release-controller/node_modules/aggregate-error/"
+  }
+}

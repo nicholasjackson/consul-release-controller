@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/mdn-data/README",
+  "id": "node_modules/mdn-data/README",
+  "title": "MDN data",
+  "description": "https://github.com/mdn/data",
+  "source": "@site/node_modules/mdn-data/README.md",
+  "sourceDirName": "node_modules/mdn-data",
+  "slug": "/node_modules/mdn-data/",
+  "permalink": "/consul-release-controller/node_modules/mdn-data/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/mdn-data/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "mdast-util-to-string",
+    "permalink": "/consul-release-controller/node_modules/mdast-util-to-string/"
+  },
+  "next": {
+    "title": "mdurl",
+    "permalink": "/consul-release-controller/node_modules/mdurl/"
+  }
+}

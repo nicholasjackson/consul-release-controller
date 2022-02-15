@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/webpack-bundle-analyzer/README",
+  "id": "node_modules/webpack-bundle-analyzer/README",
+  "title": "README",
+  "description": "npm",
+  "source": "@site/node_modules/webpack-bundle-analyzer/README.md",
+  "sourceDirName": "node_modules/webpack-bundle-analyzer",
+  "slug": "/node_modules/webpack-bundle-analyzer/",
+  "permalink": "/consul-release-controller/node_modules/webpack-bundle-analyzer/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/webpack-bundle-analyzer/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Installation",
+    "permalink": "/consul-release-controller/node_modules/webpack/node_modules/@types/estree/"
+  },
+  "next": {
+    "title": "Changelog",
+    "permalink": "/consul-release-controller/node_modules/webpack-bundle-analyzer/CHANGELOG"
+  }
+}

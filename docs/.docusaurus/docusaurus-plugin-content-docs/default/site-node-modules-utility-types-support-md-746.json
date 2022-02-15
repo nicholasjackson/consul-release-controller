@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/utility-types/SUPPORT",
+  "id": "node_modules/utility-types/SUPPORT",
+  "title": "Support",
+  "description": "Community",
+  "source": "@site/node_modules/utility-types/SUPPORT.md",
+  "sourceDirName": "node_modules/utility-types",
+  "slug": "/node_modules/utility-types/SUPPORT",
+  "permalink": "/consul-release-controller/node_modules/utility-types/SUPPORT",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/utility-types/SUPPORT.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Security Policy",
+    "permalink": "/consul-release-controller/node_modules/utility-types/SECURITY"
+  },
+  "next": {
+    "title": "utils-merge",
+    "permalink": "/consul-release-controller/node_modules/utils-merge/"
+  }
+}

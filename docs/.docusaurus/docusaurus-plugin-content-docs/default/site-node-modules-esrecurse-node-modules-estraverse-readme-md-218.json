@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/esrecurse/node_modules/estraverse/README",
+  "id": "node_modules/esrecurse/node_modules/estraverse/README",
+  "title": "README",
+  "description": "Estraverse Build Status",
+  "source": "@site/node_modules/esrecurse/node_modules/estraverse/README.md",
+  "sourceDirName": "node_modules/esrecurse/node_modules/estraverse",
+  "slug": "/node_modules/esrecurse/node_modules/estraverse/",
+  "permalink": "/consul-release-controller/node_modules/esrecurse/node_modules/estraverse/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/esrecurse/node_modules/estraverse/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/esrecurse/"
+  },
+  "next": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/estraverse/"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/fresh/README",
+  "id": "node_modules/fresh/README",
+  "title": "fresh",
+  "description": "NPM Version",
+  "source": "@site/node_modules/fresh/README.md",
+  "sourceDirName": "node_modules/fresh",
+  "slug": "/node_modules/fresh/",
+  "permalink": "/consul-release-controller/node_modules/fresh/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/fresh/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Fraction.js - ℚ in JavaScript",
+    "permalink": "/consul-release-controller/node_modules/fraction.js/"
+  },
+  "next": {
+    "title": "0.5.2 / 2017-09-13",
+    "permalink": "/consul-release-controller/node_modules/fresh/HISTORY"
+  }
+}

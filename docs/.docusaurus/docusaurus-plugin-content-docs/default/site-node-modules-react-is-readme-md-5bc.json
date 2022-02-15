@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/react-is/README",
+  "id": "node_modules/react-is/README",
+  "title": "react-is",
+  "description": "This package allows you to test arbitrary values and see if they're a particular React element type.",
+  "source": "@site/node_modules/react-is/README.md",
+  "sourceDirName": "node_modules/react-is",
+  "slug": "/node_modules/react-is/",
+  "permalink": "/consul-release-controller/node_modules/react-is/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/react-is/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "ISSUE_TEMPLATE",
+    "permalink": "/consul-release-controller/node_modules/react-helmet/ISSUE_TEMPLATE"
+  },
+  "next": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/react-json-view/"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@types/sockjs/README",
+  "id": "node_modules/@types/sockjs/README",
+  "title": "Installation",
+  "description": "npm install --save @types/sockjs",
+  "source": "@site/node_modules/@types/sockjs/README.md",
+  "sourceDirName": "node_modules/@types/sockjs",
+  "slug": "/node_modules/@types/sockjs/",
+  "permalink": "/consul-release-controller/node_modules/@types/sockjs/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@types/sockjs/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Installation",
+    "permalink": "/consul-release-controller/node_modules/@types/serve-static/"
+  },
+  "next": {
+    "title": "Installation",
+    "permalink": "/consul-release-controller/node_modules/@types/unist/"
+  }
+}

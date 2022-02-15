@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/http-proxy-middleware/node_modules/is-plain-obj/readme",
+  "id": "node_modules/http-proxy-middleware/node_modules/is-plain-obj/readme",
+  "title": "is-plain-obj [![Build Status](https://travis-ci.com/sindresorhus/is-plain-obj.svg?branch=master)](https://travis-ci.com/github/sindresorhus/is-plain-obj)",
+  "description": "Check if a value is a plain object",
+  "source": "@site/node_modules/http-proxy-middleware/node_modules/is-plain-obj/readme.md",
+  "sourceDirName": "node_modules/http-proxy-middleware/node_modules/is-plain-obj",
+  "slug": "/node_modules/http-proxy-middleware/node_modules/is-plain-obj/",
+  "permalink": "/consul-release-controller/node_modules/http-proxy-middleware/node_modules/is-plain-obj/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/http-proxy-middleware/node_modules/is-plain-obj/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "http-proxy-middleware",
+    "permalink": "/consul-release-controller/node_modules/http-proxy-middleware/"
+  },
+  "next": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/human-signals/"
+  }
+}

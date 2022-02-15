@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/cacheable-request/README",
+  "id": "node_modules/cacheable-request/README",
+  "title": "cacheable-request",
+  "description": "Wrap native HTTP requests with RFC compliant cache support",
+  "source": "@site/node_modules/cacheable-request/README.md",
+  "sourceDirName": "node_modules/cacheable-request",
+  "slug": "/node_modules/cacheable-request/",
+  "permalink": "/consul-release-controller/node_modules/cacheable-request/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/cacheable-request/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "3.0.0 / 2017-08-31",
+    "permalink": "/consul-release-controller/node_modules/bytes/History"
+  },
+  "next": {
+    "title": "get-stream [![Build Status](https://travis-ci.com/sindresorhus/get-stream.svg?branch=master)](https://travis-ci.com/github/sindresorhus/get-stream)",
+    "permalink": "/consul-release-controller/node_modules/cacheable-request/node_modules/get-stream/"
+  }
+}

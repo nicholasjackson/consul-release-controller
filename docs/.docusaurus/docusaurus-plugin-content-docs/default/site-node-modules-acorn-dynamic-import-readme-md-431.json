@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/acorn-dynamic-import/README",
+  "id": "node_modules/acorn-dynamic-import/README",
+  "title": "Dynamic import support in acorn",
+  "description": "This is plugin for Acorn - a tiny, fast JavaScript parser, written completely in JavaScript.",
+  "source": "@site/node_modules/acorn-dynamic-import/README.md",
+  "sourceDirName": "node_modules/acorn-dynamic-import",
+  "slug": "/node_modules/acorn-dynamic-import/",
+  "permalink": "/consul-release-controller/node_modules/acorn-dynamic-import/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/acorn-dynamic-import/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "CHANGELOG",
+    "permalink": "/consul-release-controller/node_modules/acorn/CHANGELOG"
+  },
+  "next": {
+    "title": "4.0.0",
+    "permalink": "/consul-release-controller/node_modules/acorn-dynamic-import/CHANGELOG"
+  }
+}

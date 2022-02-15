@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/json-parse-even-better-errors/CHANGELOG",
+  "id": "node_modules/json-parse-even-better-errors/CHANGELOG",
+  "title": "Change Log",
+  "description": "All notable changes to this project will be documented in this file. See standard-version for commit guidelines.",
+  "source": "@site/node_modules/json-parse-even-better-errors/CHANGELOG.md",
+  "sourceDirName": "node_modules/json-parse-even-better-errors",
+  "slug": "/node_modules/json-parse-even-better-errors/CHANGELOG",
+  "permalink": "/consul-release-controller/node_modules/json-parse-even-better-errors/CHANGELOG",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/json-parse-even-better-errors/CHANGELOG.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "json-parse-even-better-errors",
+    "permalink": "/consul-release-controller/node_modules/json-parse-even-better-errors/"
+  },
+  "next": {
+    "title": "LICENSE",
+    "permalink": "/consul-release-controller/node_modules/json-parse-even-better-errors/LICENSE"
+  }
+}

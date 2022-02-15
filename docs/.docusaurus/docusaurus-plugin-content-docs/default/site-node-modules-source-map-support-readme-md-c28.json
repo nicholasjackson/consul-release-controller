@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/source-map-support/README",
+  "id": "node_modules/source-map-support/README",
+  "title": "Source Map Support",
+  "description": "Build Status",
+  "source": "@site/node_modules/source-map-support/README.md",
+  "sourceDirName": "node_modules/source-map-support",
+  "slug": "/node_modules/source-map-support/",
+  "permalink": "/consul-release-controller/node_modules/source-map-support/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/source-map-support/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Change Log",
+    "permalink": "/consul-release-controller/node_modules/source-map-js/CHANGELOG"
+  },
+  "next": {
+    "title": "LICENSE",
+    "permalink": "/consul-release-controller/node_modules/source-map-support/LICENSE"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@docusaurus/core/README",
+  "id": "node_modules/@docusaurus/core/README",
+  "title": "README",
+  "description": "",
+  "source": "@site/node_modules/@docusaurus/core/README.md",
+  "sourceDirName": "node_modules/@docusaurus/core",
+  "slug": "/node_modules/@docusaurus/core/",
+  "permalink": "/consul-release-controller/node_modules/@docusaurus/core/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@docusaurus/core/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "@babel/types",
+    "permalink": "/consul-release-controller/node_modules/@babel/types/"
+  },
+  "next": {
+    "title": "babel-plugin-dynamic-import-node",
+    "permalink": "/consul-release-controller/node_modules/@docusaurus/core/node_modules/babel-plugin-dynamic-import-node/"
+  }
+}

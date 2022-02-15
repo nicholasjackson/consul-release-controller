@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/big.js/CHANGELOG",
+  "id": "node_modules/big.js/CHANGELOG",
+  "title": "CHANGELOG",
+  "description": "5.2.2",
+  "source": "@site/node_modules/big.js/CHANGELOG.md",
+  "sourceDirName": "node_modules/big.js",
+  "slug": "/node_modules/big.js/CHANGELOG",
+  "permalink": "/consul-release-controller/node_modules/big.js/CHANGELOG",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/big.js/CHANGELOG.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "big.js",
+    "permalink": "/consul-release-controller/node_modules/big.js/"
+  },
+  "next": {
+    "title": "binary-extensions",
+    "permalink": "/consul-release-controller/node_modules/binary-extensions/"
+  }
+}

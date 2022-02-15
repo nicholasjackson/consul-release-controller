@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/lodash.defaults/README",
+  "id": "node_modules/lodash.defaults/README",
+  "title": "lodash.defaults v4.2.0",
+  "description": "The lodash method _.defaults exported as a Node.js module.",
+  "source": "@site/node_modules/lodash.defaults/README.md",
+  "sourceDirName": "node_modules/lodash.defaults",
+  "slug": "/node_modules/lodash.defaults/",
+  "permalink": "/consul-release-controller/node_modules/lodash.defaults/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/lodash.defaults/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "release",
+    "permalink": "/consul-release-controller/node_modules/lodash/release"
+  },
+  "next": {
+    "title": "lodash.filter v4.6.0",
+    "permalink": "/consul-release-controller/node_modules/lodash.filter/"
+  }
+}

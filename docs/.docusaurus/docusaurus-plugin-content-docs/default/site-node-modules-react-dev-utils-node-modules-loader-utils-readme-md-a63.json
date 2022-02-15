@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/react-dev-utils/node_modules/loader-utils/README",
+  "id": "node_modules/react-dev-utils/node_modules/loader-utils/README",
+  "title": "loader-utils",
+  "description": "Methods",
+  "source": "@site/node_modules/react-dev-utils/node_modules/loader-utils/README.md",
+  "sourceDirName": "node_modules/react-dev-utils/node_modules/loader-utils",
+  "slug": "/node_modules/react-dev-utils/node_modules/loader-utils/",
+  "permalink": "/consul-release-controller/node_modules/react-dev-utils/node_modules/loader-utils/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/react-dev-utils/node_modules/loader-utils/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "react-dev-utils",
+    "permalink": "/consul-release-controller/node_modules/react-dev-utils/"
+  },
+  "next": {
+    "title": "react-dom",
+    "permalink": "/consul-release-controller/node_modules/react-dom/"
+  }
+}

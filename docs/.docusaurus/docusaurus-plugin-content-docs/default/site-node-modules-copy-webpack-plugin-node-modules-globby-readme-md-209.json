@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/copy-webpack-plugin/node_modules/globby/readme",
+  "id": "node_modules/copy-webpack-plugin/node_modules/globby/readme",
+  "title": "globby",
+  "description": "User-friendly glob matching",
+  "source": "@site/node_modules/copy-webpack-plugin/node_modules/globby/readme.md",
+  "sourceDirName": "node_modules/copy-webpack-plugin/node_modules/globby",
+  "slug": "/node_modules/copy-webpack-plugin/node_modules/globby/",
+  "permalink": "/consul-release-controller/node_modules/copy-webpack-plugin/node_modules/globby/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/copy-webpack-plugin/node_modules/globby/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/copy-webpack-plugin/node_modules/glob-parent/"
+  },
+  "next": {
+    "title": "json-schema-traverse",
+    "permalink": "/consul-release-controller/node_modules/copy-webpack-plugin/node_modules/json-schema-traverse/"
+  }
+}

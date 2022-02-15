@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/entities/readme",
+  "id": "node_modules/entities/readme",
+  "title": "entities [![NPM version](http://img.shields.io/npm/v/entities.svg)](https://npmjs.org/package/entities)  [![Downloads](https://img.shields.io/npm/dm/entities.svg)](https://npmjs.org/package/entities) [![Build Status](http://img.shields.io/travis/fb55/entities.svg)](http://travis-ci.org/fb55/entities) [![Coverage](http://img.shields.io/coveralls/fb55/entities.svg)](https://coveralls.io/r/fb55/entities)",
+  "description": "En- & decoder for XML/HTML entities.",
+  "source": "@site/node_modules/entities/readme.md",
+  "sourceDirName": "node_modules/entities",
+  "slug": "/node_modules/entities/",
+  "permalink": "/consul-release-controller/node_modules/entities/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/entities/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "enhanced-resolve",
+    "permalink": "/consul-release-controller/node_modules/enhanced-resolve/"
+  },
+  "next": {
+    "title": "node-error-ex [![Travis-CI.org Build Status](https://img.shields.io/travis/Qix-/node-error-ex.svg?style=flat-square)](https://travis-ci.org/Qix-/node-error-ex) [![Coveralls.io Coverage Rating](https://img.shields.io/coveralls/Qix-/node-error-ex.svg?style=flat-square)](https://coveralls.io/r/Qix-/node-error-ex)",
+    "permalink": "/consul-release-controller/node_modules/error-ex/"
+  }
+}

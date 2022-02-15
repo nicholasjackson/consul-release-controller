@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/spdy-transport/node_modules/ms/readme",
+  "id": "node_modules/spdy-transport/node_modules/ms/readme",
+  "title": "ms",
+  "description": "Build Status",
+  "source": "@site/node_modules/spdy-transport/node_modules/ms/readme.md",
+  "sourceDirName": "node_modules/spdy-transport/node_modules/ms",
+  "slug": "/node_modules/spdy-transport/node_modules/ms/",
+  "permalink": "/consul-release-controller/node_modules/spdy-transport/node_modules/ms/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/spdy-transport/node_modules/ms/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "debug",
+    "permalink": "/consul-release-controller/node_modules/spdy-transport/node_modules/debug/"
+  },
+  "next": {
+    "title": "license",
+    "permalink": "/consul-release-controller/node_modules/spdy-transport/node_modules/ms/license"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/p-try/readme",
+  "id": "node_modules/p-try/readme",
+  "title": "p-try [![Build Status](https://travis-ci.org/sindresorhus/p-try.svg?branch=master)](https://travis-ci.org/sindresorhus/p-try)",
+  "description": "Start a promise chain",
+  "source": "@site/node_modules/p-try/readme.md",
+  "sourceDirName": "node_modules/p-try",
+  "slug": "/node_modules/p-try/",
+  "permalink": "/consul-release-controller/node_modules/p-try/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/p-try/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "p-retry",
+    "permalink": "/consul-release-controller/node_modules/p-retry/"
+  },
+  "next": {
+    "title": "package-json [![Build Status](https://travis-ci.org/sindresorhus/package-json.svg?branch=master)](https://travis-ci.org/sindresorhus/package-json)",
+    "permalink": "/consul-release-controller/node_modules/package-json/"
+  }
+}

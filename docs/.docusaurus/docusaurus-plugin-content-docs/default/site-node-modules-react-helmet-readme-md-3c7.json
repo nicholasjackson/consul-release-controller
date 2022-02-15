@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/react-helmet/README",
+  "id": "node_modules/react-helmet/README",
+  "title": "README",
+  "description": "npm Version",
+  "source": "@site/node_modules/react-helmet/README.md",
+  "sourceDirName": "node_modules/react-helmet",
+  "slug": "/node_modules/react-helmet/",
+  "permalink": "/consul-release-controller/node_modules/react-helmet/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/react-helmet/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Changelog",
+    "permalink": "/consul-release-controller/node_modules/react-fast-compare/CHANGELOG"
+  },
+  "next": {
+    "title": "CHANGELOG",
+    "permalink": "/consul-release-controller/node_modules/react-helmet/CHANGELOG"
+  }
+}

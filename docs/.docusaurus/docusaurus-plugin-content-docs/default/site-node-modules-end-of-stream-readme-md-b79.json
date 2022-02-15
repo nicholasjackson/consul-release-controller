@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/end-of-stream/README",
+  "id": "node_modules/end-of-stream/README",
+  "title": "end-of-stream",
+  "description": "A node module that calls a callback when a readable/writable/duplex stream has completed or failed.",
+  "source": "@site/node_modules/end-of-stream/README.md",
+  "sourceDirName": "node_modules/end-of-stream",
+  "slug": "/node_modules/end-of-stream/",
+  "permalink": "/consul-release-controller/node_modules/end-of-stream/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/end-of-stream/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "1.0.2 / 2018-01-21",
+    "permalink": "/consul-release-controller/node_modules/encodeurl/HISTORY"
+  },
+  "next": {
+    "title": "enhanced-resolve",
+    "permalink": "/consul-release-controller/node_modules/enhanced-resolve/"
+  }
+}

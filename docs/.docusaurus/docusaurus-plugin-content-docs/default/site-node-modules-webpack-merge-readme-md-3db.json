@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/webpack-merge/README",
+  "id": "node_modules/webpack-merge/README",
+  "title": "README",
+  "description": "Financial Contributors on Open Collective build status codecov",
+  "source": "@site/node_modules/webpack-merge/README.md",
+  "sourceDirName": "node_modules/webpack-merge",
+  "slug": "/node_modules/webpack-merge/",
+  "permalink": "/consul-release-controller/node_modules/webpack-merge/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/webpack-merge/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "ws: a Node.js WebSocket library",
+    "permalink": "/consul-release-controller/node_modules/webpack-dev-server/node_modules/ws/"
+  },
+  "next": {
+    "title": "Changelog",
+    "permalink": "/consul-release-controller/node_modules/webpack-merge/CHANGELOG"
+  }
+}

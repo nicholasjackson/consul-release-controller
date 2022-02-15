@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/is-core-module/CHANGELOG",
+  "id": "node_modules/is-core-module/CHANGELOG",
+  "title": "Changelog",
+  "description": "All notable changes to this project will be documented in this file.",
+  "source": "@site/node_modules/is-core-module/CHANGELOG.md",
+  "sourceDirName": "node_modules/is-core-module",
+  "slug": "/node_modules/is-core-module/CHANGELOG",
+  "permalink": "/consul-release-controller/node_modules/is-core-module/CHANGELOG",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/is-core-module/CHANGELOG.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "is-core-module <sup>[![Version Badge][2]][1]</sup>",
+    "permalink": "/consul-release-controller/node_modules/is-core-module/"
+  },
+  "next": {
+    "title": "is-date-object <sup>[![Version Badge][2]][1]</sup>",
+    "permalink": "/consul-release-controller/node_modules/is-date-object/"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/unified/changelog",
+  "id": "node_modules/unified/changelog",
+  "title": "Changelog",
+  "description": "See GitHub Releases for the changelog.",
+  "source": "@site/node_modules/unified/changelog.md",
+  "sourceDirName": "node_modules/unified",
+  "slug": "/node_modules/unified/changelog",
+  "permalink": "/consul-release-controller/node_modules/unified/changelog",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/unified/changelog.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "[![unified][logo]][site]",
+    "permalink": "/consul-release-controller/node_modules/unified/"
+  },
+  "next": {
+    "title": "unique-string [![Build Status](https://travis-ci.org/sindresorhus/unique-string.svg?branch=master)](https://travis-ci.org/sindresorhus/unique-string)",
+    "permalink": "/consul-release-controller/node_modules/unique-string/"
+  }
+}

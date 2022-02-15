@@ -55,15 +55,19 @@ variable "controller_enabled" {
   default     = true
 }
 
+variable "controller_repo" {
+  description = "Docker repo for the controller"
+  default     = "nicholasjackson/consul-release-controller"
+}
+
 variable "controller_version" {
-  description = "Docker container version for the controlelr"
+  description = "Docker image version for the controller"
   default     = ""
 }
 
-//variable "controller_version" {
-//  description = "Docker container version for the controlelr"
-//  default     = "nicholasjackson/consul-release-controller:2d0d093.dev"
-//}
+variable "controller_image" {
+  default = "${var.controller_version != "" ? "${var.controller_repo}:${var.controller_version}" : ""}"
+}
 
 network "dc1" {
   subnet = "10.5.0.0/16"
@@ -79,7 +83,7 @@ k8s_cluster "dc1" {
   }
 
   image {
-    name = var.controller_version
+    name = var.controller_image
   }
 }
 

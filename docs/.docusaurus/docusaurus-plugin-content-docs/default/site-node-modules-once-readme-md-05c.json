@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/once/README",
+  "id": "node_modules/once/README",
+  "title": "once",
+  "description": "Only call a function once.",
+  "source": "@site/node_modules/once/README.md",
+  "sourceDirName": "node_modules/once",
+  "slug": "/node_modules/once/",
+  "permalink": "/consul-release-controller/node_modules/once/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/once/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "1.0.2 / 2019-02-21",
+    "permalink": "/consul-release-controller/node_modules/on-headers/HISTORY"
+  },
+  "next": {
+    "title": "onetime [![Build Status](https://travis-ci.com/sindresorhus/onetime.svg?branch=master)](https://travis-ci.com/github/sindresorhus/onetime)",
+    "permalink": "/consul-release-controller/node_modules/onetime/"
+  }
+}

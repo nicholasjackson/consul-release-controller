@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/is-decimal/readme",
+  "id": "node_modules/is-decimal/readme",
+  "title": "is-decimal",
+  "description": "Build",
+  "source": "@site/node_modules/is-decimal/readme.md",
+  "sourceDirName": "node_modules/is-decimal",
+  "slug": "/node_modules/is-decimal/",
+  "permalink": "/consul-release-controller/node_modules/is-decimal/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/is-decimal/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Changelog",
+    "permalink": "/consul-release-controller/node_modules/is-date-object/CHANGELOG"
+  },
+  "next": {
+    "title": "is-docker",
+    "permalink": "/consul-release-controller/node_modules/is-docker/"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/require-from-string/readme",
+  "id": "node_modules/require-from-string/readme",
+  "title": "require-from-string [![Build Status](https://travis-ci.org/floatdrop/require-from-string.svg?branch=master)](https://travis-ci.org/floatdrop/require-from-string)",
+  "description": "Load module from string in Node.",
+  "source": "@site/node_modules/require-from-string/readme.md",
+  "sourceDirName": "node_modules/require-from-string",
+  "slug": "/node_modules/require-from-string/",
+  "permalink": "/consul-release-controller/node_modules/require-from-string/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/require-from-string/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "repeat-string [![NPM version](https://img.shields.io/npm/v/repeat-string.svg?style=flat)](https://www.npmjs.com/package/repeat-string) [![NPM monthly downloads](https://img.shields.io/npm/dm/repeat-string.svg?style=flat)](https://npmjs.org/package/repeat-string)  [![NPM total downloads](https://img.shields.io/npm/dt/repeat-string.svg?style=flat)](https://npmjs.org/package/repeat-string) [![Linux Build Status](https://img.shields.io/travis/jonschlinkert/repeat-string.svg?style=flat&label=Travis)](https://travis-ci.org/jonschlinkert/repeat-string)",
+    "permalink": "/consul-release-controller/node_modules/repeat-string/"
+  },
+  "next": {
+    "title": "require-like",
+    "permalink": "/consul-release-controller/node_modules/require-like/"
+  }
+}

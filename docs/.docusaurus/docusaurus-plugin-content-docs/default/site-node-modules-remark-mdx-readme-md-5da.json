@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/remark-mdx/readme",
+  "id": "node_modules/remark-mdx/readme",
+  "title": "[remark][]-[mdx][]",
+  "description": "Build Status",
+  "source": "@site/node_modules/remark-mdx/readme.md",
+  "sourceDirName": "node_modules/remark-mdx",
+  "slug": "/node_modules/remark-mdx/",
+  "permalink": "/consul-release-controller/node_modules/remark-mdx/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/remark-mdx/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "remark-footnotes",
+    "permalink": "/consul-release-controller/node_modules/remark-footnotes/"
+  },
+  "next": {
+    "title": "debug",
+    "permalink": "/consul-release-controller/node_modules/remark-mdx/node_modules/debug/"
+  }
+}

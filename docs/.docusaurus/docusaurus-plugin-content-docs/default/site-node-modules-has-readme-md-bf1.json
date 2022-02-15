@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/has/README",
+  "id": "node_modules/has/README",
+  "title": "has",
+  "description": "Object.prototype.hasOwnProperty.call shortcut",
+  "source": "@site/node_modules/has/README.md",
+  "sourceDirName": "node_modules/has",
+  "slug": "/node_modules/has/",
+  "permalink": "/consul-release-controller/node_modules/has/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/has/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Handle Thing",
+    "permalink": "/consul-release-controller/node_modules/handle-thing/"
+  },
+  "next": {
+    "title": "has-flag [![Build Status](https://travis-ci.org/sindresorhus/has-flag.svg?branch=master)](https://travis-ci.org/sindresorhus/has-flag)",
+    "permalink": "/consul-release-controller/node_modules/has-flag/"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/buble-jsx-only/node_modules/ansi-styles/readme",
+  "id": "node_modules/buble-jsx-only/node_modules/ansi-styles/readme",
+  "title": "ansi-styles [![Build Status](https://travis-ci.org/chalk/ansi-styles.svg?branch=master)](https://travis-ci.org/chalk/ansi-styles)",
+  "description": "ANSI escape codes for styling strings in the terminal",
+  "source": "@site/node_modules/buble-jsx-only/node_modules/ansi-styles/readme.md",
+  "sourceDirName": "node_modules/buble-jsx-only/node_modules/ansi-styles",
+  "slug": "/node_modules/buble-jsx-only/node_modules/ansi-styles/",
+  "permalink": "/consul-release-controller/node_modules/buble-jsx-only/node_modules/ansi-styles/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/buble-jsx-only/node_modules/ansi-styles/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Bublé version <%= version %>",
+    "permalink": "/consul-release-controller/node_modules/buble-jsx-only/bin/help"
+  },
+  "next": {
+    "title": "readme",
+    "permalink": "/consul-release-controller/node_modules/buble-jsx-only/node_modules/chalk/"
+  }
+}

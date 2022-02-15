@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/postcss-calc/README",
+  "id": "node_modules/postcss-calc/README",
+  "title": "PostCSS Calc [<img src=\"https://postcss.github.io/postcss/logo.svg\" alt=\"PostCSS\" width=\"90\" height=\"90\" align=\"right\">][PostCSS]",
+  "description": "NPM Version",
+  "source": "@site/node_modules/postcss-calc/README.md",
+  "sourceDirName": "node_modules/postcss-calc",
+  "slug": "/node_modules/postcss-calc/",
+  "permalink": "/consul-release-controller/node_modules/postcss-calc/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/postcss-calc/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "PostCSS [![Gitter][chat-img]][chat]",
+    "permalink": "/consul-release-controller/node_modules/postcss/"
+  },
+  "next": {
+    "title": "[postcss][postcss]-colormin",
+    "permalink": "/consul-release-controller/node_modules/postcss-colormin/"
+  }
+}

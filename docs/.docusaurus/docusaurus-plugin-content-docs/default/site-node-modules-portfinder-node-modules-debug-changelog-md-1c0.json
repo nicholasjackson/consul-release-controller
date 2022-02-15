@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/portfinder/node_modules/debug/CHANGELOG",
+  "id": "node_modules/portfinder/node_modules/debug/CHANGELOG",
+  "title": "3.1.0 / 2017-09-26",
+  "description": "* Add DEBUGHIDEDATE env var (#486)",
+  "source": "@site/node_modules/portfinder/node_modules/debug/CHANGELOG.md",
+  "sourceDirName": "node_modules/portfinder/node_modules/debug",
+  "slug": "/node_modules/portfinder/node_modules/debug/CHANGELOG",
+  "permalink": "/consul-release-controller/node_modules/portfinder/node_modules/debug/CHANGELOG",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/portfinder/node_modules/debug/CHANGELOG.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "debug",
+    "permalink": "/consul-release-controller/node_modules/portfinder/node_modules/debug/"
+  },
+  "next": {
+    "title": "PostCSS [![Gitter][chat-img]][chat]",
+    "permalink": "/consul-release-controller/node_modules/postcss/"
+  }
+}

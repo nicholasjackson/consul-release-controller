@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/regenerator-transform/README",
+  "id": "node_modules/regenerator-transform/README",
+  "title": "regenerator-transform",
+  "description": "Transform async/generator functions with regenerator",
+  "source": "@site/node_modules/regenerator-transform/README.md",
+  "sourceDirName": "node_modules/regenerator-transform",
+  "slug": "/node_modules/regenerator-transform/",
+  "permalink": "/consul-release-controller/node_modules/regenerator-transform/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/regenerator-transform/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "regenerator-runtime",
+    "permalink": "/consul-release-controller/node_modules/regenerator-runtime/"
+  },
+  "next": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/regexp.prototype.flags/"
+  }
+}

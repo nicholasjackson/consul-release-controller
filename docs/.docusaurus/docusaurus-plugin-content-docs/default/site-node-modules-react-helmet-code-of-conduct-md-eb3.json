@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/react-helmet/CODE_OF_CONDUCT",
+  "id": "node_modules/react-helmet/CODE_OF_CONDUCT",
+  "title": "Contributor Covenant Code of Conduct",
+  "description": "Our Pledge",
+  "source": "@site/node_modules/react-helmet/CODE_OF_CONDUCT.md",
+  "sourceDirName": "node_modules/react-helmet",
+  "slug": "/node_modules/react-helmet/CODE_OF_CONDUCT",
+  "permalink": "/consul-release-controller/node_modules/react-helmet/CODE_OF_CONDUCT",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/react-helmet/CODE_OF_CONDUCT.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "CHANGELOG",
+    "permalink": "/consul-release-controller/node_modules/react-helmet/CHANGELOG"
+  },
+  "next": {
+    "title": "ISSUE_TEMPLATE",
+    "permalink": "/consul-release-controller/node_modules/react-helmet/ISSUE_TEMPLATE"
+  }
+}

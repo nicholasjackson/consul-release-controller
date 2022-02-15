@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/has-flag/readme",
+  "id": "node_modules/has-flag/readme",
+  "title": "has-flag [![Build Status](https://travis-ci.org/sindresorhus/has-flag.svg?branch=master)](https://travis-ci.org/sindresorhus/has-flag)",
+  "description": "Check if argv has a specific flag",
+  "source": "@site/node_modules/has-flag/readme.md",
+  "sourceDirName": "node_modules/has-flag",
+  "slug": "/node_modules/has-flag/",
+  "permalink": "/consul-release-controller/node_modules/has-flag/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/has-flag/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "has",
+    "permalink": "/consul-release-controller/node_modules/has/"
+  },
+  "next": {
+    "title": "has-symbols <sup>[![Version Badge][2]][1]</sup>",
+    "permalink": "/consul-release-controller/node_modules/has-symbols/"
+  }
+}

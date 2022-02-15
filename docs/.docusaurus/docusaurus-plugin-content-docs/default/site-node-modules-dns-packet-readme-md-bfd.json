@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/dns-packet/README",
+  "id": "node_modules/dns-packet/README",
+  "title": "dns-packet",
+  "description": "An abstract-encoding compliant module for encoding / decoding DNS packets.",
+  "source": "@site/node_modules/dns-packet/README.md",
+  "sourceDirName": "node_modules/dns-packet",
+  "slug": "/node_modules/dns-packet/",
+  "permalink": "/consul-release-controller/node_modules/dns-packet/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/dns-packet/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "dns-equal",
+    "permalink": "/consul-release-controller/node_modules/dns-equal/"
+  },
+  "next": {
+    "title": "dns-txt",
+    "permalink": "/consul-release-controller/node_modules/dns-txt/"
+  }
+}

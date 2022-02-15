@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@babel/highlight/node_modules/color-convert/README",
+  "id": "node_modules/@babel/highlight/node_modules/color-convert/README",
+  "title": "color-convert",
+  "description": "Build Status",
+  "source": "@site/node_modules/@babel/highlight/node_modules/color-convert/README.md",
+  "sourceDirName": "node_modules/@babel/highlight/node_modules/color-convert",
+  "slug": "/node_modules/@babel/highlight/node_modules/color-convert/",
+  "permalink": "/consul-release-controller/node_modules/@babel/highlight/node_modules/color-convert/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@babel/highlight/node_modules/color-convert/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "readme",
+    "permalink": "/consul-release-controller/node_modules/@babel/highlight/node_modules/chalk/"
+  },
+  "next": {
+    "title": "1.0.0 - 2016-01-07",
+    "permalink": "/consul-release-controller/node_modules/@babel/highlight/node_modules/color-convert/CHANGELOG"
+  }
+}

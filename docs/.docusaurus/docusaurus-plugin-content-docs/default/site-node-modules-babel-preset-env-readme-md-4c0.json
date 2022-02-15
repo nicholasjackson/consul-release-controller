@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@babel/preset-env/README",
+  "id": "node_modules/@babel/preset-env/README",
+  "title": "@babel/preset-env",
+  "description": "A Babel preset for each environment.",
+  "source": "@site/node_modules/@babel/preset-env/README.md",
+  "sourceDirName": "node_modules/@babel/preset-env",
+  "slug": "/node_modules/@babel/preset-env/",
+  "permalink": "/consul-release-controller/node_modules/@babel/preset-env/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@babel/preset-env/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "@babel/plugin-transform-unicode-regex",
+    "permalink": "/consul-release-controller/node_modules/@babel/plugin-transform-unicode-regex/"
+  },
+  "next": {
+    "title": "@babel/preset-modules",
+    "permalink": "/consul-release-controller/node_modules/@babel/preset-modules/"
+  }
+}

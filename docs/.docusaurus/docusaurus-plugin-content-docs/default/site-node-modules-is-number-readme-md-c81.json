@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/is-number/README",
+  "id": "node_modules/is-number/README",
+  "title": "is-number [![NPM version](https://img.shields.io/npm/v/is-number.svg?style=flat)](https://www.npmjs.com/package/is-number) [![NPM monthly downloads](https://img.shields.io/npm/dm/is-number.svg?style=flat)](https://npmjs.org/package/is-number) [![NPM total downloads](https://img.shields.io/npm/dt/is-number.svg?style=flat)](https://npmjs.org/package/is-number) [![Linux Build Status](https://img.shields.io/travis/jonschlinkert/is-number.svg?style=flat&label=Travis)](https://travis-ci.org/jonschlinkert/is-number)",
+  "description": "Returns true if the value is a finite number.",
+  "source": "@site/node_modules/is-number/README.md",
+  "sourceDirName": "node_modules/is-number",
+  "slug": "/node_modules/is-number/",
+  "permalink": "/consul-release-controller/node_modules/is-number/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/is-number/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "is-npm [![Build Status](https://travis-ci.com/sindresorhus/is-npm.svg?branch=master)](https://travis-ci.com/sindresorhus/is-npm)",
+    "permalink": "/consul-release-controller/node_modules/is-npm/"
+  },
+  "next": {
+    "title": "is-obj [![Build Status](https://travis-ci.org/sindresorhus/is-obj.svg?branch=master)](https://travis-ci.org/sindresorhus/is-obj)",
+    "permalink": "/consul-release-controller/node_modules/is-obj/"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/babel-loader/CHANGELOG",
+  "id": "node_modules/babel-loader/CHANGELOG",
+  "title": "Changelog",
+  "description": "For changes in version v7.0.0 and up please go to release",
+  "source": "@site/node_modules/babel-loader/CHANGELOG.md",
+  "sourceDirName": "node_modules/babel-loader",
+  "slug": "/node_modules/babel-loader/CHANGELOG",
+  "permalink": "/consul-release-controller/node_modules/babel-loader/CHANGELOG",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/babel-loader/CHANGELOG.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/babel-loader/"
+  },
+  "next": {
+    "title": "JSON5 – JSON for Humans",
+    "permalink": "/consul-release-controller/node_modules/babel-loader/node_modules/json5/"
+  }
+}

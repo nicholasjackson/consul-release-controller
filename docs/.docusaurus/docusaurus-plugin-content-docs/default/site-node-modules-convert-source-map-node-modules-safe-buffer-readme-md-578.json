@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/convert-source-map/node_modules/safe-buffer/README",
+  "id": "node_modules/convert-source-map/node_modules/safe-buffer/README",
+  "title": "safe-buffer [![travis][travis-image]][travis-url] [![npm][npm-image]][npm-url] [![downloads][downloads-image]][downloads-url] [![javascript style guide][standard-image]][standard-url]",
+  "description": "[travis-image]//img.shields.io/travis/feross/safe-buffer/master.svg",
+  "source": "@site/node_modules/convert-source-map/node_modules/safe-buffer/README.md",
+  "sourceDirName": "node_modules/convert-source-map/node_modules/safe-buffer",
+  "slug": "/node_modules/convert-source-map/node_modules/safe-buffer/",
+  "permalink": "/consul-release-controller/node_modules/convert-source-map/node_modules/safe-buffer/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/convert-source-map/node_modules/safe-buffer/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "convert-source-map [![build status](https://secure.travis-ci.org/thlorenz/convert-source-map.svg?branch=master)](http://travis-ci.org/thlorenz/convert-source-map)",
+    "permalink": "/consul-release-controller/node_modules/convert-source-map/"
+  },
+  "next": {
+    "title": "cookie",
+    "permalink": "/consul-release-controller/node_modules/cookie/"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@babel/helper-define-polyfill-provider/node_modules/ms/license",
+  "id": "node_modules/@babel/helper-define-polyfill-provider/node_modules/ms/license",
+  "title": "license",
+  "description": "The MIT License (MIT)",
+  "source": "@site/node_modules/@babel/helper-define-polyfill-provider/node_modules/ms/license.md",
+  "sourceDirName": "node_modules/@babel/helper-define-polyfill-provider/node_modules/ms",
+  "slug": "/node_modules/@babel/helper-define-polyfill-provider/node_modules/ms/license",
+  "permalink": "/consul-release-controller/node_modules/@babel/helper-define-polyfill-provider/node_modules/ms/license",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@babel/helper-define-polyfill-provider/node_modules/ms/license.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "ms",
+    "permalink": "/consul-release-controller/node_modules/@babel/helper-define-polyfill-provider/node_modules/ms/"
+  },
+  "next": {
+    "title": "@babel/helper-environment-visitor",
+    "permalink": "/consul-release-controller/node_modules/@babel/helper-environment-visitor/"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/is-path-inside/readme",
+  "id": "node_modules/is-path-inside/readme",
+  "title": "is-path-inside",
+  "description": "Check if a path is inside another path",
+  "source": "@site/node_modules/is-path-inside/readme.md",
+  "sourceDirName": "node_modules/is-path-inside",
+  "slug": "/node_modules/is-path-inside/",
+  "permalink": "/consul-release-controller/node_modules/is-path-inside/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/is-path-inside/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "is-path-cwd [![Build Status](https://travis-ci.org/sindresorhus/is-path-cwd.svg?branch=master)](https://travis-ci.org/sindresorhus/is-path-cwd)",
+    "permalink": "/consul-release-controller/node_modules/is-path-cwd/"
+  },
+  "next": {
+    "title": "is-plain-obj [![Build Status](https://travis-ci.org/sindresorhus/is-plain-obj.svg?branch=master)](https://travis-ci.org/sindresorhus/is-plain-obj)",
+    "permalink": "/consul-release-controller/node_modules/is-plain-obj/"
+  }
+}

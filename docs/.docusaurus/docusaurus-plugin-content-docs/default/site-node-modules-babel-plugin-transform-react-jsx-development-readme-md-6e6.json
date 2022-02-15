@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@babel/plugin-transform-react-jsx-development/README",
+  "id": "node_modules/@babel/plugin-transform-react-jsx-development/README",
+  "title": "@babel/plugin-transform-react-jsx-development",
+  "description": "Turn JSX into React function calls in development",
+  "source": "@site/node_modules/@babel/plugin-transform-react-jsx-development/README.md",
+  "sourceDirName": "node_modules/@babel/plugin-transform-react-jsx-development",
+  "slug": "/node_modules/@babel/plugin-transform-react-jsx-development/",
+  "permalink": "/consul-release-controller/node_modules/@babel/plugin-transform-react-jsx-development/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@babel/plugin-transform-react-jsx-development/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "@babel/plugin-syntax-jsx",
+    "permalink": "/consul-release-controller/node_modules/@babel/plugin-transform-react-jsx/node_modules/@babel/plugin-syntax-jsx/"
+  },
+  "next": {
+    "title": "@babel/plugin-transform-react-pure-annotations",
+    "permalink": "/consul-release-controller/node_modules/@babel/plugin-transform-react-pure-annotations/"
+  }
+}

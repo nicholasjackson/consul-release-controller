@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/postcss/README",
+  "id": "node_modules/postcss/README",
+  "title": "PostCSS [![Gitter][chat-img]][chat]",
+  "description": "<img align=\"right\" width=\"95\" height=\"95\"",
+  "source": "@site/node_modules/postcss/README.md",
+  "sourceDirName": "node_modules/postcss",
+  "slug": "/node_modules/postcss/",
+  "permalink": "/consul-release-controller/node_modules/postcss/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/postcss/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "3.1.0 / 2017-09-26",
+    "permalink": "/consul-release-controller/node_modules/portfinder/node_modules/debug/CHANGELOG"
+  },
+  "next": {
+    "title": "PostCSS Calc [<img src=\"https://postcss.github.io/postcss/logo.svg\" alt=\"PostCSS\" width=\"90\" height=\"90\" align=\"right\">][PostCSS]",
+    "permalink": "/consul-release-controller/node_modules/postcss-calc/"
+  }
+}

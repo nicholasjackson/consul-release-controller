@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@babel/generator/README",
+  "id": "node_modules/@babel/generator/README",
+  "title": "@babel/generator",
+  "description": "Turns an AST into code.",
+  "source": "@site/node_modules/@babel/generator/README.md",
+  "sourceDirName": "node_modules/@babel/generator",
+  "slug": "/node_modules/@babel/generator/",
+  "permalink": "/consul-release-controller/node_modules/@babel/generator/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@babel/generator/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "license",
+    "permalink": "/consul-release-controller/node_modules/@babel/core/node_modules/ms/license"
+  },
+  "next": {
+    "title": "jsesc [![Build status](https://travis-ci.org/mathiasbynens/jsesc.svg?branch=master)](https://travis-ci.org/mathiasbynens/jsesc) [![Code coverage status](https://coveralls.io/repos/mathiasbynens/jsesc/badge.svg)](https://coveralls.io/r/mathiasbynens/jsesc) [![Dependency status](https://gemnasium.com/mathiasbynens/jsesc.svg)](https://gemnasium.com/mathiasbynens/jsesc)",
+    "permalink": "/consul-release-controller/node_modules/@babel/generator/node_modules/jsesc/"
+  }
+}

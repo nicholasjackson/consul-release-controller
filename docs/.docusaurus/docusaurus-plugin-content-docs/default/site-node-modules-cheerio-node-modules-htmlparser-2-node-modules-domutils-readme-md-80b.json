@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/cheerio/node_modules/htmlparser2/node_modules/domutils/readme",
+  "id": "node_modules/cheerio/node_modules/htmlparser2/node_modules/domutils/readme",
+  "title": "readme",
+  "description": "Utilities for working with htmlparser2's dom",
+  "source": "@site/node_modules/cheerio/node_modules/htmlparser2/node_modules/domutils/readme.md",
+  "sourceDirName": "node_modules/cheerio/node_modules/htmlparser2/node_modules/domutils",
+  "slug": "/node_modules/cheerio/node_modules/htmlparser2/node_modules/domutils/",
+  "permalink": "/consul-release-controller/node_modules/cheerio/node_modules/htmlparser2/node_modules/domutils/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/cheerio/node_modules/htmlparser2/node_modules/domutils/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "entities [![NPM version](http://img.shields.io/npm/v/entities.svg)](https://npmjs.org/package/entities) [![Downloads](https://img.shields.io/npm/dm/entities.svg)](https://npmjs.org/package/entities) [![Build Status](http://img.shields.io/travis/fb55/entities.svg)](http://travis-ci.org/fb55/entities) [![Coverage](http://img.shields.io/coveralls/fb55/entities.svg)](https://coveralls.io/r/fb55/entities)",
+    "permalink": "/consul-release-controller/node_modules/cheerio/node_modules/htmlparser2/node_modules/dom-serializer/node_modules/entities/"
+  },
+  "next": {
+    "title": "nth-check [![Build Status](https://travis-ci.org/fb55/nth-check.svg)](https://travis-ci.org/fb55/nth-check)",
+    "permalink": "/consul-release-controller/node_modules/cheerio/node_modules/nth-check/"
+  }
+}

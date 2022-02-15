@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@babel/helper-simple-access/README",
+  "id": "node_modules/@babel/helper-simple-access/README",
+  "title": "@babel/helper-simple-access",
+  "description": "Babel helper for ensuring that access to a given value is performed through simple accesses",
+  "source": "@site/node_modules/@babel/helper-simple-access/README.md",
+  "sourceDirName": "node_modules/@babel/helper-simple-access",
+  "slug": "/node_modules/@babel/helper-simple-access/",
+  "permalink": "/consul-release-controller/node_modules/@babel/helper-simple-access/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@babel/helper-simple-access/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "@babel/helper-replace-supers",
+    "permalink": "/consul-release-controller/node_modules/@babel/helper-replace-supers/"
+  },
+  "next": {
+    "title": "@babel/helper-skip-transparent-expression-wrappers",
+    "permalink": "/consul-release-controller/node_modules/@babel/helper-skip-transparent-expression-wrappers/"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@svgr/babel-plugin-add-jsx-attribute/CHANGELOG",
+  "id": "node_modules/@svgr/babel-plugin-add-jsx-attribute/CHANGELOG",
+  "title": "Change Log",
+  "description": "All notable changes to this project will be documented in this file.",
+  "source": "@site/node_modules/@svgr/babel-plugin-add-jsx-attribute/CHANGELOG.md",
+  "sourceDirName": "node_modules/@svgr/babel-plugin-add-jsx-attribute",
+  "slug": "/node_modules/@svgr/babel-plugin-add-jsx-attribute/CHANGELOG",
+  "permalink": "/consul-release-controller/node_modules/@svgr/babel-plugin-add-jsx-attribute/CHANGELOG",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@svgr/babel-plugin-add-jsx-attribute/CHANGELOG.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "@svgr/babel-plugin-add-jsx-attribute",
+    "permalink": "/consul-release-controller/node_modules/@svgr/babel-plugin-add-jsx-attribute/"
+  },
+  "next": {
+    "title": "@svgr/babel-plugin-remove-jsx-attribute",
+    "permalink": "/consul-release-controller/node_modules/@svgr/babel-plugin-remove-jsx-attribute/"
+  }
+}

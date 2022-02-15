@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@types/parse-json/README",
+  "id": "node_modules/@types/parse-json/README",
+  "title": "Installation",
+  "description": "npm install --save @types/parse-json",
+  "source": "@site/node_modules/@types/parse-json/README.md",
+  "sourceDirName": "node_modules/@types/parse-json",
+  "slug": "/node_modules/@types/parse-json/",
+  "permalink": "/consul-release-controller/node_modules/@types/parse-json/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@types/parse-json/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Installation",
+    "permalink": "/consul-release-controller/node_modules/@types/node/"
+  },
+  "next": {
+    "title": "Installation",
+    "permalink": "/consul-release-controller/node_modules/@types/parse5/"
+  }
+}

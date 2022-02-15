@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@babel/plugin-syntax-class-static-block/README",
+  "id": "node_modules/@babel/plugin-syntax-class-static-block/README",
+  "title": "@babel/plugin-syntax-class-static-block",
+  "description": "Allow parsing of class static blocks",
+  "source": "@site/node_modules/@babel/plugin-syntax-class-static-block/README.md",
+  "sourceDirName": "node_modules/@babel/plugin-syntax-class-static-block",
+  "slug": "/node_modules/@babel/plugin-syntax-class-static-block/",
+  "permalink": "/consul-release-controller/node_modules/@babel/plugin-syntax-class-static-block/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@babel/plugin-syntax-class-static-block/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "@babel/plugin-syntax-class-properties",
+    "permalink": "/consul-release-controller/node_modules/@babel/plugin-syntax-class-properties/"
+  },
+  "next": {
+    "title": "@babel/plugin-syntax-dynamic-import",
+    "permalink": "/consul-release-controller/node_modules/@babel/plugin-syntax-dynamic-import/"
+  }
+}

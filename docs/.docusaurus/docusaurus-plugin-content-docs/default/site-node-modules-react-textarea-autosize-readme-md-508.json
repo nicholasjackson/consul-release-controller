@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/react-textarea-autosize/README",
+  "id": "node_modules/react-textarea-autosize/README",
+  "title": "README",
+  "description": "npm version",
+  "source": "@site/node_modules/react-textarea-autosize/README.md",
+  "sourceDirName": "node_modules/react-textarea-autosize",
+  "slug": "/node_modules/react-textarea-autosize/",
+  "permalink": "/consul-release-controller/node_modules/react-textarea-autosize/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/react-textarea-autosize/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "React Side Effect [![Downloads](https://img.shields.io/npm/dm/react-side-effect.svg)](https://npmjs.com/react-side-effect) [![npm version](https://img.shields.io/npm/v/react-side-effect.svg?style=flat)](https://www.npmjs.com/package/react-side-effect)",
+    "permalink": "/consul-release-controller/node_modules/react-side-effect/"
+  },
+  "next": {
+    "title": "react-textarea-autosize",
+    "permalink": "/consul-release-controller/node_modules/react-textarea-autosize/CHANGELOG"
+  }
+}

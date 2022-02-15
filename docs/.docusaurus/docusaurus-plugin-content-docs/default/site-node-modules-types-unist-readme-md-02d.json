@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@types/unist/README",
+  "id": "node_modules/@types/unist/README",
+  "title": "Installation",
+  "description": "npm install --save @types/unist",
+  "source": "@site/node_modules/@types/unist/README.md",
+  "sourceDirName": "node_modules/@types/unist",
+  "slug": "/node_modules/@types/unist/",
+  "permalink": "/consul-release-controller/node_modules/@types/unist/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@types/unist/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Installation",
+    "permalink": "/consul-release-controller/node_modules/@types/sockjs/"
+  },
+  "next": {
+    "title": "Installation",
+    "permalink": "/consul-release-controller/node_modules/@types/ws/"
+  }
+}

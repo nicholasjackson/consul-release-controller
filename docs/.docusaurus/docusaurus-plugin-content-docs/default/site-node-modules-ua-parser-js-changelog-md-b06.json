@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/ua-parser-js/changelog",
+  "id": "node_modules/ua-parser-js/changelog",
+  "title": "UAParser.js Changelog",
+  "description": "Version 0.8.0",
+  "source": "@site/node_modules/ua-parser-js/changelog.md",
+  "sourceDirName": "node_modules/ua-parser-js",
+  "slug": "/node_modules/ua-parser-js/changelog",
+  "permalink": "/consul-release-controller/node_modules/ua-parser-js/changelog",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/ua-parser-js/changelog.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "readme",
+    "permalink": "/consul-release-controller/node_modules/ua-parser-js/"
+  },
+  "next": {
+    "title": "license",
+    "permalink": "/consul-release-controller/node_modules/ua-parser-js/license"
+  }
+}

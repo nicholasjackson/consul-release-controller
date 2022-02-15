@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/html-tags/readme",
+  "id": "node_modules/html-tags/readme",
+  "title": "html-tags [![Build Status](https://travis-ci.org/sindresorhus/html-tags.svg?branch=master)](https://travis-ci.org/sindresorhus/html-tags)",
+  "description": "List of standard HTML tags",
+  "source": "@site/node_modules/html-tags/readme.md",
+  "sourceDirName": "node_modules/html-tags",
+  "slug": "/node_modules/html-tags/",
+  "permalink": "/consul-release-controller/node_modules/html-tags/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/html-tags/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Commander.js",
+    "permalink": "/consul-release-controller/node_modules/html-minifier-terser/node_modules/commander/"
+  },
+  "next": {
+    "title": "html-void-elements",
+    "permalink": "/consul-release-controller/node_modules/html-void-elements/"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/forwarded/README",
+  "id": "node_modules/forwarded/README",
+  "title": "forwarded",
+  "description": "NPM Version",
+  "source": "@site/node_modules/forwarded/README.md",
+  "sourceDirName": "node_modules/forwarded",
+  "slug": "/node_modules/forwarded/",
+  "permalink": "/consul-release-controller/node_modules/forwarded/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/forwarded/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Tapable",
+    "permalink": "/consul-release-controller/node_modules/fork-ts-checker-webpack-plugin/node_modules/tapable/"
+  },
+  "next": {
+    "title": "0.2.0 / 2021-05-31",
+    "permalink": "/consul-release-controller/node_modules/forwarded/HISTORY"
+  }
+}

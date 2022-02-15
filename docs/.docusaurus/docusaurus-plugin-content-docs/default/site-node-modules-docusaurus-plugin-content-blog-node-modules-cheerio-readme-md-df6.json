@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@docusaurus/plugin-content-blog/node_modules/cheerio/Readme",
+  "id": "node_modules/@docusaurus/plugin-content-blog/node_modules/cheerio/Readme",
+  "title": "Readme",
+  "description": "cheerio",
+  "source": "@site/node_modules/@docusaurus/plugin-content-blog/node_modules/cheerio/Readme.md",
+  "sourceDirName": "node_modules/@docusaurus/plugin-content-blog/node_modules/cheerio",
+  "slug": "/node_modules/@docusaurus/plugin-content-blog/node_modules/cheerio/",
+  "permalink": "/consul-release-controller/node_modules/@docusaurus/plugin-content-blog/node_modules/cheerio/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@docusaurus/plugin-content-blog/node_modules/cheerio/Readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "@docusaurus/plugin-content-blog",
+    "permalink": "/consul-release-controller/node_modules/@docusaurus/plugin-content-blog/"
+  },
+  "next": {
+    "title": "dom-serializer [![Build Status](https://travis-ci.com/cheeriojs/dom-serializer.svg?branch=master)](https://travis-ci.com/cheeriojs/dom-serializer)",
+    "permalink": "/consul-release-controller/node_modules/@docusaurus/plugin-content-blog/node_modules/dom-serializer/"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/mrmime/readme",
+  "id": "node_modules/mrmime/readme",
+  "title": "readme",
+  "description": "A tiny (2.8kB) and fast utility for getting a MIME type from an extension or filename",
+  "source": "@site/node_modules/mrmime/readme.md",
+  "sourceDirName": "node_modules/mrmime",
+  "slug": "/node_modules/mrmime/",
+  "permalink": "/consul-release-controller/node_modules/mrmime/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/mrmime/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "minimatch",
+    "permalink": "/consul-release-controller/node_modules/minimatch/"
+  },
+  "next": {
+    "title": "ms",
+    "permalink": "/consul-release-controller/node_modules/ms/"
+  }
+}

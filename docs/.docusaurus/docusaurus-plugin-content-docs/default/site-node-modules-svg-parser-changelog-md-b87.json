@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/svg-parser/CHANGELOG",
+  "id": "node_modules/svg-parser/CHANGELOG",
+  "title": "svg-parser changelog",
+  "description": "2.0.3",
+  "source": "@site/node_modules/svg-parser/CHANGELOG.md",
+  "sourceDirName": "node_modules/svg-parser",
+  "slug": "/node_modules/svg-parser/CHANGELOG",
+  "permalink": "/consul-release-controller/node_modules/svg-parser/CHANGELOG",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/svg-parser/CHANGELOG.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "svg-parser",
+    "permalink": "/consul-release-controller/node_modules/svg-parser/"
+  },
+  "next": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/svgo/"
+  }
+}

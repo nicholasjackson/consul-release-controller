@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@types/retry/README",
+  "id": "node_modules/@types/retry/README",
+  "title": "Installation",
+  "description": "npm install --save @types/retry",
+  "source": "@site/node_modules/@types/retry/README.md",
+  "sourceDirName": "node_modules/@types/retry",
+  "slug": "/node_modules/@types/retry/",
+  "permalink": "/consul-release-controller/node_modules/@types/retry/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@types/retry/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Installation",
+    "permalink": "/consul-release-controller/node_modules/@types/react/"
+  },
+  "next": {
+    "title": "Installation",
+    "permalink": "/consul-release-controller/node_modules/@types/sax/"
+  }
+}

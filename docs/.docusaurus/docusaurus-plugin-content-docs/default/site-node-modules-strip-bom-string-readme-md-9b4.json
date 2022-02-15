@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/strip-bom-string/README",
+  "id": "node_modules/strip-bom-string/README",
+  "title": "strip-bom-string [![NPM version](https://img.shields.io/npm/v/strip-bom-string.svg?style=flat)](https://www.npmjs.com/package/strip-bom-string) [![NPM monthly downloads](https://img.shields.io/npm/dm/strip-bom-string.svg?style=flat)](https://npmjs.org/package/strip-bom-string)  [![NPM total downloads](https://img.shields.io/npm/dt/strip-bom-string.svg?style=flat)](https://npmjs.org/package/strip-bom-string) [![Linux Build Status](https://img.shields.io/travis/jonschlinkert/strip-bom-string.svg?style=flat&label=Travis)](https://travis-ci.org/jonschlinkert/strip-bom-string)",
+  "description": "Strip a byte order mark (BOM) from a string.",
+  "source": "@site/node_modules/strip-bom-string/README.md",
+  "sourceDirName": "node_modules/strip-bom-string",
+  "slug": "/node_modules/strip-bom-string/",
+  "permalink": "/consul-release-controller/node_modules/strip-bom-string/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/strip-bom-string/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "strip-ansi [![Build Status](https://travis-ci.org/chalk/strip-ansi.svg?branch=master)](https://travis-ci.org/chalk/strip-ansi)",
+    "permalink": "/consul-release-controller/node_modules/strip-ansi/"
+  },
+  "next": {
+    "title": "strip-final-newline [![Build Status](https://travis-ci.com/sindresorhus/strip-final-newline.svg?branch=master)](https://travis-ci.com/sindresorhus/strip-final-newline)",
+    "permalink": "/consul-release-controller/node_modules/strip-final-newline/"
+  }
+}

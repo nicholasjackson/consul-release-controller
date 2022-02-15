@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/babel-plugin-polyfill-corejs3/README",
+  "id": "node_modules/babel-plugin-polyfill-corejs3/README",
+  "title": "babel-plugin-polyfill-corejs3",
+  "description": "Install",
+  "source": "@site/node_modules/babel-plugin-polyfill-corejs3/README.md",
+  "sourceDirName": "node_modules/babel-plugin-polyfill-corejs3",
+  "slug": "/node_modules/babel-plugin-polyfill-corejs3/",
+  "permalink": "/consul-release-controller/node_modules/babel-plugin-polyfill-corejs3/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/babel-plugin-polyfill-corejs3/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "babel-plugin-polyfill-corejs2",
+    "permalink": "/consul-release-controller/node_modules/babel-plugin-polyfill-corejs2/"
+  },
+  "next": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/babel-plugin-polyfill-corejs3/core-js-compat/"
+  }
+}

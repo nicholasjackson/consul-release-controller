@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/url-parse-lax/readme",
+  "id": "node_modules/url-parse-lax/readme",
+  "title": "url-parse-lax [![Build Status](https://travis-ci.org/sindresorhus/url-parse-lax.svg?branch=master)](https://travis-ci.org/sindresorhus/url-parse-lax)",
+  "description": "Lax url.parse() with support for protocol-less URLs & IPs",
+  "source": "@site/node_modules/url-parse-lax/readme.md",
+  "sourceDirName": "node_modules/url-parse-lax",
+  "slug": "/node_modules/url-parse-lax/",
+  "permalink": "/consul-release-controller/node_modules/url-parse-lax/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/url-parse-lax/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Changelog",
+    "permalink": "/consul-release-controller/node_modules/url-loader/CHANGELOG"
+  },
+  "next": {
+    "title": "use-composed-ref",
+    "permalink": "/consul-release-controller/node_modules/use-composed-ref/"
+  }
+}

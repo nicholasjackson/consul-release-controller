@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/caniuse-api/README",
+  "id": "node_modules/caniuse-api/README",
+  "title": "caniuse-api [![Build Status](https://travis-ci.org/Nyalab/caniuse-api.svg?branch=master)](https://travis-ci.org/Nyalab/caniuse-api) [![Build status](https://ci.appveyor.com/api/projects/status/6j3na522bv3bxfa5/branch/master?svg=true)](https://ci.appveyor.com/project/MoOx/caniuse-api/branch/master)",
+  "description": "request the caniuse data to check browsers compatibilities",
+  "source": "@site/node_modules/caniuse-api/README.md",
+  "sourceDirName": "node_modules/caniuse-api",
+  "slug": "/node_modules/caniuse-api/",
+  "permalink": "/consul-release-controller/node_modules/caniuse-api/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/caniuse-api/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "camelcase-css [![NPM Version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url]",
+    "permalink": "/consul-release-controller/node_modules/camelcase-css/"
+  },
+  "next": {
+    "title": "3.0.0 - 2018-07-10",
+    "permalink": "/consul-release-controller/node_modules/caniuse-api/CHANGELOG"
+  }
+}

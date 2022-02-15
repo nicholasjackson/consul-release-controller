@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/css-minimizer-webpack-plugin/node_modules/json-schema-traverse/README",
+  "id": "node_modules/css-minimizer-webpack-plugin/node_modules/json-schema-traverse/README",
+  "title": "json-schema-traverse",
+  "description": "Traverse JSON Schema passing each schema object to callback",
+  "source": "@site/node_modules/css-minimizer-webpack-plugin/node_modules/json-schema-traverse/README.md",
+  "sourceDirName": "node_modules/css-minimizer-webpack-plugin/node_modules/json-schema-traverse",
+  "slug": "/node_modules/css-minimizer-webpack-plugin/node_modules/json-schema-traverse/",
+  "permalink": "/consul-release-controller/node_modules/css-minimizer-webpack-plugin/node_modules/json-schema-traverse/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/css-minimizer-webpack-plugin/node_modules/json-schema-traverse/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "ajv-keywords",
+    "permalink": "/consul-release-controller/node_modules/css-minimizer-webpack-plugin/node_modules/ajv-keywords/"
+  },
+  "next": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/css-minimizer-webpack-plugin/node_modules/schema-utils/"
+  }
+}

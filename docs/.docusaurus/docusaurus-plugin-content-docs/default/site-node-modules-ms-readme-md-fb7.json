@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/ms/readme",
+  "id": "node_modules/ms/readme",
+  "title": "ms",
+  "description": "CI",
+  "source": "@site/node_modules/ms/readme.md",
+  "sourceDirName": "node_modules/ms",
+  "slug": "/node_modules/ms/",
+  "permalink": "/consul-release-controller/node_modules/ms/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/ms/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "readme",
+    "permalink": "/consul-release-controller/node_modules/mrmime/"
+  },
+  "next": {
+    "title": "license",
+    "permalink": "/consul-release-controller/node_modules/ms/license"
+  }
+}

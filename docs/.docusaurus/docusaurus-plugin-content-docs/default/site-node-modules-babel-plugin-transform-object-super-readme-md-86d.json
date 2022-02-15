@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@babel/plugin-transform-object-super/README",
+  "id": "node_modules/@babel/plugin-transform-object-super/README",
+  "title": "@babel/plugin-transform-object-super",
+  "description": "Compile ES2015 object super to ES5",
+  "source": "@site/node_modules/@babel/plugin-transform-object-super/README.md",
+  "sourceDirName": "node_modules/@babel/plugin-transform-object-super",
+  "slug": "/node_modules/@babel/plugin-transform-object-super/",
+  "permalink": "/consul-release-controller/node_modules/@babel/plugin-transform-object-super/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@babel/plugin-transform-object-super/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "@babel/plugin-transform-new-target",
+    "permalink": "/consul-release-controller/node_modules/@babel/plugin-transform-new-target/"
+  },
+  "next": {
+    "title": "@babel/plugin-transform-parameters",
+    "permalink": "/consul-release-controller/node_modules/@babel/plugin-transform-parameters/"
+  }
+}

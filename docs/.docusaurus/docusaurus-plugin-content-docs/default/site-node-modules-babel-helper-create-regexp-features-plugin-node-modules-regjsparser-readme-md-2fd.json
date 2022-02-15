@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@babel/helper-create-regexp-features-plugin/node_modules/regjsparser/README",
+  "id": "node_modules/@babel/helper-create-regexp-features-plugin/node_modules/regjsparser/README",
+  "title": "RegJSParser",
+  "description": "Parsing the JavaScript's RegExp in JavaScript.",
+  "source": "@site/node_modules/@babel/helper-create-regexp-features-plugin/node_modules/regjsparser/README.md",
+  "sourceDirName": "node_modules/@babel/helper-create-regexp-features-plugin/node_modules/regjsparser",
+  "slug": "/node_modules/@babel/helper-create-regexp-features-plugin/node_modules/regjsparser/",
+  "permalink": "/consul-release-controller/node_modules/@babel/helper-create-regexp-features-plugin/node_modules/regjsparser/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@babel/helper-create-regexp-features-plugin/node_modules/regjsparser/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "regjsgen [![Build status][ci-img]][ci] [![Code coverage status][codecov-img]][codecov]",
+    "permalink": "/consul-release-controller/node_modules/@babel/helper-create-regexp-features-plugin/node_modules/regjsgen/"
+  },
+  "next": {
+    "title": "@babel/helper-define-polyfill-provider",
+    "permalink": "/consul-release-controller/node_modules/@babel/helper-define-polyfill-provider/"
+  }
+}

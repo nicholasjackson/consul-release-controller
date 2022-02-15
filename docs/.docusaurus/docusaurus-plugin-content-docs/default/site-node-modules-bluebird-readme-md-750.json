@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/bluebird/README",
+  "id": "node_modules/bluebird/README",
+  "title": "README",
+  "description": "<img src=\"http://promisesaplus.com/assets/logo-small.png\" alt=\"Promises/A+ logo\"",
+  "source": "@site/node_modules/bluebird/README.md",
+  "sourceDirName": "node_modules/bluebird",
+  "slug": "/node_modules/bluebird/",
+  "permalink": "/consul-release-controller/node_modules/bluebird/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/bluebird/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "binary-extensions",
+    "permalink": "/consul-release-controller/node_modules/binary-extensions/"
+  },
+  "next": {
+    "title": "changelog",
+    "permalink": "/consul-release-controller/node_modules/bluebird/changelog"
+  }
+}

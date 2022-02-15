@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/which/README",
+  "id": "node_modules/which/README",
+  "title": "which",
+  "description": "Like the unix which utility.",
+  "source": "@site/node_modules/which/README.md",
+  "sourceDirName": "node_modules/which",
+  "slug": "/node_modules/which/",
+  "permalink": "/consul-release-controller/node_modules/which/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/which/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "whatwg-url",
+    "permalink": "/consul-release-controller/node_modules/whatwg-url/"
+  },
+  "next": {
+    "title": "Changes",
+    "permalink": "/consul-release-controller/node_modules/which/CHANGELOG"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/joi/README",
+  "id": "node_modules/joi/README",
+  "title": "joi",
+  "description": "The most powerful schema description language and data validator for JavaScript.",
+  "source": "@site/node_modules/joi/README.md",
+  "sourceDirName": "node_modules/joi",
+  "slug": "/node_modules/joi/",
+  "permalink": "/consul-release-controller/node_modules/joi/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/joi/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "supports-color",
+    "permalink": "/consul-release-controller/node_modules/jest-worker/node_modules/supports-color/"
+  },
+  "next": {
+    "title": "LICENSE",
+    "permalink": "/consul-release-controller/node_modules/joi/LICENSE"
+  }
+}

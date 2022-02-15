@@ -33,7 +33,8 @@ build_docker_dev:
 		-t ${DOCKER_REGISTRY}/consul-release-controller:${VERSION}.dev \
     -f ./Dockerfile \
     . \
-		--loadre	docker buildx rm multi
+		--load
+	docker buildx rm multi
 
 # Fetch Kubernetes certificates needed to secure the server with TLS
 fetch_kubernetes_certs:
@@ -63,11 +64,17 @@ functional_tests_kubernetes_no_env:
 deploy_kubernetes_relase:
 	curl -k https://localhost:9443/v1/releases -XPOST -d @./example/kubernetes/canary/api.json
 
+create_dev_env_no_controller:
+	shipyard run ./shipyard/kubernetes/main.hcl
+
 create_dev_env_local_controller:
 	shipyard run ./shipyard/kubernetes --var="controller_enabled=false"
 
 create_dev_env_docker_controller:
-	shipyard run ./shipyard/kubernetes --var="controller_enabled=true" --var="controller_version=nicholasjackson/consul-release-controller${VERSION}.dev" 
+	shipyard run ./shipyard/kubernetes --var="controller_enabled=true" --var="controller_repo=nicholasjackson/consul-release-controller" --var="controller_version=${VERSION}.dev"
+
+build_docs:
+	cd ./docs yarn install && yarn build
 
 generate_helm:
 	cd ./kubernetes/controller && make manifests
@@ -90,5 +97,5 @@ generate_helm:
 	helm package ./deploy/kubernetes/charts/consul-release-controller
 
 # Generate the index using github releases as source for binaries
-	helm repo index . --merge ./docs/index.yaml --url=https://github.com/nicholasjackson/consul-release-controller/releases/download/${VERSION}/
+	helm repo index . --merge ./docs/static/index.yaml --url=https://github.com/nicholasjackson/consul-release-controller/releases/download/${VERSION}/
 	mv ./index.yaml ./docs/index.yaml

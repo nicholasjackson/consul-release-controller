@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/feed/README",
+  "id": "node_modules/feed/README",
+  "title": "README",
+  "description": "jpmonette/feed - RSS 2.0, JSON Feed 1.0, and Atom 1.0 generator for Node.js",
+  "source": "@site/node_modules/feed/README.md",
+  "sourceDirName": "node_modules/feed",
+  "slug": "/node_modules/feed/",
+  "permalink": "/consul-release-controller/node_modules/feed/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/feed/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "CHANGELOG",
+    "permalink": "/consul-release-controller/node_modules/fbjs-css-vars/CHANGELOG"
+  },
+  "next": {
+    "title": "Change Log",
+    "permalink": "/consul-release-controller/node_modules/feed/CHANGELOG"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/call-bind/CHANGELOG",
+  "id": "node_modules/call-bind/CHANGELOG",
+  "title": "Changelog",
+  "description": "All notable changes to this project will be documented in this file.",
+  "source": "@site/node_modules/call-bind/CHANGELOG.md",
+  "sourceDirName": "node_modules/call-bind",
+  "slug": "/node_modules/call-bind/CHANGELOG",
+  "permalink": "/consul-release-controller/node_modules/call-bind/CHANGELOG",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/call-bind/CHANGELOG.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "call-bind",
+    "permalink": "/consul-release-controller/node_modules/call-bind/"
+  },
+  "next": {
+    "title": "callsites [![Build Status](https://travis-ci.org/sindresorhus/callsites.svg?branch=master)](https://travis-ci.org/sindresorhus/callsites)",
+    "permalink": "/consul-release-controller/node_modules/callsites/"
+  }
+}

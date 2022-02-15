@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@babel/plugin-transform-sticky-regex/README",
+  "id": "node_modules/@babel/plugin-transform-sticky-regex/README",
+  "title": "@babel/plugin-transform-sticky-regex",
+  "description": "Compile ES2015 sticky regex to an ES5 RegExp constructor",
+  "source": "@site/node_modules/@babel/plugin-transform-sticky-regex/README.md",
+  "sourceDirName": "node_modules/@babel/plugin-transform-sticky-regex",
+  "slug": "/node_modules/@babel/plugin-transform-sticky-regex/",
+  "permalink": "/consul-release-controller/node_modules/@babel/plugin-transform-sticky-regex/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@babel/plugin-transform-sticky-regex/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "@babel/plugin-transform-spread",
+    "permalink": "/consul-release-controller/node_modules/@babel/plugin-transform-spread/"
+  },
+  "next": {
+    "title": "@babel/plugin-transform-template-literals",
+    "permalink": "/consul-release-controller/node_modules/@babel/plugin-transform-template-literals/"
+  }
+}

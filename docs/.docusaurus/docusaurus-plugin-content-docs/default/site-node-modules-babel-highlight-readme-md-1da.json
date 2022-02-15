@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@babel/highlight/README",
+  "id": "node_modules/@babel/highlight/README",
+  "title": "@babel/highlight",
+  "description": "Syntax highlight JavaScript strings for output in terminals.",
+  "source": "@site/node_modules/@babel/highlight/README.md",
+  "sourceDirName": "node_modules/@babel/highlight",
+  "slug": "/node_modules/@babel/highlight/",
+  "permalink": "/consul-release-controller/node_modules/@babel/highlight/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@babel/highlight/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "@babel/helpers",
+    "permalink": "/consul-release-controller/node_modules/@babel/helpers/"
+  },
+  "next": {
+    "title": "ansi-styles [![Build Status](https://travis-ci.org/chalk/ansi-styles.svg?branch=master)](https://travis-ci.org/chalk/ansi-styles)",
+    "permalink": "/consul-release-controller/node_modules/@babel/highlight/node_modules/ansi-styles/"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/parse-json/readme",
+  "id": "node_modules/parse-json/readme",
+  "title": "parse-json",
+  "description": "Parse JSON with more helpful errors",
+  "source": "@site/node_modules/parse-json/readme.md",
+  "sourceDirName": "node_modules/parse-json",
+  "slug": "/node_modules/parse-json/",
+  "permalink": "/consul-release-controller/node_modules/parse-json/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/parse-json/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "parse-entities",
+    "permalink": "/consul-release-controller/node_modules/parse-entities/"
+  },
+  "next": {
+    "title": "node-parse-numeric-range",
+    "permalink": "/consul-release-controller/node_modules/parse-numeric-range/"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/prismjs/CHANGELOG",
+  "id": "node_modules/prismjs/CHANGELOG",
+  "title": "Prism Changelog",
+  "description": "1.26.0 (2022-01-06)",
+  "source": "@site/node_modules/prismjs/CHANGELOG.md",
+  "sourceDirName": "node_modules/prismjs",
+  "slug": "/node_modules/prismjs/CHANGELOG",
+  "permalink": "/consul-release-controller/node_modules/prismjs/CHANGELOG",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/prismjs/CHANGELOG.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "[Prism](https://prismjs.com/)",
+    "permalink": "/consul-release-controller/node_modules/prismjs/"
+  },
+  "next": {
+    "title": "process-nextick-args",
+    "permalink": "/consul-release-controller/node_modules/process-nextick-args/"
+  }
+}

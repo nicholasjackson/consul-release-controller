@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/dir-glob/readme",
+  "id": "node_modules/dir-glob/readme",
+  "title": "dir-glob [![Build Status](https://travis-ci.org/kevva/dir-glob.svg?branch=master)](https://travis-ci.org/kevva/dir-glob)",
+  "description": "Convert directories to glob compatible strings",
+  "source": "@site/node_modules/dir-glob/readme.md",
+  "sourceDirName": "node_modules/dir-glob",
+  "slug": "/node_modules/dir-glob/",
+  "permalink": "/consul-release-controller/node_modules/dir-glob/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/dir-glob/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "1.1.2 / 2017-05-11",
+    "permalink": "/consul-release-controller/node_modules/detect-port-alt/HISTORY"
+  },
+  "next": {
+    "title": "dns-equal",
+    "permalink": "/consul-release-controller/node_modules/dns-equal/"
+  }
+}

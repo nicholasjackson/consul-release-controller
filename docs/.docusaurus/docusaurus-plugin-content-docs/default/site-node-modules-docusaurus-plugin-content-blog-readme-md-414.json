@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@docusaurus/plugin-content-blog/README",
+  "id": "node_modules/@docusaurus/plugin-content-blog/README",
+  "title": "@docusaurus/plugin-content-blog",
+  "description": "Blog plugin for Docusaurus.",
+  "source": "@site/node_modules/@docusaurus/plugin-content-blog/README.md",
+  "sourceDirName": "node_modules/@docusaurus/plugin-content-blog",
+  "slug": "/node_modules/@docusaurus/plugin-content-blog/",
+  "permalink": "/consul-release-controller/node_modules/@docusaurus/plugin-content-blog/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@docusaurus/plugin-content-blog/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "@docusaurus/mdx-loader",
+    "permalink": "/consul-release-controller/node_modules/@docusaurus/mdx-loader/"
+  },
+  "next": {
+    "title": "Readme",
+    "permalink": "/consul-release-controller/node_modules/@docusaurus/plugin-content-blog/node_modules/cheerio/"
+  }
+}

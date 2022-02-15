@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/json5/README",
+  "id": "node_modules/json5/README",
+  "title": "JSON5 – JSON for Humans",
+  "description": "Build Status",
+  "source": "@site/node_modules/json5/README.md",
+  "sourceDirName": "node_modules/json5",
+  "slug": "/node_modules/json5/",
+  "permalink": "/consul-release-controller/node_modules/json5/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/json5/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "json-schema-traverse",
+    "permalink": "/consul-release-controller/node_modules/json-schema-traverse/"
+  },
+  "next": {
+    "title": "CHANGELOG",
+    "permalink": "/consul-release-controller/node_modules/json5/CHANGELOG"
+  }
+}

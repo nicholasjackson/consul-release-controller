@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/locate-path/readme",
+  "id": "node_modules/locate-path/readme",
+  "title": "locate-path [![Build Status](https://travis-ci.com/sindresorhus/locate-path.svg?branch=master)](https://travis-ci.com/github/sindresorhus/locate-path)",
+  "description": "Get the first path that exists on disk of multiple paths",
+  "source": "@site/node_modules/locate-path/readme.md",
+  "sourceDirName": "node_modules/locate-path",
+  "slug": "/node_modules/locate-path/",
+  "permalink": "/consul-release-controller/node_modules/locate-path/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/locate-path/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "loader-utils",
+    "permalink": "/consul-release-controller/node_modules/loader-utils/"
+  },
+  "next": {
+    "title": "lodash.assignin v4.2.0",
+    "permalink": "/consul-release-controller/node_modules/lodash.assignin/"
+  }
+}

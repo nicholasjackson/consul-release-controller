@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@docusaurus/plugin-content-docs/README",
+  "id": "node_modules/@docusaurus/plugin-content-docs/README",
+  "title": "@docusaurus/plugin-content-docs",
+  "description": "Docs plugin for Docusaurus.",
+  "source": "@site/node_modules/@docusaurus/plugin-content-docs/README.md",
+  "sourceDirName": "node_modules/@docusaurus/plugin-content-docs",
+  "slug": "/node_modules/@docusaurus/plugin-content-docs/",
+  "permalink": "/consul-release-controller/node_modules/@docusaurus/plugin-content-docs/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@docusaurus/plugin-content-docs/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "entities [![NPM version](http://img.shields.io/npm/v/entities.svg)](https://npmjs.org/package/entities) [![Downloads](https://img.shields.io/npm/dm/entities.svg)](https://npmjs.org/package/entities) [![Build Status](http://img.shields.io/travis/fb55/entities.svg)](http://travis-ci.org/fb55/entities) [![Coverage](http://img.shields.io/coveralls/fb55/entities.svg)](https://coveralls.io/r/fb55/entities)",
+    "permalink": "/consul-release-controller/node_modules/@docusaurus/plugin-content-blog/node_modules/entities/"
+  },
+  "next": {
+    "title": "@docusaurus/plugin-content-pages",
+    "permalink": "/consul-release-controller/node_modules/@docusaurus/plugin-content-pages/"
+  }
+}

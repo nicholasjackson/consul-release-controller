@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@babel/helper-remap-async-to-generator/README",
+  "id": "node_modules/@babel/helper-remap-async-to-generator/README",
+  "title": "@babel/helper-remap-async-to-generator",
+  "description": "Helper function to remap async functions to generators",
+  "source": "@site/node_modules/@babel/helper-remap-async-to-generator/README.md",
+  "sourceDirName": "node_modules/@babel/helper-remap-async-to-generator",
+  "slug": "/node_modules/@babel/helper-remap-async-to-generator/",
+  "permalink": "/consul-release-controller/node_modules/@babel/helper-remap-async-to-generator/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@babel/helper-remap-async-to-generator/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "@babel/helper-plugin-utils",
+    "permalink": "/consul-release-controller/node_modules/@babel/helper-plugin-utils/"
+  },
+  "next": {
+    "title": "@babel/helper-replace-supers",
+    "permalink": "/consul-release-controller/node_modules/@babel/helper-replace-supers/"
+  }
+}

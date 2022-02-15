@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/safe-buffer/README",
+  "id": "node_modules/safe-buffer/README",
+  "title": "safe-buffer [![travis][travis-image]][travis-url] [![npm][npm-image]][npm-url] [![downloads][downloads-image]][downloads-url] [![javascript style guide][standard-image]][standard-url]",
+  "description": "[travis-image]//img.shields.io/travis/feross/safe-buffer/master.svg",
+  "source": "@site/node_modules/safe-buffer/README.md",
+  "sourceDirName": "node_modules/safe-buffer",
+  "slug": "/node_modules/safe-buffer/",
+  "permalink": "/consul-release-controller/node_modules/safe-buffer/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/safe-buffer/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Contributor Covenant Code of Conduct",
+    "permalink": "/consul-release-controller/node_modules/rxjs/CODE_OF_CONDUCT"
+  },
+  "next": {
+    "title": "safer-buffer [![travis][travis-image]][travis-url] [![npm][npm-image]][npm-url] [![javascript style guide][standard-image]][standard-url] [![Security Responsible Disclosure][secuirty-image]][secuirty-url]",
+    "permalink": "/consul-release-controller/node_modules/safer-buffer/"
+  }
+}

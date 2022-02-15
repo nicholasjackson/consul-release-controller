@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/nprogress/History",
+  "id": "node_modules/nprogress/History",
+  "title": "History",
+  "description": "[v0.2.0] - May 13, 2015",
+  "source": "@site/node_modules/nprogress/History.md",
+  "sourceDirName": "node_modules/nprogress",
+  "slug": "/node_modules/nprogress/History",
+  "permalink": "/consul-release-controller/node_modules/nprogress/History",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/nprogress/History.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "NProgress",
+    "permalink": "/consul-release-controller/node_modules/nprogress/"
+  },
+  "next": {
+    "title": "License",
+    "permalink": "/consul-release-controller/node_modules/nprogress/License"
+  }
+}

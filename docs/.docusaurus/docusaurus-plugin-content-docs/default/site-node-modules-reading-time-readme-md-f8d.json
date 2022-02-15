@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/reading-time/README",
+  "id": "node_modules/reading-time/README",
+  "title": "reading-time",
+  "description": "NPM Build Status",
+  "source": "@site/node_modules/reading-time/README.md",
+  "sourceDirName": "node_modules/reading-time",
+  "slug": "/node_modules/reading-time/",
+  "permalink": "/consul-release-controller/node_modules/reading-time/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/reading-time/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "readdirp [![Weekly downloads](https://img.shields.io/npm/dw/readdirp.svg)](https://github.com/paulmillr/readdirp)",
+    "permalink": "/consul-release-controller/node_modules/readdirp/"
+  },
+  "next": {
+    "title": "rechoir [![Build Status](https://secure.travis-ci.org/tkellen/js-rechoir.png)](http://travis-ci.org/tkellen/js-rechoir)",
+    "permalink": "/consul-release-controller/node_modules/rechoir/"
+  }
+}

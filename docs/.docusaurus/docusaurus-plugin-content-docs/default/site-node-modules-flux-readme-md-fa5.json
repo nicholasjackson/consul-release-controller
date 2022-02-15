@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/flux/README",
+  "id": "node_modules/flux/README",
+  "title": "README",
+  "description": "⚠️ The Flux project is in maintenance mode and there are many more sophisticated alternatives available (e.g. Redux, MobX) and we would recommend using them instead.",
+  "source": "@site/node_modules/flux/README.md",
+  "sourceDirName": "node_modules/flux",
+  "slug": "/node_modules/flux/",
+  "permalink": "/consul-release-controller/node_modules/flux/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/flux/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "find-up [![Build Status](https://travis-ci.com/sindresorhus/find-up.svg?branch=master)](https://travis-ci.com/github/sindresorhus/find-up)",
+    "permalink": "/consul-release-controller/node_modules/find-up/"
+  },
+  "next": {
+    "title": "Changelog",
+    "permalink": "/consul-release-controller/node_modules/flux/CHANGELOG"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/url/README",
+  "id": "node_modules/url/README",
+  "title": "node-url",
+  "description": "Build Status",
+  "source": "@site/node_modules/url/README.md",
+  "sourceDirName": "node_modules/url",
+  "slug": "/node_modules/url/",
+  "permalink": "/consul-release-controller/node_modules/url/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/url/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "URI.js",
+    "permalink": "/consul-release-controller/node_modules/uri-js/"
+  },
+  "next": {
+    "title": "Punycode.js [![Build status](https://travis-ci.org/bestiejs/punycode.js.svg?branch=master)](https://travis-ci.org/bestiejs/punycode.js) [![Code coverage status](http://img.shields.io/coveralls/bestiejs/punycode.js/master.svg)](https://coveralls.io/r/bestiejs/punycode.js) [![Dependency status](https://gemnasium.com/bestiejs/punycode.js.svg)](https://gemnasium.com/bestiejs/punycode.js)",
+    "permalink": "/consul-release-controller/node_modules/url/node_modules/punycode/"
+  }
+}

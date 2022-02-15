@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/url-loader/CHANGELOG",
+  "id": "node_modules/url-loader/CHANGELOG",
+  "title": "Changelog",
+  "description": "All notable changes to this project will be documented in this file. See standard-version for commit guidelines.",
+  "source": "@site/node_modules/url-loader/CHANGELOG.md",
+  "sourceDirName": "node_modules/url-loader",
+  "slug": "/node_modules/url-loader/CHANGELOG",
+  "permalink": "/consul-release-controller/node_modules/url-loader/CHANGELOG",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/url-loader/CHANGELOG.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/url-loader/"
+  },
+  "next": {
+    "title": "url-parse-lax [![Build Status](https://travis-ci.org/sindresorhus/url-parse-lax.svg?branch=master)](https://travis-ci.org/sindresorhus/url-parse-lax)",
+    "permalink": "/consul-release-controller/node_modules/url-parse-lax/"
+  }
+}

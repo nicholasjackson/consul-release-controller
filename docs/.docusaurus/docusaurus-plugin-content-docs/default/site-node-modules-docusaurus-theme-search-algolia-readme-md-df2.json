@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@docusaurus/theme-search-algolia/README",
+  "id": "node_modules/@docusaurus/theme-search-algolia/README",
+  "title": "@docusaurus/theme-search-algolia",
+  "description": "Algolia search component for Docusaurus.",
+  "source": "@site/node_modules/@docusaurus/theme-search-algolia/README.md",
+  "sourceDirName": "node_modules/@docusaurus/theme-search-algolia",
+  "slug": "/node_modules/@docusaurus/theme-search-algolia/",
+  "permalink": "/consul-release-controller/node_modules/@docusaurus/theme-search-algolia/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@docusaurus/theme-search-algolia/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "@docusaurus/theme-common",
+    "permalink": "/consul-release-controller/node_modules/@docusaurus/theme-common/"
+  },
+  "next": {
+    "title": "Docusaurus theme translations",
+    "permalink": "/consul-release-controller/node_modules/@docusaurus/theme-translations/"
+  }
+}

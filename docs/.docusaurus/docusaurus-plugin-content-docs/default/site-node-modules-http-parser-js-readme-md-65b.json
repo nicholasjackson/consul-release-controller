@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/http-parser-js/README",
+  "id": "node_modules/http-parser-js/README",
+  "title": "README",
+  "description": "Node",
+  "source": "@site/node_modules/http-parser-js/README.md",
+  "sourceDirName": "node_modules/http-parser-js",
+  "slug": "/node_modules/http-parser-js/",
+  "permalink": "/consul-release-controller/node_modules/http-parser-js/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/http-parser-js/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "2021-11-14 / 1.8.1",
+    "permalink": "/consul-release-controller/node_modules/http-errors/HISTORY"
+  },
+  "next": {
+    "title": "LICENSE",
+    "permalink": "/consul-release-controller/node_modules/http-parser-js/LICENSE"
+  }
+}

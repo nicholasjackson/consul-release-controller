@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/is-alphabetical/readme",
+  "id": "node_modules/is-alphabetical/readme",
+  "title": "is-alphabetical",
+  "description": "Build",
+  "source": "@site/node_modules/is-alphabetical/readme.md",
+  "sourceDirName": "node_modules/is-alphabetical",
+  "slug": "/node_modules/is-alphabetical/",
+  "permalink": "/consul-release-controller/node_modules/is-alphabetical/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/is-alphabetical/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Changes",
+    "permalink": "/consul-release-controller/node_modules/ipaddr.js/Changes"
+  },
+  "next": {
+    "title": "is-alphanumerical",
+    "permalink": "/consul-release-controller/node_modules/is-alphanumerical/"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/image-size/Readme",
+  "id": "node_modules/image-size/Readme",
+  "title": "image-size",
+  "description": "Build Status",
+  "source": "@site/node_modules/image-size/Readme.md",
+  "sourceDirName": "node_modules/image-size",
+  "slug": "/node_modules/image-size/",
+  "permalink": "/consul-release-controller/node_modules/image-size/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/image-size/Readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/ignore/"
+  },
+  "next": {
+    "title": "readme",
+    "permalink": "/consul-release-controller/node_modules/immer/"
+  }
+}

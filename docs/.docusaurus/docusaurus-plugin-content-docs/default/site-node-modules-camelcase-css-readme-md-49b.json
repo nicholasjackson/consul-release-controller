@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/camelcase-css/README",
+  "id": "node_modules/camelcase-css/README",
+  "title": "camelcase-css [![NPM Version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url]",
+  "description": "Convert a kebab-cased CSS property into a camelCased DOM property.",
+  "source": "@site/node_modules/camelcase-css/README.md",
+  "sourceDirName": "node_modules/camelcase-css",
+  "slug": "/node_modules/camelcase-css/",
+  "permalink": "/consul-release-controller/node_modules/camelcase-css/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/camelcase-css/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "camelcase",
+    "permalink": "/consul-release-controller/node_modules/camelcase/"
+  },
+  "next": {
+    "title": "caniuse-api [![Build Status](https://travis-ci.org/Nyalab/caniuse-api.svg?branch=master)](https://travis-ci.org/Nyalab/caniuse-api) [![Build status](https://ci.appveyor.com/api/projects/status/6j3na522bv3bxfa5/branch/master?svg=true)](https://ci.appveyor.com/project/MoOx/caniuse-api/branch/master)",
+    "permalink": "/consul-release-controller/node_modules/caniuse-api/"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/gray-matter/CHANGELOG",
+  "id": "node_modules/gray-matter/CHANGELOG",
+  "title": "Release history",
+  "description": "4.0.0 - 2018-04-01",
+  "source": "@site/node_modules/gray-matter/CHANGELOG.md",
+  "sourceDirName": "node_modules/gray-matter",
+  "slug": "/node_modules/gray-matter/CHANGELOG",
+  "permalink": "/consul-release-controller/node_modules/gray-matter/CHANGELOG",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/gray-matter/CHANGELOG.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "gray-matter [![NPM version](https://img.shields.io/npm/v/gray-matter.svg?style=flat)](https://www.npmjs.com/package/gray-matter) [![NPM monthly downloads](https://img.shields.io/npm/dm/gray-matter.svg?style=flat)](https://npmjs.org/package/gray-matter) [![NPM total downloads](https://img.shields.io/npm/dt/gray-matter.svg?style=flat)](https://npmjs.org/package/gray-matter) [![Linux Build Status](https://img.shields.io/travis/jonschlinkert/gray-matter.svg?style=flat&label=Travis)](https://travis-ci.org/jonschlinkert/gray-matter)",
+    "permalink": "/consul-release-controller/node_modules/gray-matter/"
+  },
+  "next": {
+    "title": "argparse",
+    "permalink": "/consul-release-controller/node_modules/gray-matter/node_modules/argparse/"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/use-latest/README",
+  "id": "node_modules/use-latest/README",
+  "title": "use-latest",
+  "description": "A React helper hook for storing latest value in ref object (updated in useEffect's callback).",
+  "source": "@site/node_modules/use-latest/README.md",
+  "sourceDirName": "node_modules/use-latest",
+  "slug": "/node_modules/use-latest/",
+  "permalink": "/consul-release-controller/node_modules/use-latest/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/use-latest/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "use-isomorphic-layout-effect",
+    "permalink": "/consul-release-controller/node_modules/use-isomorphic-layout-effect/"
+  },
+  "next": {
+    "title": "util-deprecate",
+    "permalink": "/consul-release-controller/node_modules/util-deprecate/"
+  }
+}

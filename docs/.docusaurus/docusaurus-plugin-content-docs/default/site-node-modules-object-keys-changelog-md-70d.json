@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/object-keys/CHANGELOG",
+  "id": "node_modules/object-keys/CHANGELOG",
+  "title": "1.1.1 / 2019-04-06",
+  "description": "* [Fix] exclude deprecated Firefox keys (#53)",
+  "source": "@site/node_modules/object-keys/CHANGELOG.md",
+  "sourceDirName": "node_modules/object-keys",
+  "slug": "/node_modules/object-keys/CHANGELOG",
+  "permalink": "/consul-release-controller/node_modules/object-keys/CHANGELOG",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/object-keys/CHANGELOG.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "object-keys <sup>[![Version Badge][npm-version-svg]][package-url]</sup>",
+    "permalink": "/consul-release-controller/node_modules/object-keys/"
+  },
+  "next": {
+    "title": "object.assign <sup>[![Version Badge][npm-version-svg]][npm-url]</sup>",
+    "permalink": "/consul-release-controller/node_modules/object.assign/"
+  }
+}

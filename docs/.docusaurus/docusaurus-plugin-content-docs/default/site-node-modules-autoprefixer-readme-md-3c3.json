@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/autoprefixer/README",
+  "id": "node_modules/autoprefixer/README",
+  "title": "Autoprefixer [![Cult Of Martians][cult-img]][cult]",
+  "description": "<img align=\"right\" width=\"94\" height=\"71\"",
+  "source": "@site/node_modules/autoprefixer/README.md",
+  "sourceDirName": "node_modules/autoprefixer",
+  "slug": "/node_modules/autoprefixer/",
+  "permalink": "/consul-release-controller/node_modules/autoprefixer/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/autoprefixer/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "at-least-node",
+    "permalink": "/consul-release-controller/node_modules/at-least-node/"
+  },
+  "next": {
+    "title": "axios",
+    "permalink": "/consul-release-controller/node_modules/axios/"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/normalize-path/README",
+  "id": "node_modules/normalize-path/README",
+  "title": "normalize-path [![NPM version](https://img.shields.io/npm/v/normalize-path.svg?style=flat)](https://www.npmjs.com/package/normalize-path) [![NPM monthly downloads](https://img.shields.io/npm/dm/normalize-path.svg?style=flat)](https://npmjs.org/package/normalize-path) [![NPM total downloads](https://img.shields.io/npm/dt/normalize-path.svg?style=flat)](https://npmjs.org/package/normalize-path) [![Linux Build Status](https://img.shields.io/travis/jonschlinkert/normalize-path.svg?style=flat&label=Travis)](https://travis-ci.org/jonschlinkert/normalize-path)",
+  "description": "Normalize slashes in a file path to be posix/unix-like forward slashes. Also condenses repeat slashes to a single slash and removes and trailing slashes, unless disabled.",
+  "source": "@site/node_modules/normalize-path/README.md",
+  "sourceDirName": "node_modules/normalize-path",
+  "slug": "/node_modules/normalize-path/",
+  "permalink": "/consul-release-controller/node_modules/normalize-path/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/normalize-path/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Node.js releases data",
+    "permalink": "/consul-release-controller/node_modules/node-releases/"
+  },
+  "next": {
+    "title": "normalize-range",
+    "permalink": "/consul-release-controller/node_modules/normalize-range/"
+  }
+}

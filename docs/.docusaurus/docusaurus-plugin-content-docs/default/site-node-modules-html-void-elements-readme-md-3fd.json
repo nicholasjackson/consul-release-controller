@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/html-void-elements/readme",
+  "id": "node_modules/html-void-elements/readme",
+  "title": "html-void-elements",
+  "description": "Build",
+  "source": "@site/node_modules/html-void-elements/readme.md",
+  "sourceDirName": "node_modules/html-void-elements",
+  "slug": "/node_modules/html-void-elements/",
+  "permalink": "/consul-release-controller/node_modules/html-void-elements/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/html-void-elements/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "html-tags [![Build Status](https://travis-ci.org/sindresorhus/html-tags.svg?branch=master)](https://travis-ci.org/sindresorhus/html-tags)",
+    "permalink": "/consul-release-controller/node_modules/html-tags/"
+  },
+  "next": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/html-webpack-plugin/"
+  }
+}

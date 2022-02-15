@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/bytes/History",
+  "id": "node_modules/bytes/History",
+  "title": "3.0.0 / 2017-08-31",
+  "description": "* Change \"kB\" to \"KB\" in format output",
+  "source": "@site/node_modules/bytes/History.md",
+  "sourceDirName": "node_modules/bytes",
+  "slug": "/node_modules/bytes/History",
+  "permalink": "/consul-release-controller/node_modules/bytes/History",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/bytes/History.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Bytes utility",
+    "permalink": "/consul-release-controller/node_modules/bytes/"
+  },
+  "next": {
+    "title": "cacheable-request",
+    "permalink": "/consul-release-controller/node_modules/cacheable-request/"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/is-installed-globally/readme",
+  "id": "node_modules/is-installed-globally/readme",
+  "title": "is-installed-globally",
+  "description": "Check if your package was installed globally",
+  "source": "@site/node_modules/is-installed-globally/readme.md",
+  "sourceDirName": "node_modules/is-installed-globally",
+  "slug": "/node_modules/is-installed-globally/",
+  "permalink": "/consul-release-controller/node_modules/is-installed-globally/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/is-installed-globally/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "is-hexadecimal",
+    "permalink": "/consul-release-controller/node_modules/is-hexadecimal/"
+  },
+  "next": {
+    "title": "is-npm [![Build Status](https://travis-ci.com/sindresorhus/is-npm.svg?branch=master)](https://travis-ci.com/sindresorhus/is-npm)",
+    "permalink": "/consul-release-controller/node_modules/is-npm/"
+  }
+}

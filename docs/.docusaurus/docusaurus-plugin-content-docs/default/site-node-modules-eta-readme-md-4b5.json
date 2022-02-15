@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/eta/README",
+  "id": "node_modules/eta/README",
+  "title": "README",
+  "description": "eta (η)",
+  "source": "@site/node_modules/eta/README.md",
+  "sourceDirName": "node_modules/eta",
+  "slug": "/node_modules/eta/",
+  "permalink": "/consul-release-controller/node_modules/eta/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/eta/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/esutils/"
+  },
+  "next": {
+    "title": "etag",
+    "permalink": "/consul-release-controller/node_modules/etag/"
+  }
+}

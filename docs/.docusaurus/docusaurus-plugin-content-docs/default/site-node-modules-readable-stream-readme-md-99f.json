@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/readable-stream/README",
+  "id": "node_modules/readable-stream/README",
+  "title": "readable-stream",
+  "description": "Node.js core streams for userland Build Status",
+  "source": "@site/node_modules/readable-stream/README.md",
+  "sourceDirName": "node_modules/readable-stream",
+  "slug": "/node_modules/readable-stream/",
+  "permalink": "/consul-release-controller/node_modules/readable-stream/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/readable-stream/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "react-textarea-autosize",
+    "permalink": "/consul-release-controller/node_modules/react-textarea-autosize/CHANGELOG"
+  },
+  "next": {
+    "title": "Developer's Certificate of Origin 1.1",
+    "permalink": "/consul-release-controller/node_modules/readable-stream/CONTRIBUTING"
+  }
+}

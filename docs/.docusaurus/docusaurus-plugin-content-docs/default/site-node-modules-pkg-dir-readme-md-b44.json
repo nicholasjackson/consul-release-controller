@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/pkg-dir/readme",
+  "id": "node_modules/pkg-dir/readme",
+  "title": "pkg-dir [![Build Status](https://travis-ci.org/sindresorhus/pkg-dir.svg?branch=master)](https://travis-ci.org/sindresorhus/pkg-dir)",
+  "description": "Find the root directory of a Node.js project or npm package",
+  "source": "@site/node_modules/pkg-dir/readme.md",
+  "sourceDirName": "node_modules/pkg-dir",
+  "slug": "/node_modules/pkg-dir/",
+  "permalink": "/consul-release-controller/node_modules/pkg-dir/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/pkg-dir/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Release history",
+    "permalink": "/consul-release-controller/node_modules/picomatch/CHANGELOG"
+  },
+  "next": {
+    "title": "find-up [![Build Status](https://travis-ci.org/sindresorhus/find-up.svg?branch=master)](https://travis-ci.org/sindresorhus/find-up)",
+    "permalink": "/consul-release-controller/node_modules/pkg-dir/node_modules/find-up/"
+  }
+}

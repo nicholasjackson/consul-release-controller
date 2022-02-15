@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@sideway/pinpoint/README",
+  "id": "node_modules/@sideway/pinpoint/README",
+  "title": "@sideway/pinpoint",
+  "description": "Return the filename and line number of the calling function.",
+  "source": "@site/node_modules/@sideway/pinpoint/README.md",
+  "sourceDirName": "node_modules/@sideway/pinpoint",
+  "slug": "/node_modules/@sideway/pinpoint/",
+  "permalink": "/consul-release-controller/node_modules/@sideway/pinpoint/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@sideway/pinpoint/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "LICENSE",
+    "permalink": "/consul-release-controller/node_modules/@sideway/formula/LICENSE"
+  },
+  "next": {
+    "title": "LICENSE",
+    "permalink": "/consul-release-controller/node_modules/@sideway/pinpoint/LICENSE"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/process-nextick-args/readme",
+  "id": "node_modules/process-nextick-args/readme",
+  "title": "process-nextick-args",
+  "description": "Build Status",
+  "source": "@site/node_modules/process-nextick-args/readme.md",
+  "sourceDirName": "node_modules/process-nextick-args",
+  "slug": "/node_modules/process-nextick-args/",
+  "permalink": "/consul-release-controller/node_modules/process-nextick-args/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/process-nextick-args/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Prism Changelog",
+    "permalink": "/consul-release-controller/node_modules/prismjs/CHANGELOG"
+  },
+  "next": {
+    "title": "Copyright (c) 2015 Calvin Metcalf",
+    "permalink": "/consul-release-controller/node_modules/process-nextick-args/license"
+  }
+}

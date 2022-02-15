@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@svgr/babel-plugin-svg-dynamic-title/README",
+  "id": "node_modules/@svgr/babel-plugin-svg-dynamic-title/README",
+  "title": "@svgr/babel-plugin-svg-dynamic-title",
+  "description": "Install",
+  "source": "@site/node_modules/@svgr/babel-plugin-svg-dynamic-title/README.md",
+  "sourceDirName": "node_modules/@svgr/babel-plugin-svg-dynamic-title",
+  "slug": "/node_modules/@svgr/babel-plugin-svg-dynamic-title/",
+  "permalink": "/consul-release-controller/node_modules/@svgr/babel-plugin-svg-dynamic-title/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@svgr/babel-plugin-svg-dynamic-title/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "@svgr/babel-plugin-replace-jsx-attribute-value",
+    "permalink": "/consul-release-controller/node_modules/@svgr/babel-plugin-replace-jsx-attribute-value/"
+  },
+  "next": {
+    "title": "@svgr/babel-plugin-svg-em-dimensions",
+    "permalink": "/consul-release-controller/node_modules/@svgr/babel-plugin-svg-em-dimensions/"
+  }
+}

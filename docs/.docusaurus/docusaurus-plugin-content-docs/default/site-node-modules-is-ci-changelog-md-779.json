@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/is-ci/CHANGELOG",
+  "id": "node_modules/is-ci/CHANGELOG",
+  "title": "Changelog",
+  "description": "v2.0.0",
+  "source": "@site/node_modules/is-ci/CHANGELOG.md",
+  "sourceDirName": "node_modules/is-ci",
+  "slug": "/node_modules/is-ci/CHANGELOG",
+  "permalink": "/consul-release-controller/node_modules/is-ci/CHANGELOG",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/is-ci/CHANGELOG.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "is-ci",
+    "permalink": "/consul-release-controller/node_modules/is-ci/"
+  },
+  "next": {
+    "title": "is-core-module <sup>[![Version Badge][2]][1]</sup>",
+    "permalink": "/consul-release-controller/node_modules/is-core-module/"
+  }
+}

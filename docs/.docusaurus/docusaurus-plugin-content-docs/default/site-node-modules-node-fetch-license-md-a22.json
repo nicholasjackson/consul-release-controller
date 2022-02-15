@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/node-fetch/LICENSE",
+  "id": "node_modules/node-fetch/LICENSE",
+  "title": "LICENSE",
+  "description": "The MIT License (MIT)",
+  "source": "@site/node_modules/node-fetch/LICENSE.md",
+  "sourceDirName": "node_modules/node-fetch",
+  "slug": "/node_modules/node-fetch/LICENSE",
+  "permalink": "/consul-release-controller/node_modules/node-fetch/LICENSE",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/node-fetch/LICENSE.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "node-fetch",
+    "permalink": "/consul-release-controller/node_modules/node-fetch/"
+  },
+  "next": {
+    "title": "Forge",
+    "permalink": "/consul-release-controller/node_modules/node-forge/"
+  }
+}

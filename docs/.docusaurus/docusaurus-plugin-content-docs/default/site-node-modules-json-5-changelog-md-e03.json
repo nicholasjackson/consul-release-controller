@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/json5/CHANGELOG",
+  "id": "node_modules/json5/CHANGELOG",
+  "title": "CHANGELOG",
+  "description": "Unreleased [code, diff]",
+  "source": "@site/node_modules/json5/CHANGELOG.md",
+  "sourceDirName": "node_modules/json5",
+  "slug": "/node_modules/json5/CHANGELOG",
+  "permalink": "/consul-release-controller/node_modules/json5/CHANGELOG",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/json5/CHANGELOG.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "JSON5 – JSON for Humans",
+    "permalink": "/consul-release-controller/node_modules/json5/"
+  },
+  "next": {
+    "title": "LICENSE",
+    "permalink": "/consul-release-controller/node_modules/json5/LICENSE"
+  }
+}

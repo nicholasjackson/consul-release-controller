@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@nodelib/fs.walk/README",
+  "id": "node_modules/@nodelib/fs.walk/README",
+  "title": "@nodelib/fs.walk",
+  "description": "A library for efficiently walking a directory recursively.",
+  "source": "@site/node_modules/@nodelib/fs.walk/README.md",
+  "sourceDirName": "node_modules/@nodelib/fs.walk",
+  "slug": "/node_modules/@nodelib/fs.walk/",
+  "permalink": "/consul-release-controller/node_modules/@nodelib/fs.walk/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@nodelib/fs.walk/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "@nodelib/fs.stat",
+    "permalink": "/consul-release-controller/node_modules/@nodelib/fs.stat/"
+  },
+  "next": {
+    "title": "@polka/url [![npm](https://badgen.now.sh/npm/v/@polka/url)](https://npmjs.org/package/@polka/url)",
+    "permalink": "/consul-release-controller/node_modules/@polka/url/"
+  }
+}

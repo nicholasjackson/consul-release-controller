@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/promise/Readme",
+  "id": "node_modules/promise/Readme",
+  "title": "Readme",
+  "description": "This is a simple implementation of Promises.  It is a super set of ES6 Promises designed to have readable, performant code and to provide just the extensions that are absolutely necessary for using promises today.",
+  "source": "@site/node_modules/promise/Readme.md",
+  "sourceDirName": "node_modules/promise",
+  "slug": "/node_modules/promise/",
+  "permalink": "/consul-release-controller/node_modules/promise/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/promise/Readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Copyright (c) 2015 Calvin Metcalf",
+    "permalink": "/consul-release-controller/node_modules/process-nextick-args/license"
+  },
+  "next": {
+    "title": "readme",
+    "permalink": "/consul-release-controller/node_modules/prompts/"
+  }
+}

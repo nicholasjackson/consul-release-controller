@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/ajv-keywords/keywords/dotjs/README",
+  "id": "node_modules/ajv-keywords/keywords/dotjs/README",
+  "title": "README",
+  "description": "These files are compiled dot templates from dot folder.",
+  "source": "@site/node_modules/ajv-keywords/keywords/dotjs/README.md",
+  "sourceDirName": "node_modules/ajv-keywords/keywords/dotjs",
+  "slug": "/node_modules/ajv-keywords/keywords/dotjs/",
+  "permalink": "/consul-release-controller/node_modules/ajv-keywords/keywords/dotjs/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/ajv-keywords/keywords/dotjs/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "ajv-keywords",
+    "permalink": "/consul-release-controller/node_modules/ajv-keywords/"
+  },
+  "next": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/algoliasearch/"
+  }
+}

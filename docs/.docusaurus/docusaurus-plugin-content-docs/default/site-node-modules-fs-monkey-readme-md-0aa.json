@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/fs-monkey/README",
+  "id": "node_modules/fs-monkey/README",
+  "title": "fs-monkey",
+  "description": "Monkey-patches for filesystem related things.",
+  "source": "@site/node_modules/fs-monkey/README.md",
+  "sourceDirName": "node_modules/fs-monkey",
+  "slug": "/node_modules/fs-monkey/",
+  "permalink": "/consul-release-controller/node_modules/fs-monkey/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/fs-monkey/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "CHANGELOG",
+    "permalink": "/consul-release-controller/node_modules/fs-extra/CHANGELOG"
+  },
+  "next": {
+    "title": "CHANGELOG",
+    "permalink": "/consul-release-controller/node_modules/fs-monkey/CHANGELOG"
+  }
+}

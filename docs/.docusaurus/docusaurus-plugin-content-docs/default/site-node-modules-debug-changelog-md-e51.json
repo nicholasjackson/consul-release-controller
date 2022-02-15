@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/debug/CHANGELOG",
+  "id": "node_modules/debug/CHANGELOG",
+  "title": "2.6.9 / 2017-09-22",
+  "description": "* remove ReDoS regexp in %o formatter (#504)",
+  "source": "@site/node_modules/debug/CHANGELOG.md",
+  "sourceDirName": "node_modules/debug",
+  "slug": "/node_modules/debug/CHANGELOG",
+  "permalink": "/consul-release-controller/node_modules/debug/CHANGELOG",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/debug/CHANGELOG.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "debug",
+    "permalink": "/consul-release-controller/node_modules/debug/"
+  },
+  "next": {
+    "title": "ms",
+    "permalink": "/consul-release-controller/node_modules/debug/node_modules/ms/"
+  }
+}

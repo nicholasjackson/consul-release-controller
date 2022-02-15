@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/watchpack/README",
+  "id": "node_modules/watchpack/README",
+  "title": "watchpack",
+  "description": "Wrapper library for directory and file watching.",
+  "source": "@site/node_modules/watchpack/README.md",
+  "sourceDirName": "node_modules/watchpack",
+  "slug": "/node_modules/watchpack/",
+  "permalink": "/consul-release-controller/node_modules/watchpack/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/watchpack/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "wait-on - wait for files, ports, sockets, http(s) resources",
+    "permalink": "/consul-release-controller/node_modules/wait-on/"
+  },
+  "next": {
+    "title": "wbuf",
+    "permalink": "/consul-release-controller/node_modules/wbuf/"
+  }
+}

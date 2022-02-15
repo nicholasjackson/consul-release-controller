@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/rtlcss/README",
+  "id": "node_modules/rtlcss/README",
+  "title": "RTLCSS",
+  "description": "Join the chat at https://gitter.im/MohammadYounes/rtlcss",
+  "source": "@site/node_modules/rtlcss/README.md",
+  "sourceDirName": "node_modules/rtlcss",
+  "slug": "/node_modules/rtlcss/",
+  "permalink": "/consul-release-controller/node_modules/rtlcss/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/rtlcss/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "LICENSE",
+    "permalink": "/consul-release-controller/node_modules/rtl-detect/LICENSE"
+  },
+  "next": {
+    "title": "3.5.0 - 02 Nov. 2021",
+    "permalink": "/consul-release-controller/node_modules/rtlcss/CHANGELOG"
+  }
+}

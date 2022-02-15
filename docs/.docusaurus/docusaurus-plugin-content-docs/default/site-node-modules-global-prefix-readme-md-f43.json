@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/global-prefix/README",
+  "id": "node_modules/global-prefix/README",
+  "title": "global-prefix [![NPM version](https://img.shields.io/npm/v/global-prefix.svg?style=flat)](https://www.npmjs.com/package/global-prefix) [![NPM monthly downloads](https://img.shields.io/npm/dm/global-prefix.svg?style=flat)](https://npmjs.org/package/global-prefix) [![NPM total downloads](https://img.shields.io/npm/dt/global-prefix.svg?style=flat)](https://npmjs.org/package/global-prefix) [![Linux Build Status](https://img.shields.io/travis/jonschlinkert/global-prefix.svg?style=flat&label=Travis)](https://travis-ci.org/jonschlinkert/global-prefix) [![Windows Build Status](https://img.shields.io/appveyor/ci/jonschlinkert/global-prefix.svg?style=flat&label=AppVeyor)](https://ci.appveyor.com/project/jonschlinkert/global-prefix)",
+  "description": "Get the npm global path prefix.",
+  "source": "@site/node_modules/global-prefix/README.md",
+  "sourceDirName": "node_modules/global-prefix",
+  "slug": "/node_modules/global-prefix/",
+  "permalink": "/consul-release-controller/node_modules/global-prefix/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/global-prefix/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "global-modules [![NPM version](https://img.shields.io/npm/v/global-modules.svg?style=flat)](https://www.npmjs.com/package/global-modules) [![NPM monthly downloads](https://img.shields.io/npm/dm/global-modules.svg?style=flat)](https://npmjs.org/package/global-modules) [![NPM total downloads](https://img.shields.io/npm/dt/global-modules.svg?style=flat)](https://npmjs.org/package/global-modules) [![Linux Build Status](https://img.shields.io/travis/jonschlinkert/global-modules.svg?style=flat&label=Travis)](https://travis-ci.org/jonschlinkert/global-modules)",
+    "permalink": "/consul-release-controller/node_modules/global-modules/"
+  },
+  "next": {
+    "title": "which",
+    "permalink": "/consul-release-controller/node_modules/global-prefix/node_modules/which/"
+  }
+}

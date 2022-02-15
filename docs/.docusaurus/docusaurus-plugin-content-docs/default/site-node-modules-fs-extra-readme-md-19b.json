@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/fs-extra/README",
+  "id": "node_modules/fs-extra/README",
+  "title": "Node.js: fs-extra",
+  "description": "fs-extra adds file system methods that aren't included in the native fs module and adds promise support to the fs methods. It also uses graceful-fs to prevent EMFILE errors. It should be a drop in replacement for fs.",
+  "source": "@site/node_modules/fs-extra/README.md",
+  "sourceDirName": "node_modules/fs-extra",
+  "slug": "/node_modules/fs-extra/",
+  "permalink": "/consul-release-controller/node_modules/fs-extra/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/fs-extra/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "0.5.2 / 2017-09-13",
+    "permalink": "/consul-release-controller/node_modules/fresh/HISTORY"
+  },
+  "next": {
+    "title": "CHANGELOG",
+    "permalink": "/consul-release-controller/node_modules/fs-extra/CHANGELOG"
+  }
+}

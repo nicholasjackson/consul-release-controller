@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/html-minifier-terser/README",
+  "id": "node_modules/html-minifier-terser/README",
+  "title": "HTMLMinifier",
+  "description": "NPM version",
+  "source": "@site/node_modules/html-minifier-terser/README.md",
+  "sourceDirName": "node_modules/html-minifier-terser",
+  "slug": "/node_modules/html-minifier-terser/",
+  "permalink": "/consul-release-controller/node_modules/html-minifier-terser/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/html-minifier-terser/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "CHANGELOG",
+    "permalink": "/consul-release-controller/node_modules/html-entities/CHANGELOG"
+  },
+  "next": {
+    "title": "Commander.js",
+    "permalink": "/consul-release-controller/node_modules/html-minifier-terser/node_modules/commander/"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/serve-handler/README",
+  "id": "node_modules/serve-handler/README",
+  "title": "serve-handler",
+  "description": "Build Status",
+  "source": "@site/node_modules/serve-handler/README.md",
+  "sourceDirName": "node_modules/serve-handler",
+  "slug": "/node_modules/serve-handler/",
+  "permalink": "/consul-release-controller/node_modules/serve-handler/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/serve-handler/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Serialize JavaScript",
+    "permalink": "/consul-release-controller/node_modules/serialize-javascript/"
+  },
+  "next": {
+    "title": "mime-db",
+    "permalink": "/consul-release-controller/node_modules/serve-handler/node_modules/mime-db/"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/serve-handler/node_modules/mime-types/HISTORY",
+  "id": "node_modules/serve-handler/node_modules/mime-types/HISTORY",
+  "title": "2.1.18 / 2018-02-16",
+  "description": "* deps: mime-db@~1.33.0",
+  "source": "@site/node_modules/serve-handler/node_modules/mime-types/HISTORY.md",
+  "sourceDirName": "node_modules/serve-handler/node_modules/mime-types",
+  "slug": "/node_modules/serve-handler/node_modules/mime-types/HISTORY",
+  "permalink": "/consul-release-controller/node_modules/serve-handler/node_modules/mime-types/HISTORY",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/serve-handler/node_modules/mime-types/HISTORY.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "mime-types",
+    "permalink": "/consul-release-controller/node_modules/serve-handler/node_modules/mime-types/"
+  },
+  "next": {
+    "title": "range-parser",
+    "permalink": "/consul-release-controller/node_modules/serve-handler/node_modules/range-parser/"
+  }
+}

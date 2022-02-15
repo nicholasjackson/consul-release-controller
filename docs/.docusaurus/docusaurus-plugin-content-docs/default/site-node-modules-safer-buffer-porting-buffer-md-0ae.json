@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/safer-buffer/Porting-Buffer",
+  "id": "node_modules/safer-buffer/Porting-Buffer",
+  "title": "Porting to the Buffer.from/Buffer.alloc API",
+  "description": "Overview",
+  "source": "@site/node_modules/safer-buffer/Porting-Buffer.md",
+  "sourceDirName": "node_modules/safer-buffer",
+  "slug": "/node_modules/safer-buffer/Porting-Buffer",
+  "permalink": "/consul-release-controller/node_modules/safer-buffer/Porting-Buffer",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/safer-buffer/Porting-Buffer.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "safer-buffer [![travis][travis-image]][travis-url] [![npm][npm-image]][npm-url] [![javascript style guide][standard-image]][standard-url] [![Security Responsible Disclosure][secuirty-image]][secuirty-url]",
+    "permalink": "/consul-release-controller/node_modules/safer-buffer/"
+  },
+  "next": {
+    "title": "sax js",
+    "permalink": "/consul-release-controller/node_modules/sax/"
+  }
+}

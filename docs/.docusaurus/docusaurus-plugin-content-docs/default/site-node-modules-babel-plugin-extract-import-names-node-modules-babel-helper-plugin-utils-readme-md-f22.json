@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/babel-plugin-extract-import-names/node_modules/@babel/helper-plugin-utils/README",
+  "id": "node_modules/babel-plugin-extract-import-names/node_modules/@babel/helper-plugin-utils/README",
+  "title": "@babel/helper-plugin-utils",
+  "description": "General utilities for plugins to use",
+  "source": "@site/node_modules/babel-plugin-extract-import-names/node_modules/@babel/helper-plugin-utils/README.md",
+  "sourceDirName": "node_modules/babel-plugin-extract-import-names/node_modules/@babel/helper-plugin-utils",
+  "slug": "/node_modules/babel-plugin-extract-import-names/node_modules/@babel/helper-plugin-utils/",
+  "permalink": "/consul-release-controller/node_modules/babel-plugin-extract-import-names/node_modules/@babel/helper-plugin-utils/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/babel-plugin-extract-import-names/node_modules/@babel/helper-plugin-utils/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "babel-plugin-extract-import-names",
+    "permalink": "/consul-release-controller/node_modules/babel-plugin-extract-import-names/"
+  },
+  "next": {
+    "title": "babel-plugin-polyfill-corejs2",
+    "permalink": "/consul-release-controller/node_modules/babel-plugin-polyfill-corejs2/"
+  }
+}

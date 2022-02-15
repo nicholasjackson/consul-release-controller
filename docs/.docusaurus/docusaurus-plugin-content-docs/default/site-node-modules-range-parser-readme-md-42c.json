@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/range-parser/README",
+  "id": "node_modules/range-parser/README",
+  "title": "range-parser",
+  "description": "NPM Version",
+  "source": "@site/node_modules/range-parser/README.md",
+  "sourceDirName": "node_modules/range-parser",
+  "slug": "/node_modules/range-parser/",
+  "permalink": "/consul-release-controller/node_modules/range-parser/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/range-parser/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "randombytes",
+    "permalink": "/consul-release-controller/node_modules/randombytes/"
+  },
+  "next": {
+    "title": "1.2.1 / 2019-05-10",
+    "permalink": "/consul-release-controller/node_modules/range-parser/HISTORY"
+  }
+}

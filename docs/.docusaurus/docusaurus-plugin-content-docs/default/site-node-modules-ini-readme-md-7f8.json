@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/ini/README",
+  "id": "node_modules/ini/README",
+  "title": "README",
+  "description": "An ini format parser and serializer for node.",
+  "source": "@site/node_modules/ini/README.md",
+  "sourceDirName": "node_modules/ini",
+  "slug": "/node_modules/ini/",
+  "permalink": "/consul-release-controller/node_modules/ini/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/ini/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/inherits/"
+  },
+  "next": {
+    "title": "inline-style-parser",
+    "permalink": "/consul-release-controller/node_modules/inline-style-parser/"
+  }
+}

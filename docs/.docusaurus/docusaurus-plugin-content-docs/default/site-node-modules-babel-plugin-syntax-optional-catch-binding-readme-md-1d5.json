@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@babel/plugin-syntax-optional-catch-binding/README",
+  "id": "node_modules/@babel/plugin-syntax-optional-catch-binding/README",
+  "title": "@babel/plugin-syntax-optional-catch-binding",
+  "description": "Allow parsing of optional catch bindings",
+  "source": "@site/node_modules/@babel/plugin-syntax-optional-catch-binding/README.md",
+  "sourceDirName": "node_modules/@babel/plugin-syntax-optional-catch-binding",
+  "slug": "/node_modules/@babel/plugin-syntax-optional-catch-binding/",
+  "permalink": "/consul-release-controller/node_modules/@babel/plugin-syntax-optional-catch-binding/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@babel/plugin-syntax-optional-catch-binding/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "@babel/plugin-syntax-object-rest-spread",
+    "permalink": "/consul-release-controller/node_modules/@babel/plugin-syntax-object-rest-spread/"
+  },
+  "next": {
+    "title": "@babel/plugin-syntax-optional-chaining",
+    "permalink": "/consul-release-controller/node_modules/@babel/plugin-syntax-optional-chaining/"
+  }
+}

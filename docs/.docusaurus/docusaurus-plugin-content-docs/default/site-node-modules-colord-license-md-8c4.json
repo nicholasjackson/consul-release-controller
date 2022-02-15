@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/colord/LICENSE",
+  "id": "node_modules/colord/LICENSE",
+  "title": "LICENSE",
+  "description": "MIT License",
+  "source": "@site/node_modules/colord/LICENSE.md",
+  "sourceDirName": "node_modules/colord",
+  "slug": "/node_modules/colord/LICENSE",
+  "permalink": "/consul-release-controller/node_modules/colord/LICENSE",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/colord/LICENSE.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "CHANGELOG",
+    "permalink": "/consul-release-controller/node_modules/colord/CHANGELOG"
+  },
+  "next": {
+    "title": "🌈Colorette",
+    "permalink": "/consul-release-controller/node_modules/colorette/"
+  }
+}

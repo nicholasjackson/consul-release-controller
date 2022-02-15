@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/domutils/node_modules/dom-serializer/README",
+  "id": "node_modules/domutils/node_modules/dom-serializer/README",
+  "title": "dom-serializer [![Build Status](https://travis-ci.com/cheeriojs/dom-serializer.svg?branch=master)](https://travis-ci.com/cheeriojs/dom-serializer)",
+  "description": "Renders a domhandler DOM node or an array of domhandler DOM nodes to a string.",
+  "source": "@site/node_modules/domutils/node_modules/dom-serializer/README.md",
+  "sourceDirName": "node_modules/domutils/node_modules/dom-serializer",
+  "slug": "/node_modules/domutils/node_modules/dom-serializer/",
+  "permalink": "/consul-release-controller/node_modules/domutils/node_modules/dom-serializer/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/domutils/node_modules/dom-serializer/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "domutils [![Build Status](https://travis-ci.com/fb55/domutils.svg?branch=master)](https://travis-ci.com/fb55/domutils)",
+    "permalink": "/consul-release-controller/node_modules/domutils/"
+  },
+  "next": {
+    "title": "entities [![NPM version](http://img.shields.io/npm/v/entities.svg)](https://npmjs.org/package/entities) [![Downloads](https://img.shields.io/npm/dm/entities.svg)](https://npmjs.org/package/entities) [![Build Status](http://img.shields.io/travis/fb55/entities.svg)](http://travis-ci.org/fb55/entities) [![Coverage](http://img.shields.io/coveralls/fb55/entities.svg)](https://coveralls.io/r/fb55/entities)",
+    "permalink": "/consul-release-controller/node_modules/domutils/node_modules/entities/"
+  }
+}

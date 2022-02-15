@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@babel/parser/CHANGELOG",
+  "id": "node_modules/@babel/parser/CHANGELOG",
+  "title": "Changelog",
+  "description": "Tags:",
+  "source": "@site/node_modules/@babel/parser/CHANGELOG.md",
+  "sourceDirName": "node_modules/@babel/parser",
+  "slug": "/node_modules/@babel/parser/CHANGELOG",
+  "permalink": "/consul-release-controller/node_modules/@babel/parser/CHANGELOG",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@babel/parser/CHANGELOG.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "@babel/parser",
+    "permalink": "/consul-release-controller/node_modules/@babel/parser/"
+  },
+  "next": {
+    "title": "@babel/plugin-bugfix-safari-id-destructuring-collision-in-function-expression",
+    "permalink": "/consul-release-controller/node_modules/@babel/plugin-bugfix-safari-id-destructuring-collision-in-function-expression/"
+  }
+}

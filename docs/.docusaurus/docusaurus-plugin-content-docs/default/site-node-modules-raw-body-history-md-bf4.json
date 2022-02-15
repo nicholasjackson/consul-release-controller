@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/raw-body/HISTORY",
+  "id": "node_modules/raw-body/HISTORY",
+  "title": "2.4.2 / 2021-11-16",
+  "description": "* deps: bytes@3.1.1",
+  "source": "@site/node_modules/raw-body/HISTORY.md",
+  "sourceDirName": "node_modules/raw-body",
+  "slug": "/node_modules/raw-body/HISTORY",
+  "permalink": "/consul-release-controller/node_modules/raw-body/HISTORY",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/raw-body/HISTORY.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "raw-body",
+    "permalink": "/consul-release-controller/node_modules/raw-body/"
+  },
+  "next": {
+    "title": "Bytes utility",
+    "permalink": "/consul-release-controller/node_modules/raw-body/node_modules/bytes/"
+  }
+}

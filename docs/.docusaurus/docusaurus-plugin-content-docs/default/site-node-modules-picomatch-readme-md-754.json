@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/picomatch/README",
+  "id": "node_modules/picomatch/README",
+  "title": "README",
+  "description": "Picomatch",
+  "source": "@site/node_modules/picomatch/README.md",
+  "sourceDirName": "node_modules/picomatch",
+  "slug": "/node_modules/picomatch/",
+  "permalink": "/consul-release-controller/node_modules/picomatch/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/picomatch/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "picocolors",
+    "permalink": "/consul-release-controller/node_modules/picocolors/"
+  },
+  "next": {
+    "title": "Release history",
+    "permalink": "/consul-release-controller/node_modules/picomatch/CHANGELOG"
+  }
+}

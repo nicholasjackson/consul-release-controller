@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/react-lifecycles-compat/LICENSE",
+  "id": "node_modules/react-lifecycles-compat/LICENSE",
+  "title": "LICENSE",
+  "description": "MIT License",
+  "source": "@site/node_modules/react-lifecycles-compat/LICENSE.md",
+  "sourceDirName": "node_modules/react-lifecycles-compat",
+  "slug": "/node_modules/react-lifecycles-compat/LICENSE",
+  "permalink": "/consul-release-controller/node_modules/react-lifecycles-compat/LICENSE",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/react-lifecycles-compat/LICENSE.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "CHANGELOG",
+    "permalink": "/consul-release-controller/node_modules/react-lifecycles-compat/CHANGELOG"
+  },
+  "next": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/react-loadable/"
+  }
+}

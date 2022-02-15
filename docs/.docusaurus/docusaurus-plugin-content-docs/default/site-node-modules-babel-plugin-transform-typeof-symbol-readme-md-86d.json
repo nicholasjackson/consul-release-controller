@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@babel/plugin-transform-typeof-symbol/README",
+  "id": "node_modules/@babel/plugin-transform-typeof-symbol/README",
+  "title": "@babel/plugin-transform-typeof-symbol",
+  "description": "This transformer wraps all typeof expressions with a method that replicates native behaviour. (ie. returning “symbol” for symbols)",
+  "source": "@site/node_modules/@babel/plugin-transform-typeof-symbol/README.md",
+  "sourceDirName": "node_modules/@babel/plugin-transform-typeof-symbol",
+  "slug": "/node_modules/@babel/plugin-transform-typeof-symbol/",
+  "permalink": "/consul-release-controller/node_modules/@babel/plugin-transform-typeof-symbol/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@babel/plugin-transform-typeof-symbol/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "@babel/plugin-transform-template-literals",
+    "permalink": "/consul-release-controller/node_modules/@babel/plugin-transform-template-literals/"
+  },
+  "next": {
+    "title": "@babel/plugin-transform-typescript",
+    "permalink": "/consul-release-controller/node_modules/@babel/plugin-transform-typescript/"
+  }
+}

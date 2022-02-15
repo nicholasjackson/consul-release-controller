@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@docusaurus/core/node_modules/commander/CHANGELOG",
+  "id": "node_modules/@docusaurus/core/node_modules/commander/CHANGELOG",
+  "title": "Changelog",
+  "description": "All notable changes to this project will be documented in this file.",
+  "source": "@site/node_modules/@docusaurus/core/node_modules/commander/CHANGELOG.md",
+  "sourceDirName": "node_modules/@docusaurus/core/node_modules/commander",
+  "slug": "/node_modules/@docusaurus/core/node_modules/commander/CHANGELOG",
+  "permalink": "/consul-release-controller/node_modules/@docusaurus/core/node_modules/commander/CHANGELOG",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@docusaurus/core/node_modules/commander/CHANGELOG.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Commander.js",
+    "permalink": "/consul-release-controller/node_modules/@docusaurus/core/node_modules/commander/"
+  },
+  "next": {
+    "title": "semver(1) -- The semantic versioner for npm",
+    "permalink": "/consul-release-controller/node_modules/@docusaurus/core/node_modules/semver/"
+  }
+}

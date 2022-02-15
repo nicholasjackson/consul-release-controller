@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/ipaddr.js/Changes",
+  "id": "node_modules/ipaddr.js/Changes",
+  "title": "Changes",
+  "description": "2.0.1 - 2020-01-DD",
+  "source": "@site/node_modules/ipaddr.js/Changes.md",
+  "sourceDirName": "node_modules/ipaddr.js",
+  "slug": "/node_modules/ipaddr.js/Changes",
+  "permalink": "/consul-release-controller/node_modules/ipaddr.js/Changes",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/ipaddr.js/Changes.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "ipaddr.js — an IPv6 and IPv4 address manipulation library [![Build Status](https://travis-ci.org/whitequark/ipaddr.js.svg)](https://travis-ci.org/whitequark/ipaddr.js)",
+    "permalink": "/consul-release-controller/node_modules/ipaddr.js/"
+  },
+  "next": {
+    "title": "is-alphabetical",
+    "permalink": "/consul-release-controller/node_modules/is-alphabetical/"
+  }
+}

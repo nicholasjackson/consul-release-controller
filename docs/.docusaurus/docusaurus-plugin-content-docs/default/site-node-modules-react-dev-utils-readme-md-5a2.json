@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/react-dev-utils/README",
+  "id": "node_modules/react-dev-utils/README",
+  "title": "react-dev-utils",
+  "description": "This package includes some utilities used by Create React App.",
+  "source": "@site/node_modules/react-dev-utils/README.md",
+  "sourceDirName": "node_modules/react-dev-utils",
+  "slug": "/node_modules/react-dev-utils/",
+  "permalink": "/consul-release-controller/node_modules/react-dev-utils/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/react-dev-utils/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "react-base16-styling [![Build Status](https://img.shields.io/travis/alexkuz/react-base16-styling/master.svg)](https://travis-ci.org/alexkuz/react-base16-styling) [![Latest Stable Version](https://img.shields.io/npm/v/react-base16-styling.svg)](https://www.npmjs.com/package/react-base16-styling)",
+    "permalink": "/consul-release-controller/node_modules/react-base16-styling/"
+  },
+  "next": {
+    "title": "loader-utils",
+    "permalink": "/consul-release-controller/node_modules/react-dev-utils/node_modules/loader-utils/"
+  }
+}

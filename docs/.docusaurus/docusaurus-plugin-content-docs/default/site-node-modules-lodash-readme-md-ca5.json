@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/lodash/README",
+  "id": "node_modules/lodash/README",
+  "title": "lodash v4.17.21",
+  "description": "The Lodash library exported as Node.js modules.",
+  "source": "@site/node_modules/lodash/README.md",
+  "sourceDirName": "node_modules/lodash",
+  "slug": "/node_modules/lodash/",
+  "permalink": "/consul-release-controller/node_modules/lodash/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/lodash/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "lodash.debounce v4.0.8",
+    "permalink": "/consul-release-controller/node_modules/lodash.debounce/"
+  },
+  "next": {
+    "title": "release",
+    "permalink": "/consul-release-controller/node_modules/lodash/release"
+  }
+}

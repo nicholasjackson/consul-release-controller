@@ -1,0 +1,74 @@
+{
+  "docusaurus-plugin-content-docs": {
+    "default": {
+      "loadedVersions": [
+        {
+          "versionName": "current",
+          "versionLabel": "Next",
+          "versionPath": "/consul-release-controller/",
+          "tagsPath": "/consul-release-controller/tags",
+          "versionEditUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/docs",
+          "versionEditUrlLocalized": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/i18n/en/docusaurus-plugin-content-docs/current",
+          "versionBanner": null,
+          "versionBadge": false,
+          "versionClassName": "docs-version-current",
+          "isLast": true,
+          "routePriority": -1,
+          "sidebarFilePath": "/home/nicj/go/src/github.com/nicholasjackson/consul-release-controller/docs/sidebars.js",
+          "contentPath": "/home/nicj/go/src/github.com/nicholasjackson/consul-release-controller/docs/docs",
+          "contentPathLocalized": "/home/nicj/go/src/github.com/nicholasjackson/consul-release-controller/docs/i18n/en/docusaurus-plugin-content-docs/current",
+          "docs": [
+            {
+              "unversionedId": "index",
+              "id": "index",
+              "title": "Getting Started on Kubernetes",
+              "description": "To install the Consul release controller you need the following pre-requisites:",
+              "source": "@site/docs/index.md",
+              "sourceDirName": ".",
+              "slug": "/",
+              "permalink": "/consul-release-controller/",
+              "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/docs/index.md",
+              "tags": [],
+              "version": "current",
+              "sidebarPosition": 1,
+              "frontMatter": {
+                "sidebar_position": 1
+              },
+              "sidebar": "tutorialSidebar"
+            }
+          ],
+          "sidebars": {
+            "tutorialSidebar": [
+              {
+                "type": "doc",
+                "id": "index"
+              }
+            ]
+          },
+          "mainDocId": "index",
+          "categoryGeneratedIndices": []
+        }
+      ]
+    }
+  },
+  "docusaurus-plugin-content-pages": {
+    "default": [
+      {
+        "type": "mdx",
+        "permalink": "/consul-release-controller/markdown-page",
+        "source": "@site/src/pages/markdown-page.md",
+        "title": "Markdown page example",
+        "description": "You don't need React to write simple standalone pages.",
+        "frontMatter": {
+          "title": "Markdown page example"
+        }
+      }
+    ]
+  },
+  "docusaurus-plugin-debug": {
+    "default": null
+  },
+  "docusaurus-theme-classic": {
+    "default": null
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@babel/plugin-transform-async-to-generator/README",
+  "id": "node_modules/@babel/plugin-transform-async-to-generator/README",
+  "title": "@babel/plugin-transform-async-to-generator",
+  "description": "Turn async functions into ES2015 generators",
+  "source": "@site/node_modules/@babel/plugin-transform-async-to-generator/README.md",
+  "sourceDirName": "node_modules/@babel/plugin-transform-async-to-generator",
+  "slug": "/node_modules/@babel/plugin-transform-async-to-generator/",
+  "permalink": "/consul-release-controller/node_modules/@babel/plugin-transform-async-to-generator/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@babel/plugin-transform-async-to-generator/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "@babel/plugin-transform-arrow-functions",
+    "permalink": "/consul-release-controller/node_modules/@babel/plugin-transform-arrow-functions/"
+  },
+  "next": {
+    "title": "@babel/plugin-transform-block-scoped-functions",
+    "permalink": "/consul-release-controller/node_modules/@babel/plugin-transform-block-scoped-functions/"
+  }
+}

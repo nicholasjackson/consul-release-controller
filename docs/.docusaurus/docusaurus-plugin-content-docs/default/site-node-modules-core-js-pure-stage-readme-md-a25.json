@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/core-js-pure/stage/README",
+  "id": "node_modules/core-js-pure/stage/README",
+  "title": "README",
+  "description": "This folder contains entry points for ECMAScript proposals with dependencies.",
+  "source": "@site/node_modules/core-js-pure/stage/README.md",
+  "sourceDirName": "node_modules/core-js-pure/stage",
+  "slug": "/node_modules/core-js-pure/stage/",
+  "permalink": "/consul-release-controller/node_modules/core-js-pure/stage/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/core-js-pure/stage/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/core-js-pure/stable/"
+  },
+  "next": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/core-js-pure/modules/"
+  }
+}

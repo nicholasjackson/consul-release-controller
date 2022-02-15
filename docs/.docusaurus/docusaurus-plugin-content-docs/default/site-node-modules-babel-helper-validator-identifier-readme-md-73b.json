@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@babel/helper-validator-identifier/README",
+  "id": "node_modules/@babel/helper-validator-identifier/README",
+  "title": "@babel/helper-validator-identifier",
+  "description": "Validate identifier/keywords name",
+  "source": "@site/node_modules/@babel/helper-validator-identifier/README.md",
+  "sourceDirName": "node_modules/@babel/helper-validator-identifier",
+  "slug": "/node_modules/@babel/helper-validator-identifier/",
+  "permalink": "/consul-release-controller/node_modules/@babel/helper-validator-identifier/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@babel/helper-validator-identifier/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "@babel/helper-split-export-declaration",
+    "permalink": "/consul-release-controller/node_modules/@babel/helper-split-export-declaration/"
+  },
+  "next": {
+    "title": "@babel/helper-validator-option",
+    "permalink": "/consul-release-controller/node_modules/@babel/helper-validator-option/"
+  }
+}

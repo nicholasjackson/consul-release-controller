@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@babel/helper-create-regexp-features-plugin/node_modules/regexpu-core/README",
+  "id": "node_modules/@babel/helper-create-regexp-features-plugin/node_modules/regexpu-core/README",
+  "title": "regexpu-core [![Build status](https://github.com/mathiasbynens/regexpu-core/workflows/run-checks/badge.svg)](https://github.com/mathiasbynens/regexpu-core/actions?query=workflow%3Arun-checks) [![regexpu-core on npm](https://img.shields.io/npm/v/regexpu-core)](https://www.npmjs.com/package/regexpu-core)",
+  "description": "regexpu is a source code transpiler that enables the use of ES2015 Unicode regular expressions in JavaScript-of-today (ES5).",
+  "source": "@site/node_modules/@babel/helper-create-regexp-features-plugin/node_modules/regexpu-core/README.md",
+  "sourceDirName": "node_modules/@babel/helper-create-regexp-features-plugin/node_modules/regexpu-core",
+  "slug": "/node_modules/@babel/helper-create-regexp-features-plugin/node_modules/regexpu-core/",
+  "permalink": "/consul-release-controller/node_modules/@babel/helper-create-regexp-features-plugin/node_modules/regexpu-core/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@babel/helper-create-regexp-features-plugin/node_modules/regexpu-core/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "@babel/helper-create-regexp-features-plugin",
+    "permalink": "/consul-release-controller/node_modules/@babel/helper-create-regexp-features-plugin/"
+  },
+  "next": {
+    "title": "regjsgen [![Build status][ci-img]][ci] [![Code coverage status][codecov-img]][codecov]",
+    "permalink": "/consul-release-controller/node_modules/@babel/helper-create-regexp-features-plugin/node_modules/regjsgen/"
+  }
+}

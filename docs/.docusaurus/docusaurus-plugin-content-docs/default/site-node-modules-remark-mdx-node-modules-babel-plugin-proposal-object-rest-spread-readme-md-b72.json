@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/remark-mdx/node_modules/@babel/plugin-proposal-object-rest-spread/README",
+  "id": "node_modules/remark-mdx/node_modules/@babel/plugin-proposal-object-rest-spread/README",
+  "title": "@babel/plugin-proposal-object-rest-spread",
+  "description": "Compile object rest and spread to ES5",
+  "source": "@site/node_modules/remark-mdx/node_modules/@babel/plugin-proposal-object-rest-spread/README.md",
+  "sourceDirName": "node_modules/remark-mdx/node_modules/@babel/plugin-proposal-object-rest-spread",
+  "slug": "/node_modules/remark-mdx/node_modules/@babel/plugin-proposal-object-rest-spread/",
+  "permalink": "/consul-release-controller/node_modules/remark-mdx/node_modules/@babel/plugin-proposal-object-rest-spread/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/remark-mdx/node_modules/@babel/plugin-proposal-object-rest-spread/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "@babel/helper-plugin-utils",
+    "permalink": "/consul-release-controller/node_modules/remark-mdx/node_modules/@babel/helper-plugin-utils/"
+  },
+  "next": {
+    "title": "@babel/helper-plugin-utils",
+    "permalink": "/consul-release-controller/node_modules/remark-mdx/node_modules/@babel/plugin-proposal-object-rest-spread/node_modules/@babel/helper-plugin-utils/"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/babel-plugin-extract-import-names/readme",
+  "id": "node_modules/babel-plugin-extract-import-names/readme",
+  "title": "babel-plugin-extract-import-names",
+  "description": "Babel plugin that extracts all variable names from",
+  "source": "@site/node_modules/babel-plugin-extract-import-names/readme.md",
+  "sourceDirName": "node_modules/babel-plugin-extract-import-names",
+  "slug": "/node_modules/babel-plugin-extract-import-names/",
+  "permalink": "/consul-release-controller/node_modules/babel-plugin-extract-import-names/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/babel-plugin-extract-import-names/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "CHANGELOG",
+    "permalink": "/consul-release-controller/node_modules/babel-plugin-dynamic-import-node/CHANGELOG"
+  },
+  "next": {
+    "title": "@babel/helper-plugin-utils",
+    "permalink": "/consul-release-controller/node_modules/babel-plugin-extract-import-names/node_modules/@babel/helper-plugin-utils/"
+  }
+}

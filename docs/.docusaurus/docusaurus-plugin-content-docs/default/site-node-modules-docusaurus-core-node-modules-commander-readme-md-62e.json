@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@docusaurus/core/node_modules/commander/Readme",
+  "id": "node_modules/@docusaurus/core/node_modules/commander/Readme",
+  "title": "Commander.js",
+  "description": "Build Status",
+  "source": "@site/node_modules/@docusaurus/core/node_modules/commander/Readme.md",
+  "sourceDirName": "node_modules/@docusaurus/core/node_modules/commander",
+  "slug": "/node_modules/@docusaurus/core/node_modules/commander/",
+  "permalink": "/consul-release-controller/node_modules/@docusaurus/core/node_modules/commander/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@docusaurus/core/node_modules/commander/Readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "CHANGELOG",
+    "permalink": "/consul-release-controller/node_modules/@docusaurus/core/node_modules/babel-plugin-dynamic-import-node/CHANGELOG"
+  },
+  "next": {
+    "title": "Changelog",
+    "permalink": "/consul-release-controller/node_modules/@docusaurus/core/node_modules/commander/CHANGELOG"
+  }
+}

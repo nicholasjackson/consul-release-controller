@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/cheerio/node_modules/nth-check/README",
+  "id": "node_modules/cheerio/node_modules/nth-check/README",
+  "title": "nth-check [![Build Status](https://travis-ci.org/fb55/nth-check.svg)](https://travis-ci.org/fb55/nth-check)",
+  "description": "A performant nth-check parser & compiler.",
+  "source": "@site/node_modules/cheerio/node_modules/nth-check/README.md",
+  "sourceDirName": "node_modules/cheerio/node_modules/nth-check",
+  "slug": "/node_modules/cheerio/node_modules/nth-check/",
+  "permalink": "/consul-release-controller/node_modules/cheerio/node_modules/nth-check/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/cheerio/node_modules/nth-check/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "readme",
+    "permalink": "/consul-release-controller/node_modules/cheerio/node_modules/htmlparser2/node_modules/domutils/"
+  },
+  "next": {
+    "title": "cheerio-select [![NPM version](http://img.shields.io/npm/v/cheerio-select.svg)](https://npmjs.org/package/cheerio-select) [![Build Status](https://travis-ci.org/cheeriojs/cheerio-select.svg?branch=master)](http://travis-ci.org/cheeriojs/cheerio-select) [![Downloads](https://img.shields.io/npm/dm/cheerio-select.svg)](https://npmjs.org/package/cheerio-select) [![Coverage](https://coveralls.io/repos/cheeriojs/cheerio-select/badge.svg?branch=master)](https://coveralls.io/r/cheeriojs/cheerio-select)",
+    "permalink": "/consul-release-controller/node_modules/cheerio-select/"
+  }
+}

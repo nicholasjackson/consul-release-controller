@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/rxjs/README",
+  "id": "node_modules/rxjs/README",
+  "title": "<img src=\"docs_app/src/assets/images/logos/Rx_Logo_S.png\" alt=\"RxJS Logo\" width=\"86\" height=\"86\"> RxJS: Reactive Extensions For JavaScript",
+  "description": "CI",
+  "source": "@site/node_modules/rxjs/README.md",
+  "sourceDirName": "node_modules/rxjs",
+  "slug": "/node_modules/rxjs/",
+  "permalink": "/consul-release-controller/node_modules/rxjs/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/rxjs/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "run-parallel [![travis][travis-image]][travis-url] [![npm][npm-image]][npm-url] [![downloads][downloads-image]][downloads-url] [![javascript style guide][standard-image]][standard-url]",
+    "permalink": "/consul-release-controller/node_modules/run-parallel/"
+  },
+  "next": {
+    "title": "CHANGELOG",
+    "permalink": "/consul-release-controller/node_modules/rxjs/CHANGELOG"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/compressible/HISTORY",
+  "id": "node_modules/compressible/HISTORY",
+  "title": "2.0.18 / 2020-01-05",
+  "description": "* deps: mime-db@'>= 1.43.0 < 2'",
+  "source": "@site/node_modules/compressible/HISTORY.md",
+  "sourceDirName": "node_modules/compressible",
+  "slug": "/node_modules/compressible/HISTORY",
+  "permalink": "/consul-release-controller/node_modules/compressible/HISTORY",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/compressible/HISTORY.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "compressible",
+    "permalink": "/consul-release-controller/node_modules/compressible/"
+  },
+  "next": {
+    "title": "compression",
+    "permalink": "/consul-release-controller/node_modules/compression/"
+  }
+}

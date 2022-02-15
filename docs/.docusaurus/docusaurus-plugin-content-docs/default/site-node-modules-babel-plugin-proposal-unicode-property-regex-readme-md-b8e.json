@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@babel/plugin-proposal-unicode-property-regex/README",
+  "id": "node_modules/@babel/plugin-proposal-unicode-property-regex/README",
+  "title": "@babel/plugin-proposal-unicode-property-regex",
+  "description": "Compile Unicode property escapes in Unicode regular expressions to ES5.",
+  "source": "@site/node_modules/@babel/plugin-proposal-unicode-property-regex/README.md",
+  "sourceDirName": "node_modules/@babel/plugin-proposal-unicode-property-regex",
+  "slug": "/node_modules/@babel/plugin-proposal-unicode-property-regex/",
+  "permalink": "/consul-release-controller/node_modules/@babel/plugin-proposal-unicode-property-regex/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@babel/plugin-proposal-unicode-property-regex/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "@babel/plugin-proposal-private-property-in-object",
+    "permalink": "/consul-release-controller/node_modules/@babel/plugin-proposal-private-property-in-object/"
+  },
+  "next": {
+    "title": "@babel/plugin-syntax-async-generators",
+    "permalink": "/consul-release-controller/node_modules/@babel/plugin-syntax-async-generators/"
+  }
+}

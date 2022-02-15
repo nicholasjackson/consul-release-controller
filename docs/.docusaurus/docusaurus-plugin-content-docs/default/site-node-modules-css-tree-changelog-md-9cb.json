@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/css-tree/CHANGELOG",
+  "id": "node_modules/css-tree/CHANGELOG",
+  "title": "CHANGELOG",
+  "description": "1.1.3 (March 31, 2021)",
+  "source": "@site/node_modules/css-tree/CHANGELOG.md",
+  "sourceDirName": "node_modules/css-tree",
+  "slug": "/node_modules/css-tree/CHANGELOG",
+  "permalink": "/consul-release-controller/node_modules/css-tree/CHANGELOG",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/css-tree/CHANGELOG.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/css-tree/"
+  },
+  "next": {
+    "title": "css-what [![Build Status](https://secure.travis-ci.org/fb55/css-what.svg?branch=master)](http://travis-ci.org/fb55/css-what)",
+    "permalink": "/consul-release-controller/node_modules/css-what/"
+  }
+}

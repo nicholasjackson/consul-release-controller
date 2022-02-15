@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/rc/node_modules/strip-json-comments/readme",
+  "id": "node_modules/rc/node_modules/strip-json-comments/readme",
+  "title": "strip-json-comments [![Build Status](https://travis-ci.org/sindresorhus/strip-json-comments.svg?branch=master)](https://travis-ci.org/sindresorhus/strip-json-comments)",
+  "description": "Strip comments from JSON. Lets you use comments in your JSON files!",
+  "source": "@site/node_modules/rc/node_modules/strip-json-comments/readme.md",
+  "sourceDirName": "node_modules/rc/node_modules/strip-json-comments",
+  "slug": "/node_modules/rc/node_modules/strip-json-comments/",
+  "permalink": "/consul-release-controller/node_modules/rc/node_modules/strip-json-comments/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/rc/node_modules/strip-json-comments/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "rc",
+    "permalink": "/consul-release-controller/node_modules/rc/"
+  },
+  "next": {
+    "title": "react",
+    "permalink": "/consul-release-controller/node_modules/react/"
+  }
+}

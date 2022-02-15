@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/type-is/README",
+  "id": "node_modules/type-is/README",
+  "title": "type-is",
+  "description": "NPM Version",
+  "source": "@site/node_modules/type-is/README.md",
+  "sourceDirName": "node_modules/type-is",
+  "slug": "/node_modules/type-is/",
+  "permalink": "/consul-release-controller/node_modules/type-is/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/type-is/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "readme",
+    "permalink": "/consul-release-controller/node_modules/type-fest/"
+  },
+  "next": {
+    "title": "1.6.18 / 2019-04-26",
+    "permalink": "/consul-release-controller/node_modules/type-is/HISTORY"
+  }
+}

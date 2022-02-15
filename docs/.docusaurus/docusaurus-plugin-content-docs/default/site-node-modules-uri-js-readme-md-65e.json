@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/uri-js/README",
+  "id": "node_modules/uri-js/README",
+  "title": "URI.js",
+  "description": "URI.js is an RFC 3986 compliant, scheme extendable URI parsing/validating/resolving library for all JavaScript environments (browsers, Node.js, etc).",
+  "source": "@site/node_modules/uri-js/README.md",
+  "sourceDirName": "node_modules/uri-js",
+  "slug": "/node_modules/uri-js/",
+  "permalink": "/consul-release-controller/node_modules/uri-js/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/uri-js/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "changes log",
+    "permalink": "/consul-release-controller/node_modules/update-notifier/node_modules/semver/CHANGELOG"
+  },
+  "next": {
+    "title": "node-url",
+    "permalink": "/consul-release-controller/node_modules/url/"
+  }
+}

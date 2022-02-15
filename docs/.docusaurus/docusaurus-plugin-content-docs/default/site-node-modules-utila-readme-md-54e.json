@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/utila/README",
+  "id": "node_modules/utila/README",
+  "title": "README",
+  "description": "notareplacementforunderscore",
+  "source": "@site/node_modules/utila/README.md",
+  "sourceDirName": "node_modules/utila",
+  "slug": "/node_modules/utila/",
+  "permalink": "/consul-release-controller/node_modules/utila/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/utila/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "1.0.2 / 2015-10-07",
+    "permalink": "/consul-release-controller/node_modules/util-deprecate/History"
+  },
+  "next": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/utility-types/"
+  }
+}

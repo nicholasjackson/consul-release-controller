@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/lodash.filter/README",
+  "id": "node_modules/lodash.filter/README",
+  "title": "lodash.filter v4.6.0",
+  "description": "The lodash method _.filter exported as a Node.js module.",
+  "source": "@site/node_modules/lodash.filter/README.md",
+  "sourceDirName": "node_modules/lodash.filter",
+  "slug": "/node_modules/lodash.filter/",
+  "permalink": "/consul-release-controller/node_modules/lodash.filter/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/lodash.filter/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "lodash.defaults v4.2.0",
+    "permalink": "/consul-release-controller/node_modules/lodash.defaults/"
+  },
+  "next": {
+    "title": "lodash.flatten v4.4.0",
+    "permalink": "/consul-release-controller/node_modules/lodash.flatten/"
+  }
+}

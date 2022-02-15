@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/ansi-styles/readme",
+  "id": "node_modules/ansi-styles/readme",
+  "title": "ansi-styles [![Build Status](https://travis-ci.org/chalk/ansi-styles.svg?branch=master)](https://travis-ci.org/chalk/ansi-styles)",
+  "description": "ANSI escape codes for styling strings in the terminal",
+  "source": "@site/node_modules/ansi-styles/readme.md",
+  "sourceDirName": "node_modules/ansi-styles",
+  "slug": "/node_modules/ansi-styles/",
+  "permalink": "/consul-release-controller/node_modules/ansi-styles/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/ansi-styles/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "ansi-regex",
+    "permalink": "/consul-release-controller/node_modules/ansi-regex/"
+  },
+  "next": {
+    "title": "anymatch [![Build Status](https://travis-ci.org/micromatch/anymatch.svg?branch=master)](https://travis-ci.org/micromatch/anymatch) [![Coverage Status](https://img.shields.io/coveralls/micromatch/anymatch.svg?branch=master)](https://coveralls.io/r/micromatch/anymatch?branch=master)",
+    "permalink": "/consul-release-controller/node_modules/anymatch/"
+  }
+}

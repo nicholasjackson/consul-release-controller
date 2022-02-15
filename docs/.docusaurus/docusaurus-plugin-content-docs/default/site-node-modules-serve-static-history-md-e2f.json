@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/serve-static/HISTORY",
+  "id": "node_modules/serve-static/HISTORY",
+  "title": "1.14.2 / 2021-12-15",
+  "description": "* deps: send@0.17.2",
+  "source": "@site/node_modules/serve-static/HISTORY.md",
+  "sourceDirName": "node_modules/serve-static",
+  "slug": "/node_modules/serve-static/HISTORY",
+  "permalink": "/consul-release-controller/node_modules/serve-static/HISTORY",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/serve-static/HISTORY.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "serve-static",
+    "permalink": "/consul-release-controller/node_modules/serve-static/"
+  },
+  "next": {
+    "title": "Polyfill for `Object.setPrototypeOf`",
+    "permalink": "/consul-release-controller/node_modules/setprototypeof/"
+  }
+}

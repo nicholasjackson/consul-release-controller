@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/trim-trailing-lines/readme",
+  "id": "node_modules/trim-trailing-lines/readme",
+  "title": "trim-trailing-lines",
+  "description": "Build",
+  "source": "@site/node_modules/trim-trailing-lines/readme.md",
+  "sourceDirName": "node_modules/trim-trailing-lines",
+  "slug": "/node_modules/trim-trailing-lines/",
+  "permalink": "/consul-release-controller/node_modules/trim-trailing-lines/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/trim-trailing-lines/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "0.0.1 / 2010-01-03",
+    "permalink": "/consul-release-controller/node_modules/trim/History"
+  },
+  "next": {
+    "title": "trough",
+    "permalink": "/consul-release-controller/node_modules/trough/"
+  }
+}

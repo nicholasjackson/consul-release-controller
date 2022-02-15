@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/prism-react-renderer/README",
+  "id": "node_modules/prism-react-renderer/README",
+  "title": "README",
+  "description": "Maintenance Status",
+  "source": "@site/node_modules/prism-react-renderer/README.md",
+  "sourceDirName": "node_modules/prism-react-renderer",
+  "slug": "/node_modules/prism-react-renderer/",
+  "permalink": "/consul-release-controller/node_modules/prism-react-renderer/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/prism-react-renderer/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "pretty-time [![NPM version](https://img.shields.io/npm/v/pretty-time.svg?style=flat)](https://www.npmjs.com/package/pretty-time) [![NPM monthly downloads](https://img.shields.io/npm/dm/pretty-time.svg?style=flat)](https://npmjs.org/package/pretty-time) [![NPM total downloads](https://img.shields.io/npm/dt/pretty-time.svg?style=flat)](https://npmjs.org/package/pretty-time) [![Linux Build Status](https://img.shields.io/travis/jonschlinkert/pretty-time.svg?style=flat&label=Travis)](https://travis-ci.org/jonschlinkert/pretty-time)",
+    "permalink": "/consul-release-controller/node_modules/pretty-time/"
+  },
+  "next": {
+    "title": "[Prism](https://prismjs.com/)",
+    "permalink": "/consul-release-controller/node_modules/prismjs/"
+  }
+}

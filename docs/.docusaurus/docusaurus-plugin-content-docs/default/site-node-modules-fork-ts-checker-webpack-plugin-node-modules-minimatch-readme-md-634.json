@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/fork-ts-checker-webpack-plugin/node_modules/minimatch/README",
+  "id": "node_modules/fork-ts-checker-webpack-plugin/node_modules/minimatch/README",
+  "title": "minimatch",
+  "description": "A minimal matching utility.",
+  "source": "@site/node_modules/fork-ts-checker-webpack-plugin/node_modules/minimatch/README.md",
+  "sourceDirName": "node_modules/fork-ts-checker-webpack-plugin/node_modules/minimatch",
+  "slug": "/node_modules/fork-ts-checker-webpack-plugin/node_modules/minimatch/",
+  "permalink": "/consul-release-controller/node_modules/fork-ts-checker-webpack-plugin/node_modules/minimatch/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/fork-ts-checker-webpack-plugin/node_modules/minimatch/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "CHANGELOG",
+    "permalink": "/consul-release-controller/node_modules/fork-ts-checker-webpack-plugin/node_modules/fs-extra/CHANGELOG"
+  },
+  "next": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/fork-ts-checker-webpack-plugin/node_modules/schema-utils/"
+  }
+}

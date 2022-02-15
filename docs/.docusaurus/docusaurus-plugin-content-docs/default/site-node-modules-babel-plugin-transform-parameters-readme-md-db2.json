@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@babel/plugin-transform-parameters/README",
+  "id": "node_modules/@babel/plugin-transform-parameters/README",
+  "title": "@babel/plugin-transform-parameters",
+  "description": "Compile ES2015 default and rest parameters to ES5",
+  "source": "@site/node_modules/@babel/plugin-transform-parameters/README.md",
+  "sourceDirName": "node_modules/@babel/plugin-transform-parameters",
+  "slug": "/node_modules/@babel/plugin-transform-parameters/",
+  "permalink": "/consul-release-controller/node_modules/@babel/plugin-transform-parameters/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@babel/plugin-transform-parameters/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "@babel/plugin-transform-object-super",
+    "permalink": "/consul-release-controller/node_modules/@babel/plugin-transform-object-super/"
+  },
+  "next": {
+    "title": "@babel/plugin-transform-property-literals",
+    "permalink": "/consul-release-controller/node_modules/@babel/plugin-transform-property-literals/"
+  }
+}

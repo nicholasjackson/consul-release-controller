@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/glob/README",
+  "id": "node_modules/glob/README",
+  "title": "Glob",
+  "description": "Match files using the patterns the shell uses, like stars and stuff.",
+  "source": "@site/node_modules/glob/README.md",
+  "sourceDirName": "node_modules/glob",
+  "slug": "/node_modules/glob/",
+  "permalink": "/consul-release-controller/node_modules/glob/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/glob/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "github-slugger",
+    "permalink": "/consul-release-controller/node_modules/github-slugger/"
+  },
+  "next": {
+    "title": "minimatch",
+    "permalink": "/consul-release-controller/node_modules/glob/node_modules/minimatch/"
+  }
+}

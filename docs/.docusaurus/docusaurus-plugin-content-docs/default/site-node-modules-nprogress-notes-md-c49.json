@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/nprogress/Notes",
+  "id": "node_modules/nprogress/Notes",
+  "title": "Notes",
+  "description": "Testing",
+  "source": "@site/node_modules/nprogress/Notes.md",
+  "sourceDirName": "node_modules/nprogress",
+  "slug": "/node_modules/nprogress/Notes",
+  "permalink": "/consul-release-controller/node_modules/nprogress/Notes",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/nprogress/Notes.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "License",
+    "permalink": "/consul-release-controller/node_modules/nprogress/License"
+  },
+  "next": {
+    "title": "nth-check [![Build Status](https://travis-ci.org/fb55/nth-check.svg)](https://travis-ci.org/fb55/nth-check)",
+    "permalink": "/consul-release-controller/node_modules/nth-check/"
+  }
+}

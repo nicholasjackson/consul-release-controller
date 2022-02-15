@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/buble-jsx-only/CHANGELOG",
+  "id": "node_modules/buble-jsx-only/CHANGELOG",
+  "title": "buble changelog",
+  "description": "0.19.8 (2019-07-03)",
+  "source": "@site/node_modules/buble-jsx-only/CHANGELOG.md",
+  "sourceDirName": "node_modules/buble-jsx-only",
+  "slug": "/node_modules/buble-jsx-only/CHANGELOG",
+  "permalink": "/consul-release-controller/node_modules/buble-jsx-only/CHANGELOG",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/buble-jsx-only/CHANGELOG.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Bublé",
+    "permalink": "/consul-release-controller/node_modules/buble-jsx-only/"
+  },
+  "next": {
+    "title": "LICENSE",
+    "permalink": "/consul-release-controller/node_modules/buble-jsx-only/LICENSE"
+  }
+}

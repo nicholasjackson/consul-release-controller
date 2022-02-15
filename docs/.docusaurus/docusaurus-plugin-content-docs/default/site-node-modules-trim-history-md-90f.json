@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/trim/History",
+  "id": "node_modules/trim/History",
+  "title": "0.0.1 / 2010-01-03",
+  "description": "* Initial release",
+  "source": "@site/node_modules/trim/History.md",
+  "sourceDirName": "node_modules/trim",
+  "slug": "/node_modules/trim/History",
+  "permalink": "/consul-release-controller/node_modules/trim/History",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/trim/History.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "trim",
+    "permalink": "/consul-release-controller/node_modules/trim/"
+  },
+  "next": {
+    "title": "trim-trailing-lines",
+    "permalink": "/consul-release-controller/node_modules/trim-trailing-lines/"
+  }
+}

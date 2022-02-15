@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@babel/plugin-transform-react-jsx/node_modules/@babel/plugin-syntax-jsx/README",
+  "id": "node_modules/@babel/plugin-transform-react-jsx/node_modules/@babel/plugin-syntax-jsx/README",
+  "title": "@babel/plugin-syntax-jsx",
+  "description": "Allow parsing of jsx",
+  "source": "@site/node_modules/@babel/plugin-transform-react-jsx/node_modules/@babel/plugin-syntax-jsx/README.md",
+  "sourceDirName": "node_modules/@babel/plugin-transform-react-jsx/node_modules/@babel/plugin-syntax-jsx",
+  "slug": "/node_modules/@babel/plugin-transform-react-jsx/node_modules/@babel/plugin-syntax-jsx/",
+  "permalink": "/consul-release-controller/node_modules/@babel/plugin-transform-react-jsx/node_modules/@babel/plugin-syntax-jsx/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@babel/plugin-transform-react-jsx/node_modules/@babel/plugin-syntax-jsx/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "@babel/plugin-transform-react-jsx",
+    "permalink": "/consul-release-controller/node_modules/@babel/plugin-transform-react-jsx/"
+  },
+  "next": {
+    "title": "@babel/plugin-transform-react-jsx-development",
+    "permalink": "/consul-release-controller/node_modules/@babel/plugin-transform-react-jsx-development/"
+  }
+}

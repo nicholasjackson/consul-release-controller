@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/detect-port/HISTORY",
+  "id": "node_modules/detect-port/HISTORY",
+  "title": "1.3.0 / 2018-11-20",
+  "description": "features",
+  "source": "@site/node_modules/detect-port/HISTORY.md",
+  "sourceDirName": "node_modules/detect-port",
+  "slug": "/node_modules/detect-port/HISTORY",
+  "permalink": "/consul-release-controller/node_modules/detect-port/HISTORY",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/detect-port/HISTORY.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/detect-port/"
+  },
+  "next": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/detect-port-alt/"
+  }
+}

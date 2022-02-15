@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@mdx-js/mdx/node_modules/debug/README",
+  "id": "node_modules/@mdx-js/mdx/node_modules/debug/README",
+  "title": "debug",
+  "description": "Build Status  Coverage Status  Slack OpenCollective",
+  "source": "@site/node_modules/@mdx-js/mdx/node_modules/debug/README.md",
+  "sourceDirName": "node_modules/@mdx-js/mdx/node_modules/debug",
+  "slug": "/node_modules/@mdx-js/mdx/node_modules/debug/",
+  "permalink": "/consul-release-controller/node_modules/@mdx-js/mdx/node_modules/debug/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@mdx-js/mdx/node_modules/debug/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "babel-plugin-apply-mdx-type-prop",
+    "permalink": "/consul-release-controller/node_modules/@mdx-js/mdx/node_modules/babel-plugin-apply-mdx-type-prop/"
+  },
+  "next": {
+    "title": "ms",
+    "permalink": "/consul-release-controller/node_modules/@mdx-js/mdx/node_modules/ms/"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@babel/plugin-transform-function-name/README",
+  "id": "node_modules/@babel/plugin-transform-function-name/README",
+  "title": "@babel/plugin-transform-function-name",
+  "description": "Apply ES2015 function.name semantics to all functions",
+  "source": "@site/node_modules/@babel/plugin-transform-function-name/README.md",
+  "sourceDirName": "node_modules/@babel/plugin-transform-function-name",
+  "slug": "/node_modules/@babel/plugin-transform-function-name/",
+  "permalink": "/consul-release-controller/node_modules/@babel/plugin-transform-function-name/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@babel/plugin-transform-function-name/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "@babel/plugin-transform-for-of",
+    "permalink": "/consul-release-controller/node_modules/@babel/plugin-transform-for-of/"
+  },
+  "next": {
+    "title": "@babel/plugin-transform-literals",
+    "permalink": "/consul-release-controller/node_modules/@babel/plugin-transform-literals/"
+  }
+}

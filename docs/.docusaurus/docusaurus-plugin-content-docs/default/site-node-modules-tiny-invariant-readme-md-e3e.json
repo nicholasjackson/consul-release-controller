@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/tiny-invariant/README",
+  "id": "node_modules/tiny-invariant/README",
+  "title": "tiny-invariant 🔬💥",
+  "description": "Build Status",
+  "source": "@site/node_modules/tiny-invariant/README.md",
+  "sourceDirName": "node_modules/tiny-invariant",
+  "slug": "/node_modules/tiny-invariant/",
+  "permalink": "/consul-release-controller/node_modules/tiny-invariant/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/tiny-invariant/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "LICENSE",
+    "permalink": "/consul-release-controller/node_modules/timsort/LICENSE"
+  },
+  "next": {
+    "title": "tiny-warning 🔬⚠️",
+    "permalink": "/consul-release-controller/node_modules/tiny-warning/"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/colorette/README",
+  "id": "node_modules/colorette/README",
+  "title": "🌈Colorette",
+  "description": "Easily set your terminal text color & styles.",
+  "source": "@site/node_modules/colorette/README.md",
+  "sourceDirName": "node_modules/colorette",
+  "slug": "/node_modules/colorette/",
+  "permalink": "/consul-release-controller/node_modules/colorette/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/colorette/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "LICENSE",
+    "permalink": "/consul-release-controller/node_modules/colord/LICENSE"
+  },
+  "next": {
+    "title": "LICENSE",
+    "permalink": "/consul-release-controller/node_modules/colorette/LICENSE"
+  }
+}

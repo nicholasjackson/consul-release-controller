@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/mdast-util-definitions/readme",
+  "id": "node_modules/mdast-util-definitions/readme",
+  "title": "mdast-util-definitions",
+  "description": "Build",
+  "source": "@site/node_modules/mdast-util-definitions/readme.md",
+  "sourceDirName": "node_modules/mdast-util-definitions",
+  "slug": "/node_modules/mdast-util-definitions/",
+  "permalink": "/consul-release-controller/node_modules/mdast-util-definitions/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/mdast-util-definitions/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "unist-util-remove",
+    "permalink": "/consul-release-controller/node_modules/mdast-squeeze-paragraphs/node_modules/unist-util-remove/"
+  },
+  "next": {
+    "title": "mdast-util-to-hast",
+    "permalink": "/consul-release-controller/node_modules/mdast-util-to-hast/"
+  }
+}

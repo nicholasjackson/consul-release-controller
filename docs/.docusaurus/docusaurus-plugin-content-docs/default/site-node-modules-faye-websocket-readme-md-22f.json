@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/faye-websocket/README",
+  "id": "node_modules/faye-websocket/README",
+  "title": "faye-websocket",
+  "description": "This is a general-purpose WebSocket implementation extracted from the",
+  "source": "@site/node_modules/faye-websocket/README.md",
+  "sourceDirName": "node_modules/faye-websocket",
+  "slug": "/node_modules/faye-websocket/",
+  "permalink": "/consul-release-controller/node_modules/faye-websocket/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/faye-websocket/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "fastq",
+    "permalink": "/consul-release-controller/node_modules/fastq/"
+  },
+  "next": {
+    "title": "CHANGELOG",
+    "permalink": "/consul-release-controller/node_modules/faye-websocket/CHANGELOG"
+  }
+}

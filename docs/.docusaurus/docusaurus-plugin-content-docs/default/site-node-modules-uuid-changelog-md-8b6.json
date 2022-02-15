@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/uuid/CHANGELOG",
+  "id": "node_modules/uuid/CHANGELOG",
+  "title": "Changelog",
+  "description": "All notable changes to this project will be documented in this file. See standard-version for commit guidelines.",
+  "source": "@site/node_modules/uuid/CHANGELOG.md",
+  "sourceDirName": "node_modules/uuid",
+  "slug": "/node_modules/uuid/CHANGELOG",
+  "permalink": "/consul-release-controller/node_modules/uuid/CHANGELOG",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/uuid/CHANGELOG.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/uuid/"
+  },
+  "next": {
+    "title": "Contributing",
+    "permalink": "/consul-release-controller/node_modules/uuid/CONTRIBUTING"
+  }
+}

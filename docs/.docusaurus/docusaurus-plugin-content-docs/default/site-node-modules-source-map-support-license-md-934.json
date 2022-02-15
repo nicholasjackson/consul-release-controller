@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/source-map-support/LICENSE",
+  "id": "node_modules/source-map-support/LICENSE",
+  "title": "LICENSE",
+  "description": "The MIT License (MIT)",
+  "source": "@site/node_modules/source-map-support/LICENSE.md",
+  "sourceDirName": "node_modules/source-map-support",
+  "slug": "/node_modules/source-map-support/LICENSE",
+  "permalink": "/consul-release-controller/node_modules/source-map-support/LICENSE",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/source-map-support/LICENSE.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Source Map Support",
+    "permalink": "/consul-release-controller/node_modules/source-map-support/"
+  },
+  "next": {
+    "title": "sourcemap-codec",
+    "permalink": "/consul-release-controller/node_modules/sourcemap-codec/"
+  }
+}

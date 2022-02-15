@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@babel/helper-member-expression-to-functions/README",
+  "id": "node_modules/@babel/helper-member-expression-to-functions/README",
+  "title": "@babel/helper-member-expression-to-functions",
+  "description": "Helper function to replace certain member expressions with function calls",
+  "source": "@site/node_modules/@babel/helper-member-expression-to-functions/README.md",
+  "sourceDirName": "node_modules/@babel/helper-member-expression-to-functions",
+  "slug": "/node_modules/@babel/helper-member-expression-to-functions/",
+  "permalink": "/consul-release-controller/node_modules/@babel/helper-member-expression-to-functions/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@babel/helper-member-expression-to-functions/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "@babel/helper-hoist-variables",
+    "permalink": "/consul-release-controller/node_modules/@babel/helper-hoist-variables/"
+  },
+  "next": {
+    "title": "@babel/helper-module-imports",
+    "permalink": "/consul-release-controller/node_modules/@babel/helper-module-imports/"
+  }
+}

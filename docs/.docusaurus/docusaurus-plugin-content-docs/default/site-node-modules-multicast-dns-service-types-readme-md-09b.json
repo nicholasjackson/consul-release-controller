@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/multicast-dns-service-types/README",
+  "id": "node_modules/multicast-dns-service-types/README",
+  "title": "multicast-dns-service-types",
+  "description": "Parse and stringify mdns service types",
+  "source": "@site/node_modules/multicast-dns-service-types/README.md",
+  "sourceDirName": "node_modules/multicast-dns-service-types",
+  "slug": "/node_modules/multicast-dns-service-types/",
+  "permalink": "/consul-release-controller/node_modules/multicast-dns-service-types/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/multicast-dns-service-types/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "multicast-dns",
+    "permalink": "/consul-release-controller/node_modules/multicast-dns/"
+  },
+  "next": {
+    "title": "Nano ID",
+    "permalink": "/consul-release-controller/node_modules/nanoid/"
+  }
+}

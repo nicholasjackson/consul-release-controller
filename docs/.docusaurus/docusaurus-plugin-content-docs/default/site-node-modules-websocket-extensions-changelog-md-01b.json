@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/websocket-extensions/CHANGELOG",
+  "id": "node_modules/websocket-extensions/CHANGELOG",
+  "title": "CHANGELOG",
+  "description": "0.1.4 / 2020-06-02",
+  "source": "@site/node_modules/websocket-extensions/CHANGELOG.md",
+  "sourceDirName": "node_modules/websocket-extensions",
+  "slug": "/node_modules/websocket-extensions/CHANGELOG",
+  "permalink": "/consul-release-controller/node_modules/websocket-extensions/CHANGELOG",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/websocket-extensions/CHANGELOG.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "websocket-extensions [![Build status](https://secure.travis-ci.org/faye/websocket-extensions-node.svg)](http://travis-ci.org/faye/websocket-extensions-node)",
+    "permalink": "/consul-release-controller/node_modules/websocket-extensions/"
+  },
+  "next": {
+    "title": "LICENSE",
+    "permalink": "/consul-release-controller/node_modules/websocket-extensions/LICENSE"
+  }
+}

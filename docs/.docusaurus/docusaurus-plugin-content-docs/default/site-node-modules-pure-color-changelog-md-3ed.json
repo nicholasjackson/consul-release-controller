@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/pure-color/CHANGELOG",
+  "id": "node_modules/pure-color/CHANGELOG",
+  "title": "Changelog",
+  "description": "v1.3.0",
+  "source": "@site/node_modules/pure-color/CHANGELOG.md",
+  "sourceDirName": "node_modules/pure-color",
+  "slug": "/node_modules/pure-color/CHANGELOG",
+  "permalink": "/consul-release-controller/node_modules/pure-color/CHANGELOG",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/pure-color/CHANGELOG.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "pure-color",
+    "permalink": "/consul-release-controller/node_modules/pure-color/"
+  },
+  "next": {
+    "title": "qs <sup>[![Version Badge][2]][1]</sup>",
+    "permalink": "/consul-release-controller/node_modules/qs/"
+  }
+}

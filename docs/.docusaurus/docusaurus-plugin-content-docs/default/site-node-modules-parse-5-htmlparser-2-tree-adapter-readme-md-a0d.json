@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/parse5-htmlparser2-tree-adapter/README",
+  "id": "node_modules/parse5-htmlparser2-tree-adapter/README",
+  "title": "README",
+  "description": "parse5-htmlparser2-tree-adapter",
+  "source": "@site/node_modules/parse5-htmlparser2-tree-adapter/README.md",
+  "sourceDirName": "node_modules/parse5-htmlparser2-tree-adapter",
+  "slug": "/node_modules/parse5-htmlparser2-tree-adapter/",
+  "permalink": "/consul-release-controller/node_modules/parse5-htmlparser2-tree-adapter/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/parse5-htmlparser2-tree-adapter/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/parse5/"
+  },
+  "next": {
+    "title": "parseurl",
+    "permalink": "/consul-release-controller/node_modules/parseurl/"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/on-headers/README",
+  "id": "node_modules/on-headers/README",
+  "title": "on-headers",
+  "description": "NPM Version",
+  "source": "@site/node_modules/on-headers/README.md",
+  "sourceDirName": "node_modules/on-headers",
+  "slug": "/node_modules/on-headers/",
+  "permalink": "/consul-release-controller/node_modules/on-headers/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/on-headers/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "2.3.0 / 2015-05-26",
+    "permalink": "/consul-release-controller/node_modules/on-finished/HISTORY"
+  },
+  "next": {
+    "title": "1.0.2 / 2019-02-21",
+    "permalink": "/consul-release-controller/node_modules/on-headers/HISTORY"
+  }
+}

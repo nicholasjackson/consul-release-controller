@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/asap/LICENSE",
+  "id": "node_modules/asap/LICENSE",
+  "title": "LICENSE",
+  "description": "Copyright 2009–2014 Contributors. All rights reserved.",
+  "source": "@site/node_modules/asap/LICENSE.md",
+  "sourceDirName": "node_modules/asap",
+  "slug": "/node_modules/asap/LICENSE",
+  "permalink": "/consul-release-controller/node_modules/asap/LICENSE",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/asap/LICENSE.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "CHANGES",
+    "permalink": "/consul-release-controller/node_modules/asap/CHANGES"
+  },
+  "next": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/async/"
+  }
+}

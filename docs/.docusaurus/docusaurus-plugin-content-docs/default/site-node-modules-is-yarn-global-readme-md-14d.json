@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/is-yarn-global/README",
+  "id": "node_modules/is-yarn-global/README",
+  "title": "is-yarn-global",
+  "description": "Check if installed by yarn globally without any fs calls",
+  "source": "@site/node_modules/is-yarn-global/README.md",
+  "sourceDirName": "node_modules/is-yarn-global",
+  "slug": "/node_modules/is-yarn-global/",
+  "permalink": "/consul-release-controller/node_modules/is-yarn-global/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/is-yarn-global/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "is-wsl [![Build Status](https://travis-ci.org/sindresorhus/is-wsl.svg?branch=master)](https://travis-ci.org/sindresorhus/is-wsl)",
+    "permalink": "/consul-release-controller/node_modules/is-wsl/"
+  },
+  "next": {
+    "title": "isarray",
+    "permalink": "/consul-release-controller/node_modules/isarray/"
+  }
+}

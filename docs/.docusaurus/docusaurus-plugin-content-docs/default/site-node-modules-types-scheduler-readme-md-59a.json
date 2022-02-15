@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@types/scheduler/README",
+  "id": "node_modules/@types/scheduler/README",
+  "title": "Installation",
+  "description": "npm install --save @types/scheduler",
+  "source": "@site/node_modules/@types/scheduler/README.md",
+  "sourceDirName": "node_modules/@types/scheduler",
+  "slug": "/node_modules/@types/scheduler/",
+  "permalink": "/consul-release-controller/node_modules/@types/scheduler/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@types/scheduler/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Installation",
+    "permalink": "/consul-release-controller/node_modules/@types/sax/"
+  },
+  "next": {
+    "title": "Installation",
+    "permalink": "/consul-release-controller/node_modules/@types/serve-index/"
+  }
+}

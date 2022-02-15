@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/postcss-normalize-positions/README",
+  "id": "node_modules/postcss-normalize-positions/README",
+  "title": "[postcss][postcss]-normalize-positions",
+  "description": "Normalize positions with PostCSS.",
+  "source": "@site/node_modules/postcss-normalize-positions/README.md",
+  "sourceDirName": "node_modules/postcss-normalize-positions",
+  "slug": "/node_modules/postcss-normalize-positions/",
+  "permalink": "/consul-release-controller/node_modules/postcss-normalize-positions/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/postcss-normalize-positions/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "[postcss][postcss]-normalize-display-values",
+    "permalink": "/consul-release-controller/node_modules/postcss-normalize-display-values/"
+  },
+  "next": {
+    "title": "[postcss][postcss]-normalize-repeat-style",
+    "permalink": "/consul-release-controller/node_modules/postcss-normalize-repeat-style/"
+  }
+}

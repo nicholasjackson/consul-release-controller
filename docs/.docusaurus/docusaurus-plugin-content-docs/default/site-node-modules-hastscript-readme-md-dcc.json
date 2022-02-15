@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/hastscript/readme",
+  "id": "node_modules/hastscript/readme",
+  "title": "hastscript",
+  "description": "Build",
+  "source": "@site/node_modules/hastscript/readme.md",
+  "sourceDirName": "node_modules/hastscript",
+  "slug": "/node_modules/hastscript/",
+  "permalink": "/consul-release-controller/node_modules/hastscript/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/hastscript/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "hast-util-to-parse5",
+    "permalink": "/consul-release-controller/node_modules/hast-util-to-parse5/"
+  },
+  "next": {
+    "title": "he [![Build status](https://travis-ci.org/mathiasbynens/he.svg?branch=master)](https://travis-ci.org/mathiasbynens/he) [![Code coverage status](https://codecov.io/github/mathiasbynens/he/coverage.svg?branch=master)](https://codecov.io/github/mathiasbynens/he?branch=master) [![Dependency status](https://gemnasium.com/mathiasbynens/he.svg)](https://gemnasium.com/mathiasbynens/he)",
+    "permalink": "/consul-release-controller/node_modules/he/"
+  }
+}

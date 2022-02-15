@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/shelljs/CHANGELOG",
+  "id": "node_modules/shelljs/CHANGELOG",
+  "title": "Change Log",
+  "description": "Unreleased",
+  "source": "@site/node_modules/shelljs/CHANGELOG.md",
+  "sourceDirName": "node_modules/shelljs",
+  "slug": "/node_modules/shelljs/CHANGELOG",
+  "permalink": "/consul-release-controller/node_modules/shelljs/CHANGELOG",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/shelljs/CHANGELOG.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "ShellJS - Unix shell commands for Node.js",
+    "permalink": "/consul-release-controller/node_modules/shelljs/"
+  },
+  "next": {
+    "title": "signal-exit",
+    "permalink": "/consul-release-controller/node_modules/signal-exit/"
+  }
+}

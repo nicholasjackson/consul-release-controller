@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@babel/helper-explode-assignable-expression/README",
+  "id": "node_modules/@babel/helper-explode-assignable-expression/README",
+  "title": "@babel/helper-explode-assignable-expression",
+  "description": "Helper function to explode an assignable expression",
+  "source": "@site/node_modules/@babel/helper-explode-assignable-expression/README.md",
+  "sourceDirName": "node_modules/@babel/helper-explode-assignable-expression",
+  "slug": "/node_modules/@babel/helper-explode-assignable-expression/",
+  "permalink": "/consul-release-controller/node_modules/@babel/helper-explode-assignable-expression/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@babel/helper-explode-assignable-expression/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "@babel/helper-environment-visitor",
+    "permalink": "/consul-release-controller/node_modules/@babel/helper-environment-visitor/"
+  },
+  "next": {
+    "title": "@babel/helper-function-name",
+    "permalink": "/consul-release-controller/node_modules/@babel/helper-function-name/"
+  }
+}

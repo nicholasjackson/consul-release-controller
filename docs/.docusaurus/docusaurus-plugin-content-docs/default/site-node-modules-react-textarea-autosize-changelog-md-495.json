@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/react-textarea-autosize/CHANGELOG",
+  "id": "node_modules/react-textarea-autosize/CHANGELOG",
+  "title": "react-textarea-autosize",
+  "description": "8.3.3",
+  "source": "@site/node_modules/react-textarea-autosize/CHANGELOG.md",
+  "sourceDirName": "node_modules/react-textarea-autosize",
+  "slug": "/node_modules/react-textarea-autosize/CHANGELOG",
+  "permalink": "/consul-release-controller/node_modules/react-textarea-autosize/CHANGELOG",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/react-textarea-autosize/CHANGELOG.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/react-textarea-autosize/"
+  },
+  "next": {
+    "title": "readable-stream",
+    "permalink": "/consul-release-controller/node_modules/readable-stream/"
+  }
+}

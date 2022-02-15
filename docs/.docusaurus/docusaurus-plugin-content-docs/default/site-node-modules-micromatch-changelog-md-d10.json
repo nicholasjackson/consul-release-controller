@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/micromatch/CHANGELOG",
+  "id": "node_modules/micromatch/CHANGELOG",
+  "title": "Release history",
+  "description": "All notable changes to this project will be documented in this file.",
+  "source": "@site/node_modules/micromatch/CHANGELOG.md",
+  "sourceDirName": "node_modules/micromatch",
+  "slug": "/node_modules/micromatch/CHANGELOG",
+  "permalink": "/consul-release-controller/node_modules/micromatch/CHANGELOG",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/micromatch/CHANGELOG.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "micromatch [![NPM version](https://img.shields.io/npm/v/micromatch.svg?style=flat)](https://www.npmjs.com/package/micromatch) [![NPM monthly downloads](https://img.shields.io/npm/dm/micromatch.svg?style=flat)](https://npmjs.org/package/micromatch) [![NPM total downloads](https://img.shields.io/npm/dt/micromatch.svg?style=flat)](https://npmjs.org/package/micromatch) [![Linux Build Status](https://img.shields.io/travis/micromatch/micromatch.svg?style=flat&label=Travis)](https://travis-ci.org/micromatch/micromatch)",
+    "permalink": "/consul-release-controller/node_modules/micromatch/"
+  },
+  "next": {
+    "title": "mime",
+    "permalink": "/consul-release-controller/node_modules/mime/"
+  }
+}

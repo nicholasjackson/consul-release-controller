@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@types/express-serve-static-core/README",
+  "id": "node_modules/@types/express-serve-static-core/README",
+  "title": "Installation",
+  "description": "npm install --save @types/express-serve-static-core",
+  "source": "@site/node_modules/@types/express-serve-static-core/README.md",
+  "sourceDirName": "node_modules/@types/express-serve-static-core",
+  "slug": "/node_modules/@types/express-serve-static-core/",
+  "permalink": "/consul-release-controller/node_modules/@types/express-serve-static-core/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@types/express-serve-static-core/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Installation",
+    "permalink": "/consul-release-controller/node_modules/@types/express/"
+  },
+  "next": {
+    "title": "Installation",
+    "permalink": "/consul-release-controller/node_modules/@types/hast/"
+  }
+}

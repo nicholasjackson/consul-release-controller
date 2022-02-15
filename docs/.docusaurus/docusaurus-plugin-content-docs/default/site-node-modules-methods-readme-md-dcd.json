@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/methods/README",
+  "id": "node_modules/methods/README",
+  "title": "Methods",
+  "description": "NPM Version",
+  "source": "@site/node_modules/methods/README.md",
+  "sourceDirName": "node_modules/methods",
+  "slug": "/node_modules/methods/",
+  "permalink": "/consul-release-controller/node_modules/methods/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/methods/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "merge2",
+    "permalink": "/consul-release-controller/node_modules/merge2/"
+  },
+  "next": {
+    "title": "1.1.2 / 2016-01-17",
+    "permalink": "/consul-release-controller/node_modules/methods/HISTORY"
+  }
+}

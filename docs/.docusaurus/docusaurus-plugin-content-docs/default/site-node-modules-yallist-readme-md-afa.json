@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/yallist/README",
+  "id": "node_modules/yallist/README",
+  "title": "yallist",
+  "description": "Yet Another Linked List",
+  "source": "@site/node_modules/yallist/README.md",
+  "sourceDirName": "node_modules/yallist",
+  "slug": "/node_modules/yallist/",
+  "permalink": "/consul-release-controller/node_modules/yallist/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/yallist/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "xtend",
+    "permalink": "/consul-release-controller/node_modules/xtend/"
+  },
+  "next": {
+    "title": "YAML <a href=\"https://www.npmjs.com/package/yaml\"><img align=\"right\" src=\"https://badge.fury.io/js/yaml.svg\" title=\"npm package\" /></a>",
+    "permalink": "/consul-release-controller/node_modules/yaml/"
+  }
+}

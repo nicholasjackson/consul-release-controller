@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/core-js-compat/README",
+  "id": "node_modules/core-js-compat/README",
+  "title": "README",
+  "description": "logo",
+  "source": "@site/node_modules/core-js-compat/README.md",
+  "sourceDirName": "node_modules/core-js-compat",
+  "slug": "/node_modules/core-js-compat/",
+  "permalink": "/consul-release-controller/node_modules/core-js-compat/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/core-js-compat/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/core-js/web/"
+  },
+  "next": {
+    "title": "semver(1) -- The semantic versioner for npm",
+    "permalink": "/consul-release-controller/node_modules/core-js-compat/node_modules/semver/"
+  }
+}

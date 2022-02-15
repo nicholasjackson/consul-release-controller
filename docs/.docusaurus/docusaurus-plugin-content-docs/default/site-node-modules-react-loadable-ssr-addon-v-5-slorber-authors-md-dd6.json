@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/react-loadable-ssr-addon-v5-slorber/AUTHORS",
+  "id": "node_modules/react-loadable-ssr-addon-v5-slorber/AUTHORS",
+  "title": "AUTHORS",
+  "description": "react-loadable-ssr-addon is authored by:",
+  "source": "@site/node_modules/react-loadable-ssr-addon-v5-slorber/AUTHORS.md",
+  "sourceDirName": "node_modules/react-loadable-ssr-addon-v5-slorber",
+  "slug": "/node_modules/react-loadable-ssr-addon-v5-slorber/AUTHORS",
+  "permalink": "/consul-release-controller/node_modules/react-loadable-ssr-addon-v5-slorber/AUTHORS",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/react-loadable-ssr-addon-v5-slorber/AUTHORS.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "React Loadable SSR Add-on",
+    "permalink": "/consul-release-controller/node_modules/react-loadable-ssr-addon-v5-slorber/"
+  },
+  "next": {
+    "title": "react-router",
+    "permalink": "/consul-release-controller/node_modules/react-router/"
+  }
+}

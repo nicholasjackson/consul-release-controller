@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@babel/helper-builder-binary-assignment-operator-visitor/README",
+  "id": "node_modules/@babel/helper-builder-binary-assignment-operator-visitor/README",
+  "title": "@babel/helper-builder-binary-assignment-operator-visitor",
+  "description": "Helper function to build binary assignment operator visitors",
+  "source": "@site/node_modules/@babel/helper-builder-binary-assignment-operator-visitor/README.md",
+  "sourceDirName": "node_modules/@babel/helper-builder-binary-assignment-operator-visitor",
+  "slug": "/node_modules/@babel/helper-builder-binary-assignment-operator-visitor/",
+  "permalink": "/consul-release-controller/node_modules/@babel/helper-builder-binary-assignment-operator-visitor/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@babel/helper-builder-binary-assignment-operator-visitor/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "@babel/helper-annotate-as-pure",
+    "permalink": "/consul-release-controller/node_modules/@babel/helper-annotate-as-pure/"
+  },
+  "next": {
+    "title": "@babel/helper-compilation-targets",
+    "permalink": "/consul-release-controller/node_modules/@babel/helper-compilation-targets/"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/node-forge/flash/README",
+  "id": "node_modules/node-forge/flash/README",
+  "title": "Forge Flash Support",
+  "description": "SocketPool.swf",
+  "source": "@site/node_modules/node-forge/flash/README.md",
+  "sourceDirName": "node_modules/node-forge/flash",
+  "slug": "/node_modules/node-forge/flash/",
+  "permalink": "/consul-release-controller/node_modules/node-forge/flash/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/node-forge/flash/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Forge ChangeLog",
+    "permalink": "/consul-release-controller/node_modules/node-forge/CHANGELOG"
+  },
+  "next": {
+    "title": "Node.js releases data",
+    "permalink": "/consul-release-controller/node_modules/node-releases/"
+  }
+}

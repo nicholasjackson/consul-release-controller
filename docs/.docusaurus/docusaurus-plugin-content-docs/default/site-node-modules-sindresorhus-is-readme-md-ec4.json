@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@sindresorhus/is/readme",
+  "id": "node_modules/@sindresorhus/is/readme",
+  "title": "is [![Build Status](https://travis-ci.org/sindresorhus/is.svg?branch=master)](https://travis-ci.org/sindresorhus/is)",
+  "description": "Type check values: is.string('🦄') //=> true",
+  "source": "@site/node_modules/@sindresorhus/is/readme.md",
+  "sourceDirName": "node_modules/@sindresorhus/is",
+  "slug": "/node_modules/@sindresorhus/is/",
+  "permalink": "/consul-release-controller/node_modules/@sindresorhus/is/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@sindresorhus/is/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "LICENSE",
+    "permalink": "/consul-release-controller/node_modules/@sideway/pinpoint/LICENSE"
+  },
+  "next": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/@slorber/static-site-generator-webpack-plugin/"
+  }
+}

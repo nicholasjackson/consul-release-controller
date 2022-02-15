@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/shelljs/README",
+  "id": "node_modules/shelljs/README",
+  "title": "ShellJS - Unix shell commands for Node.js",
+  "description": "Travis",
+  "source": "@site/node_modules/shelljs/README.md",
+  "sourceDirName": "node_modules/shelljs",
+  "slug": "/node_modules/shelljs/",
+  "permalink": "/consul-release-controller/node_modules/shelljs/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/shelljs/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Security Policy",
+    "permalink": "/consul-release-controller/node_modules/shell-quote/security"
+  },
+  "next": {
+    "title": "Change Log",
+    "permalink": "/consul-release-controller/node_modules/shelljs/CHANGELOG"
+  }
+}

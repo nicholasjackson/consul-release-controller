@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/has-tostringtag/README",
+  "id": "node_modules/has-tostringtag/README",
+  "title": "has-tostringtag <sup>[![Version Badge][2]][1]</sup>",
+  "description": "github actions",
+  "source": "@site/node_modules/has-tostringtag/README.md",
+  "sourceDirName": "node_modules/has-tostringtag",
+  "slug": "/node_modules/has-tostringtag/",
+  "permalink": "/consul-release-controller/node_modules/has-tostringtag/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/has-tostringtag/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Changelog",
+    "permalink": "/consul-release-controller/node_modules/has-symbols/CHANGELOG"
+  },
+  "next": {
+    "title": "Changelog",
+    "permalink": "/consul-release-controller/node_modules/has-tostringtag/CHANGELOG"
+  }
+}

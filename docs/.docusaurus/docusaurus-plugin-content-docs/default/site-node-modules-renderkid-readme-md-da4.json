@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/renderkid/README",
+  "id": "node_modules/renderkid/README",
+  "title": "RenderKid",
+  "description": "Build Status",
+  "source": "@site/node_modules/renderkid/README.md",
+  "sourceDirName": "node_modules/renderkid",
+  "slug": "/node_modules/renderkid/",
+  "permalink": "/consul-release-controller/node_modules/renderkid/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/renderkid/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "remark-squeeze-paragraphs",
+    "permalink": "/consul-release-controller/node_modules/remark-squeeze-paragraphs/"
+  },
+  "next": {
+    "title": "Renderkid Changelog",
+    "permalink": "/consul-release-controller/node_modules/renderkid/CHANGELOG"
+  }
+}

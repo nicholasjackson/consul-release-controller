@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@babel/helper-validator-option/README",
+  "id": "node_modules/@babel/helper-validator-option/README",
+  "title": "@babel/helper-validator-option",
+  "description": "Validate plugin/preset options",
+  "source": "@site/node_modules/@babel/helper-validator-option/README.md",
+  "sourceDirName": "node_modules/@babel/helper-validator-option",
+  "slug": "/node_modules/@babel/helper-validator-option/",
+  "permalink": "/consul-release-controller/node_modules/@babel/helper-validator-option/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@babel/helper-validator-option/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "@babel/helper-validator-identifier",
+    "permalink": "/consul-release-controller/node_modules/@babel/helper-validator-identifier/"
+  },
+  "next": {
+    "title": "@babel/helper-wrap-function",
+    "permalink": "/consul-release-controller/node_modules/@babel/helper-wrap-function/"
+  }
+}

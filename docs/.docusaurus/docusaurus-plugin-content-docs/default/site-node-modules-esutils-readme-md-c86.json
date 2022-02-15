@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/esutils/README",
+  "id": "node_modules/esutils/README",
+  "title": "README",
+  "description": "esutils Build Status",
+  "source": "@site/node_modules/esutils/README.md",
+  "sourceDirName": "node_modules/esutils",
+  "slug": "/node_modules/esutils/",
+  "permalink": "/consul-release-controller/node_modules/esutils/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/esutils/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/estraverse/"
+  },
+  "next": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/eta/"
+  }
+}

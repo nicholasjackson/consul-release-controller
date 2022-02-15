@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/magic-string/README",
+  "id": "node_modules/magic-string/README",
+  "title": "magic-string",
+  "description": "<img src=\"http://img.shields.io/travis/Rich-Harris/magic-string.svg\"",
+  "source": "@site/node_modules/magic-string/README.md",
+  "sourceDirName": "node_modules/magic-string",
+  "slug": "/node_modules/magic-string/",
+  "permalink": "/consul-release-controller/node_modules/magic-string/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/magic-string/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "lru cache",
+    "permalink": "/consul-release-controller/node_modules/lru-cache/"
+  },
+  "next": {
+    "title": "magic-string changelog",
+    "permalink": "/consul-release-controller/node_modules/magic-string/CHANGELOG"
+  }
+}

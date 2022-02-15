@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@docusaurus/plugin-google-gtag/README",
+  "id": "node_modules/@docusaurus/plugin-google-gtag/README",
+  "title": "@docusaurus/plugin-google-gtag",
+  "description": "Global Site Tag (gtag.js) plugin for Docusaurus.",
+  "source": "@site/node_modules/@docusaurus/plugin-google-gtag/README.md",
+  "sourceDirName": "node_modules/@docusaurus/plugin-google-gtag",
+  "slug": "/node_modules/@docusaurus/plugin-google-gtag/",
+  "permalink": "/consul-release-controller/node_modules/@docusaurus/plugin-google-gtag/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@docusaurus/plugin-google-gtag/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "@docusaurus/plugin-google-analytics",
+    "permalink": "/consul-release-controller/node_modules/@docusaurus/plugin-google-analytics/"
+  },
+  "next": {
+    "title": "@docusaurus/plugin-sitemap",
+    "permalink": "/consul-release-controller/node_modules/@docusaurus/plugin-sitemap/"
+  }
+}

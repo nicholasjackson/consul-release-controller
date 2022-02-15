@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@babel/plugin-transform-runtime/README",
+  "id": "node_modules/@babel/plugin-transform-runtime/README",
+  "title": "@babel/plugin-transform-runtime",
+  "description": "Externalise references to helpers and builtins, automatically polyfilling your code without polluting globals",
+  "source": "@site/node_modules/@babel/plugin-transform-runtime/README.md",
+  "sourceDirName": "node_modules/@babel/plugin-transform-runtime",
+  "slug": "/node_modules/@babel/plugin-transform-runtime/",
+  "permalink": "/consul-release-controller/node_modules/@babel/plugin-transform-runtime/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@babel/plugin-transform-runtime/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "@babel/plugin-transform-reserved-words",
+    "permalink": "/consul-release-controller/node_modules/@babel/plugin-transform-reserved-words/"
+  },
+  "next": {
+    "title": "@babel/plugin-transform-shorthand-properties",
+    "permalink": "/consul-release-controller/node_modules/@babel/plugin-transform-shorthand-properties/"
+  }
+}

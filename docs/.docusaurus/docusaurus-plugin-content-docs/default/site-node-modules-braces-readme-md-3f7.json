@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/braces/README",
+  "id": "node_modules/braces/README",
+  "title": "braces [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=W8YFZ425KND68) [![NPM version](https://img.shields.io/npm/v/braces.svg?style=flat)](https://www.npmjs.com/package/braces) [![NPM monthly downloads](https://img.shields.io/npm/dm/braces.svg?style=flat)](https://npmjs.org/package/braces) [![NPM total downloads](https://img.shields.io/npm/dt/braces.svg?style=flat)](https://npmjs.org/package/braces) [![Linux Build Status](https://img.shields.io/travis/micromatch/braces.svg?style=flat&label=Travis)](https://travis-ci.org/micromatch/braces)",
+  "description": "Bash-like brace expansion, implemented in JavaScript. Safer than other brace expansion libs, with complete support for the Bash 4.3 braces specification, without sacrificing speed.",
+  "source": "@site/node_modules/braces/README.md",
+  "sourceDirName": "node_modules/braces",
+  "slug": "/node_modules/braces/",
+  "permalink": "/consul-release-controller/node_modules/braces/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/braces/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "brace-expansion",
+    "permalink": "/consul-release-controller/node_modules/brace-expansion/"
+  },
+  "next": {
+    "title": "Release history",
+    "permalink": "/consul-release-controller/node_modules/braces/CHANGELOG"
+  }
+}

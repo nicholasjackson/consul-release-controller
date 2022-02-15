@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/postcss-discard-empty/README",
+  "id": "node_modules/postcss-discard-empty/README",
+  "title": "[postcss][postcss]-discard-empty",
+  "description": "Discard empty rules and values with PostCSS.",
+  "source": "@site/node_modules/postcss-discard-empty/README.md",
+  "sourceDirName": "node_modules/postcss-discard-empty",
+  "slug": "/node_modules/postcss-discard-empty/",
+  "permalink": "/consul-release-controller/node_modules/postcss-discard-empty/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/postcss-discard-empty/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "[postcss][postcss]-discard-duplicates",
+    "permalink": "/consul-release-controller/node_modules/postcss-discard-duplicates/"
+  },
+  "next": {
+    "title": "PostCSS Discard Overridden",
+    "permalink": "/consul-release-controller/node_modules/postcss-discard-overridden/"
+  }
+}

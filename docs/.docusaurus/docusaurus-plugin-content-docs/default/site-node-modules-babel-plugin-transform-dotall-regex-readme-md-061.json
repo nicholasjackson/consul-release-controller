@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@babel/plugin-transform-dotall-regex/README",
+  "id": "node_modules/@babel/plugin-transform-dotall-regex/README",
+  "title": "@babel/plugin-transform-dotall-regex",
+  "description": "Compile regular expressions using the s (dotAll) flag to ES5.",
+  "source": "@site/node_modules/@babel/plugin-transform-dotall-regex/README.md",
+  "sourceDirName": "node_modules/@babel/plugin-transform-dotall-regex",
+  "slug": "/node_modules/@babel/plugin-transform-dotall-regex/",
+  "permalink": "/consul-release-controller/node_modules/@babel/plugin-transform-dotall-regex/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@babel/plugin-transform-dotall-regex/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "@babel/plugin-transform-destructuring",
+    "permalink": "/consul-release-controller/node_modules/@babel/plugin-transform-destructuring/"
+  },
+  "next": {
+    "title": "@babel/plugin-transform-duplicate-keys",
+    "permalink": "/consul-release-controller/node_modules/@babel/plugin-transform-duplicate-keys/"
+  }
+}

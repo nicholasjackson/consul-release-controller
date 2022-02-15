@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/nprogress/Readme",
+  "id": "node_modules/nprogress/Readme",
+  "title": "NProgress",
+  "description": "Slim progress bars for Ajax'y applications. Inspired by Google, YouTube, and",
+  "source": "@site/node_modules/nprogress/Readme.md",
+  "sourceDirName": "node_modules/nprogress",
+  "slug": "/node_modules/nprogress/",
+  "permalink": "/consul-release-controller/node_modules/nprogress/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/nprogress/Readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "npm-run-path [![Build Status](https://travis-ci.org/sindresorhus/npm-run-path.svg?branch=master)](https://travis-ci.org/sindresorhus/npm-run-path)",
+    "permalink": "/consul-release-controller/node_modules/npm-run-path/"
+  },
+  "next": {
+    "title": "History",
+    "permalink": "/consul-release-controller/node_modules/nprogress/History"
+  }
+}

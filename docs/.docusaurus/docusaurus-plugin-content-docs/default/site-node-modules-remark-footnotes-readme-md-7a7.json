@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/remark-footnotes/readme",
+  "id": "node_modules/remark-footnotes/readme",
+  "title": "remark-footnotes",
+  "description": "Build",
+  "source": "@site/node_modules/remark-footnotes/readme.md",
+  "sourceDirName": "node_modules/remark-footnotes",
+  "slug": "/node_modules/remark-footnotes/",
+  "permalink": "/consul-release-controller/node_modules/remark-footnotes/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/remark-footnotes/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "remark-emoji",
+    "permalink": "/consul-release-controller/node_modules/remark-emoji/"
+  },
+  "next": {
+    "title": "[remark][]-[mdx][]",
+    "permalink": "/consul-release-controller/node_modules/remark-mdx/"
+  }
+}

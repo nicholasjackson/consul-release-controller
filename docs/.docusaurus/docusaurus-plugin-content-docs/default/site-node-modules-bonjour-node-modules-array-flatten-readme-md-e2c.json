@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/bonjour/node_modules/array-flatten/README",
+  "id": "node_modules/bonjour/node_modules/array-flatten/README",
+  "title": "Array Flatten",
+  "description": "NPM version",
+  "source": "@site/node_modules/bonjour/node_modules/array-flatten/README.md",
+  "sourceDirName": "node_modules/bonjour/node_modules/array-flatten",
+  "slug": "/node_modules/bonjour/node_modules/array-flatten/",
+  "permalink": "/consul-release-controller/node_modules/bonjour/node_modules/array-flatten/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/bonjour/node_modules/array-flatten/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "bonjour",
+    "permalink": "/consul-release-controller/node_modules/bonjour/"
+  },
+  "next": {
+    "title": "boolbase",
+    "permalink": "/consul-release-controller/node_modules/boolbase/"
+  }
+}

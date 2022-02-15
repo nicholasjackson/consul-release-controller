@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@docusaurus/core/node_modules/babel-plugin-dynamic-import-node/README",
+  "id": "node_modules/@docusaurus/core/node_modules/babel-plugin-dynamic-import-node/README",
+  "title": "babel-plugin-dynamic-import-node",
+  "description": "Babel plugin to transpile import() to a deferred require(), for node. Matches the proposed spec.",
+  "source": "@site/node_modules/@docusaurus/core/node_modules/babel-plugin-dynamic-import-node/README.md",
+  "sourceDirName": "node_modules/@docusaurus/core/node_modules/babel-plugin-dynamic-import-node",
+  "slug": "/node_modules/@docusaurus/core/node_modules/babel-plugin-dynamic-import-node/",
+  "permalink": "/consul-release-controller/node_modules/@docusaurus/core/node_modules/babel-plugin-dynamic-import-node/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@docusaurus/core/node_modules/babel-plugin-dynamic-import-node/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/@docusaurus/core/"
+  },
+  "next": {
+    "title": "CHANGELOG",
+    "permalink": "/consul-release-controller/node_modules/@docusaurus/core/node_modules/babel-plugin-dynamic-import-node/CHANGELOG"
+  }
+}

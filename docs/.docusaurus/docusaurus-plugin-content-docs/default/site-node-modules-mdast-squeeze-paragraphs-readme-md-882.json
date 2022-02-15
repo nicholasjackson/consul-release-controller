@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/mdast-squeeze-paragraphs/readme",
+  "id": "node_modules/mdast-squeeze-paragraphs/readme",
+  "title": "mdast-squeeze-paragraphs",
+  "description": "Build",
+  "source": "@site/node_modules/mdast-squeeze-paragraphs/readme.md",
+  "sourceDirName": "node_modules/mdast-squeeze-paragraphs",
+  "slug": "/node_modules/mdast-squeeze-paragraphs/",
+  "permalink": "/consul-release-controller/node_modules/mdast-squeeze-paragraphs/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/mdast-squeeze-paragraphs/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "markdown-escapes",
+    "permalink": "/consul-release-controller/node_modules/markdown-escapes/"
+  },
+  "next": {
+    "title": "unist-util-remove",
+    "permalink": "/consul-release-controller/node_modules/mdast-squeeze-paragraphs/node_modules/unist-util-remove/"
+  }
+}

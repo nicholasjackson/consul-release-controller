@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@babel/helper-function-name/README",
+  "id": "node_modules/@babel/helper-function-name/README",
+  "title": "@babel/helper-function-name",
+  "description": "Helper function to change the property 'name' of every function",
+  "source": "@site/node_modules/@babel/helper-function-name/README.md",
+  "sourceDirName": "node_modules/@babel/helper-function-name",
+  "slug": "/node_modules/@babel/helper-function-name/",
+  "permalink": "/consul-release-controller/node_modules/@babel/helper-function-name/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@babel/helper-function-name/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "@babel/helper-explode-assignable-expression",
+    "permalink": "/consul-release-controller/node_modules/@babel/helper-explode-assignable-expression/"
+  },
+  "next": {
+    "title": "@babel/helper-get-function-arity",
+    "permalink": "/consul-release-controller/node_modules/@babel/helper-get-function-arity/"
+  }
+}

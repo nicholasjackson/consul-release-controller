@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/node-releases/README",
+  "id": "node_modules/node-releases/README",
+  "title": "Node.js releases data",
+  "description": "All data is located in data directory.",
+  "source": "@site/node_modules/node-releases/README.md",
+  "sourceDirName": "node_modules/node-releases",
+  "slug": "/node_modules/node-releases/",
+  "permalink": "/consul-release-controller/node_modules/node-releases/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/node-releases/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Forge Flash Support",
+    "permalink": "/consul-release-controller/node_modules/node-forge/flash/"
+  },
+  "next": {
+    "title": "normalize-path [![NPM version](https://img.shields.io/npm/v/normalize-path.svg?style=flat)](https://www.npmjs.com/package/normalize-path) [![NPM monthly downloads](https://img.shields.io/npm/dm/normalize-path.svg?style=flat)](https://npmjs.org/package/normalize-path) [![NPM total downloads](https://img.shields.io/npm/dt/normalize-path.svg?style=flat)](https://npmjs.org/package/normalize-path) [![Linux Build Status](https://img.shields.io/travis/jonschlinkert/normalize-path.svg?style=flat&label=Travis)](https://travis-ci.org/jonschlinkert/normalize-path)",
+    "permalink": "/consul-release-controller/node_modules/normalize-path/"
+  }
+}

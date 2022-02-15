@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/argparse/CHANGELOG",
+  "id": "node_modules/argparse/CHANGELOG",
+  "title": "Changelog",
+  "description": "All notable changes to this project will be documented in this file.",
+  "source": "@site/node_modules/argparse/CHANGELOG.md",
+  "sourceDirName": "node_modules/argparse",
+  "slug": "/node_modules/argparse/CHANGELOG",
+  "permalink": "/consul-release-controller/node_modules/argparse/CHANGELOG",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/argparse/CHANGELOG.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "argparse",
+    "permalink": "/consul-release-controller/node_modules/argparse/"
+  },
+  "next": {
+    "title": "Array Flatten",
+    "permalink": "/consul-release-controller/node_modules/array-flatten/"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/merge2/README",
+  "id": "node_modules/merge2/README",
+  "title": "merge2",
+  "description": "Merge multiple streams into one stream in sequence or parallel.",
+  "source": "@site/node_modules/merge2/README.md",
+  "sourceDirName": "node_modules/merge2",
+  "slug": "/node_modules/merge2/",
+  "permalink": "/consul-release-controller/node_modules/merge2/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/merge2/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "merge-stream",
+    "permalink": "/consul-release-controller/node_modules/merge-stream/"
+  },
+  "next": {
+    "title": "Methods",
+    "permalink": "/consul-release-controller/node_modules/methods/"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/copy-webpack-plugin/node_modules/ajv-formats/README",
+  "id": "node_modules/copy-webpack-plugin/node_modules/ajv-formats/README",
+  "title": "ajv-formats",
+  "description": "JSON Schema formats for Ajv",
+  "source": "@site/node_modules/copy-webpack-plugin/node_modules/ajv-formats/README.md",
+  "sourceDirName": "node_modules/copy-webpack-plugin/node_modules/ajv-formats",
+  "slug": "/node_modules/copy-webpack-plugin/node_modules/ajv-formats/",
+  "permalink": "/consul-release-controller/node_modules/copy-webpack-plugin/node_modules/ajv-formats/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/copy-webpack-plugin/node_modules/ajv-formats/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/copy-webpack-plugin/node_modules/ajv/"
+  },
+  "next": {
+    "title": "ajv-keywords",
+    "permalink": "/consul-release-controller/node_modules/copy-webpack-plugin/node_modules/ajv-keywords/"
+  }
+}

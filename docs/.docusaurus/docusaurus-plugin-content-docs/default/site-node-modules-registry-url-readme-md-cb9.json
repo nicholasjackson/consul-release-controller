@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/registry-url/readme",
+  "id": "node_modules/registry-url/readme",
+  "title": "registry-url [![Build Status](https://travis-ci.org/sindresorhus/registry-url.svg?branch=master)](https://travis-ci.org/sindresorhus/registry-url)",
+  "description": "Get the set npm registry URL",
+  "source": "@site/node_modules/registry-url/readme.md",
+  "sourceDirName": "node_modules/registry-url",
+  "slug": "/node_modules/registry-url/",
+  "permalink": "/consul-release-controller/node_modules/registry-url/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/registry-url/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Change Log",
+    "permalink": "/consul-release-controller/node_modules/registry-auth-token/CHANGELOG"
+  },
+  "next": {
+    "title": "regjsgen [![Build status][travis-ci-img]][travis-ci] [![Code coverage status][codecov-img]][codecov]",
+    "permalink": "/consul-release-controller/node_modules/regjsgen/"
+  }
+}

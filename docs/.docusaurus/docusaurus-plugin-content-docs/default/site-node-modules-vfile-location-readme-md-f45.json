@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/vfile-location/readme",
+  "id": "node_modules/vfile-location/readme",
+  "title": "vfile-location",
+  "description": "Build",
+  "source": "@site/node_modules/vfile-location/readme.md",
+  "sourceDirName": "node_modules/vfile-location",
+  "slug": "/node_modules/vfile-location/",
+  "permalink": "/consul-release-controller/node_modules/vfile-location/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/vfile-location/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Changelog",
+    "permalink": "/consul-release-controller/node_modules/vfile/changelog"
+  },
+  "next": {
+    "title": "vfile-message",
+    "permalink": "/consul-release-controller/node_modules/vfile-message/"
+  }
+}

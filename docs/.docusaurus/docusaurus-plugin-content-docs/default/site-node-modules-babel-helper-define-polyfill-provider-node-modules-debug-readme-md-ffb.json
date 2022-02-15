@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@babel/helper-define-polyfill-provider/node_modules/debug/README",
+  "id": "node_modules/@babel/helper-define-polyfill-provider/node_modules/debug/README",
+  "title": "debug",
+  "description": "Build Status  Coverage Status  Slack OpenCollective",
+  "source": "@site/node_modules/@babel/helper-define-polyfill-provider/node_modules/debug/README.md",
+  "sourceDirName": "node_modules/@babel/helper-define-polyfill-provider/node_modules/debug",
+  "slug": "/node_modules/@babel/helper-define-polyfill-provider/node_modules/debug/",
+  "permalink": "/consul-release-controller/node_modules/@babel/helper-define-polyfill-provider/node_modules/debug/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@babel/helper-define-polyfill-provider/node_modules/debug/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "@babel/helper-define-polyfill-provider",
+    "permalink": "/consul-release-controller/node_modules/@babel/helper-define-polyfill-provider/"
+  },
+  "next": {
+    "title": "ms",
+    "permalink": "/consul-release-controller/node_modules/@babel/helper-define-polyfill-provider/node_modules/ms/"
+  }
+}

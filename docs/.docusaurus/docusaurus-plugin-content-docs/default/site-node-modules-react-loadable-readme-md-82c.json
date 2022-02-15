@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/react-loadable/README",
+  "id": "node_modules/react-loadable/README",
+  "title": "README",
+  "description": "React Loadable",
+  "source": "@site/node_modules/react-loadable/README.md",
+  "sourceDirName": "node_modules/react-loadable",
+  "slug": "/node_modules/react-loadable/",
+  "permalink": "/consul-release-controller/node_modules/react-loadable/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/react-loadable/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "LICENSE",
+    "permalink": "/consul-release-controller/node_modules/react-lifecycles-compat/LICENSE"
+  },
+  "next": {
+    "title": "React Loadable SSR Add-on",
+    "permalink": "/consul-release-controller/node_modules/react-loadable-ssr-addon-v5-slorber/"
+  }
+}

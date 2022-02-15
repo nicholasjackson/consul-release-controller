@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/update-notifier/node_modules/semver/CHANGELOG",
+  "id": "node_modules/update-notifier/node_modules/semver/CHANGELOG",
+  "title": "changes log",
+  "description": "7.3.0",
+  "source": "@site/node_modules/update-notifier/node_modules/semver/CHANGELOG.md",
+  "sourceDirName": "node_modules/update-notifier/node_modules/semver",
+  "slug": "/node_modules/update-notifier/node_modules/semver/CHANGELOG",
+  "permalink": "/consul-release-controller/node_modules/update-notifier/node_modules/semver/CHANGELOG",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/update-notifier/node_modules/semver/CHANGELOG.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "semver(1) -- The semantic versioner for npm",
+    "permalink": "/consul-release-controller/node_modules/update-notifier/node_modules/semver/"
+  },
+  "next": {
+    "title": "URI.js",
+    "permalink": "/consul-release-controller/node_modules/uri-js/"
+  }
+}

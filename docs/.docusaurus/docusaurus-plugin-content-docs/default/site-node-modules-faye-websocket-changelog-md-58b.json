@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/faye-websocket/CHANGELOG",
+  "id": "node_modules/faye-websocket/CHANGELOG",
+  "title": "CHANGELOG",
+  "description": "0.11.4 / 2021-05-24",
+  "source": "@site/node_modules/faye-websocket/CHANGELOG.md",
+  "sourceDirName": "node_modules/faye-websocket",
+  "slug": "/node_modules/faye-websocket/CHANGELOG",
+  "permalink": "/consul-release-controller/node_modules/faye-websocket/CHANGELOG",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/faye-websocket/CHANGELOG.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "faye-websocket",
+    "permalink": "/consul-release-controller/node_modules/faye-websocket/"
+  },
+  "next": {
+    "title": "LICENSE",
+    "permalink": "/consul-release-controller/node_modules/faye-websocket/LICENSE"
+  }
+}

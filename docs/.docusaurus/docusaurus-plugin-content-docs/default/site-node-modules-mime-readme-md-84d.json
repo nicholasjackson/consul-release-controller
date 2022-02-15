@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/mime/README",
+  "id": "node_modules/mime/README",
+  "title": "mime",
+  "description": "Comprehensive MIME type mapping API based on mime-db module.",
+  "source": "@site/node_modules/mime/README.md",
+  "sourceDirName": "node_modules/mime",
+  "slug": "/node_modules/mime/",
+  "permalink": "/consul-release-controller/node_modules/mime/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/mime/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Release history",
+    "permalink": "/consul-release-controller/node_modules/micromatch/CHANGELOG"
+  },
+  "next": {
+    "title": "Changelog",
+    "permalink": "/consul-release-controller/node_modules/mime/CHANGELOG"
+  }
+}

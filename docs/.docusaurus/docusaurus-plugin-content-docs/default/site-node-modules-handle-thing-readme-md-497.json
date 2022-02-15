@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/handle-thing/README",
+  "id": "node_modules/handle-thing/README",
+  "title": "Handle Thing",
+  "description": "Build Status",
+  "source": "@site/node_modules/handle-thing/README.md",
+  "sourceDirName": "node_modules/handle-thing",
+  "slug": "/node_modules/handle-thing/",
+  "permalink": "/consul-release-controller/node_modules/handle-thing/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/handle-thing/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "gzip-size [![Build Status](https://travis-ci.com/sindresorhus/gzip-size.svg?branch=master)](https://travis-ci.com/github/sindresorhus/gzip-size)",
+    "permalink": "/consul-release-controller/node_modules/gzip-size/"
+  },
+  "next": {
+    "title": "has",
+    "permalink": "/consul-release-controller/node_modules/has/"
+  }
+}

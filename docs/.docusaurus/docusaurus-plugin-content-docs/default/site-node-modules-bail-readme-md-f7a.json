@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/bail/readme",
+  "id": "node_modules/bail/readme",
+  "title": "bail",
+  "description": "Build",
+  "source": "@site/node_modules/bail/readme.md",
+  "sourceDirName": "node_modules/bail",
+  "slug": "/node_modules/bail/",
+  "permalink": "/consul-release-controller/node_modules/bail/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/bail/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "babel-plugin-polyfill-regenerator",
+    "permalink": "/consul-release-controller/node_modules/babel-plugin-polyfill-regenerator/"
+  },
+  "next": {
+    "title": "balanced-match",
+    "permalink": "/consul-release-controller/node_modules/balanced-match/"
+  }
+}

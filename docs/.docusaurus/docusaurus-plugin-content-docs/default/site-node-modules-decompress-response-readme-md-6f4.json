@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/decompress-response/readme",
+  "id": "node_modules/decompress-response/readme",
+  "title": "decompress-response [![Build Status](https://travis-ci.org/sindresorhus/decompress-response.svg?branch=master)](https://travis-ci.org/sindresorhus/decompress-response)",
+  "description": "Decompress a HTTP response if needed",
+  "source": "@site/node_modules/decompress-response/readme.md",
+  "sourceDirName": "node_modules/decompress-response",
+  "slug": "/node_modules/decompress-response/",
+  "permalink": "/consul-release-controller/node_modules/decompress-response/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/decompress-response/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "license",
+    "permalink": "/consul-release-controller/node_modules/debug/node_modules/ms/license"
+  },
+  "next": {
+    "title": "Changelog",
+    "permalink": "/consul-release-controller/node_modules/deep-equal/CHANGELOG"
+  }
+}

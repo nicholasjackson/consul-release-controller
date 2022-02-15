@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/icss-utils/LICENSE",
+  "id": "node_modules/icss-utils/LICENSE",
+  "title": "LICENSE",
+  "description": "ISC License (ISC)",
+  "source": "@site/node_modules/icss-utils/LICENSE.md",
+  "sourceDirName": "node_modules/icss-utils",
+  "slug": "/node_modules/icss-utils/LICENSE",
+  "permalink": "/consul-release-controller/node_modules/icss-utils/LICENSE",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/icss-utils/LICENSE.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Change Log",
+    "permalink": "/consul-release-controller/node_modules/icss-utils/CHANGELOG"
+  },
+  "next": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/ignore/"
+  }
+}

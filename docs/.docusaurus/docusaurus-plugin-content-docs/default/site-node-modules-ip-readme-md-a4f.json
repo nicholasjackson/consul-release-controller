@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/ip/README",
+  "id": "node_modules/ip/README",
+  "title": "IP",
+  "description": "IP address utilities for node.js",
+  "source": "@site/node_modules/ip/README.md",
+  "sourceDirName": "node_modules/ip",
+  "slug": "/node_modules/ip/",
+  "permalink": "/consul-release-controller/node_modules/ip/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/ip/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/interpret/"
+  },
+  "next": {
+    "title": "ipaddr.js — an IPv6 and IPv4 address manipulation library [![Build Status](https://travis-ci.org/whitequark/ipaddr.js.svg)](https://travis-ci.org/whitequark/ipaddr.js)",
+    "permalink": "/consul-release-controller/node_modules/ipaddr.js/"
+  }
+}

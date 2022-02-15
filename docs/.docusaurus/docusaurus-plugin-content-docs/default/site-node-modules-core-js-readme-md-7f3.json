@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/core-js/README",
+  "id": "node_modules/core-js/README",
+  "title": "README",
+  "description": "logo",
+  "source": "@site/node_modules/core-js/README.md",
+  "sourceDirName": "node_modules/core-js",
+  "slug": "/node_modules/core-js/",
+  "permalink": "/consul-release-controller/node_modules/core-js/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/core-js/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "slash",
+    "permalink": "/consul-release-controller/node_modules/copy-webpack-plugin/node_modules/slash/"
+  },
+  "next": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/core-js/actual/"
+  }
+}

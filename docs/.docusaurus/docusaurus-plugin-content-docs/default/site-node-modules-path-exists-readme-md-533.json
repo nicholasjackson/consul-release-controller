@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/path-exists/readme",
+  "id": "node_modules/path-exists/readme",
+  "title": "path-exists [![Build Status](https://travis-ci.org/sindresorhus/path-exists.svg?branch=master)](https://travis-ci.org/sindresorhus/path-exists)",
+  "description": "Check if a path exists",
+  "source": "@site/node_modules/path-exists/readme.md",
+  "sourceDirName": "node_modules/path-exists",
+  "slug": "/node_modules/path-exists/",
+  "permalink": "/consul-release-controller/node_modules/path-exists/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/path-exists/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Pascal Case",
+    "permalink": "/consul-release-controller/node_modules/pascal-case/"
+  },
+  "next": {
+    "title": "path-is-absolute [![Build Status](https://travis-ci.org/sindresorhus/path-is-absolute.svg?branch=master)](https://travis-ci.org/sindresorhus/path-is-absolute)",
+    "permalink": "/consul-release-controller/node_modules/path-is-absolute/"
+  }
+}

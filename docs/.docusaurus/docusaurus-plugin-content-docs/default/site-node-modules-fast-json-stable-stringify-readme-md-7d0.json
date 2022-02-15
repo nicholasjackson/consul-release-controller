@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/fast-json-stable-stringify/README",
+  "id": "node_modules/fast-json-stable-stringify/README",
+  "title": "fast-json-stable-stringify",
+  "description": "Deterministic JSON.stringify() - a faster version of @substack's json-stable-strigify without jsonify.",
+  "source": "@site/node_modules/fast-json-stable-stringify/README.md",
+  "sourceDirName": "node_modules/fast-json-stable-stringify",
+  "slug": "/node_modules/fast-json-stable-stringify/",
+  "permalink": "/consul-release-controller/node_modules/fast-json-stable-stringify/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/fast-json-stable-stringify/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "fast-glob",
+    "permalink": "/consul-release-controller/node_modules/fast-glob/"
+  },
+  "next": {
+    "title": "Introduction",
+    "permalink": "/consul-release-controller/node_modules/fast-url-parser/"
+  }
+}

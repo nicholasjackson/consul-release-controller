@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@trysound/sax/README",
+  "id": "node_modules/@trysound/sax/README",
+  "title": "svg/sax",
+  "description": "A maintained fork of sax-js sax-style parser for XML and HTML.",
+  "source": "@site/node_modules/@trysound/sax/README.md",
+  "sourceDirName": "node_modules/@trysound/sax",
+  "slug": "/node_modules/@trysound/sax/",
+  "permalink": "/consul-release-controller/node_modules/@trysound/sax/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@trysound/sax/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "http-timer",
+    "permalink": "/consul-release-controller/node_modules/@szmarczak/http-timer/"
+  },
+  "next": {
+    "title": "Installation",
+    "permalink": "/consul-release-controller/node_modules/@types/body-parser/"
+  }
+}

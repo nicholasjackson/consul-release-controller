@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/remark-admonitions/node_modules/unified/readme",
+  "id": "node_modules/remark-admonitions/node_modules/unified/readme",
+  "title": "[![unified][logo]][site]",
+  "description": "GitHub CI",
+  "source": "@site/node_modules/remark-admonitions/node_modules/unified/readme.md",
+  "sourceDirName": "node_modules/remark-admonitions/node_modules/unified",
+  "slug": "/node_modules/remark-admonitions/node_modules/unified/",
+  "permalink": "/consul-release-controller/node_modules/remark-admonitions/node_modules/unified/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/remark-admonitions/node_modules/unified/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/remark-admonitions/"
+  },
+  "next": {
+    "title": "Changelog",
+    "permalink": "/consul-release-controller/node_modules/remark-admonitions/node_modules/unified/changelog"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/ajv/lib/dotjs/README",
+  "id": "node_modules/ajv/lib/dotjs/README",
+  "title": "README",
+  "description": "These files are compiled dot templates from dot folder.",
+  "source": "@site/node_modules/ajv/lib/dotjs/README.md",
+  "sourceDirName": "node_modules/ajv/lib/dotjs",
+  "slug": "/node_modules/ajv/lib/dotjs/",
+  "permalink": "/consul-release-controller/node_modules/ajv/lib/dotjs/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/ajv/lib/dotjs/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/ajv/"
+  },
+  "next": {
+    "title": "ajv-keywords",
+    "permalink": "/consul-release-controller/node_modules/ajv-keywords/"
+  }
+}

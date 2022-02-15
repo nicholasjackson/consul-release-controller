@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/axios/lib/env/README",
+  "id": "node_modules/axios/lib/env/README",
+  "title": "axios // env",
+  "description": "The data.js file is updated automatically when the package version is upgrading. Please do not edit it manually.",
+  "source": "@site/node_modules/axios/lib/env/README.md",
+  "sourceDirName": "node_modules/axios/lib/env",
+  "slug": "/node_modules/axios/lib/env/",
+  "permalink": "/consul-release-controller/node_modules/axios/lib/env/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/axios/lib/env/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "axios // core",
+    "permalink": "/consul-release-controller/node_modules/axios/lib/core/"
+  },
+  "next": {
+    "title": "axios // helpers",
+    "permalink": "/consul-release-controller/node_modules/axios/lib/helpers/"
+  }
+}

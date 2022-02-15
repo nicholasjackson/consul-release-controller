@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/emojis-list/CHANGELOG",
+  "id": "node_modules/emojis-list/CHANGELOG",
+  "title": "CHANGELOG",
+  "description": "* build: bye bower (4acc7c0)",
+  "source": "@site/node_modules/emojis-list/CHANGELOG.md",
+  "sourceDirName": "node_modules/emojis-list",
+  "slug": "/node_modules/emojis-list/CHANGELOG",
+  "permalink": "/consul-release-controller/node_modules/emojis-list/CHANGELOG",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/emojis-list/CHANGELOG.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "emojis-list",
+    "permalink": "/consul-release-controller/node_modules/emojis-list/"
+  },
+  "next": {
+    "title": "LICENSE",
+    "permalink": "/consul-release-controller/node_modules/emojis-list/LICENSE"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/kleur/readme",
+  "id": "node_modules/kleur/readme",
+  "title": "readme",
+  "description": "The fastest Node.js library for formatting terminal text with ANSI colors~!",
+  "source": "@site/node_modules/kleur/readme.md",
+  "sourceDirName": "node_modules/kleur",
+  "slug": "/node_modules/kleur/",
+  "permalink": "/consul-release-controller/node_modules/kleur/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/kleur/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Release history",
+    "permalink": "/consul-release-controller/node_modules/kind-of/CHANGELOG"
+  },
+  "next": {
+    "title": "readme",
+    "permalink": "/consul-release-controller/node_modules/klona/"
+  }
+}

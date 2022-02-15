@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/hoist-non-react-statics/CHANGELOG",
+  "id": "node_modules/hoist-non-react-statics/CHANGELOG",
+  "title": "3.3.2 (January 22, 2020)",
+  "description": "- Fix React.memo for v16.12+ (#93)",
+  "source": "@site/node_modules/hoist-non-react-statics/CHANGELOG.md",
+  "sourceDirName": "node_modules/hoist-non-react-statics",
+  "slug": "/node_modules/hoist-non-react-statics/CHANGELOG",
+  "permalink": "/consul-release-controller/node_modules/hoist-non-react-statics/CHANGELOG",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/hoist-non-react-statics/CHANGELOG.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "hoist-non-react-statics",
+    "permalink": "/consul-release-controller/node_modules/hoist-non-react-statics/"
+  },
+  "next": {
+    "title": "Software License Agreement (BSD License)",
+    "permalink": "/consul-release-controller/node_modules/hoist-non-react-statics/LICENSE"
+  }
+}

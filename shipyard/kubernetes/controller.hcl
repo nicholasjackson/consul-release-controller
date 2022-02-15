@@ -4,6 +4,7 @@ controller:
   enabled: "${var.controller_enabled}"
   container_config:
     image:
+      repository: "${var.controller_repo}"
       tag: "${var.controller_version}"
 
 webhook:
@@ -25,6 +26,7 @@ webhook:
 }
 
 helm "consul-release-controller" {
+
   # wait for certmanager to be installed and the template to be processed
   depends_on = [
     "template.controller_values",

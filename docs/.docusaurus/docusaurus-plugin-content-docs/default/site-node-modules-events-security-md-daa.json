@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/events/security",
+  "id": "node_modules/events/security",
+  "title": "Security Policy",
+  "description": "Supported Versions",
+  "source": "@site/node_modules/events/security.md",
+  "sourceDirName": "node_modules/events",
+  "slug": "/node_modules/events/security",
+  "permalink": "/consul-release-controller/node_modules/events/security",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/events/security.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "3.3.0",
+    "permalink": "/consul-release-controller/node_modules/events/History"
+  },
+  "next": {
+    "title": "readme",
+    "permalink": "/consul-release-controller/node_modules/execa/"
+  }
+}

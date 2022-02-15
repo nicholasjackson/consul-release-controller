@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/sourcemap-codec/CHANGELOG",
+  "id": "node_modules/sourcemap-codec/CHANGELOG",
+  "title": "sourcemap-codec changelog",
+  "description": "1.4.8",
+  "source": "@site/node_modules/sourcemap-codec/CHANGELOG.md",
+  "sourceDirName": "node_modules/sourcemap-codec",
+  "slug": "/node_modules/sourcemap-codec/CHANGELOG",
+  "permalink": "/consul-release-controller/node_modules/sourcemap-codec/CHANGELOG",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/sourcemap-codec/CHANGELOG.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "sourcemap-codec",
+    "permalink": "/consul-release-controller/node_modules/sourcemap-codec/"
+  },
+  "next": {
+    "title": "space-separated-tokens",
+    "permalink": "/consul-release-controller/node_modules/space-separated-tokens/"
+  }
+}

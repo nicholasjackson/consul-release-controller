@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/braces/CHANGELOG",
+  "id": "node_modules/braces/CHANGELOG",
+  "title": "Release history",
+  "description": "All notable changes to this project will be documented in this file.",
+  "source": "@site/node_modules/braces/CHANGELOG.md",
+  "sourceDirName": "node_modules/braces",
+  "slug": "/node_modules/braces/CHANGELOG",
+  "permalink": "/consul-release-controller/node_modules/braces/CHANGELOG",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/braces/CHANGELOG.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "braces [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=W8YFZ425KND68) [![NPM version](https://img.shields.io/npm/v/braces.svg?style=flat)](https://www.npmjs.com/package/braces) [![NPM monthly downloads](https://img.shields.io/npm/dm/braces.svg?style=flat)](https://npmjs.org/package/braces) [![NPM total downloads](https://img.shields.io/npm/dt/braces.svg?style=flat)](https://npmjs.org/package/braces) [![Linux Build Status](https://img.shields.io/travis/micromatch/braces.svg?style=flat&label=Travis)](https://travis-ci.org/micromatch/braces)",
+    "permalink": "/consul-release-controller/node_modules/braces/"
+  },
+  "next": {
+    "title": "Browserslist [![Cult Of Martians][cult-img]][cult]",
+    "permalink": "/consul-release-controller/node_modules/browserslist/"
+  }
+}

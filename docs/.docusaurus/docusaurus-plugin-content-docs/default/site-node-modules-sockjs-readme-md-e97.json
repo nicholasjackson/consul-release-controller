@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/sockjs/README",
+  "id": "node_modules/sockjs/README",
+  "title": "README",
+  "description": "NPM version",
+  "source": "@site/node_modules/sockjs/README.md",
+  "sourceDirName": "node_modules/sockjs",
+  "slug": "/node_modules/sockjs/",
+  "permalink": "/consul-release-controller/node_modules/sockjs/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/sockjs/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "slash [![Build Status](https://travis-ci.org/sindresorhus/slash.svg?branch=master)](https://travis-ci.org/sindresorhus/slash)",
+    "permalink": "/consul-release-controller/node_modules/slash/"
+  },
+  "next": {
+    "title": "sort-css-media-queries",
+    "permalink": "/consul-release-controller/node_modules/sort-css-media-queries/"
+  }
+}

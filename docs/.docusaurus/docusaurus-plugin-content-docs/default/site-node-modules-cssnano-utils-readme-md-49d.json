@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/cssnano-utils/README",
+  "id": "node_modules/cssnano-utils/README",
+  "title": "cssnano-utils",
+  "description": "Utility methods and plugin for cssnano projects",
+  "source": "@site/node_modules/cssnano-utils/README.md",
+  "sourceDirName": "node_modules/cssnano-utils",
+  "slug": "/node_modules/cssnano-utils/",
+  "permalink": "/consul-release-controller/node_modules/cssnano-utils/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/cssnano-utils/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "cssnano-preset-default",
+    "permalink": "/consul-release-controller/node_modules/cssnano-preset-default/"
+  },
+  "next": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/csso/"
+  }
+}

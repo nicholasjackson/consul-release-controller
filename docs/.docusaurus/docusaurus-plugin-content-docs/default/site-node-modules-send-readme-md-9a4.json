@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/send/README",
+  "id": "node_modules/send/README",
+  "title": "send",
+  "description": "NPM Version",
+  "source": "@site/node_modules/send/README.md",
+  "sourceDirName": "node_modules/send",
+  "slug": "/node_modules/send/",
+  "permalink": "/consul-release-controller/node_modules/send/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/send/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "semver-diff [![Build Status](https://travis-ci.org/sindresorhus/semver-diff.svg?branch=master)](https://travis-ci.org/sindresorhus/semver-diff)",
+    "permalink": "/consul-release-controller/node_modules/semver-diff/"
+  },
+  "next": {
+    "title": "0.17.2 / 2021-12-11",
+    "permalink": "/consul-release-controller/node_modules/send/HISTORY"
+  }
+}

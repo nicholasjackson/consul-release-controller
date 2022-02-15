@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/mimic-fn/readme",
+  "id": "node_modules/mimic-fn/readme",
+  "title": "mimic-fn [![Build Status](https://travis-ci.org/sindresorhus/mimic-fn.svg?branch=master)](https://travis-ci.org/sindresorhus/mimic-fn)",
+  "description": "Make a function mimic another one",
+  "source": "@site/node_modules/mimic-fn/readme.md",
+  "sourceDirName": "node_modules/mimic-fn",
+  "slug": "/node_modules/mimic-fn/",
+  "permalink": "/consul-release-controller/node_modules/mimic-fn/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/mimic-fn/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "2.1.34 / 2021-11-08",
+    "permalink": "/consul-release-controller/node_modules/mime-types/HISTORY"
+  },
+  "next": {
+    "title": "mimic-response [![Build Status](https://travis-ci.org/sindresorhus/mimic-response.svg?branch=master)](https://travis-ci.org/sindresorhus/mimic-response)",
+    "permalink": "/consul-release-controller/node_modules/mimic-response/"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/resolve/SECURITY",
+  "id": "node_modules/resolve/SECURITY",
+  "title": "Security",
+  "description": "Please email @ljharb or see https://tidelift.com/security if you have a potential security vulnerability to report.",
+  "source": "@site/node_modules/resolve/SECURITY.md",
+  "sourceDirName": "node_modules/resolve",
+  "slug": "/node_modules/resolve/SECURITY",
+  "permalink": "/consul-release-controller/node_modules/resolve/SECURITY",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/resolve/SECURITY.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "requires-port",
+    "permalink": "/consul-release-controller/node_modules/requires-port/"
+  },
+  "next": {
+    "title": "resolve-from [![Build Status](https://travis-ci.org/sindresorhus/resolve-from.svg?branch=master)](https://travis-ci.org/sindresorhus/resolve-from)",
+    "permalink": "/consul-release-controller/node_modules/resolve-from/"
+  }
+}

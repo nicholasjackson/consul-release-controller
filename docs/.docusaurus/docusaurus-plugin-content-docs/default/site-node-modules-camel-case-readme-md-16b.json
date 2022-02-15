@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/camel-case/README",
+  "id": "node_modules/camel-case/README",
+  "title": "Camel Case",
+  "description": "NPM version",
+  "source": "@site/node_modules/camel-case/README.md",
+  "sourceDirName": "node_modules/camel-case",
+  "slug": "/node_modules/camel-case/",
+  "permalink": "/consul-release-controller/node_modules/camel-case/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/camel-case/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "callsites [![Build Status](https://travis-ci.org/sindresorhus/callsites.svg?branch=master)](https://travis-ci.org/sindresorhus/callsites)",
+    "permalink": "/consul-release-controller/node_modules/callsites/"
+  },
+  "next": {
+    "title": "camelcase",
+    "permalink": "/consul-release-controller/node_modules/camelcase/"
+  }
+}

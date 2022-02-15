@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@babel/plugin-transform-template-literals/README",
+  "id": "node_modules/@babel/plugin-transform-template-literals/README",
+  "title": "@babel/plugin-transform-template-literals",
+  "description": "Compile ES2015 template literals to ES5",
+  "source": "@site/node_modules/@babel/plugin-transform-template-literals/README.md",
+  "sourceDirName": "node_modules/@babel/plugin-transform-template-literals",
+  "slug": "/node_modules/@babel/plugin-transform-template-literals/",
+  "permalink": "/consul-release-controller/node_modules/@babel/plugin-transform-template-literals/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@babel/plugin-transform-template-literals/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "@babel/plugin-transform-sticky-regex",
+    "permalink": "/consul-release-controller/node_modules/@babel/plugin-transform-sticky-regex/"
+  },
+  "next": {
+    "title": "@babel/plugin-transform-typeof-symbol",
+    "permalink": "/consul-release-controller/node_modules/@babel/plugin-transform-typeof-symbol/"
+  }
+}

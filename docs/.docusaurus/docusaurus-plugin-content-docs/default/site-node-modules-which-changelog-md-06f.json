@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/which/CHANGELOG",
+  "id": "node_modules/which/CHANGELOG",
+  "title": "Changes",
+  "description": "2.0.2",
+  "source": "@site/node_modules/which/CHANGELOG.md",
+  "sourceDirName": "node_modules/which",
+  "slug": "/node_modules/which/CHANGELOG",
+  "permalink": "/consul-release-controller/node_modules/which/CHANGELOG",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/which/CHANGELOG.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "which",
+    "permalink": "/consul-release-controller/node_modules/which/"
+  },
+  "next": {
+    "title": "widest-line [![Build Status](https://travis-ci.org/sindresorhus/widest-line.svg?branch=master)](https://travis-ci.org/sindresorhus/widest-line)",
+    "permalink": "/consul-release-controller/node_modules/widest-line/"
+  }
+}

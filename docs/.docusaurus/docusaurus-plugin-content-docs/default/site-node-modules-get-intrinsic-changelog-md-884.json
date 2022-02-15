@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/get-intrinsic/CHANGELOG",
+  "id": "node_modules/get-intrinsic/CHANGELOG",
+  "title": "Changelog",
+  "description": "All notable changes to this project will be documented in this file.",
+  "source": "@site/node_modules/get-intrinsic/CHANGELOG.md",
+  "sourceDirName": "node_modules/get-intrinsic",
+  "slug": "/node_modules/get-intrinsic/CHANGELOG",
+  "permalink": "/consul-release-controller/node_modules/get-intrinsic/CHANGELOG",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/get-intrinsic/CHANGELOG.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "get-intrinsic <sup>[![Version Badge][npm-version-svg]][package-url]</sup>",
+    "permalink": "/consul-release-controller/node_modules/get-intrinsic/"
+  },
+  "next": {
+    "title": "get-own-enumerable-property-symbols [![Build Status](https://travis-ci.org/mightyiam/get-own-enumerable-property-symbols.svg?branch=master)](https://travis-ci.org/mightyiam/get-own-enumerable-property-symbols)",
+    "permalink": "/consul-release-controller/node_modules/get-own-enumerable-property-symbols/"
+  }
+}

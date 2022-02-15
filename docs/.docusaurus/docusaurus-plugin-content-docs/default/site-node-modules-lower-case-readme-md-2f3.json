@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/lower-case/README",
+  "id": "node_modules/lower-case/README",
+  "title": "Lower Case",
+  "description": "NPM version",
+  "source": "@site/node_modules/lower-case/README.md",
+  "sourceDirName": "node_modules/lower-case",
+  "slug": "/node_modules/lower-case/",
+  "permalink": "/consul-release-controller/node_modules/lower-case/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/lower-case/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "loose-envify",
+    "permalink": "/consul-release-controller/node_modules/loose-envify/"
+  },
+  "next": {
+    "title": "lowercase-keys [![Build Status](https://travis-ci.org/sindresorhus/lowercase-keys.svg?branch=master)](https://travis-ci.org/sindresorhus/lowercase-keys)",
+    "permalink": "/consul-release-controller/node_modules/lowercase-keys/"
+  }
+}

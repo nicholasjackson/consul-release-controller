@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@babel/plugin-transform-modules-amd/README",
+  "id": "node_modules/@babel/plugin-transform-modules-amd/README",
+  "title": "@babel/plugin-transform-modules-amd",
+  "description": "This plugin transforms ES2015 modules to AMD",
+  "source": "@site/node_modules/@babel/plugin-transform-modules-amd/README.md",
+  "sourceDirName": "node_modules/@babel/plugin-transform-modules-amd",
+  "slug": "/node_modules/@babel/plugin-transform-modules-amd/",
+  "permalink": "/consul-release-controller/node_modules/@babel/plugin-transform-modules-amd/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@babel/plugin-transform-modules-amd/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "@babel/plugin-transform-member-expression-literals",
+    "permalink": "/consul-release-controller/node_modules/@babel/plugin-transform-member-expression-literals/"
+  },
+  "next": {
+    "title": "@babel/plugin-transform-modules-commonjs",
+    "permalink": "/consul-release-controller/node_modules/@babel/plugin-transform-modules-commonjs/"
+  }
+}

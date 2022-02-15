@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@babel/plugin-syntax-top-level-await/README",
+  "id": "node_modules/@babel/plugin-syntax-top-level-await/README",
+  "title": "@babel/plugin-syntax-top-level-await",
+  "description": "Allow parsing of top-level await in modules",
+  "source": "@site/node_modules/@babel/plugin-syntax-top-level-await/README.md",
+  "sourceDirName": "node_modules/@babel/plugin-syntax-top-level-await",
+  "slug": "/node_modules/@babel/plugin-syntax-top-level-await/",
+  "permalink": "/consul-release-controller/node_modules/@babel/plugin-syntax-top-level-await/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@babel/plugin-syntax-top-level-await/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "@babel/plugin-syntax-private-property-in-object",
+    "permalink": "/consul-release-controller/node_modules/@babel/plugin-syntax-private-property-in-object/"
+  },
+  "next": {
+    "title": "@babel/plugin-syntax-typescript",
+    "permalink": "/consul-release-controller/node_modules/@babel/plugin-syntax-typescript/"
+  }
+}

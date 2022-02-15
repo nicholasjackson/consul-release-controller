@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/acorn-walk/README",
+  "id": "node_modules/acorn-walk/README",
+  "title": "Acorn AST walker",
+  "description": "An abstract syntax tree walker for the",
+  "source": "@site/node_modules/acorn-walk/README.md",
+  "sourceDirName": "node_modules/acorn-walk",
+  "slug": "/node_modules/acorn-walk/",
+  "permalink": "/consul-release-controller/node_modules/acorn-walk/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/acorn-walk/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Acorn-JSX",
+    "permalink": "/consul-release-controller/node_modules/acorn-jsx/"
+  },
+  "next": {
+    "title": "CHANGELOG",
+    "permalink": "/consul-release-controller/node_modules/acorn-walk/CHANGELOG"
+  }
+}

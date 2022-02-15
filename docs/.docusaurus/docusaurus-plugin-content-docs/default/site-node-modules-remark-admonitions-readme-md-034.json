@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/remark-admonitions/README",
+  "id": "node_modules/remark-admonitions/README",
+  "title": "README",
+  "description": "Travis (.com)",
+  "source": "@site/node_modules/remark-admonitions/README.md",
+  "sourceDirName": "node_modules/remark-admonitions",
+  "slug": "/node_modules/remark-admonitions/",
+  "permalink": "/consul-release-controller/node_modules/remark-admonitions/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/remark-admonitions/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "relateurl [![NPM Version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][david-image]][david-url]",
+    "permalink": "/consul-release-controller/node_modules/relateurl/"
+  },
+  "next": {
+    "title": "[![unified][logo]][site]",
+    "permalink": "/consul-release-controller/node_modules/remark-admonitions/node_modules/unified/"
+  }
+}

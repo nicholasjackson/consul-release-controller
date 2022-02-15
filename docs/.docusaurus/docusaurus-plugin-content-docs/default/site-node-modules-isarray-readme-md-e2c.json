@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/isarray/README",
+  "id": "node_modules/isarray/README",
+  "title": "isarray",
+  "description": "Array#isArray for older browsers.",
+  "source": "@site/node_modules/isarray/README.md",
+  "sourceDirName": "node_modules/isarray",
+  "slug": "/node_modules/isarray/",
+  "permalink": "/consul-release-controller/node_modules/isarray/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/isarray/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "is-yarn-global",
+    "permalink": "/consul-release-controller/node_modules/is-yarn-global/"
+  },
+  "next": {
+    "title": "isexe",
+    "permalink": "/consul-release-controller/node_modules/isexe/"
+  }
+}

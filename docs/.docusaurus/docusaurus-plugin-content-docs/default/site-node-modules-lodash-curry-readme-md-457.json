@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/lodash.curry/README",
+  "id": "node_modules/lodash.curry/README",
+  "title": "lodash.curry v4.1.1",
+  "description": "The lodash method _.curry exported as a Node.js module.",
+  "source": "@site/node_modules/lodash.curry/README.md",
+  "sourceDirName": "node_modules/lodash.curry",
+  "slug": "/node_modules/lodash.curry/",
+  "permalink": "/consul-release-controller/node_modules/lodash.curry/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/lodash.curry/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "lodash.bind v4.2.1",
+    "permalink": "/consul-release-controller/node_modules/lodash.bind/"
+  },
+  "next": {
+    "title": "lodash.debounce v4.0.8",
+    "permalink": "/consul-release-controller/node_modules/lodash.debounce/"
+  }
+}

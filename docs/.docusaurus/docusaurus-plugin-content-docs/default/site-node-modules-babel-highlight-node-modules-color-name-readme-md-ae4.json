@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@babel/highlight/node_modules/color-name/README",
+  "id": "node_modules/@babel/highlight/node_modules/color-name/README",
+  "title": "README",
+  "description": "A JSON with color names and its values. Based on http://dev.w3.org/csswg/css-color/#named-colors.",
+  "source": "@site/node_modules/@babel/highlight/node_modules/color-name/README.md",
+  "sourceDirName": "node_modules/@babel/highlight/node_modules/color-name",
+  "slug": "/node_modules/@babel/highlight/node_modules/color-name/",
+  "permalink": "/consul-release-controller/node_modules/@babel/highlight/node_modules/color-name/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@babel/highlight/node_modules/color-name/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "1.0.0 - 2016-01-07",
+    "permalink": "/consul-release-controller/node_modules/@babel/highlight/node_modules/color-convert/CHANGELOG"
+  },
+  "next": {
+    "title": "escape-string-regexp [![Build Status](https://travis-ci.org/sindresorhus/escape-string-regexp.svg?branch=master)](https://travis-ci.org/sindresorhus/escape-string-regexp)",
+    "permalink": "/consul-release-controller/node_modules/@babel/highlight/node_modules/escape-string-regexp/"
+  }
+}

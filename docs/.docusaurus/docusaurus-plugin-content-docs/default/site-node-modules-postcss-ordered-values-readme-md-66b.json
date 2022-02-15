@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/postcss-ordered-values/README",
+  "id": "node_modules/postcss-ordered-values/README",
+  "title": "[postcss][postcss]-ordered-values",
+  "description": "Ensure values are ordered consistently in your CSS.",
+  "source": "@site/node_modules/postcss-ordered-values/README.md",
+  "sourceDirName": "node_modules/postcss-ordered-values",
+  "slug": "/node_modules/postcss-ordered-values/",
+  "permalink": "/consul-release-controller/node_modules/postcss-ordered-values/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/postcss-ordered-values/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "[postcss][postcss]-normalize-whitespace",
+    "permalink": "/consul-release-controller/node_modules/postcss-normalize-whitespace/"
+  },
+  "next": {
+    "title": "[postcss][postcss]-reduce-idents",
+    "permalink": "/consul-release-controller/node_modules/postcss-reduce-idents/"
+  }
+}

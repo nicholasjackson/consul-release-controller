@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@docusaurus/mdx-loader/README",
+  "id": "node_modules/@docusaurus/mdx-loader/README",
+  "title": "@docusaurus/mdx-loader",
+  "description": "Docusaurus webpack loader for MDX.",
+  "source": "@site/node_modules/@docusaurus/mdx-loader/README.md",
+  "sourceDirName": "node_modules/@docusaurus/mdx-loader",
+  "slug": "/node_modules/@docusaurus/mdx-loader/",
+  "permalink": "/consul-release-controller/node_modules/@docusaurus/mdx-loader/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@docusaurus/mdx-loader/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "@docusaurus/logger",
+    "permalink": "/consul-release-controller/node_modules/@docusaurus/logger/"
+  },
+  "next": {
+    "title": "@docusaurus/plugin-content-blog",
+    "permalink": "/consul-release-controller/node_modules/@docusaurus/plugin-content-blog/"
+  }
+}

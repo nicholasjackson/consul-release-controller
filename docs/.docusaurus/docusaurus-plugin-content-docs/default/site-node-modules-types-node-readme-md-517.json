@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@types/node/README",
+  "id": "node_modules/@types/node/README",
+  "title": "Installation",
+  "description": "npm install --save @types/node",
+  "source": "@site/node_modules/@types/node/README.md",
+  "sourceDirName": "node_modules/@types/node",
+  "slug": "/node_modules/@types/node/",
+  "permalink": "/consul-release-controller/node_modules/@types/node/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@types/node/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Installation",
+    "permalink": "/consul-release-controller/node_modules/@types/mime/"
+  },
+  "next": {
+    "title": "Installation",
+    "permalink": "/consul-release-controller/node_modules/@types/parse-json/"
+  }
+}

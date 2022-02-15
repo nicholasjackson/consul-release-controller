@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/jest-worker/node_modules/supports-color/readme",
+  "id": "node_modules/jest-worker/node_modules/supports-color/readme",
+  "title": "supports-color",
+  "description": "Detect whether a terminal supports color",
+  "source": "@site/node_modules/jest-worker/node_modules/supports-color/readme.md",
+  "sourceDirName": "node_modules/jest-worker/node_modules/supports-color",
+  "slug": "/node_modules/jest-worker/node_modules/supports-color/",
+  "permalink": "/consul-release-controller/node_modules/jest-worker/node_modules/supports-color/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/jest-worker/node_modules/supports-color/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "jest-worker",
+    "permalink": "/consul-release-controller/node_modules/jest-worker/"
+  },
+  "next": {
+    "title": "joi",
+    "permalink": "/consul-release-controller/node_modules/joi/"
+  }
+}

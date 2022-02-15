@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@babel/template/README",
+  "id": "node_modules/@babel/template/README",
+  "title": "@babel/template",
+  "description": "Generate an AST from a string template.",
+  "source": "@site/node_modules/@babel/template/README.md",
+  "sourceDirName": "node_modules/@babel/template",
+  "slug": "/node_modules/@babel/template/",
+  "permalink": "/consul-release-controller/node_modules/@babel/template/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@babel/template/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "@babel/runtime-corejs3",
+    "permalink": "/consul-release-controller/node_modules/@babel/runtime-corejs3/"
+  },
+  "next": {
+    "title": "@babel/traverse",
+    "permalink": "/consul-release-controller/node_modules/@babel/traverse/"
+  }
+}

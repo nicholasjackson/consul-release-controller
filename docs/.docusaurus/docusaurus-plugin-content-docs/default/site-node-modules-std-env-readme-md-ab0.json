@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/std-env/README",
+  "id": "node_modules/std-env/README",
+  "title": "std-env",
+  "description": "npm",
+  "source": "@site/node_modules/std-env/README.md",
+  "sourceDirName": "node_modules/std-env",
+  "slug": "/node_modules/std-env/",
+  "permalink": "/consul-release-controller/node_modules/std-env/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/std-env/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "1.5.0 / 2018-03-27",
+    "permalink": "/consul-release-controller/node_modules/statuses/HISTORY"
+  },
+  "next": {
+    "title": "string-width",
+    "permalink": "/consul-release-controller/node_modules/string-width/"
+  }
+}

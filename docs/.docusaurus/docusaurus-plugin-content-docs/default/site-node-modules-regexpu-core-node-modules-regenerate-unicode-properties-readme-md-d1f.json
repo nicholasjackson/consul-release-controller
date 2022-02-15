@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/regexpu-core/node_modules/regenerate-unicode-properties/README",
+  "id": "node_modules/regexpu-core/node_modules/regenerate-unicode-properties/README",
+  "title": "regenerate-unicode-properties [![Build status](https://travis-ci.org/mathiasbynens/regenerate-unicode-properties.svg?branch=main)](https://travis-ci.org/mathiasbynens/regenerate-unicode-properties) [![regenerate-unicode-properties on npm](https://img.shields.io/npm/v/regenerate-unicode-properties)](https://www.npmjs.com/package/regenerate-unicode-properties)",
+  "description": "regenerate-unicode-properties is a collection of Regenerate sets for various Unicode properties.",
+  "source": "@site/node_modules/regexpu-core/node_modules/regenerate-unicode-properties/README.md",
+  "sourceDirName": "node_modules/regexpu-core/node_modules/regenerate-unicode-properties",
+  "slug": "/node_modules/regexpu-core/node_modules/regenerate-unicode-properties/",
+  "permalink": "/consul-release-controller/node_modules/regexpu-core/node_modules/regenerate-unicode-properties/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/regexpu-core/node_modules/regenerate-unicode-properties/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "regexpu-core [![Build status](https://github.com/mathiasbynens/regexpu-core/workflows/run-checks/badge.svg)](https://github.com/mathiasbynens/regexpu-core/actions?query=workflow%3Arun-checks) [![regexpu-core on npm](https://img.shields.io/npm/v/regexpu-core)](https://www.npmjs.com/package/regexpu-core)",
+    "permalink": "/consul-release-controller/node_modules/regexpu-core/"
+  },
+  "next": {
+    "title": "registry-auth-token",
+    "permalink": "/consul-release-controller/node_modules/registry-auth-token/"
+  }
+}

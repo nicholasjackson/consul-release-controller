@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/trough/readme",
+  "id": "node_modules/trough/readme",
+  "title": "trough",
+  "description": "Build",
+  "source": "@site/node_modules/trough/readme.md",
+  "sourceDirName": "node_modules/trough",
+  "slug": "/node_modules/trough/",
+  "permalink": "/consul-release-controller/node_modules/trough/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/trough/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "trim-trailing-lines",
+    "permalink": "/consul-release-controller/node_modules/trim-trailing-lines/"
+  },
+  "next": {
+    "title": "tslib",
+    "permalink": "/consul-release-controller/node_modules/tslib/"
+  }
+}

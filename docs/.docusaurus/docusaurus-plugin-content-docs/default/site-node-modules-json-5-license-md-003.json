@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/json5/LICENSE",
+  "id": "node_modules/json5/LICENSE",
+  "title": "LICENSE",
+  "description": "MIT License",
+  "source": "@site/node_modules/json5/LICENSE.md",
+  "sourceDirName": "node_modules/json5",
+  "slug": "/node_modules/json5/LICENSE",
+  "permalink": "/consul-release-controller/node_modules/json5/LICENSE",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/json5/LICENSE.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "CHANGELOG",
+    "permalink": "/consul-release-controller/node_modules/json5/CHANGELOG"
+  },
+  "next": {
+    "title": "Node.js - jsonfile",
+    "permalink": "/consul-release-controller/node_modules/jsonfile/"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/postcss-merge-idents/README",
+  "id": "node_modules/postcss-merge-idents/README",
+  "title": "[postcss][postcss]-merge-idents",
+  "description": "Merge keyframe and counter style identifiers.",
+  "source": "@site/node_modules/postcss-merge-idents/README.md",
+  "sourceDirName": "node_modules/postcss-merge-idents",
+  "slug": "/node_modules/postcss-merge-idents/",
+  "permalink": "/consul-release-controller/node_modules/postcss-merge-idents/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/postcss-merge-idents/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "changes log",
+    "permalink": "/consul-release-controller/node_modules/postcss-loader/node_modules/semver/CHANGELOG"
+  },
+  "next": {
+    "title": "[postcss][postcss]-merge-longhand",
+    "permalink": "/consul-release-controller/node_modules/postcss-merge-longhand/"
+  }
+}

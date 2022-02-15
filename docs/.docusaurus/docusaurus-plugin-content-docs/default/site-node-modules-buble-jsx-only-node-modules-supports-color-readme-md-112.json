@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/buble-jsx-only/node_modules/supports-color/readme",
+  "id": "node_modules/buble-jsx-only/node_modules/supports-color/readme",
+  "title": "supports-color [![Build Status](https://travis-ci.org/chalk/supports-color.svg?branch=master)](https://travis-ci.org/chalk/supports-color)",
+  "description": "Detect whether a terminal supports color",
+  "source": "@site/node_modules/buble-jsx-only/node_modules/supports-color/readme.md",
+  "sourceDirName": "node_modules/buble-jsx-only/node_modules/supports-color",
+  "slug": "/node_modules/buble-jsx-only/node_modules/supports-color/",
+  "permalink": "/consul-release-controller/node_modules/buble-jsx-only/node_modules/supports-color/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/buble-jsx-only/node_modules/supports-color/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "has-flag [![Build Status](https://travis-ci.org/sindresorhus/has-flag.svg?branch=master)](https://travis-ci.org/sindresorhus/has-flag)",
+    "permalink": "/consul-release-controller/node_modules/buble-jsx-only/node_modules/has-flag/"
+  },
+  "next": {
+    "title": "Buffer From",
+    "permalink": "/consul-release-controller/node_modules/buffer-from/"
+  }
+}

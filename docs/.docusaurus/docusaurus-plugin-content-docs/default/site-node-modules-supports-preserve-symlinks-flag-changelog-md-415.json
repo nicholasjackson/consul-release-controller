@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/supports-preserve-symlinks-flag/CHANGELOG",
+  "id": "node_modules/supports-preserve-symlinks-flag/CHANGELOG",
+  "title": "Changelog",
+  "description": "All notable changes to this project will be documented in this file.",
+  "source": "@site/node_modules/supports-preserve-symlinks-flag/CHANGELOG.md",
+  "sourceDirName": "node_modules/supports-preserve-symlinks-flag",
+  "slug": "/node_modules/supports-preserve-symlinks-flag/CHANGELOG",
+  "permalink": "/consul-release-controller/node_modules/supports-preserve-symlinks-flag/CHANGELOG",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/supports-preserve-symlinks-flag/CHANGELOG.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "node-supports-preserve-symlinks-flag <sup>[![Version Badge][npm-version-svg]][package-url]</sup>",
+    "permalink": "/consul-release-controller/node_modules/supports-preserve-symlinks-flag/"
+  },
+  "next": {
+    "title": "svg-parser",
+    "permalink": "/consul-release-controller/node_modules/svg-parser/"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/postcss-merge-longhand/README",
+  "id": "node_modules/postcss-merge-longhand/README",
+  "title": "[postcss][postcss]-merge-longhand",
+  "description": "Merge longhand properties into shorthand with PostCSS.",
+  "source": "@site/node_modules/postcss-merge-longhand/README.md",
+  "sourceDirName": "node_modules/postcss-merge-longhand",
+  "slug": "/node_modules/postcss-merge-longhand/",
+  "permalink": "/consul-release-controller/node_modules/postcss-merge-longhand/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/postcss-merge-longhand/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "[postcss][postcss]-merge-idents",
+    "permalink": "/consul-release-controller/node_modules/postcss-merge-idents/"
+  },
+  "next": {
+    "title": "[postcss][postcss]-merge-rules",
+    "permalink": "/consul-release-controller/node_modules/postcss-merge-rules/"
+  }
+}

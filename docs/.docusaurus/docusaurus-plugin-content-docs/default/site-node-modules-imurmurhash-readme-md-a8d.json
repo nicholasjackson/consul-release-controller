@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/imurmurhash/README",
+  "id": "node_modules/imurmurhash/README",
+  "title": "iMurmurHash.js",
+  "description": "An incremental implementation of the MurmurHash3 (32-bit) hashing algorithm for JavaScript based on Gary Court's implementation with kazuyukitanimura's modifications.",
+  "source": "@site/node_modules/imurmurhash/README.md",
+  "sourceDirName": "node_modules/imurmurhash",
+  "slug": "/node_modules/imurmurhash/",
+  "permalink": "/consul-release-controller/node_modules/imurmurhash/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/imurmurhash/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "import-lazy [![Build Status](https://travis-ci.org/sindresorhus/import-lazy.svg?branch=master)](https://travis-ci.org/sindresorhus/import-lazy)",
+    "permalink": "/consul-release-controller/node_modules/import-lazy/"
+  },
+  "next": {
+    "title": "indent-string [![Build Status](https://travis-ci.org/sindresorhus/indent-string.svg?branch=master)](https://travis-ci.org/sindresorhus/indent-string)",
+    "permalink": "/consul-release-controller/node_modules/indent-string/"
+  }
+}

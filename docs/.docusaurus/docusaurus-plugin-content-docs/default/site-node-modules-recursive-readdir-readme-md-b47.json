@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/recursive-readdir/README",
+  "id": "node_modules/recursive-readdir/README",
+  "title": "recursive-readdir",
+  "description": "Build Status",
+  "source": "@site/node_modules/recursive-readdir/README.md",
+  "sourceDirName": "node_modules/recursive-readdir",
+  "slug": "/node_modules/recursive-readdir/",
+  "permalink": "/consul-release-controller/node_modules/recursive-readdir/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/recursive-readdir/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "rechoir [![Build Status](https://secure.travis-ci.org/tkellen/js-rechoir.png)](http://travis-ci.org/tkellen/js-rechoir)",
+    "permalink": "/consul-release-controller/node_modules/rechoir/"
+  },
+  "next": {
+    "title": "CHANGELOG",
+    "permalink": "/consul-release-controller/node_modules/recursive-readdir/CHANGELOG"
+  }
+}

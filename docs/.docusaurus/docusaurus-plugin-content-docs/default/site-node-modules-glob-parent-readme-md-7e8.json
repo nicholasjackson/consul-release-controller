@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/glob-parent/README",
+  "id": "node_modules/glob-parent/README",
+  "title": "README",
+  "description": "NPM version Downloads Azure Pipelines Build Status Travis Build Status AppVeyor Build Status Coveralls Status Gitter chat",
+  "source": "@site/node_modules/glob-parent/README.md",
+  "sourceDirName": "node_modules/glob-parent",
+  "slug": "/node_modules/glob-parent/",
+  "permalink": "/consul-release-controller/node_modules/glob-parent/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/glob-parent/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "minimatch",
+    "permalink": "/consul-release-controller/node_modules/glob/node_modules/minimatch/"
+  },
+  "next": {
+    "title": "CHANGELOG",
+    "permalink": "/consul-release-controller/node_modules/glob-parent/CHANGELOG"
+  }
+}

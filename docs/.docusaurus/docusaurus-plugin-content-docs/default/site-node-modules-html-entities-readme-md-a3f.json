@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/html-entities/README",
+  "id": "node_modules/html-entities/README",
+  "title": "html-entities",
+  "description": "Fastest HTML entities library.",
+  "source": "@site/node_modules/html-entities/README.md",
+  "sourceDirName": "node_modules/html-entities",
+  "slug": "/node_modules/html-entities/",
+  "permalink": "/consul-release-controller/node_modules/html-entities/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/html-entities/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "string_decoder",
+    "permalink": "/consul-release-controller/node_modules/hpack.js/node_modules/string_decoder/"
+  },
+  "next": {
+    "title": "CHANGELOG",
+    "permalink": "/consul-release-controller/node_modules/html-entities/CHANGELOG"
+  }
+}

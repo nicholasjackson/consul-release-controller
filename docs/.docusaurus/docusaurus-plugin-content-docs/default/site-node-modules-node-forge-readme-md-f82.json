@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/node-forge/README",
+  "id": "node_modules/node-forge/README",
+  "title": "Forge",
+  "description": "npm package",
+  "source": "@site/node_modules/node-forge/README.md",
+  "sourceDirName": "node_modules/node-forge",
+  "slug": "/node_modules/node-forge/",
+  "permalink": "/consul-release-controller/node_modules/node-forge/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/node-forge/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "LICENSE",
+    "permalink": "/consul-release-controller/node_modules/node-fetch/LICENSE"
+  },
+  "next": {
+    "title": "Forge ChangeLog",
+    "permalink": "/consul-release-controller/node_modules/node-forge/CHANGELOG"
+  }
+}

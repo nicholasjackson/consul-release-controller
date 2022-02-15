@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/lodash.assignin/README",
+  "id": "node_modules/lodash.assignin/README",
+  "title": "lodash.assignin v4.2.0",
+  "description": "The lodash method _.assignIn exported as a Node.js module.",
+  "source": "@site/node_modules/lodash.assignin/README.md",
+  "sourceDirName": "node_modules/lodash.assignin",
+  "slug": "/node_modules/lodash.assignin/",
+  "permalink": "/consul-release-controller/node_modules/lodash.assignin/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/lodash.assignin/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "locate-path [![Build Status](https://travis-ci.com/sindresorhus/locate-path.svg?branch=master)](https://travis-ci.com/github/sindresorhus/locate-path)",
+    "permalink": "/consul-release-controller/node_modules/locate-path/"
+  },
+  "next": {
+    "title": "lodash.bind v4.2.1",
+    "permalink": "/consul-release-controller/node_modules/lodash.bind/"
+  }
+}

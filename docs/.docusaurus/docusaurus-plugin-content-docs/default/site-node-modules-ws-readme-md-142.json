@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/ws/README",
+  "id": "node_modules/ws/README",
+  "title": "ws: a Node.js WebSocket library",
+  "description": "Version npm",
+  "source": "@site/node_modules/ws/README.md",
+  "sourceDirName": "node_modules/ws",
+  "slug": "/node_modules/ws/",
+  "permalink": "/consul-release-controller/node_modules/ws/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/ws/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "3.0.0",
+    "permalink": "/consul-release-controller/node_modules/write-file-atomic/CHANGELOG"
+  },
+  "next": {
+    "title": "xdg-basedir [![Build Status](https://travis-ci.org/sindresorhus/xdg-basedir.svg?branch=master)](https://travis-ci.org/sindresorhus/xdg-basedir)",
+    "permalink": "/consul-release-controller/node_modules/xdg-basedir/"
+  }
+}

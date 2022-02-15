@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/postcss-discard-overridden/README",
+  "id": "node_modules/postcss-discard-overridden/README",
+  "title": "PostCSS Discard Overridden",
+  "description": "[PostCSS] plugin to discard overridden @keyframes or @counter-style.",
+  "source": "@site/node_modules/postcss-discard-overridden/README.md",
+  "sourceDirName": "node_modules/postcss-discard-overridden",
+  "slug": "/node_modules/postcss-discard-overridden/",
+  "permalink": "/consul-release-controller/node_modules/postcss-discard-overridden/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/postcss-discard-overridden/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "[postcss][postcss]-discard-empty",
+    "permalink": "/consul-release-controller/node_modules/postcss-discard-empty/"
+  },
+  "next": {
+    "title": "[postcss][postcss]-discard-unused",
+    "permalink": "/consul-release-controller/node_modules/postcss-discard-unused/"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/mdurl/CHANGELOG",
+  "id": "node_modules/mdurl/CHANGELOG",
+  "title": "CHANGELOG",
+  "description": "1.0.1 / 2015-09-15",
+  "source": "@site/node_modules/mdurl/CHANGELOG.md",
+  "sourceDirName": "node_modules/mdurl",
+  "slug": "/node_modules/mdurl/CHANGELOG",
+  "permalink": "/consul-release-controller/node_modules/mdurl/CHANGELOG",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/mdurl/CHANGELOG.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "mdurl",
+    "permalink": "/consul-release-controller/node_modules/mdurl/"
+  },
+  "next": {
+    "title": "media-typer",
+    "permalink": "/consul-release-controller/node_modules/media-typer/"
+  }
+}

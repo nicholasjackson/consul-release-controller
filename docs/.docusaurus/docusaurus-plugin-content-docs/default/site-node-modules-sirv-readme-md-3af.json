@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/sirv/readme",
+  "id": "node_modules/sirv/readme",
+  "title": "sirv ![CI](https://github.com/lukeed/sirv/workflows/CI/badge.svg)",
+  "description": "The optimized and lightweight middleware for serving requests to static assets",
+  "source": "@site/node_modules/sirv/readme.md",
+  "sourceDirName": "node_modules/sirv",
+  "slug": "/node_modules/sirv/",
+  "permalink": "/consul-release-controller/node_modules/sirv/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/sirv/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "signal-exit",
+    "permalink": "/consul-release-controller/node_modules/signal-exit/"
+  },
+  "next": {
+    "title": "sister ANSI [![Version](https://img.shields.io/npm/v/sisteransi.svg)](https://www.npmjs.com/package/sisteransi) [![Build Status](https://travis-ci.org/terkelg/sisteransi.svg?branch=master)](https://travis-ci.org/terkelg/sisteransi) [![Downloads](https://img.shields.io/npm/dm/sisteransi.svg)](https://www.npmjs.com/package/sisteransi)",
+    "permalink": "/consul-release-controller/node_modules/sisteransi/"
+  }
+}

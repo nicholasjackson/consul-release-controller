@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/buble-jsx-only/LICENSE",
+  "id": "node_modules/buble-jsx-only/LICENSE",
+  "title": "LICENSE",
+  "description": "The MIT License (MIT)",
+  "source": "@site/node_modules/buble-jsx-only/LICENSE.md",
+  "sourceDirName": "node_modules/buble-jsx-only",
+  "slug": "/node_modules/buble-jsx-only/LICENSE",
+  "permalink": "/consul-release-controller/node_modules/buble-jsx-only/LICENSE",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/buble-jsx-only/LICENSE.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "buble changelog",
+    "permalink": "/consul-release-controller/node_modules/buble-jsx-only/CHANGELOG"
+  },
+  "next": {
+    "title": "Bublé version <%= version %>",
+    "permalink": "/consul-release-controller/node_modules/buble-jsx-only/bin/help"
+  }
+}

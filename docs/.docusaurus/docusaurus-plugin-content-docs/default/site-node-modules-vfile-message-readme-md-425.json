@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/vfile-message/readme",
+  "id": "node_modules/vfile-message/readme",
+  "title": "vfile-message",
+  "description": "Build",
+  "source": "@site/node_modules/vfile-message/readme.md",
+  "sourceDirName": "node_modules/vfile-message",
+  "slug": "/node_modules/vfile-message/",
+  "permalink": "/consul-release-controller/node_modules/vfile-message/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/vfile-message/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "vfile-location",
+    "permalink": "/consul-release-controller/node_modules/vfile-location/"
+  },
+  "next": {
+    "title": "wait-on - wait for files, ports, sockets, http(s) resources",
+    "permalink": "/consul-release-controller/node_modules/wait-on/"
+  }
+}

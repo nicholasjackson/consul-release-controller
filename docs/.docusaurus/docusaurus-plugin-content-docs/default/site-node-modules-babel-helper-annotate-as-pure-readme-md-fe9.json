@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@babel/helper-annotate-as-pure/README",
+  "id": "node_modules/@babel/helper-annotate-as-pure/README",
+  "title": "@babel/helper-annotate-as-pure",
+  "description": "Helper function to annotate paths and nodes with #PURE comment",
+  "source": "@site/node_modules/@babel/helper-annotate-as-pure/README.md",
+  "sourceDirName": "node_modules/@babel/helper-annotate-as-pure",
+  "slug": "/node_modules/@babel/helper-annotate-as-pure/",
+  "permalink": "/consul-release-controller/node_modules/@babel/helper-annotate-as-pure/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@babel/helper-annotate-as-pure/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Change Log",
+    "permalink": "/consul-release-controller/node_modules/@babel/generator/node_modules/source-map/CHANGELOG"
+  },
+  "next": {
+    "title": "@babel/helper-builder-binary-assignment-operator-visitor",
+    "permalink": "/consul-release-controller/node_modules/@babel/helper-builder-binary-assignment-operator-visitor/"
+  }
+}

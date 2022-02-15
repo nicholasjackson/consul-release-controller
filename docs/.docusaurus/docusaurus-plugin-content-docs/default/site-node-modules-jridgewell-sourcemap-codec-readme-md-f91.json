@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@jridgewell/sourcemap-codec/README",
+  "id": "node_modules/@jridgewell/sourcemap-codec/README",
+  "title": "sourcemap-codec",
+  "description": "Encode/decode the mappings property of a sourcemap.",
+  "source": "@site/node_modules/@jridgewell/sourcemap-codec/README.md",
+  "sourceDirName": "node_modules/@jridgewell/sourcemap-codec",
+  "slug": "/node_modules/@jridgewell/sourcemap-codec/",
+  "permalink": "/consul-release-controller/node_modules/@jridgewell/sourcemap-codec/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@jridgewell/sourcemap-codec/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "@jridgewell/resolve-uri",
+    "permalink": "/consul-release-controller/node_modules/@jridgewell/resolve-uri/"
+  },
+  "next": {
+    "title": "@jridgewell/trace-mapping",
+    "permalink": "/consul-release-controller/node_modules/@jridgewell/trace-mapping/"
+  }
+}

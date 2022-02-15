@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/postcss-normalize-unicode/README",
+  "id": "node_modules/postcss-normalize-unicode/README",
+  "title": "[postcss][postcss]-normalize-unicode",
+  "description": "Normalize unicode with PostCSS.",
+  "source": "@site/node_modules/postcss-normalize-unicode/README.md",
+  "sourceDirName": "node_modules/postcss-normalize-unicode",
+  "slug": "/node_modules/postcss-normalize-unicode/",
+  "permalink": "/consul-release-controller/node_modules/postcss-normalize-unicode/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/postcss-normalize-unicode/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "[postcss][postcss]-normalize-timing-functions",
+    "permalink": "/consul-release-controller/node_modules/postcss-normalize-timing-functions/"
+  },
+  "next": {
+    "title": "[postcss][postcss]-normalize-url",
+    "permalink": "/consul-release-controller/node_modules/postcss-normalize-url/"
+  }
+}

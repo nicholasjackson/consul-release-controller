@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/setprototypeof/README",
+  "id": "node_modules/setprototypeof/README",
+  "title": "Polyfill for `Object.setPrototypeOf`",
+  "description": "NPM Version",
+  "source": "@site/node_modules/setprototypeof/README.md",
+  "sourceDirName": "node_modules/setprototypeof",
+  "slug": "/node_modules/setprototypeof/",
+  "permalink": "/consul-release-controller/node_modules/setprototypeof/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/setprototypeof/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "1.14.2 / 2021-12-15",
+    "permalink": "/consul-release-controller/node_modules/serve-static/HISTORY"
+  },
+  "next": {
+    "title": "shallow-clone [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=W8YFZ425KND68) [![NPM version](https://img.shields.io/npm/v/shallow-clone.svg?style=flat)](https://www.npmjs.com/package/shallow-clone) [![NPM monthly downloads](https://img.shields.io/npm/dm/shallow-clone.svg?style=flat)](https://npmjs.org/package/shallow-clone) [![NPM total downloads](https://img.shields.io/npm/dt/shallow-clone.svg?style=flat)](https://npmjs.org/package/shallow-clone) [![Linux Build Status](https://img.shields.io/travis/jonschlinkert/shallow-clone.svg?style=flat&label=Travis)](https://travis-ci.org/jonschlinkert/shallow-clone)",
+    "permalink": "/consul-release-controller/node_modules/shallow-clone/"
+  }
+}

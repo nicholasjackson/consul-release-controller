@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/postcss-selector-parser/README",
+  "id": "node_modules/postcss-selector-parser/README",
+  "title": "postcss-selector-parser [![Build Status](https://travis-ci.org/postcss/postcss-selector-parser.svg?branch=master)](https://travis-ci.org/postcss/postcss-selector-parser)",
+  "description": "Selector parser with built in methods for working with selector strings.",
+  "source": "@site/node_modules/postcss-selector-parser/README.md",
+  "sourceDirName": "node_modules/postcss-selector-parser",
+  "slug": "/node_modules/postcss-selector-parser/",
+  "permalink": "/consul-release-controller/node_modules/postcss-selector-parser/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/postcss-selector-parser/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "[postcss][postcss]-reduce-transforms",
+    "permalink": "/consul-release-controller/node_modules/postcss-reduce-transforms/"
+  },
+  "next": {
+    "title": "API Documentation",
+    "permalink": "/consul-release-controller/node_modules/postcss-selector-parser/API"
+  }
+}

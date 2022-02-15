@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/postcss-convert-values/README",
+  "id": "node_modules/postcss-convert-values/README",
+  "title": "[postcss][postcss]-convert-values",
+  "description": "Convert values with PostCSS (e.g. ms -> s)",
+  "source": "@site/node_modules/postcss-convert-values/README.md",
+  "sourceDirName": "node_modules/postcss-convert-values",
+  "slug": "/node_modules/postcss-convert-values/",
+  "permalink": "/consul-release-controller/node_modules/postcss-convert-values/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/postcss-convert-values/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "[postcss][postcss]-colormin",
+    "permalink": "/consul-release-controller/node_modules/postcss-colormin/"
+  },
+  "next": {
+    "title": "[postcss][postcss]-discard-comments",
+    "permalink": "/consul-release-controller/node_modules/postcss-discard-comments/"
+  }
+}

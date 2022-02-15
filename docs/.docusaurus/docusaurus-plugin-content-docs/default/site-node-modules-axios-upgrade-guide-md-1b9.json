@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/axios/UPGRADE_GUIDE",
+  "id": "node_modules/axios/UPGRADE_GUIDE",
+  "title": "Upgrade Guide",
+  "description": "0.18.x -> 0.19.0",
+  "source": "@site/node_modules/axios/UPGRADE_GUIDE.md",
+  "sourceDirName": "node_modules/axios",
+  "slug": "/node_modules/axios/UPGRADE_GUIDE",
+  "permalink": "/consul-release-controller/node_modules/axios/UPGRADE_GUIDE",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/axios/UPGRADE_GUIDE.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Security Policy",
+    "permalink": "/consul-release-controller/node_modules/axios/SECURITY"
+  },
+  "next": {
+    "title": "axios // adapters",
+    "permalink": "/consul-release-controller/node_modules/axios/lib/adapters/"
+  }
+}

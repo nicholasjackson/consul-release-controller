@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/feed/CONTRIBUTING",
+  "id": "node_modules/feed/CONTRIBUTING",
+  "title": "How to contribute",
+  "description": "We'd love to accept your patches and contributions to this project. There are a just a few small guidelines you need to follow.",
+  "source": "@site/node_modules/feed/CONTRIBUTING.md",
+  "sourceDirName": "node_modules/feed",
+  "slug": "/node_modules/feed/CONTRIBUTING",
+  "permalink": "/consul-release-controller/node_modules/feed/CONTRIBUTING",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/feed/CONTRIBUTING.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Code of Conduct",
+    "permalink": "/consul-release-controller/node_modules/feed/CODE_OF_CONDUCT"
+  },
+  "next": {
+    "title": "CONTRIBUTORS",
+    "permalink": "/consul-release-controller/node_modules/feed/CONTRIBUTORS"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/emojis-list/LICENSE",
+  "id": "node_modules/emojis-list/LICENSE",
+  "title": "LICENSE",
+  "description": "The MIT License (MIT)",
+  "source": "@site/node_modules/emojis-list/LICENSE.md",
+  "sourceDirName": "node_modules/emojis-list",
+  "slug": "/node_modules/emojis-list/LICENSE",
+  "permalink": "/consul-release-controller/node_modules/emojis-list/LICENSE",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/emojis-list/LICENSE.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "CHANGELOG",
+    "permalink": "/consul-release-controller/node_modules/emojis-list/CHANGELOG"
+  },
+  "next": {
+    "title": "emoticon",
+    "permalink": "/consul-release-controller/node_modules/emoticon/"
+  }
+}

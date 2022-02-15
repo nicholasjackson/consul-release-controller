@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@babel/helper-define-polyfill-provider/README",
+  "id": "node_modules/@babel/helper-define-polyfill-provider/README",
+  "title": "@babel/helper-define-polyfill-provider",
+  "description": "Install",
+  "source": "@site/node_modules/@babel/helper-define-polyfill-provider/README.md",
+  "sourceDirName": "node_modules/@babel/helper-define-polyfill-provider",
+  "slug": "/node_modules/@babel/helper-define-polyfill-provider/",
+  "permalink": "/consul-release-controller/node_modules/@babel/helper-define-polyfill-provider/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@babel/helper-define-polyfill-provider/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "RegJSParser",
+    "permalink": "/consul-release-controller/node_modules/@babel/helper-create-regexp-features-plugin/node_modules/regjsparser/"
+  },
+  "next": {
+    "title": "debug",
+    "permalink": "/consul-release-controller/node_modules/@babel/helper-define-polyfill-provider/node_modules/debug/"
+  }
+}

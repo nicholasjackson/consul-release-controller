@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@mdx-js/util/readme",
+  "id": "node_modules/@mdx-js/util/readme",
+  "title": "[@mdx-js/util][mdx]",
+  "description": "Utility functions used in MDX libraries.",
+  "source": "@site/node_modules/@mdx-js/util/readme.md",
+  "sourceDirName": "node_modules/@mdx-js/util",
+  "slug": "/node_modules/@mdx-js/util/",
+  "permalink": "/consul-release-controller/node_modules/@mdx-js/util/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@mdx-js/util/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "@mdx-js/runtime",
+    "permalink": "/consul-release-controller/node_modules/@mdx-js/runtime/"
+  },
+  "next": {
+    "title": "@nodelib/fs.scandir",
+    "permalink": "/consul-release-controller/node_modules/@nodelib/fs.scandir/"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/extend/CHANGELOG",
+  "id": "node_modules/extend/CHANGELOG",
+  "title": "3.0.2 / 2018-07-19",
+  "description": "* [Fix] Prevent merging proto property (#48)",
+  "source": "@site/node_modules/extend/CHANGELOG.md",
+  "sourceDirName": "node_modules/extend",
+  "slug": "/node_modules/extend/CHANGELOG",
+  "permalink": "/consul-release-controller/node_modules/extend/CHANGELOG",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/extend/CHANGELOG.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/extend/"
+  },
+  "next": {
+    "title": "extend-shallow [![NPM version](https://badge.fury.io/js/extend-shallow.svg)](http://badge.fury.io/js/extend-shallow)  [![Build Status](https://travis-ci.org/jonschlinkert/extend-shallow.svg)](https://travis-ci.org/jonschlinkert/extend-shallow)",
+    "permalink": "/consul-release-controller/node_modules/extend-shallow/"
+  }
+}

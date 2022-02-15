@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/boolbase/README",
+  "id": "node_modules/boolbase/README",
+  "title": "boolbase",
+  "description": "This very simple module provides two basic functions, one that always returns true (trueFunc) and one that always returns false (falseFunc).",
+  "source": "@site/node_modules/boolbase/README.md",
+  "sourceDirName": "node_modules/boolbase",
+  "slug": "/node_modules/boolbase/",
+  "permalink": "/consul-release-controller/node_modules/boolbase/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/boolbase/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Array Flatten",
+    "permalink": "/consul-release-controller/node_modules/bonjour/node_modules/array-flatten/"
+  },
+  "next": {
+    "title": "boxen",
+    "permalink": "/consul-release-controller/node_modules/boxen/"
+  }
+}

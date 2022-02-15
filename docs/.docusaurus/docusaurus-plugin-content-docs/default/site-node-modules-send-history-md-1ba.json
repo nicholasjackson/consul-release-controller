@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/send/HISTORY",
+  "id": "node_modules/send/HISTORY",
+  "title": "0.17.2 / 2021-12-11",
+  "description": "* pref: ignore empty http tokens",
+  "source": "@site/node_modules/send/HISTORY.md",
+  "sourceDirName": "node_modules/send",
+  "slug": "/node_modules/send/HISTORY",
+  "permalink": "/consul-release-controller/node_modules/send/HISTORY",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/send/HISTORY.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "send",
+    "permalink": "/consul-release-controller/node_modules/send/"
+  },
+  "next": {
+    "title": "Serialize JavaScript",
+    "permalink": "/consul-release-controller/node_modules/serialize-javascript/"
+  }
+}

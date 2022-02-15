@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/has-tostringtag/CHANGELOG",
+  "id": "node_modules/has-tostringtag/CHANGELOG",
+  "title": "Changelog",
+  "description": "All notable changes to this project will be documented in this file.",
+  "source": "@site/node_modules/has-tostringtag/CHANGELOG.md",
+  "sourceDirName": "node_modules/has-tostringtag",
+  "slug": "/node_modules/has-tostringtag/CHANGELOG",
+  "permalink": "/consul-release-controller/node_modules/has-tostringtag/CHANGELOG",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/has-tostringtag/CHANGELOG.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "has-tostringtag <sup>[![Version Badge][2]][1]</sup>",
+    "permalink": "/consul-release-controller/node_modules/has-tostringtag/"
+  },
+  "next": {
+    "title": "has-yarn [![Build Status](https://travis-ci.org/sindresorhus/has-yarn.svg?branch=master)](https://travis-ci.org/sindresorhus/has-yarn)",
+    "permalink": "/consul-release-controller/node_modules/has-yarn/"
+  }
+}

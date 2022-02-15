@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/sitemap/api",
+  "id": "node_modules/sitemap/api",
+  "title": "API",
+  "description": "- API",
+  "source": "@site/node_modules/sitemap/api.md",
+  "sourceDirName": "node_modules/sitemap",
+  "slug": "/node_modules/sitemap/api",
+  "permalink": "/consul-release-controller/node_modules/sitemap/api",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/sitemap/api.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Contributor Covenant Code of Conduct",
+    "permalink": "/consul-release-controller/node_modules/sitemap/CODE_OF_CONDUCT"
+  },
+  "next": {
+    "title": "slash [![Build Status](https://travis-ci.org/sindresorhus/slash.svg?branch=master)](https://travis-ci.org/sindresorhus/slash)",
+    "permalink": "/consul-release-controller/node_modules/slash/"
+  }
+}

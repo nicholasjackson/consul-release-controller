@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/pretty-time/README",
+  "id": "node_modules/pretty-time/README",
+  "title": "pretty-time [![NPM version](https://img.shields.io/npm/v/pretty-time.svg?style=flat)](https://www.npmjs.com/package/pretty-time) [![NPM monthly downloads](https://img.shields.io/npm/dm/pretty-time.svg?style=flat)](https://npmjs.org/package/pretty-time) [![NPM total downloads](https://img.shields.io/npm/dt/pretty-time.svg?style=flat)](https://npmjs.org/package/pretty-time) [![Linux Build Status](https://img.shields.io/travis/jonschlinkert/pretty-time.svg?style=flat&label=Travis)](https://travis-ci.org/jonschlinkert/pretty-time)",
+  "description": "Easily format the time from node.js process.hrtime. Works with timescales ranging from weeks to nanoseconds.",
+  "source": "@site/node_modules/pretty-time/README.md",
+  "sourceDirName": "node_modules/pretty-time",
+  "slug": "/node_modules/pretty-time/",
+  "permalink": "/consul-release-controller/node_modules/pretty-time/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/pretty-time/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Changelog",
+    "permalink": "/consul-release-controller/node_modules/pretty-error/CHANGELOG"
+  },
+  "next": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/prism-react-renderer/"
+  }
+}

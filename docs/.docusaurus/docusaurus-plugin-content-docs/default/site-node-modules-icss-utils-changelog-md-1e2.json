@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/icss-utils/CHANGELOG",
+  "id": "node_modules/icss-utils/CHANGELOG",
+  "title": "Change Log",
+  "description": "All notable changes to this project will be documented in this file.",
+  "source": "@site/node_modules/icss-utils/CHANGELOG.md",
+  "sourceDirName": "node_modules/icss-utils",
+  "slug": "/node_modules/icss-utils/CHANGELOG",
+  "permalink": "/consul-release-controller/node_modules/icss-utils/CHANGELOG",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/icss-utils/CHANGELOG.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/icss-utils/"
+  },
+  "next": {
+    "title": "LICENSE",
+    "permalink": "/consul-release-controller/node_modules/icss-utils/LICENSE"
+  }
+}

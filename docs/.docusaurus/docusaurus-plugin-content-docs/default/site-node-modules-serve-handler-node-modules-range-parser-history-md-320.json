@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/serve-handler/node_modules/range-parser/HISTORY",
+  "id": "node_modules/serve-handler/node_modules/range-parser/HISTORY",
+  "title": "1.2.0 / 2016-06-01",
+  "description": "* Add combine option to combine overlapping ranges",
+  "source": "@site/node_modules/serve-handler/node_modules/range-parser/HISTORY.md",
+  "sourceDirName": "node_modules/serve-handler/node_modules/range-parser",
+  "slug": "/node_modules/serve-handler/node_modules/range-parser/HISTORY",
+  "permalink": "/consul-release-controller/node_modules/serve-handler/node_modules/range-parser/HISTORY",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/serve-handler/node_modules/range-parser/HISTORY.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "range-parser",
+    "permalink": "/consul-release-controller/node_modules/serve-handler/node_modules/range-parser/"
+  },
+  "next": {
+    "title": "serve-index",
+    "permalink": "/consul-release-controller/node_modules/serve-index/"
+  }
+}

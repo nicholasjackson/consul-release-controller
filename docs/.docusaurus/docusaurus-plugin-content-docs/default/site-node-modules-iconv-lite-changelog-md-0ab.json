@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/iconv-lite/Changelog",
+  "id": "node_modules/iconv-lite/Changelog",
+  "title": "0.4.24 / 2018-08-22",
+  "description": "* Added MIK encoding (#196, by @Ivan-Kalatchev)",
+  "source": "@site/node_modules/iconv-lite/Changelog.md",
+  "sourceDirName": "node_modules/iconv-lite",
+  "slug": "/node_modules/iconv-lite/Changelog",
+  "permalink": "/consul-release-controller/node_modules/iconv-lite/Changelog",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/iconv-lite/Changelog.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/iconv-lite/"
+  },
+  "next": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/icss-utils/"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/http-errors/HISTORY",
+  "id": "node_modules/http-errors/HISTORY",
+  "title": "2021-11-14 / 1.8.1",
+  "description": "* deps: toidentifier@1.0.1",
+  "source": "@site/node_modules/http-errors/HISTORY.md",
+  "sourceDirName": "node_modules/http-errors",
+  "slug": "/node_modules/http-errors/HISTORY",
+  "permalink": "/consul-release-controller/node_modules/http-errors/HISTORY",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/http-errors/HISTORY.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "http-errors",
+    "permalink": "/consul-release-controller/node_modules/http-errors/"
+  },
+  "next": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/http-parser-js/"
+  }
+}

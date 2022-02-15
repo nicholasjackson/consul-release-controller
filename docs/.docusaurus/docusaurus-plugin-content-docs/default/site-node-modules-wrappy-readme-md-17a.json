@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/wrappy/README",
+  "id": "node_modules/wrappy/README",
+  "title": "wrappy",
+  "description": "Callback wrapping utility",
+  "source": "@site/node_modules/wrappy/README.md",
+  "sourceDirName": "node_modules/wrappy",
+  "slug": "/node_modules/wrappy/",
+  "permalink": "/consul-release-controller/node_modules/wrappy/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/wrappy/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "wrap-ansi [![Build Status](https://travis-ci.com/chalk/wrap-ansi.svg?branch=master)](https://travis-ci.com/chalk/wrap-ansi) [![Coverage Status](https://coveralls.io/repos/github/chalk/wrap-ansi/badge.svg?branch=master)](https://coveralls.io/github/chalk/wrap-ansi?branch=master)",
+    "permalink": "/consul-release-controller/node_modules/wrap-ansi/"
+  },
+  "next": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/write-file-atomic/"
+  }
+}

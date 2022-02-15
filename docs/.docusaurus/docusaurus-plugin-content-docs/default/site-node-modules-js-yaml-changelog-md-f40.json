@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/js-yaml/CHANGELOG",
+  "id": "node_modules/js-yaml/CHANGELOG",
+  "title": "Changelog",
+  "description": "All notable changes to this project will be documented in this file.",
+  "source": "@site/node_modules/js-yaml/CHANGELOG.md",
+  "sourceDirName": "node_modules/js-yaml",
+  "slug": "/node_modules/js-yaml/CHANGELOG",
+  "permalink": "/consul-release-controller/node_modules/js-yaml/CHANGELOG",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/js-yaml/CHANGELOG.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "JS-YAML - YAML 1.2 parser / writer for JavaScript",
+    "permalink": "/consul-release-controller/node_modules/js-yaml/"
+  },
+  "next": {
+    "title": "jsesc [![Build status](https://travis-ci.org/mathiasbynens/jsesc.svg?branch=master)](https://travis-ci.org/mathiasbynens/jsesc) [![Code coverage status](http://img.shields.io/coveralls/mathiasbynens/jsesc/master.svg)](https://coveralls.io/r/mathiasbynens/jsesc) [![Dependency status](https://gemnasium.com/mathiasbynens/jsesc.svg)](https://gemnasium.com/mathiasbynens/jsesc)",
+    "permalink": "/consul-release-controller/node_modules/jsesc/"
+  }
+}

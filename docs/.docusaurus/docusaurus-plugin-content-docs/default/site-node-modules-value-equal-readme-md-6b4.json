@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/value-equal/README",
+  "id": "node_modules/value-equal/README",
+  "title": "value-equal [![Travis][build-badge]][build] [![npm package][npm-badge]][npm]",
+  "description": "[build-badge]//img.shields.io/travis/mjackson/value-equal/master.svg?style=flat-square",
+  "source": "@site/node_modules/value-equal/README.md",
+  "sourceDirName": "node_modules/value-equal",
+  "slug": "/node_modules/value-equal/",
+  "permalink": "/consul-release-controller/node_modules/value-equal/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/value-equal/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "LICENSE",
+    "permalink": "/consul-release-controller/node_modules/uuid/LICENSE"
+  },
+  "next": {
+    "title": "vary",
+    "permalink": "/consul-release-controller/node_modules/vary/"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/require-like/Readme",
+  "id": "node_modules/require-like/Readme",
+  "title": "require-like",
+  "description": "Build Status",
+  "source": "@site/node_modules/require-like/Readme.md",
+  "sourceDirName": "node_modules/require-like",
+  "slug": "/node_modules/require-like/",
+  "permalink": "/consul-release-controller/node_modules/require-like/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/require-like/Readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "require-from-string [![Build Status](https://travis-ci.org/floatdrop/require-from-string.svg?branch=master)](https://travis-ci.org/floatdrop/require-from-string)",
+    "permalink": "/consul-release-controller/node_modules/require-from-string/"
+  },
+  "next": {
+    "title": "requires-port",
+    "permalink": "/consul-release-controller/node_modules/requires-port/"
+  }
+}

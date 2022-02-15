@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/rehype-parse/readme",
+  "id": "node_modules/rehype-parse/readme",
+  "title": "rehype-parse",
+  "description": "Build",
+  "source": "@site/node_modules/rehype-parse/readme.md",
+  "sourceDirName": "node_modules/rehype-parse",
+  "slug": "/node_modules/rehype-parse/",
+  "permalink": "/consul-release-controller/node_modules/rehype-parse/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/rehype-parse/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "RegJSParser",
+    "permalink": "/consul-release-controller/node_modules/regjsparser/"
+  },
+  "next": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/rehype-parse/node_modules/parse5/"
+  }
+}

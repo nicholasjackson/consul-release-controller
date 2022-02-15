@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/utility-types/SECURITY",
+  "id": "node_modules/utility-types/SECURITY",
+  "title": "Security Policy",
+  "description": "Supported Versions",
+  "source": "@site/node_modules/utility-types/SECURITY.md",
+  "sourceDirName": "node_modules/utility-types",
+  "slug": "/node_modules/utility-types/SECURITY",
+  "permalink": "/consul-release-controller/node_modules/utility-types/SECURITY",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/utility-types/SECURITY.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "CHANGELOG",
+    "permalink": "/consul-release-controller/node_modules/utility-types/CHANGELOG"
+  },
+  "next": {
+    "title": "Support",
+    "permalink": "/consul-release-controller/node_modules/utility-types/SUPPORT"
+  }
+}

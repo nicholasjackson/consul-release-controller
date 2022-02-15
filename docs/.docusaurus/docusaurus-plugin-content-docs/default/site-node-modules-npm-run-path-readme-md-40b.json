@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/npm-run-path/readme",
+  "id": "node_modules/npm-run-path/readme",
+  "title": "npm-run-path [![Build Status](https://travis-ci.org/sindresorhus/npm-run-path.svg?branch=master)](https://travis-ci.org/sindresorhus/npm-run-path)",
+  "description": "Get your PATH) prepended with locally installed binaries",
+  "source": "@site/node_modules/npm-run-path/readme.md",
+  "sourceDirName": "node_modules/npm-run-path",
+  "slug": "/node_modules/npm-run-path/",
+  "permalink": "/consul-release-controller/node_modules/npm-run-path/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/npm-run-path/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "normalize-url [![Coverage Status](https://codecov.io/gh/sindresorhus/normalize-url/branch/main/graph/badge.svg)](https://codecov.io/gh/sindresorhus/normalize-url)",
+    "permalink": "/consul-release-controller/node_modules/normalize-url/"
+  },
+  "next": {
+    "title": "NProgress",
+    "permalink": "/consul-release-controller/node_modules/nprogress/"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/randombytes/README",
+  "id": "node_modules/randombytes/README",
+  "title": "randombytes",
+  "description": "Version Build Status",
+  "source": "@site/node_modules/randombytes/README.md",
+  "sourceDirName": "node_modules/randombytes",
+  "slug": "/node_modules/randombytes/",
+  "permalink": "/consul-release-controller/node_modules/randombytes/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/randombytes/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "queue-microtask [![ci][ci-image]][ci-url] [![npm][npm-image]][npm-url] [![downloads][downloads-image]][downloads-url] [![javascript style guide][standard-image]][standard-url]",
+    "permalink": "/consul-release-controller/node_modules/queue-microtask/"
+  },
+  "next": {
+    "title": "range-parser",
+    "permalink": "/consul-release-controller/node_modules/range-parser/"
+  }
+}

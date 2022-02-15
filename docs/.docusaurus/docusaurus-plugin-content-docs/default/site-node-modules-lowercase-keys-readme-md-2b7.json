@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/lowercase-keys/readme",
+  "id": "node_modules/lowercase-keys/readme",
+  "title": "lowercase-keys [![Build Status](https://travis-ci.org/sindresorhus/lowercase-keys.svg?branch=master)](https://travis-ci.org/sindresorhus/lowercase-keys)",
+  "description": "Lowercase the keys of an object",
+  "source": "@site/node_modules/lowercase-keys/readme.md",
+  "sourceDirName": "node_modules/lowercase-keys",
+  "slug": "/node_modules/lowercase-keys/",
+  "permalink": "/consul-release-controller/node_modules/lowercase-keys/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/lowercase-keys/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Lower Case",
+    "permalink": "/consul-release-controller/node_modules/lower-case/"
+  },
+  "next": {
+    "title": "lru cache",
+    "permalink": "/consul-release-controller/node_modules/lru-cache/"
+  }
+}

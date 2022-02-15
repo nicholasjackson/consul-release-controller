@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/postcss-modules-local-by-default/README",
+  "id": "node_modules/postcss-modules-local-by-default/README",
+  "title": "README",
+  "description": "Build Status codecov npm",
+  "source": "@site/node_modules/postcss-modules-local-by-default/README.md",
+  "sourceDirName": "node_modules/postcss-modules-local-by-default",
+  "slug": "/node_modules/postcss-modules-local-by-default/",
+  "permalink": "/consul-release-controller/node_modules/postcss-modules-local-by-default/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/postcss-modules-local-by-default/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Change Log",
+    "permalink": "/consul-release-controller/node_modules/postcss-modules-extract-imports/CHANGELOG"
+  },
+  "next": {
+    "title": "Change Log",
+    "permalink": "/consul-release-controller/node_modules/postcss-modules-local-by-default/CHANGELOG"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/prop-types/README",
+  "id": "node_modules/prop-types/README",
+  "title": "prop-types [![Build Status](https://travis-ci.com/facebook/prop-types.svg?branch=main)](https://travis-ci.org/facebook/prop-types)",
+  "description": "Runtime type checking for React props and similar objects.",
+  "source": "@site/node_modules/prop-types/README.md",
+  "sourceDirName": "node_modules/prop-types",
+  "slug": "/node_modules/prop-types/",
+  "permalink": "/consul-release-controller/node_modules/prop-types/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/prop-types/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "readme",
+    "permalink": "/consul-release-controller/node_modules/prompts/"
+  },
+  "next": {
+    "title": "property-information",
+    "permalink": "/consul-release-controller/node_modules/property-information/"
+  }
+}

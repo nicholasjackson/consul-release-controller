@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/responselike/README",
+  "id": "node_modules/responselike/README",
+  "title": "responselike",
+  "description": "A response-like object for mocking a Node.js HTTP response stream",
+  "source": "@site/node_modules/responselike/README.md",
+  "sourceDirName": "node_modules/responselike",
+  "slug": "/node_modules/responselike/",
+  "permalink": "/consul-release-controller/node_modules/responselike/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/responselike/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "resolve-pathname [![Travis][build-badge]][build] [![npm package][npm-badge]][npm]",
+    "permalink": "/consul-release-controller/node_modules/resolve-pathname/"
+  },
+  "next": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/retry/"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/gray-matter/node_modules/argparse/CHANGELOG",
+  "id": "node_modules/gray-matter/node_modules/argparse/CHANGELOG",
+  "title": "CHANGELOG",
+  "description": "1.0.10 / 2018-02-15",
+  "source": "@site/node_modules/gray-matter/node_modules/argparse/CHANGELOG.md",
+  "sourceDirName": "node_modules/gray-matter/node_modules/argparse",
+  "slug": "/node_modules/gray-matter/node_modules/argparse/CHANGELOG",
+  "permalink": "/consul-release-controller/node_modules/gray-matter/node_modules/argparse/CHANGELOG",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/gray-matter/node_modules/argparse/CHANGELOG.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "argparse",
+    "permalink": "/consul-release-controller/node_modules/gray-matter/node_modules/argparse/"
+  },
+  "next": {
+    "title": "JS-YAML - YAML 1.2 parser / writer for JavaScript",
+    "permalink": "/consul-release-controller/node_modules/gray-matter/node_modules/js-yaml/"
+  }
+}

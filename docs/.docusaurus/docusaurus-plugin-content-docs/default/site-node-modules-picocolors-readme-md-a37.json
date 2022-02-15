@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/picocolors/README",
+  "id": "node_modules/picocolors/README",
+  "title": "picocolors",
+  "description": "The tiniest and the fastest library for terminal output formatting with ANSI colors.",
+  "source": "@site/node_modules/picocolors/README.md",
+  "sourceDirName": "node_modules/picocolors",
+  "slug": "/node_modules/picocolors/",
+  "permalink": "/consul-release-controller/node_modules/picocolors/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/picocolors/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "path-type [![Build Status](https://travis-ci.org/sindresorhus/path-type.svg?branch=master)](https://travis-ci.org/sindresorhus/path-type)",
+    "permalink": "/consul-release-controller/node_modules/path-type/"
+  },
+  "next": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/picomatch/"
+  }
+}

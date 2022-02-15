@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/cheerio/node_modules/domutils/readme",
+  "id": "node_modules/cheerio/node_modules/domutils/readme",
+  "title": "readme",
+  "description": "utilities for working with htmlparser2's dom",
+  "source": "@site/node_modules/cheerio/node_modules/domutils/readme.md",
+  "sourceDirName": "node_modules/cheerio/node_modules/domutils",
+  "slug": "/node_modules/cheerio/node_modules/domutils/",
+  "permalink": "/consul-release-controller/node_modules/cheerio/node_modules/domutils/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/cheerio/node_modules/domutils/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "domhandler [![Build Status](https://travis-ci.org/fb55/domhandler.svg?branch=master)](https://travis-ci.org/fb55/domhandler)",
+    "permalink": "/consul-release-controller/node_modules/cheerio/node_modules/domhandler/"
+  },
+  "next": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/cheerio/node_modules/domutils/node_modules/dom-serializer/"
+  }
+}

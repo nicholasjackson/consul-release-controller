@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@types/connect-history-api-fallback/README",
+  "id": "node_modules/@types/connect-history-api-fallback/README",
+  "title": "Installation",
+  "description": "npm install --save @types/connect-history-api-fallback",
+  "source": "@site/node_modules/@types/connect-history-api-fallback/README.md",
+  "sourceDirName": "node_modules/@types/connect-history-api-fallback",
+  "slug": "/node_modules/@types/connect-history-api-fallback/",
+  "permalink": "/consul-release-controller/node_modules/@types/connect-history-api-fallback/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@types/connect-history-api-fallback/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Installation",
+    "permalink": "/consul-release-controller/node_modules/@types/connect/"
+  },
+  "next": {
+    "title": "Installation",
+    "permalink": "/consul-release-controller/node_modules/@types/eslint/"
+  }
+}

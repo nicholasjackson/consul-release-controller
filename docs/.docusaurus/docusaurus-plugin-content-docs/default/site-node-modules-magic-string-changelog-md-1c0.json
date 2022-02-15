@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/magic-string/CHANGELOG",
+  "id": "node_modules/magic-string/CHANGELOG",
+  "title": "magic-string changelog",
+  "description": "0.25.7",
+  "source": "@site/node_modules/magic-string/CHANGELOG.md",
+  "sourceDirName": "node_modules/magic-string",
+  "slug": "/node_modules/magic-string/CHANGELOG",
+  "permalink": "/consul-release-controller/node_modules/magic-string/CHANGELOG",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/magic-string/CHANGELOG.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "magic-string",
+    "permalink": "/consul-release-controller/node_modules/magic-string/"
+  },
+  "next": {
+    "title": "make-dir [![Build Status](https://travis-ci.org/sindresorhus/make-dir.svg?branch=master)](https://travis-ci.org/sindresorhus/make-dir) [![codecov](https://codecov.io/gh/sindresorhus/make-dir/branch/master/graph/badge.svg)](https://codecov.io/gh/sindresorhus/make-dir)",
+    "permalink": "/consul-release-controller/node_modules/make-dir/"
+  }
+}

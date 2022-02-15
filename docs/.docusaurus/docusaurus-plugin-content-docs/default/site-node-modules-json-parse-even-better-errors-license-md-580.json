@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/json-parse-even-better-errors/LICENSE",
+  "id": "node_modules/json-parse-even-better-errors/LICENSE",
+  "title": "LICENSE",
+  "description": "Copyright 2017 Kat Marchán",
+  "source": "@site/node_modules/json-parse-even-better-errors/LICENSE.md",
+  "sourceDirName": "node_modules/json-parse-even-better-errors",
+  "slug": "/node_modules/json-parse-even-better-errors/LICENSE",
+  "permalink": "/consul-release-controller/node_modules/json-parse-even-better-errors/LICENSE",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/json-parse-even-better-errors/LICENSE.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Change Log",
+    "permalink": "/consul-release-controller/node_modules/json-parse-even-better-errors/CHANGELOG"
+  },
+  "next": {
+    "title": "json-schema-traverse",
+    "permalink": "/consul-release-controller/node_modules/json-schema-traverse/"
+  }
+}

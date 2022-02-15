@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@types/bonjour/README",
+  "id": "node_modules/@types/bonjour/README",
+  "title": "Installation",
+  "description": "npm install --save @types/bonjour",
+  "source": "@site/node_modules/@types/bonjour/README.md",
+  "sourceDirName": "node_modules/@types/bonjour",
+  "slug": "/node_modules/@types/bonjour/",
+  "permalink": "/consul-release-controller/node_modules/@types/bonjour/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@types/bonjour/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Installation",
+    "permalink": "/consul-release-controller/node_modules/@types/body-parser/"
+  },
+  "next": {
+    "title": "Installation",
+    "permalink": "/consul-release-controller/node_modules/@types/connect/"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@mdx-js/mdx/readme",
+  "id": "node_modules/@mdx-js/mdx/readme",
+  "title": "@mdx-js/mdx",
+  "description": "Build Status",
+  "source": "@site/node_modules/@mdx-js/mdx/readme.md",
+  "sourceDirName": "node_modules/@mdx-js/mdx",
+  "slug": "/node_modules/@mdx-js/mdx/",
+  "permalink": "/consul-release-controller/node_modules/@mdx-js/mdx/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@mdx-js/mdx/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "@jridgewell/trace-mapping",
+    "permalink": "/consul-release-controller/node_modules/@jridgewell/trace-mapping/"
+  },
+  "next": {
+    "title": "babel-plugin-apply-mdx-type-prop",
+    "permalink": "/consul-release-controller/node_modules/@mdx-js/mdx/node_modules/babel-plugin-apply-mdx-type-prop/"
+  }
+}

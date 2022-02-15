@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/etag/README",
+  "id": "node_modules/etag/README",
+  "title": "etag",
+  "description": "NPM Version",
+  "source": "@site/node_modules/etag/README.md",
+  "sourceDirName": "node_modules/etag",
+  "slug": "/node_modules/etag/",
+  "permalink": "/consul-release-controller/node_modules/etag/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/etag/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/eta/"
+  },
+  "next": {
+    "title": "1.8.1 / 2017-09-12",
+    "permalink": "/consul-release-controller/node_modules/etag/HISTORY"
+  }
+}

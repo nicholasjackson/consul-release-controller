@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@docusaurus/plugin-content-pages/README",
+  "id": "node_modules/@docusaurus/plugin-content-pages/README",
+  "title": "@docusaurus/plugin-content-pages",
+  "description": "Pages plugin for Docusaurus.",
+  "source": "@site/node_modules/@docusaurus/plugin-content-pages/README.md",
+  "sourceDirName": "node_modules/@docusaurus/plugin-content-pages",
+  "slug": "/node_modules/@docusaurus/plugin-content-pages/",
+  "permalink": "/consul-release-controller/node_modules/@docusaurus/plugin-content-pages/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@docusaurus/plugin-content-pages/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "@docusaurus/plugin-content-docs",
+    "permalink": "/consul-release-controller/node_modules/@docusaurus/plugin-content-docs/"
+  },
+  "next": {
+    "title": "@docusaurus/plugin-debug",
+    "permalink": "/consul-release-controller/node_modules/@docusaurus/plugin-debug/"
+  }
+}

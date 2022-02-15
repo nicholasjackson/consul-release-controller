@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/feed/CHANGELOG",
+  "id": "node_modules/feed/CHANGELOG",
+  "title": "Change Log",
+  "description": "4.2.2 (2021-01-22)",
+  "source": "@site/node_modules/feed/CHANGELOG.md",
+  "sourceDirName": "node_modules/feed",
+  "slug": "/node_modules/feed/CHANGELOG",
+  "permalink": "/consul-release-controller/node_modules/feed/CHANGELOG",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/feed/CHANGELOG.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/feed/"
+  },
+  "next": {
+    "title": "Code of Conduct",
+    "permalink": "/consul-release-controller/node_modules/feed/CODE_OF_CONDUCT"
+  }
+}

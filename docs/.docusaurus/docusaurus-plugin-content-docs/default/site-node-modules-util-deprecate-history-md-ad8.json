@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/util-deprecate/History",
+  "id": "node_modules/util-deprecate/History",
+  "title": "1.0.2 / 2015-10-07",
+  "description": "* use try/catch when checking localStorage (#3, @kumavis)",
+  "source": "@site/node_modules/util-deprecate/History.md",
+  "sourceDirName": "node_modules/util-deprecate",
+  "slug": "/node_modules/util-deprecate/History",
+  "permalink": "/consul-release-controller/node_modules/util-deprecate/History",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/util-deprecate/History.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "util-deprecate",
+    "permalink": "/consul-release-controller/node_modules/util-deprecate/"
+  },
+  "next": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/utila/"
+  }
+}

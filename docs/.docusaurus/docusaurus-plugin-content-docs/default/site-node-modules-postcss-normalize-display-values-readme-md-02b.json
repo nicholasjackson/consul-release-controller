@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/postcss-normalize-display-values/README",
+  "id": "node_modules/postcss-normalize-display-values/README",
+  "title": "[postcss][postcss]-normalize-display-values",
+  "description": "Normalize display property values with PostCSS.",
+  "source": "@site/node_modules/postcss-normalize-display-values/README.md",
+  "sourceDirName": "node_modules/postcss-normalize-display-values",
+  "slug": "/node_modules/postcss-normalize-display-values/",
+  "permalink": "/consul-release-controller/node_modules/postcss-normalize-display-values/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/postcss-normalize-display-values/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "postcss-normalize-charset",
+    "permalink": "/consul-release-controller/node_modules/postcss-normalize-charset/"
+  },
+  "next": {
+    "title": "[postcss][postcss]-normalize-positions",
+    "permalink": "/consul-release-controller/node_modules/postcss-normalize-positions/"
+  }
+}

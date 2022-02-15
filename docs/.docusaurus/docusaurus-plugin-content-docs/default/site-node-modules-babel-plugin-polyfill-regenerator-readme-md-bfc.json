@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/babel-plugin-polyfill-regenerator/README",
+  "id": "node_modules/babel-plugin-polyfill-regenerator/README",
+  "title": "babel-plugin-polyfill-regenerator",
+  "description": "Install",
+  "source": "@site/node_modules/babel-plugin-polyfill-regenerator/README.md",
+  "sourceDirName": "node_modules/babel-plugin-polyfill-regenerator",
+  "slug": "/node_modules/babel-plugin-polyfill-regenerator/",
+  "permalink": "/consul-release-controller/node_modules/babel-plugin-polyfill-regenerator/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/babel-plugin-polyfill-regenerator/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/babel-plugin-polyfill-corejs3/core-js-compat/"
+  },
+  "next": {
+    "title": "bail",
+    "permalink": "/consul-release-controller/node_modules/bail/"
+  }
+}

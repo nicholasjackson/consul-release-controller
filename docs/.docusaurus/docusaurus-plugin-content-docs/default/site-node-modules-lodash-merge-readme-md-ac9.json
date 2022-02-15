@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/lodash.merge/README",
+  "id": "node_modules/lodash.merge/README",
+  "title": "lodash.merge v4.6.2",
+  "description": "The Lodash method _.merge exported as a Node.js module.",
+  "source": "@site/node_modules/lodash.merge/README.md",
+  "sourceDirName": "node_modules/lodash.merge",
+  "slug": "/node_modules/lodash.merge/",
+  "permalink": "/consul-release-controller/node_modules/lodash.merge/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/lodash.merge/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "lodash.memoize v4.1.2",
+    "permalink": "/consul-release-controller/node_modules/lodash.memoize/"
+  },
+  "next": {
+    "title": "lodash.pick v4.4.0",
+    "permalink": "/consul-release-controller/node_modules/lodash.pick/"
+  }
+}

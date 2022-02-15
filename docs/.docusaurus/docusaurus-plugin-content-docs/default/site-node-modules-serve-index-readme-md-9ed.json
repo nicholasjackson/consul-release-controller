@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/serve-index/README",
+  "id": "node_modules/serve-index/README",
+  "title": "serve-index",
+  "description": "NPM Version",
+  "source": "@site/node_modules/serve-index/README.md",
+  "sourceDirName": "node_modules/serve-index",
+  "slug": "/node_modules/serve-index/",
+  "permalink": "/consul-release-controller/node_modules/serve-index/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/serve-index/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "1.2.0 / 2016-06-01",
+    "permalink": "/consul-release-controller/node_modules/serve-handler/node_modules/range-parser/HISTORY"
+  },
+  "next": {
+    "title": "1.9.1 / 2017-09-28",
+    "permalink": "/consul-release-controller/node_modules/serve-index/HISTORY"
+  }
+}

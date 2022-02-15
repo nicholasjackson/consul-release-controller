@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/cheerio-select/README",
+  "id": "node_modules/cheerio-select/README",
+  "title": "cheerio-select [![NPM version](http://img.shields.io/npm/v/cheerio-select.svg)](https://npmjs.org/package/cheerio-select) [![Build Status](https://travis-ci.org/cheeriojs/cheerio-select.svg?branch=master)](http://travis-ci.org/cheeriojs/cheerio-select) [![Downloads](https://img.shields.io/npm/dm/cheerio-select.svg)](https://npmjs.org/package/cheerio-select) [![Coverage](https://coveralls.io/repos/cheeriojs/cheerio-select/badge.svg?branch=master)](https://coveralls.io/r/cheeriojs/cheerio-select)",
+  "description": "CSS selector engine supporting jQuery selectors, based on css-select.",
+  "source": "@site/node_modules/cheerio-select/README.md",
+  "sourceDirName": "node_modules/cheerio-select",
+  "slug": "/node_modules/cheerio-select/",
+  "permalink": "/consul-release-controller/node_modules/cheerio-select/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/cheerio-select/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "nth-check [![Build Status](https://travis-ci.org/fb55/nth-check.svg)](https://travis-ci.org/fb55/nth-check)",
+    "permalink": "/consul-release-controller/node_modules/cheerio/node_modules/nth-check/"
+  },
+  "next": {
+    "title": "Chokidar [![Weekly downloads](https://img.shields.io/npm/dw/chokidar.svg)](https://github.com/paulmillr/chokidar) [![Yearly downloads](https://img.shields.io/npm/dy/chokidar.svg)](https://github.com/paulmillr/chokidar)",
+    "permalink": "/consul-release-controller/node_modules/chokidar/"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/@svgr/babel-preset/README",
+  "id": "node_modules/@svgr/babel-preset/README",
+  "title": "@svgr/babel-preset",
+  "description": "Install",
+  "source": "@site/node_modules/@svgr/babel-preset/README.md",
+  "sourceDirName": "node_modules/@svgr/babel-preset",
+  "slug": "/node_modules/@svgr/babel-preset/",
+  "permalink": "/consul-release-controller/node_modules/@svgr/babel-preset/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/@svgr/babel-preset/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "@svgr/babel-plugin-transform-svg-component",
+    "permalink": "/consul-release-controller/node_modules/@svgr/babel-plugin-transform-svg-component/"
+  },
+  "next": {
+    "title": "@svgr/core",
+    "permalink": "/consul-release-controller/node_modules/@svgr/core/"
+  }
+}

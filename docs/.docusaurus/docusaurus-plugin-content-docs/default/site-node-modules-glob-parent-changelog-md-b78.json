@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/glob-parent/CHANGELOG",
+  "id": "node_modules/glob-parent/CHANGELOG",
+  "title": "CHANGELOG",
+  "description": "5.1.2 (2021-03-06)",
+  "source": "@site/node_modules/glob-parent/CHANGELOG.md",
+  "sourceDirName": "node_modules/glob-parent",
+  "slug": "/node_modules/glob-parent/CHANGELOG",
+  "permalink": "/consul-release-controller/node_modules/glob-parent/CHANGELOG",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/glob-parent/CHANGELOG.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/glob-parent/"
+  },
+  "next": {
+    "title": "Glob To Regular Expression",
+    "permalink": "/consul-release-controller/node_modules/glob-to-regexp/"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/lru-cache/README",
+  "id": "node_modules/lru-cache/README",
+  "title": "lru cache",
+  "description": "A cache object that deletes the least-recently-used items.",
+  "source": "@site/node_modules/lru-cache/README.md",
+  "sourceDirName": "node_modules/lru-cache",
+  "slug": "/node_modules/lru-cache/",
+  "permalink": "/consul-release-controller/node_modules/lru-cache/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/lru-cache/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "lowercase-keys [![Build Status](https://travis-ci.org/sindresorhus/lowercase-keys.svg?branch=master)](https://travis-ci.org/sindresorhus/lowercase-keys)",
+    "permalink": "/consul-release-controller/node_modules/lowercase-keys/"
+  },
+  "next": {
+    "title": "magic-string",
+    "permalink": "/consul-release-controller/node_modules/magic-string/"
+  }
+}

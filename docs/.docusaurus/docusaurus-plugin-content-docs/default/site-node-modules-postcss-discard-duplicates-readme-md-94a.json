@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/postcss-discard-duplicates/README",
+  "id": "node_modules/postcss-discard-duplicates/README",
+  "title": "[postcss][postcss]-discard-duplicates",
+  "description": "Discard duplicate rules in your CSS files with PostCSS.",
+  "source": "@site/node_modules/postcss-discard-duplicates/README.md",
+  "sourceDirName": "node_modules/postcss-discard-duplicates",
+  "slug": "/node_modules/postcss-discard-duplicates/",
+  "permalink": "/consul-release-controller/node_modules/postcss-discard-duplicates/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/postcss-discard-duplicates/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "[postcss][postcss]-discard-comments",
+    "permalink": "/consul-release-controller/node_modules/postcss-discard-comments/"
+  },
+  "next": {
+    "title": "[postcss][postcss]-discard-empty",
+    "permalink": "/consul-release-controller/node_modules/postcss-discard-empty/"
+  }
+}

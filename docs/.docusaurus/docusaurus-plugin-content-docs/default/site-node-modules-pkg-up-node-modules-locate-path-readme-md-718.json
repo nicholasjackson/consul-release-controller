@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/pkg-up/node_modules/locate-path/readme",
+  "id": "node_modules/pkg-up/node_modules/locate-path/readme",
+  "title": "locate-path [![Build Status](https://travis-ci.org/sindresorhus/locate-path.svg?branch=master)](https://travis-ci.org/sindresorhus/locate-path)",
+  "description": "Get the first path that exists on disk of multiple paths",
+  "source": "@site/node_modules/pkg-up/node_modules/locate-path/readme.md",
+  "sourceDirName": "node_modules/pkg-up/node_modules/locate-path",
+  "slug": "/node_modules/pkg-up/node_modules/locate-path/",
+  "permalink": "/consul-release-controller/node_modules/pkg-up/node_modules/locate-path/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/pkg-up/node_modules/locate-path/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "find-up [![Build Status: Linux and macOS](https://travis-ci.org/sindresorhus/find-up.svg?branch=master)](https://travis-ci.org/sindresorhus/find-up) [![Build Status: Windows](https://ci.appveyor.com/api/projects/status/l0cyjmvh5lq72vq2/branch/master?svg=true)](https://ci.appveyor.com/project/sindresorhus/find-up/branch/master)",
+    "permalink": "/consul-release-controller/node_modules/pkg-up/node_modules/find-up/"
+  },
+  "next": {
+    "title": "p-locate [![Build Status](https://travis-ci.org/sindresorhus/p-locate.svg?branch=master)](https://travis-ci.org/sindresorhus/p-locate)",
+    "permalink": "/consul-release-controller/node_modules/pkg-up/node_modules/p-locate/"
+  }
+}

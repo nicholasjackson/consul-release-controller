@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/postcss-minify-selectors/README",
+  "id": "node_modules/postcss-minify-selectors/README",
+  "title": "[postcss][postcss]-minify-selectors",
+  "description": "Minify selectors with PostCSS.",
+  "source": "@site/node_modules/postcss-minify-selectors/README.md",
+  "sourceDirName": "node_modules/postcss-minify-selectors",
+  "slug": "/node_modules/postcss-minify-selectors/",
+  "permalink": "/consul-release-controller/node_modules/postcss-minify-selectors/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/postcss-minify-selectors/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "postcss-minify-params [![Build Status][ci-img]][ci]",
+    "permalink": "/consul-release-controller/node_modules/postcss-minify-params/"
+  },
+  "next": {
+    "title": "CSS Modules: Extract Imports",
+    "permalink": "/consul-release-controller/node_modules/postcss-modules-extract-imports/"
+  }
+}

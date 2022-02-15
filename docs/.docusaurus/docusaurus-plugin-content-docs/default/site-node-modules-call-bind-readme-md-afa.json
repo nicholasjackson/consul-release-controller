@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/call-bind/README",
+  "id": "node_modules/call-bind/README",
+  "title": "call-bind",
+  "description": "Robustly .call.bind() a function.",
+  "source": "@site/node_modules/call-bind/README.md",
+  "sourceDirName": "node_modules/call-bind",
+  "slug": "/node_modules/call-bind/",
+  "permalink": "/consul-release-controller/node_modules/call-bind/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/call-bind/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "normalize-url [![Build Status](https://travis-ci.org/sindresorhus/normalize-url.svg?branch=master)](https://travis-ci.org/sindresorhus/normalize-url) [![Coverage Status](https://coveralls.io/repos/github/sindresorhus/normalize-url/badge.svg?branch=master)](https://coveralls.io/github/sindresorhus/normalize-url?branch=master)",
+    "permalink": "/consul-release-controller/node_modules/cacheable-request/node_modules/normalize-url/"
+  },
+  "next": {
+    "title": "Changelog",
+    "permalink": "/consul-release-controller/node_modules/call-bind/CHANGELOG"
+  }
+}

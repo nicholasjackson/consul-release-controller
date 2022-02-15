@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/finalhandler/HISTORY",
+  "id": "node_modules/finalhandler/HISTORY",
+  "title": "1.1.2 / 2019-05-09",
+  "description": "* Set stricter Content-Security-Policy header",
+  "source": "@site/node_modules/finalhandler/HISTORY.md",
+  "sourceDirName": "node_modules/finalhandler",
+  "slug": "/node_modules/finalhandler/HISTORY",
+  "permalink": "/consul-release-controller/node_modules/finalhandler/HISTORY",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/finalhandler/HISTORY.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "finalhandler",
+    "permalink": "/consul-release-controller/node_modules/finalhandler/"
+  },
+  "next": {
+    "title": "find-cache-dir [![Coverage Status](https://codecov.io/gh/avajs/find-cache-dir/branch/master/graph/badge.svg)](https://codecov.io/gh/avajs/find-cache-dir/branch/master)",
+    "permalink": "/consul-release-controller/node_modules/find-cache-dir/"
+  }
+}

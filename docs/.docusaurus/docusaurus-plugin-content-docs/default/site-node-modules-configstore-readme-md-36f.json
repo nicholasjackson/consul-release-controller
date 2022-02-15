@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/configstore/readme",
+  "id": "node_modules/configstore/readme",
+  "title": "configstore [![Build Status](https://travis-ci.org/yeoman/configstore.svg?branch=master)](https://travis-ci.org/yeoman/configstore)",
+  "description": "Easily load and persist config without having to think about where and how",
+  "source": "@site/node_modules/configstore/readme.md",
+  "sourceDirName": "node_modules/configstore",
+  "slug": "/node_modules/configstore/",
+  "permalink": "/consul-release-controller/node_modules/configstore/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/configstore/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "safe-buffer [![travis][travis-image]][travis-url] [![npm][npm-image]][npm-url] [![downloads][downloads-image]][downloads-url] [![javascript style guide][standard-image]][standard-url]",
+    "permalink": "/consul-release-controller/node_modules/compression/node_modules/safe-buffer/"
+  },
+  "next": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/connect-history-api-fallback/"
+  }
+}

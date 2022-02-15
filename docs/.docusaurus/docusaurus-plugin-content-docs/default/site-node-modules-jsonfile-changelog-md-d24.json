@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/jsonfile/CHANGELOG",
+  "id": "node_modules/jsonfile/CHANGELOG",
+  "title": "CHANGELOG",
+  "description": "6.1.0 / 2020-10-31",
+  "source": "@site/node_modules/jsonfile/CHANGELOG.md",
+  "sourceDirName": "node_modules/jsonfile",
+  "slug": "/node_modules/jsonfile/CHANGELOG",
+  "permalink": "/consul-release-controller/node_modules/jsonfile/CHANGELOG",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/jsonfile/CHANGELOG.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Node.js - jsonfile",
+    "permalink": "/consul-release-controller/node_modules/jsonfile/"
+  },
+  "next": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/keyv/"
+  }
+}

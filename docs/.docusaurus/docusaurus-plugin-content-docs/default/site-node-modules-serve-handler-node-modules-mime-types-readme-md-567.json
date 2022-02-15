@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/serve-handler/node_modules/mime-types/README",
+  "id": "node_modules/serve-handler/node_modules/mime-types/README",
+  "title": "mime-types",
+  "description": "NPM Version",
+  "source": "@site/node_modules/serve-handler/node_modules/mime-types/README.md",
+  "sourceDirName": "node_modules/serve-handler/node_modules/mime-types",
+  "slug": "/node_modules/serve-handler/node_modules/mime-types/",
+  "permalink": "/consul-release-controller/node_modules/serve-handler/node_modules/mime-types/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/serve-handler/node_modules/mime-types/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "1.33.0 / 2018-02-15",
+    "permalink": "/consul-release-controller/node_modules/serve-handler/node_modules/mime-db/HISTORY"
+  },
+  "next": {
+    "title": "2.1.18 / 2018-02-16",
+    "permalink": "/consul-release-controller/node_modules/serve-handler/node_modules/mime-types/HISTORY"
+  }
+}

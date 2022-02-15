@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/minimalistic-assert/readme",
+  "id": "node_modules/minimalistic-assert/readme",
+  "title": "minimalistic-assert",
+  "description": "very minimalistic assert module.",
+  "source": "@site/node_modules/minimalistic-assert/readme.md",
+  "sourceDirName": "node_modules/minimalistic-assert",
+  "slug": "/node_modules/minimalistic-assert/",
+  "permalink": "/consul-release-controller/node_modules/minimalistic-assert/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/minimalistic-assert/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/mini-css-extract-plugin/"
+  },
+  "next": {
+    "title": "minimatch",
+    "permalink": "/consul-release-controller/node_modules/minimatch/"
+  }
+}

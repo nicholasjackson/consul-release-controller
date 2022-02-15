@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/terser/node_modules/commander/CHANGELOG",
+  "id": "node_modules/terser/node_modules/commander/CHANGELOG",
+  "title": "2.20.3 / 2019-10-11",
+  "description": "* Support Node.js 0.10 (Revert #1059)",
+  "source": "@site/node_modules/terser/node_modules/commander/CHANGELOG.md",
+  "sourceDirName": "node_modules/terser/node_modules/commander",
+  "slug": "/node_modules/terser/node_modules/commander/CHANGELOG",
+  "permalink": "/consul-release-controller/node_modules/terser/node_modules/commander/CHANGELOG",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/terser/node_modules/commander/CHANGELOG.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Commander.js",
+    "permalink": "/consul-release-controller/node_modules/terser/node_modules/commander/"
+  },
+  "next": {
+    "title": "Source Map",
+    "permalink": "/consul-release-controller/node_modules/terser/node_modules/source-map/"
+  }
+}

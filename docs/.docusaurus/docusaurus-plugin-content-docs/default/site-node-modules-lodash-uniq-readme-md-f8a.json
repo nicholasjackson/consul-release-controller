@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/lodash.uniq/README",
+  "id": "node_modules/lodash.uniq/README",
+  "title": "lodash.uniq v4.5.0",
+  "description": "The lodash method _.uniq exported as a Node.js module.",
+  "source": "@site/node_modules/lodash.uniq/README.md",
+  "sourceDirName": "node_modules/lodash.uniq",
+  "slug": "/node_modules/lodash.uniq/",
+  "permalink": "/consul-release-controller/node_modules/lodash.uniq/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/lodash.uniq/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "lodash.some v4.6.0",
+    "permalink": "/consul-release-controller/node_modules/lodash.some/"
+  },
+  "next": {
+    "title": "loose-envify",
+    "permalink": "/consul-release-controller/node_modules/loose-envify/"
+  }
+}

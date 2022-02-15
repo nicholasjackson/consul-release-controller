@@ -49,8 +49,8 @@ spec:
           volumeMounts:
             - name: tls-secret
               mountPath: /tmp/k8s-webhook-server/serving-certs
-            {{- if .Values.controller.container_config.volumeMounts }}
-            {{- toYaml .Values.controller.container_config.volumeMounts | nindent 12 }}
+            {{- if .Values.controller.container_config.additional_volume_mounts }}
+            {{- toYaml .Values.controller.container_config.additional_volume_mounts | nindent 12 }}
             {{- end }}
           livenessProbe:
             httpGet:

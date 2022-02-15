@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/p-locate/readme",
+  "id": "node_modules/p-locate/readme",
+  "title": "p-locate [![Build Status](https://travis-ci.com/sindresorhus/p-locate.svg?branch=master)](https://travis-ci.com/github/sindresorhus/p-locate)",
+  "description": "Get the first fulfilled promise that satisfies the provided testing function",
+  "source": "@site/node_modules/p-locate/readme.md",
+  "sourceDirName": "node_modules/p-locate",
+  "slug": "/node_modules/p-locate/",
+  "permalink": "/consul-release-controller/node_modules/p-locate/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/p-locate/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "p-limit [![Build Status](https://travis-ci.org/sindresorhus/p-limit.svg?branch=master)](https://travis-ci.org/sindresorhus/p-limit)",
+    "permalink": "/consul-release-controller/node_modules/p-limit/"
+  },
+  "next": {
+    "title": "p-limit",
+    "permalink": "/consul-release-controller/node_modules/p-locate/node_modules/p-limit/"
+  }
+}

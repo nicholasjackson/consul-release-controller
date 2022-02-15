@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/object.assign/CHANGELOG",
+  "id": "node_modules/object.assign/CHANGELOG",
+  "title": "4.1.2 / 2020-10-30",
+  "description": "* [Refactor] use extracted call-bind instead of full es-abstract",
+  "source": "@site/node_modules/object.assign/CHANGELOG.md",
+  "sourceDirName": "node_modules/object.assign",
+  "slug": "/node_modules/object.assign/CHANGELOG",
+  "permalink": "/consul-release-controller/node_modules/object.assign/CHANGELOG",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/object.assign/CHANGELOG.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "object.assign <sup>[![Version Badge][npm-version-svg]][npm-url]</sup>",
+    "permalink": "/consul-release-controller/node_modules/object.assign/"
+  },
+  "next": {
+    "title": "obuf - Offset buffer implementation.",
+    "permalink": "/consul-release-controller/node_modules/obuf/"
+  }
+}

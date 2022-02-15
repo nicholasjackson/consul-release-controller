@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/cross-fetch/README",
+  "id": "node_modules/cross-fetch/README",
+  "title": "README",
+  "description": "cross-fetch",
+  "source": "@site/node_modules/cross-fetch/README.md",
+  "sourceDirName": "node_modules/cross-fetch",
+  "slug": "/node_modules/cross-fetch/",
+  "permalink": "/consul-release-controller/node_modules/cross-fetch/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/cross-fetch/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "cosmiconfig",
+    "permalink": "/consul-release-controller/node_modules/cosmiconfig/"
+  },
+  "next": {
+    "title": "cross-spawn",
+    "permalink": "/consul-release-controller/node_modules/cross-spawn/"
+  }
+}

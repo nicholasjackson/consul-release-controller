@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/serve-index/node_modules/setprototypeof/README",
+  "id": "node_modules/serve-index/node_modules/setprototypeof/README",
+  "title": "Polyfill for `Object.setPrototypeOf`",
+  "description": "A simple cross platform implementation to set the prototype of an instianted object.  Supports all modern browsers and at least back to IE8.",
+  "source": "@site/node_modules/serve-index/node_modules/setprototypeof/README.md",
+  "sourceDirName": "node_modules/serve-index/node_modules/setprototypeof",
+  "slug": "/node_modules/serve-index/node_modules/setprototypeof/",
+  "permalink": "/consul-release-controller/node_modules/serve-index/node_modules/setprototypeof/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/serve-index/node_modules/setprototypeof/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/serve-index/node_modules/inherits/"
+  },
+  "next": {
+    "title": "serve-static",
+    "permalink": "/consul-release-controller/node_modules/serve-static/"
+  }
+}

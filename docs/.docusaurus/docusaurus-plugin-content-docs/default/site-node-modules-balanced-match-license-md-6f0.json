@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/balanced-match/LICENSE",
+  "id": "node_modules/balanced-match/LICENSE",
+  "title": "LICENSE",
+  "description": "(MIT)",
+  "source": "@site/node_modules/balanced-match/LICENSE.md",
+  "sourceDirName": "node_modules/balanced-match",
+  "slug": "/node_modules/balanced-match/LICENSE",
+  "permalink": "/consul-release-controller/node_modules/balanced-match/LICENSE",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/balanced-match/LICENSE.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "balanced-match",
+    "permalink": "/consul-release-controller/node_modules/balanced-match/"
+  },
+  "next": {
+    "title": "base16-js",
+    "permalink": "/consul-release-controller/node_modules/base16/"
+  }
+}

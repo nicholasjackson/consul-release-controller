@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/hast-util-parse-selector/readme",
+  "id": "node_modules/hast-util-parse-selector/readme",
+  "title": "hast-util-parse-selector",
+  "description": "Build",
+  "source": "@site/node_modules/hast-util-parse-selector/readme.md",
+  "sourceDirName": "node_modules/hast-util-parse-selector",
+  "slug": "/node_modules/hast-util-parse-selector/",
+  "permalink": "/consul-release-controller/node_modules/hast-util-parse-selector/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/hast-util-parse-selector/readme.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "hast-util-from-parse5",
+    "permalink": "/consul-release-controller/node_modules/hast-util-from-parse5/"
+  },
+  "next": {
+    "title": "hast-util-raw",
+    "permalink": "/consul-release-controller/node_modules/hast-util-raw/"
+  }
+}

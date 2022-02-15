@@ -1,0 +1,23 @@
+{
+  "unversionedId": "node_modules/core-js/modules/README",
+  "id": "node_modules/core-js/modules/README",
+  "title": "README",
+  "description": "This folder contains implementations of polyfills. It's not recommended to include in your projects directly if you don't completely understand what are you doing.",
+  "source": "@site/node_modules/core-js/modules/README.md",
+  "sourceDirName": "node_modules/core-js/modules",
+  "slug": "/node_modules/core-js/modules/",
+  "permalink": "/consul-release-controller/node_modules/core-js/modules/",
+  "editUrl": "https://github.com/nicholasjackson/consul-release-controller/tree/main/docs/templates/shared/node_modules/core-js/modules/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/core-js/stage/"
+  },
+  "next": {
+    "title": "README",
+    "permalink": "/consul-release-controller/node_modules/core-js/web/"
+  }
+}

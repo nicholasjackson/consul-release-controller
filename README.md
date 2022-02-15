@@ -9,12 +9,13 @@ service mesh it can leverage Consul full capabilities such as cross cloud deploy
 from on premise VMs to cloud based Nomad or Kubernetes). 
 
 ## Supported platforms [x] currently supported:
-[x] Kubernetes
-[ ] Nomad
-[ ] ECS
-[ ] Virtual machines
-[ ] Cross platform deployments (e.g. ECS to Kubernetes, Virtual Machine to Nomad) 
-[ ] Enterprise feature support
+
+- [x] Kubernetes
+- [ ] Nomad
+- [ ] ECS
+- [ ] Virtual machines
+- [ ] Cross platform deployments (e.g. ECS to Kubernetes, Virtual Machine to Nomad) 
+- [ ] Enterprise feature support
 
 
 # Configuration

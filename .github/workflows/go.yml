@@ -52,6 +52,7 @@ jobs:
   
   build_docs:
     runs-on: ubuntu-latest
+    if: ${{ github.ref == 'refs/heads/dev' }}
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-node@v2
@@ -63,6 +64,11 @@ jobs:
         cd docs
         yarn install
         yarn build
+
+    - uses: actions/upload-artifact@v2
+      with:
+        name: docs
+        path: docs/build
 
   check-kubebuilder:
     runs-on: ubuntu-latest

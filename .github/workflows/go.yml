@@ -60,6 +60,7 @@ jobs:
 
     - name: Build Docusaurus docs
       run: |
+        cd docs
         yarn install
         yarn build
 
@@ -119,7 +120,7 @@ jobs:
         webhook: ${{ secrets.DISCORD_WEBHOOK }}
         description: "Executed functional test: ${{ matrix.tags }}"
 
-  dev-docker:
+  dev_docker:
     name: Build development Docker image
     runs-on: ubuntu-latest
     needs:

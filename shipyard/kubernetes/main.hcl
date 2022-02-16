@@ -50,6 +50,11 @@ variable "consul_debug" {
   default     = true
 }
 
+variable "example_app" {
+  description = "Should the example application be installed?"
+  default     = true
+}
+
 variable "controller_enabled" {
   description = "Should the controller be installed with the helm chart?"
   default     = true
@@ -87,7 +92,7 @@ k8s_cluster "dc1" {
   }
 }
 
-// install cert manager
+# install cert manager
 k8s_config "cert-manager-controller" {
   cluster = "k8s_cluster.dc1"
 
@@ -127,7 +132,10 @@ ingress "web" {
   }
 }
 
+
 k8s_config "application" {
+  disabled = !var.example_app
+
   depends_on = [
     "module.consul",
   ]

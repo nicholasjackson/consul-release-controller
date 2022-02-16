@@ -6,20 +6,10 @@ controller:
     image:
       repository: "${var.controller_repo}"
       tag: "${var.controller_version}"
-
-webhook:
-  enabled: "false"
-  type: ClusterIP
-  port: 9443
-  service: controller-webhook
-  namespaceOverride: shipyard
-  failurePolicy: Ignore
-
-  # Allows adding additional DNS Names to the cert generated
-  # for the webhook
-  additionalDNSNames:
-    - "controller-webhook.shipyard.svc"
-
+autoencrypt:
+  enabled: ${var.consul_tls_enabled}
+acls:
+  enabled: ${var.consul_acls_enabled}
   EOF
 
   destination = "${data("kube_setup")}/helm-values.yaml"

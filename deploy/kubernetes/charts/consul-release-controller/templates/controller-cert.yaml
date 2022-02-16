@@ -2,10 +2,10 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: consul-release-controller-webhook-certificate
+  name: consul-release-controller-certificate
   namespace: {{ .Release.Namespace | quote }}
 spec:
-  secretName: consul-release-controller-webhook-certificate
+  secretName: consul-release-controller-certificate
   dnsNames:
   - {{ printf "%s.%s.svc" (default (include "consul-release-controller.fullname" .) .Values.webhook.service) .Release.Namespace  | quote }}
   {{- range $dnsName := .Values.webhook.additionalDNSNames }}

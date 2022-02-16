@@ -32,7 +32,12 @@ spec:
       securityContext:
         {{- toYaml .Values.controller.podSecurityContext | nindent 8 }}
       initContainers:
+        {{- if .Values.controller.additional_init_containers }}
         {{- toYaml .Values.controller.additional_init_containers | nindent 12 }}
+        {{- end }}
+        {{- if eq (toString .Values.autoEncrypt.enabled) "true" }}
+        {{- toYaml .Values.autoEncrypt.init_container | nindent 12 }}
+        {{- end }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
@@ -48,9 +53,12 @@ spec:
               protocol: TCP
           volumeMounts:
             - name: tls-secret
-              mountPath: /tmp/k8s-webhook-server/serving-certs
+              mountPath: /tmp/serving-certs
             {{- if .Values.controller.container_config.additional_volume_mounts }}
             {{- toYaml .Values.controller.container_config.additional_volume_mounts | nindent 12 }}
+            {{- end }}
+            {{- if eq (toString .Values.autoEncrypt.enabled) "true" }}
+            {{- toYaml .Values.autoEncrypt.controller_volume_mounts | nindent 12 }}
             {{- end }}
           livenessProbe:
             httpGet:
@@ -66,11 +74,20 @@ spec:
             {{- toYaml .Values.controller.container_config.resources | nindent 12 }}
           env:
             - name: TLS_CERT
-              value: /tmp/k8s-webhook-server/serving-certs/tls.crt
+              value: /tmp/serving-certs/tls.crt
             - name: TLS_KEY
-              value: /tmp/k8s-webhook-server/serving-certs/tls.key
+              value: /tmp/serving-certs/tls.key
+            {{- if eq (toString .Values.autoEncrypt.enabled) "false" }}
+            {{- toYaml .Values.controller.container_config.hostEnv | nindent 12 }}
+            {{- end }}
             {{- if .Values.controller.container_config.env }}
             {{- toYaml .Values.controller.container_config.env | nindent 12 }}
+            {{- end }}
+            {{- if eq (toString .Values.autoEncrypt.enabled) "true" }}
+            {{- toYaml .Values.autoEncrypt.env | nindent 12 }}
+            {{- end }}
+            {{- if eq (toString .Values.acls.enabled) "true" }}
+            {{- toYaml .Values.acls.env | nindent 12 }}
             {{- end }}
       {{- with .Values.controller.nodeSelector }}
       nodeSelector:
@@ -87,8 +104,11 @@ spec:
       volumes:
         - name: tls-secret
           secret:
-            secretName: {{include "consul-release-controller.fullname" .}}-webhook-certificate
+            secretName: {{include "consul-release-controller.fullname" .}}-certificate
         {{- if .Values.controller.additional_volumes }}
         {{- toYaml .Values.controller.additional_volumes | nindent 8 }}
+        {{- end }}
+        {{- if eq (toString .Values.autoEncrypt.enabled) "true" }}
+        {{- toYaml .Values.autoEncrypt.additional_volumes | nindent 8 }}
         {{- end }}
 {{- end }}

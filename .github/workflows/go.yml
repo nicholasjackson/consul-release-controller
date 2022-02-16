@@ -34,7 +34,7 @@ jobs:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
           description: "Unable to release new version, ensure that all PRs are labeled with a valid release label (patch, minor, major)"
 
-  build:
+  build_controller:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -49,6 +49,19 @@ jobs:
 
     - name: Test
       run: go test -v ./...
+  
+  build_docs:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+
+    - name: Build Docusaurus docs
+      run: |
+        yarn install
+        yarn build
 
   check-kubebuilder:
     runs-on: ubuntu-latest
@@ -110,7 +123,7 @@ jobs:
     name: Build development Docker image
     runs-on: ubuntu-latest
     needs:
-      - build
+      - build_controller
       - functional_tests
     if: ${{ github.ref == 'refs/heads/dev' }}
 
@@ -138,7 +151,7 @@ jobs:
     name: Build production Docker image and release Helm chart
     runs-on: ubuntu-latest
     needs:
-      - build
+      - build_controller
       - functional_tests
     if: ${{ github.ref == 'refs/heads/main' }}
     

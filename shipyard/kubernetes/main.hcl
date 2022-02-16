@@ -132,7 +132,6 @@ ingress "web" {
   }
 }
 
-
 k8s_config "application" {
   disabled = !var.example_app
 

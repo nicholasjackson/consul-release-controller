@@ -38,11 +38,11 @@ template "certs_script" {
   source = <<EOF
 #! /bin/sh -e
 
-kubectl get secret consul-release-controller-webhook-certificate -n consul -o json | \
+kubectl get secret consul-release-controller-certificate -n consul -o json | \
 	jq -r '.data."tls.crt"' | \
 	base64 -d > /output/tls.crt
 
-kubectl get secret consul-release-controller-webhook-certificate -n consul -o json | \
+kubectl get secret consul-release-controller-certificate -n consul -o json | \
 	jq -r '.data."tls.key"' | \
 	base64 -d > /output/tls.key
   EOF

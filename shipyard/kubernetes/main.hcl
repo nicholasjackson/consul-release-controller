@@ -50,20 +50,29 @@ variable "consul_debug" {
   default     = true
 }
 
+variable "example_app" {
+  description = "Should the example application be installed?"
+  default     = true
+}
+
 variable "controller_enabled" {
   description = "Should the controller be installed with the helm chart?"
   default     = true
 }
 
+variable "controller_repo" {
+  description = "Docker repo for the controller"
+  default     = "nicholasjackson/consul-release-controller"
+}
+
 variable "controller_version" {
-  description = "Docker container version for the controlelr"
+  description = "Docker image version for the controller"
   default     = ""
 }
 
-//variable "controller_version" {
-//  description = "Docker container version for the controlelr"
-//  default     = "nicholasjackson/consul-release-controller:2d0d093.dev"
-//}
+variable "controller_image" {
+  default = "${var.controller_version != "" ? "${var.controller_repo}:${var.controller_version}" : ""}"
+}
 
 network "dc1" {
   subnet = "10.5.0.0/16"
@@ -79,11 +88,11 @@ k8s_cluster "dc1" {
   }
 
   image {
-    name = var.controller_version
+    name = var.controller_image
   }
 }
 
-// install cert manager
+# install cert manager
 k8s_config "cert-manager-controller" {
   cluster = "k8s_cluster.dc1"
 
@@ -124,6 +133,8 @@ ingress "web" {
 }
 
 k8s_config "application" {
+  disabled = !var.example_app
+
   depends_on = [
     "module.consul",
   ]

@@ -33,7 +33,8 @@ build_docker_dev:
 		-t ${DOCKER_REGISTRY}/consul-release-controller:${VERSION}.dev \
     -f ./Dockerfile \
     . \
-		--loadre	docker buildx rm multi
+		--load
+	docker buildx rm multi
 
 # Fetch Kubernetes certificates needed to secure the server with TLS
 fetch_kubernetes_certs:
@@ -46,9 +47,6 @@ fetch_kubernetes_certs:
 	kubectl get secret consul-release-controller-webhook-certificate -n consul -o json | \
 		jq -r '.data."tls.key"' | \
 		base64 -d > /tmp/k8s-webhook-server/serving-certs/tls.key
-
-run_kubernetes: fetch_kubernetes_certs
-	go run main.go
 
 # Create the shipyard environment and run the functional tests
 functional_tests_kubernetes:
@@ -63,12 +61,27 @@ functional_tests_kubernetes_no_env:
 deploy_kubernetes_relase:
 	curl -k https://localhost:9443/v1/releases -XPOST -d @./example/kubernetes/canary/api.json
 
+# Create a dev environment with Shipyard and do not install the controller helm chart
+create_dev_env_no_controller_no_app:
+	shipyard run ./shipyard/kubernetes/main.hcl --var="controller_enabled=false" --var="example_app=false"
+
+# Create a dev environment with Shipyard and install the controller Helm chart but disable the controller to enable running it locally
 create_dev_env_local_controller:
 	shipyard run ./shipyard/kubernetes --var="controller_enabled=false"
 
+# Create a dev environment with Shipyard and install the controller
 create_dev_env_docker_controller:
-	shipyard run ./shipyard/kubernetes --var="controller_enabled=true" --var="controller_version=nicholasjackson/consul-release-controller${VERSION}.dev" 
+	shipyard run ./shipyard/kubernetes --var="controller_enabled=true" --var="controller_repo=nicholasjackson/consul-release-controller" --var="controller_version=${VERSION}.dev"
 
+# Create a dev environment with Shipyard and install the controller with no consul TLS or ACLs
+create_dev_env_docker_controller_no_security:
+	shipyard run ./shipyard/kubernetes --var="consul_acls_enabled=false" --var="consul_tls_enabled=false" --var="controller_enabled=true" --var="controller_repo=nicholasjackson/consul-release-controller" --var="controller_version=${VERSION}.dev"
+
+# Build the docusaurus documentation
+build_docs:
+	cd ./docs yarn install && yarn build
+
+# Generate a new version of the Helm chart
 generate_helm:
 	cd ./kubernetes/controller && make manifests
 	cd ./kubernetes/controller && make generate
@@ -77,7 +90,6 @@ generate_helm:
 	kustomize build ./kubernetes/controller/config/helm -o ./deploy/kubernetes/charts/consul-release-controller/templates
 
 # Set the version in the chart
-
 	cp ./deploy/kubernetes/charts/consul-release-controller/Chart.tpl ./deploy/kubernetes/charts/consul-release-controller/Chart.yaml
 	sedi=(-i) && [ "$(UNAME)" == "Darwin" ] && sedi=(-i '') ; \
 		sed "$${sedi[@]}" -e 's/##VERSION##/${HELM_VERSION}/' ./deploy/kubernetes/charts/consul-release-controller/Chart.yaml
@@ -90,5 +102,5 @@ generate_helm:
 	helm package ./deploy/kubernetes/charts/consul-release-controller
 
 # Generate the index using github releases as source for binaries
-	helm repo index . --merge ./docs/index.yaml --url=https://github.com/nicholasjackson/consul-release-controller/releases/download/${VERSION}/
+	helm repo index . --merge ./docs/static/index.yaml --url=https://github.com/nicholasjackson/consul-release-controller/releases/download/${VERSION}/
 	mv ./index.yaml ./docs/index.yaml

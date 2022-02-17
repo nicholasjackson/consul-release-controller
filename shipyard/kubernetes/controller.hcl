@@ -4,27 +4,19 @@ controller:
   enabled: "${var.controller_enabled}"
   container_config:
     image:
+      repository: "${var.controller_repo}"
       tag: "${var.controller_version}"
-
-webhook:
-  enabled: "false"
-  type: ClusterIP
-  port: 9443
-  service: controller-webhook
-  namespaceOverride: shipyard
-  failurePolicy: Ignore
-
-  # Allows adding additional DNS Names to the cert generated
-  # for the webhook
-  additionalDNSNames:
-    - "controller-webhook.shipyard.svc"
-
+autoencrypt:
+  enabled: ${var.consul_tls_enabled}
+acls:
+  enabled: ${var.consul_acls_enabled}
   EOF
 
   destination = "${data("kube_setup")}/helm-values.yaml"
 }
 
 helm "consul-release-controller" {
+
   # wait for certmanager to be installed and the template to be processed
   depends_on = [
     "template.controller_values",
@@ -46,11 +38,11 @@ template "certs_script" {
   source = <<EOF
 #! /bin/sh -e
 
-kubectl get secret consul-release-controller-webhook-certificate -n consul -o json | \
+kubectl get secret consul-release-controller-certificate -n consul -o json | \
 	jq -r '.data."tls.crt"' | \
 	base64 -d > /output/tls.crt
 
-kubectl get secret consul-release-controller-webhook-certificate -n consul -o json | \
+kubectl get secret consul-release-controller-certificate -n consul -o json | \
 	jq -r '.data."tls.key"' | \
 	base64 -d > /output/tls.key
   EOF

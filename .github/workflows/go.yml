@@ -34,7 +34,7 @@ jobs:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
           description: "Unable to release new version, ensure that all PRs are labeled with a valid release label (patch, minor, major)"
 
-  build:
+  build_controller:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -49,6 +49,26 @@ jobs:
 
     - name: Test
       run: go test -v ./...
+  
+  build_docs:
+    runs-on: ubuntu-latest
+    if: ${{ github.ref == 'refs/heads/dev' }}
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+
+    - name: Build Docusaurus docs
+      run: |
+        cd docs
+        yarn install
+        yarn build
+
+    - uses: actions/upload-artifact@v2
+      with:
+        name: docs
+        path: docs/build
 
   check-kubebuilder:
     runs-on: ubuntu-latest
@@ -106,11 +126,11 @@ jobs:
         webhook: ${{ secrets.DISCORD_WEBHOOK }}
         description: "Executed functional test: ${{ matrix.tags }}"
 
-  dev-docker:
+  dev_docker:
     name: Build development Docker image
     runs-on: ubuntu-latest
     needs:
-      - build
+      - build_controller
       - functional_tests
     if: ${{ github.ref == 'refs/heads/dev' }}
 
@@ -134,11 +154,11 @@ jobs:
         webhook: ${{ secrets.DISCORD_WEBHOOK }}
         description: "Built new Docker image"
 
-  release:
-    name: Build production Docker image and release Helm chart
+  release_docker:
+    name: Build and Release
     runs-on: ubuntu-latest
     needs:
-      - build
+      - build_controller
       - functional_tests
     if: ${{ github.ref == 'refs/heads/main' }}
     
@@ -204,11 +224,17 @@ jobs:
         files: | 
           ./consul-release-controller-${{ steps.tag_version.outputs.new_version }}.tgz
 
+    - name: Download the docs
+      uses: actions/download-artifact@v2
+      with:
+        name: my-artifact
+        path: ~/artifacts
+
     - name: Deploy Github pages
       uses: JamesIves/github-pages-deploy-action@v4.2.3
       with:
         branch: gh-pages # The branch the action should deploy to.
-        folder: docs # The folder the action should deploy.
+        folder: ~/artifacts/docs # The folder the action should deploy.
     
     - name: Send status to Discord
       uses: sarisia/actions-status-discord@v1

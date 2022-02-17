@@ -182,11 +182,7 @@ jobs:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         labels: '["patch", "minor", "major"]'
         match-any: 'true'
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-    
-    - uses: zwaldowski/semver-release-action@v1
-      id: next_version
-
+        
     - name: Bump version and push tag
       id: tag_version
       uses: mathieudutour/github-tag-action@v6.0

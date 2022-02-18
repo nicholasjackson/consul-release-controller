@@ -24,6 +24,8 @@ func getKubernetesClient() (clients.Kubernetes, error) {
 
 func theControllerIsRunningOnKubernetes() error {
 	// only create the environment when the flag is true
+
+	os.Setenv("LOG_LEVEL", "debug")
 	if *createEnvironment {
 		err := executeCommand([]string{
 			"/usr/local/bin/shipyard",

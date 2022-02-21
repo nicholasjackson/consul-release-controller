@@ -121,14 +121,6 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           labels: '["patch", "minor", "major"]'
           match-any: 'true'
-      
-      - name: Set output
-        id: set_output
-        run: |
-          echo "${{ steps.check_pr_labels.outputs.labels }}"
-          echo "${{ fromJson(steps.check_pr_labels.outputs.labels)[0] }}"
-          echo "::set-output name=pr_labels_set::${{ steps.check_pr_labels.outputs.result }}"
-          echo "::set-output name=pr_first_labels::${{ fromJson(steps.check_pr_labels.outputs.labels)[0] }}"
 
       - name: Send status to Discord
         if: ${{ steps.check_pr_labels.outputs.result == 'false' }}
@@ -136,6 +128,10 @@ jobs:
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
           description: "Not releasing new version, ensure that all PRs are labeled with a valid release label (patch, minor, major)"
+
+    outputs:
+      pr_labels_set: ${{ steps.check_pr_labels.outputs.result }}
+      pr_first_label: ${{ fromJson(steps.check_pr_labels.outputs.labels)[0] }}
 
   publish_docs:
     name: Publish Docs

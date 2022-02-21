@@ -103,4 +103,4 @@ generate_helm:
 
 # Generate the index using github releases as source for binaries
 	helm repo index . --merge ./docs/static/index.yaml --url=https://github.com/nicholasjackson/consul-release-controller/releases/download/${VERSION}/
-	mv ./index.yaml ./docs/index.yaml
+	mv ./index.yaml ./docs/static/index.yaml

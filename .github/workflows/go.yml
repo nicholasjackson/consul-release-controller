@@ -181,7 +181,7 @@ jobs:
       uses: JamesIves/github-pages-deploy-action@v4.2.3
       with:
         branch: gh-pages # The branch the action should deploy to.
-        folder: ~/artifacts/docs # The folder the action should deploy.
+        folder: ~/artifacts # The folder the action should deploy.
     
     - name: Send status to Discord
       uses: sarisia/actions-status-discord@v1

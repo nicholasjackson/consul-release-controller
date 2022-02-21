@@ -2,6 +2,10 @@
 
 Consul release controller enables automated Canary and Green / Blue releases of your application using Consul Service Mesh.
 
+## Documentation
+
+For information on how to install the release controller and full documentation [click here](https://nicholasjackson.io/consul-release-controller/)
+
 ## Why not Flagger / Argo / etc. ?
 Consul Release Controller is designed to be cloud and platform agnostic, while it is a great tool to use with Kubernetes it allows a common
 workflow on any platform supported by Consul such as Nomad, ECS, or Virtual machines. Since Consul Release Controller is specific to consul

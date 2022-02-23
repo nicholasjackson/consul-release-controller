@@ -55,8 +55,13 @@ variable "example_app" {
   default     = true
 }
 
-variable "controller_enabled" {
-  description = "Should the controller be installed with the helm chart?"
+variable "helm_chart_install" {
+  description = "Should the Helm chart for the controller be installed?"
+  default     = true
+}
+
+variable "helm_controller_enabled" {
+  description = "Should the controller be enabled in the Helm chart? You may want to set this to false if using a local controller"
   default     = true
 }
 
@@ -92,7 +97,6 @@ k8s_cluster "dc1" {
   }
 }
 
-# install cert manager
 k8s_config "cert-manager-controller" {
   cluster = "k8s_cluster.dc1"
 
@@ -108,8 +112,9 @@ k8s_config "cert-manager-controller" {
   }
 }
 
+
 module "consul" {
-  source = "github.com/shipyard-run/blueprints?ref=2ae94bd0a193904f1a16e98dc233d504ace2327b/modules//kubernetes-consul"
+  source = "github.com/shipyard-run/blueprints?ref=89c98c1f9f5e5d6ec0e3577fee43783bfe0062b0/modules//kubernetes-consul"
 }
 
 ingress "web" {
@@ -142,7 +147,7 @@ k8s_config "application" {
   cluster = "k8s_cluster.dc1"
 
   paths = [
-    "${file_dir()}/../../example/kubernetes/",
+    "${file_dir()}/../../example/kubernetes/"
   ]
 
   wait_until_ready = true

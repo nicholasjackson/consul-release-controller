@@ -63,19 +63,19 @@ deploy_kubernetes_relase:
 
 # Create a dev environment with Shipyard and do not install the controller helm chart
 create_dev_env_no_controller_no_app:
-	shipyard run ./shipyard/kubernetes/main.hcl --var="controller_enabled=false" --var="example_app=false"
+	shipyard run ./shipyard/kubernetes --var="helm_chart_install=false" --var="example_app=false"
 
 # Create a dev environment with Shipyard and install the controller Helm chart but disable the controller to enable running it locally
 create_dev_env_local_controller:
-	shipyard run ./shipyard/kubernetes --var="controller_enabled=false"
+	shipyard run ./shipyard/kubernetes --var="helm_controller_enabled=false"
 
 # Create a dev environment with Shipyard and install the controller
 create_dev_env_docker_controller:
-	shipyard run ./shipyard/kubernetes --var="controller_enabled=true" --var="controller_repo=nicholasjackson/consul-release-controller" --var="controller_version=${VERSION}.dev"
+	shipyard run ./shipyard/kubernetes --var="controller_version=${VERSION}.dev"
 
 # Create a dev environment with Shipyard and install the controller with no consul TLS or ACLs
 create_dev_env_docker_controller_no_security:
-	shipyard run ./shipyard/kubernetes --var="consul_acls_enabled=false" --var="consul_tls_enabled=false" --var="controller_enabled=true" --var="controller_repo=nicholasjackson/consul-release-controller" --var="controller_version=${VERSION}.dev"
+	shipyard run ./shipyard/kubernetes --var="consul_acls_enabled=false" --var="consul_tls_enabled=false" --var="controller_version=${VERSION}.dev"
 
 # Build the docusaurus documentation
 build_docs:

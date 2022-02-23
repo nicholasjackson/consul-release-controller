@@ -4,10 +4,13 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"time"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/hashicorp/go-hclog"
 	"github.com/nicholasjackson/consul-release-controller/clients"
+	"github.com/nicholasjackson/consul-release-controller/plugins/interfaces"
+	"github.com/sethvargo/go-retry"
 )
 
 type Plugin struct {
@@ -144,4 +147,26 @@ func (p *Plugin) Destroy(ctx context.Context) error {
 	}
 
 	return nil
+}
+
+func (p *Plugin) WaitUntilServiceHealthy(ctx context.Context, t interfaces.ServiceVariant) error {
+	retryContext, cancel := context.WithTimeout(ctx, 30*time.Second)
+	defer cancel()
+
+	err := retry.Constant(retryContext, 1*time.Second, func(ctx context.Context) error {
+		p.log.Debug("Checking service is healthy", "name", p.config.ConsulService)
+
+		err := p.consulClient.CheckHealth(p.config.ConsulService, t)
+		if err != nil {
+			p.log.Debug("Service not healthy, retrying", "name", p.config.ConsulService)
+		}
+
+		return nil
+	})
+
+	if err != nil {
+		p.log.Error("Service health check failed", "service", p.config.ConsulService, "type", t, "error", err)
+	}
+
+	return err
 }

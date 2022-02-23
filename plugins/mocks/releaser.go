@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 
+	"github.com/nicholasjackson/consul-release-controller/plugins/interfaces"
 	"github.com/stretchr/testify/mock"
 )
 
@@ -48,4 +49,10 @@ func (s *ReleaserMock) Destroy(ctx context.Context) error {
 	}
 
 	return nil
+}
+
+func (s *ReleaserMock) WaitUntilServiceHealthy(ctx context.Context, t interfaces.ServiceVariant) error {
+	args := s.Called(ctx)
+
+	return args.Error(0)
 }

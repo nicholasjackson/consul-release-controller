@@ -1,4 +1,22 @@
 ---
+# Service to expose loadtest for scraping
+apiVersion: v1
+kind: Service
+metadata:
+  name: loadtest-metrics
+  namespace: default
+  labels:
+    app: metrics
+spec:
+  selector:
+    group: loadtest
+  ports:
+  - name: metrics
+    protocol: TCP
+    port: 9102
+    targetPort: 9102
+
+---
 apiVersion: v1
 kind: ConfigMap
 metadata:

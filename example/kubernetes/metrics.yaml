@@ -1,75 +1,19 @@
-# ServiceMonitor to configure Prometheus to scrape metrics from applications in the consul namespace
 ---
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   labels:
-    app: applications
     release: prometheus
-  name: consul-applications
+  name: example-app
   namespace: monitoring
 spec:
   endpoints:
   - interval: 15s
     port: metrics
-  jobLabel: applications
+  jobLabel: example-app
   namespaceSelector:
     matchNames:
-    - consul
+    - default
   selector:
     matchLabels:
       app: metrics
-
-# Service to configure Prometheus to scrape metrics from the ingress-gateway in the consul namespace
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: ingress-gateway-metrics
-  namespace: consul
-  labels:
-    app: metrics
-spec:
-  selector:
-    component: ingress-gateway
-  ports:
-    - name: metrics
-      protocol: TCP
-      port: 20200
-      targetPort: 20200
-
----
-# Service to expose loadtest for scraping
-apiVersion: v1
-kind: Service
-metadata:
-  name: loadtest-metrics
-  namespace: consul
-  labels:
-    app: metrics
-spec:
-  selector:
-    group: loadtest
-  ports:
-  - name: metrics
-    protocol: TCP
-    port: 9102
-    targetPort: 9102
-
----
-# Service to expose loadtest for scraping
-apiVersion: v1
-kind: Service
-metadata:
-  name: controller-metrics
-  namespace: consul
-  labels:
-    app: metrics
-spec:
-  selector:
-    app.kubernetes.io/name: consul-release-controller
-  ports:
-  - name: metrics
-    protocol: TCP
-    port: 9102
-    targetPort: 9102

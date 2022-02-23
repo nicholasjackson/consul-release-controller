@@ -5,6 +5,14 @@ import (
 	"encoding/json"
 )
 
+type ServiceVariant int
+
+const (
+	All       ServiceVariant = 0
+	Primary   ServiceVariant = 1
+	Candidate ServiceVariant = 2
+)
+
 // Releaser defines methods for configuring and manipulating traffic in the service mesh
 type Releaser interface {
 	// Configure the plugin with the given json
@@ -22,4 +30,9 @@ type Releaser interface {
 
 	// Destroy removes any configuration that was created with the Configure method
 	Destroy(ctx context.Context) error
+
+	// WaitUntilServiceHealthy blocks until the service mesh service is passing all it's
+	// health checks. Returns an error if any endpoints for a service have failing health
+	// checks.
+	WaitUntilServiceHealthy(ctx context.Context, t ServiceVariant) error
 }

@@ -13,7 +13,7 @@ import (
 )
 
 // StepDelay is used to set the default delay between events
-var stepDelay = 10 * time.Second
+var stepDelay = 5 * time.Second
 
 // defaultTimeout is the default time that an event step can take before timing out
 var defaultTimeout = 30 * time.Minute
@@ -213,6 +213,8 @@ func (s *StateMachine) doConfigure() func(e *fsm.Event) {
 				return
 			}
 
+			time.Sleep(stepDelay)
+
 			// if a deployment already exists copy this to the primary
 			status, err := s.runtimePlugin.InitPrimary(ctx)
 			if err != nil {
@@ -224,6 +226,14 @@ func (s *StateMachine) doConfigure() func(e *fsm.Event) {
 
 			// if we created a new primary, scale all traffic to the new primary
 			if status == interfaces.RuntimeDeploymentUpdate {
+				err = s.releaserPlugin.WaitUntilServiceHealthy(ctx, interfaces.Primary)
+				if err != nil {
+					s.logger.Error("Configure completed with error", "error", err)
+
+					e.FSM.Event(interfaces.EventFail)
+					return
+				}
+
 				err = s.releaserPlugin.Scale(ctx, 0)
 				if err != nil {
 					s.logger.Error("Configure completed with error", "error", err)
@@ -231,6 +241,8 @@ func (s *StateMachine) doConfigure() func(e *fsm.Event) {
 					e.FSM.Event(interfaces.EventFail)
 					return
 				}
+
+				time.Sleep(stepDelay)
 
 				// remove the candidate
 				err = s.runtimePlugin.RemoveCandidate(ctx)
@@ -270,6 +282,14 @@ func (s *StateMachine) doDeploy() func(e *fsm.Event) {
 				return
 			}
 
+			err = s.releaserPlugin.WaitUntilServiceHealthy(ctx, interfaces.Primary)
+			if err != nil {
+				s.logger.Error("Configure completed with error", "error", err)
+
+				e.FSM.Event(interfaces.EventFail)
+				return
+			}
+
 			// now the primary has been created send 100 of traffic there
 			err = s.releaserPlugin.Scale(ctx, 0)
 			// work has failed, raise the failed event
@@ -284,6 +304,7 @@ func (s *StateMachine) doDeploy() func(e *fsm.Event) {
 			if status == interfaces.RuntimeDeploymentUpdate {
 				s.logger.Debug("Deploy completed, created primary, waiting for next candidate deployment")
 
+				time.Sleep(stepDelay)
 				// remove the candidate and wait for the next deployment
 				err = s.runtimePlugin.RemoveCandidate(ctx)
 				if err != nil {
@@ -396,9 +417,19 @@ func (s *StateMachine) doPromote() func(e *fsm.Event) {
 				return
 			}
 
+			time.Sleep(stepDelay)
+
 			// promote the candidate to primary
 			_, err = s.runtimePlugin.PromoteCandidate(ctx)
 			if err != nil {
+				e.FSM.Event(interfaces.EventFail)
+				return
+			}
+
+			err = s.releaserPlugin.WaitUntilServiceHealthy(ctx, interfaces.Primary)
+			if err != nil {
+				s.logger.Error("Configure completed with error", "error", err)
+
 				e.FSM.Event(interfaces.EventFail)
 				return
 			}
@@ -409,6 +440,8 @@ func (s *StateMachine) doPromote() func(e *fsm.Event) {
 				e.FSM.Event(interfaces.EventFail)
 				return
 			}
+
+			time.Sleep(stepDelay)
 
 			// scale down the canary
 			err = s.runtimePlugin.RemoveCandidate(ctx)
@@ -437,6 +470,8 @@ func (s *StateMachine) doRollback() func(e *fsm.Event) {
 				return
 			}
 
+			time.Sleep(stepDelay)
+
 			// scale down the canary
 			err = s.runtimePlugin.RemoveCandidate(ctx)
 			if err != nil {
@@ -464,12 +499,22 @@ func (s *StateMachine) doDestroy() func(e *fsm.Event) {
 				return
 			}
 
+			err = s.releaserPlugin.WaitUntilServiceHealthy(ctx, interfaces.Candidate)
+			if err != nil {
+				s.logger.Error("Configure completed with error", "error", err)
+
+				e.FSM.Event(interfaces.EventFail)
+				return
+			}
+
 			// scale all traffic to the candidate
 			err = s.releaserPlugin.Scale(ctx, 100)
 			if err != nil {
 				e.FSM.Event(interfaces.EventFail)
 				return
 			}
+
+			time.Sleep(stepDelay)
 
 			// destroy the primary
 			err = s.runtimePlugin.RemovePrimary(ctx)

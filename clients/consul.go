@@ -2,8 +2,10 @@ package clients
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/hashicorp/consul/api"
+	"github.com/nicholasjackson/consul-release-controller/plugins/interfaces"
 )
 
 const (
@@ -21,6 +23,8 @@ type Consul interface {
 	DeleteServiceResolver(name string) error
 	DeleteServiceSplitter(name string) error
 	DeleteServiceRouter(name string) error
+
+	CheckHealth(name string, t interfaces.ServiceVariant) error
 }
 
 func NewConsul() (Consul, error) {
@@ -65,11 +69,11 @@ func (c *ConsulImpl) CreateServiceResolver(name string) error {
 
 	primarySubset := &api.ServiceResolverSubset{}
 	primarySubset.Filter = fmt.Sprintf(`Service.ID contains "%s-deployment-primary"`, name)
-	primarySubset.OnlyPassing = false
+	primarySubset.OnlyPassing = true
 
 	canarySubset := &api.ServiceResolverSubset{}
 	canarySubset.Filter = fmt.Sprintf(`Service.ID not contains "%s-deployment-primary"`, name)
-	canarySubset.OnlyPassing = false
+	canarySubset.OnlyPassing = true
 
 	defaults.Subsets = map[string]api.ServiceResolverSubset{
 		fmt.Sprintf("%s-primary", name): *primarySubset,
@@ -199,4 +203,28 @@ func (c *ConsulImpl) DeleteServiceSplitter(name string) error {
 func (c *ConsulImpl) DeleteServiceRouter(name string) error {
 	_, err := c.client.ConfigEntries().Delete("service-router", name, &api.WriteOptions{})
 	return err
+}
+
+// CheckHealth returns an error if the named service has any health checks that are failing
+func (c *ConsulImpl) CheckHealth(name string, t interfaces.ServiceVariant) error {
+	checks, _, err := c.client.Health().Service(name, "", false, &api.QueryOptions{})
+	if err != nil {
+		return fmt.Errorf("unable to check health for service %s: %s", name, err)
+	}
+
+	for _, chk := range checks {
+		if t == interfaces.Primary && !strings.Contains("primary", chk.Service.ID) {
+			break
+		}
+
+		if t == interfaces.Candidate && strings.Contains("primary", chk.Service.ID) {
+			break
+		}
+
+		if chk.Checks.AggregatedStatus() != "passing" {
+			return fmt.Errorf("Service health checks failing: %s, %s", chk.Service.ID, chk.Checks.AggregatedStatus())
+		}
+	}
+
+	return nil
 }

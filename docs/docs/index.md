@@ -37,7 +37,7 @@ You should see the available versions output
 
 ```shell
 NAME                                            CHART VERSION   APP VERSION
-release-controller/consul-release-controller    0.0.4           0.0.4      
+release-controller/consul-release-controller    0.0.6           0.0.6      
 ```
 
 The Helm chart is configurable with a number of settings however this guide assumes that you have installed Consul locally on your 
@@ -57,7 +57,7 @@ acls:
 ```
 </details>
 
-Then you can use the following installation command to install the release controller:
+To install using the command to install the release controller:
 
 <Tabs groupId="helm_values">
 <TabItem value="secure" label="TLS and ALCs">
@@ -82,7 +82,7 @@ helm install consul-release-controller \
 </TabItem>
 </Tabs>
 
-The controller will be installed with the default options setting the Agent certificate and the ACL token from the Consul Kubernetes controller
+The controller will be installed into the namespace `consul` with the default options setting the agent certificate and the ACL token from the Consul Kubernetes controller
 
 **note:** The release controller shares secrets with the main Consul install, ensure that you install it into the same namespace where the 
 Consul helm is installed.

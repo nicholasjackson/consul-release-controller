@@ -1,6 +1,9 @@
 package clients
 
-import "github.com/stretchr/testify/mock"
+import (
+	"github.com/nicholasjackson/consul-release-controller/plugins/interfaces"
+	"github.com/stretchr/testify/mock"
+)
 
 type ConsulMock struct {
 	mock.Mock
@@ -50,6 +53,12 @@ func (mc *ConsulMock) DeleteServiceSplitter(name string) error {
 }
 
 func (mc *ConsulMock) DeleteServiceRouter(name string) error {
+	args := mc.Called(name)
+
+	return args.Error(0)
+}
+
+func (mc *ConsulMock) CheckHealth(name string, t interfaces.ServiceVariant) error {
 	args := mc.Called(name)
 
 	return args.Error(0)

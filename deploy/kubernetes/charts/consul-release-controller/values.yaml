@@ -129,6 +129,15 @@ acls:
         name: consul-controller-acl-token
         key: token 
 
+# Configures Prometheus metrics collection
+prometheus:
+  # Enable Prometheus metrics collection, Helm configures Prometheus ServiceMonitor to scape internal metrics
+  enabled: true
+  # Namespace where Prometheus is deployed
+  namespace: monitoring
+  # Interval for Prometheus to scrape the controller
+  scrapeInterval: 15s
+
 # Not currently used, conversion webhooks will be eventually enabled
 webhook:
   enabled: "false"

@@ -164,7 +164,7 @@ data:
               "refId": "A"
             }
           ],
-          "title": "Payment Primary Pods Running",
+          "title": "API Primary Pods Running",
           "type": "stat"
         },
         {
@@ -225,7 +225,7 @@ data:
               "refId": "A"
             }
           ],
-          "title": "Payment Canary Pods Running",
+          "title": "API Canary Pods Running",
           "type": "stat"
         },
         {

@@ -1,0 +1,22 @@
+{{- if eq (toString .Values.prometheus.enabled) "true"}}
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    app: consul-release-controller
+    release: prometheus
+  name: {{ include "consul-release-controller.fullname" . }}
+  namespace: {{ .Values.prometheus.namespace | quote }}
+spec:
+  endpoints:
+  - interval: {{ .Values.prometheus.scrapeInterval }}
+    port: metrics
+  jobLabel: consul-release-controller
+  namespaceSelector:
+    matchNames:
+    - {{.Release.Namespace | quote}}
+  selector:
+    matchLabels:
+      {{- include "consul-release-controller.labels" . | nindent 6}}
+{{- end }}

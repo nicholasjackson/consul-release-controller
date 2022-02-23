@@ -1,7 +1,9 @@
 template "controller_values" {
+  disabled = !var.helm_chart_install
+
   source = <<EOF
 controller:
-  enabled: "${var.controller_enabled}"
+  enabled: "${var.helm_controller_enabled}"
   container_config:
     image:
       repository: "${var.controller_repo}"
@@ -16,6 +18,7 @@ acls:
 }
 
 helm "consul-release-controller" {
+  disabled = !var.helm_chart_install
 
   # wait for certmanager to be installed and the template to be processed
   depends_on = [
@@ -35,6 +38,8 @@ helm "consul-release-controller" {
 
 // fetch the certifcates
 template "certs_script" {
+  disabled = !var.helm_chart_install
+
   source = <<EOF
 #! /bin/sh -e
 
@@ -51,6 +56,8 @@ kubectl get secret consul-release-controller-certificate -n consul -o json | \
 }
 
 exec_remote "exec_standalone" {
+  disabled = !var.helm_chart_install
+
   depends_on = [
     "helm.consul-release-controller",
     "template.certs_script",
@@ -86,14 +93,20 @@ exec_remote "exec_standalone" {
 }
 
 output "TLS_CERT" {
+  disabled = !var.helm_chart_install
+
   value = "${data("kube_setup")}/tls.crt"
 }
 
 output "TLS_KEY" {
+  disabled = !var.helm_chart_install
+
   value = "${data("kube_setup")}/tls.key"
 }
 
 ingress "controller-webhook" {
+  disabled = !var.helm_chart_install
+
   source {
     driver = "k8s"
 

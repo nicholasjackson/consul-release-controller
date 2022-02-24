@@ -52,7 +52,7 @@ func (s *ReleaserMock) Destroy(ctx context.Context) error {
 }
 
 func (s *ReleaserMock) WaitUntilServiceHealthy(ctx context.Context, t interfaces.ServiceVariant) error {
-	args := s.Called(ctx)
+	args := s.Called(ctx, t)
 
 	return args.Error(0)
 }

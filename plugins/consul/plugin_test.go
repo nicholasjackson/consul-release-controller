@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"testing"
+	"time"
 
 	"github.com/hashicorp/go-hclog"
 	"github.com/nicholasjackson/consul-release-controller/clients"
@@ -15,12 +16,15 @@ import (
 )
 
 func setupPlugin(t *testing.T) (*Plugin, *clients.ConsulMock) {
+	// ensure the sync delay is set to a value for testing
+	syncDelay = 1 * time.Millisecond
+
 	log := hclog.NewNullLogger()
 	mc := &clients.ConsulMock{}
 
 	mc.On("CreateServiceDefaults", mock.Anything).Return(nil)
 	mc.On("CreateServiceResolver", mock.Anything).Return(nil)
-	mc.On("CreateServiceRouter", mock.Anything).Return(nil)
+	mc.On("CreateServiceRouter", mock.Anything, mock.Anything).Return(nil)
 	mc.On("CreateServiceSplitter", mock.Anything, mock.Anything, mock.Anything).Return(nil)
 
 	mc.On("DeleteServiceDefaults", mock.Anything).Return(nil)
@@ -105,14 +109,14 @@ func TestSetupCreatesConsulServiceRouter(t *testing.T) {
 	err := p.Setup(context.Background())
 	require.NoError(t, err)
 
-	mc.AssertCalled(t, "CreateServiceRouter", "api")
+	mc.AssertCalled(t, "CreateServiceRouter", "api", false)
 }
 
 func TestSetupFailsOnCreateServiceRouterError(t *testing.T) {
 	p, mc := setupPlugin(t)
 
 	testutils.ClearMockCall(&mc.Mock, "CreateServiceRouter")
-	mc.On("CreateServiceRouter", mock.Anything).Return(fmt.Errorf("boom"))
+	mc.On("CreateServiceRouter", mock.Anything, mock.Anything).Return(fmt.Errorf("boom"))
 
 	err := p.Setup(context.Background())
 	require.Error(t, err)
@@ -143,6 +147,7 @@ func TestDestroyDeletesServiceRouter(t *testing.T) {
 	err := p.Destroy(context.Background())
 	require.NoError(t, err)
 
+	mc.AssertCalled(t, "CreateServiceRouter", "api", true)
 	mc.AssertCalled(t, "DeleteServiceRouter", "api")
 }
 

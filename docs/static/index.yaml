@@ -9,7 +9,7 @@ entries:
     name: consul-release-controller
     type: application
     urls:
-    - https://github.com/nicholasjackson/consul-release-controller/releases/download/0.0.7/consul-release-controller-0.0.7.tgz
+    - https://github.com/nicholasjackson/consul-release-controller/releases/download/v0.0.7/consul-release-controller-0.0.7.tgz
     version: 0.0.7
   - apiVersion: v2
     appVersion: 0.0.6

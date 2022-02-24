@@ -102,5 +102,5 @@ generate_helm:
 	helm package ./deploy/kubernetes/charts/consul-release-controller
 
 # Generate the index using github releases as source for binaries
-	helm repo index . --merge ./docs/static/index.yaml --url=https://github.com/nicholasjackson/consul-release-controller/releases/download/${VERSION}/
+	helm repo index . --merge ./docs/static/index.yaml --url=https://github.com/nicholasjackson/consul-release-controller/releases/download/v${VERSION}/
 	mv ./index.yaml ./docs/static/index.yaml

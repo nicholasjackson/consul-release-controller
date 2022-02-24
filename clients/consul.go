@@ -17,7 +17,7 @@ type Consul interface {
 	CreateServiceDefaults(name string) error
 	CreateServiceResolver(name string) error
 	CreateServiceSplitter(name string, primaryTraffic, canaryTraffic int) error
-	CreateServiceRouter(name string) error
+	CreateServiceRouter(name string, onlyDefault bool) error
 
 	DeleteServiceDefaults(name string) error
 	DeleteServiceResolver(name string) error
@@ -45,7 +45,15 @@ type ConsulImpl struct {
 func (c *ConsulImpl) CreateServiceDefaults(name string) error {
 	// first check to see if the config already exists,
 	ce, _, err := c.client.ConfigEntries().Get(api.ServiceDefaults, name, &api.QueryOptions{})
-	if err != nil && ce != nil {
+	if err != nil {
+		// is the item not found if so the error will contain a 404
+		if !strings.Contains(err.Error(), "404") {
+			return err
+		}
+	}
+
+	// item exists do not create
+	if ce != nil {
 		return nil
 	}
 
@@ -106,49 +114,56 @@ func (c *ConsulImpl) CreateServiceSplitter(name string, primaryTraffic, canaryTr
 	return err
 }
 
-func (c *ConsulImpl) CreateServiceRouter(name string) error {
+// CreateServiceRouter creates a new service router, if the onlyDefault option is specified
+// only the default route is created.
+func (c *ConsulImpl) CreateServiceRouter(name string, onlyDefault bool) error {
 	defaults := &api.ServiceRouterConfigEntry{}
 	defaults.Name = name
 	defaults.Kind = api.ServiceRouter
 	defaults.Meta = map[string]string{MetaCreatedTag: MetaCreatedValue}
+	defaults.Routes = []api.ServiceRoute{}
 
-	primaryRoute := api.ServiceRoute{}
+	if !onlyDefault {
+		primaryRoute := api.ServiceRoute{}
 
-	primaryRouteHTTP := &api.ServiceRouteMatch{}
-	primaryRouteHTTP.HTTP = &api.ServiceRouteHTTPMatch{
-		Header: []api.ServiceRouteHTTPMatchHeader{
-			api.ServiceRouteHTTPMatchHeader{Name: "x-primary", Exact: "true"},
-		},
+		primaryRouteHTTP := &api.ServiceRouteMatch{}
+		primaryRouteHTTP.HTTP = &api.ServiceRouteHTTPMatch{
+			Header: []api.ServiceRouteHTTPMatchHeader{
+				api.ServiceRouteHTTPMatchHeader{Name: "x-primary", Exact: "true"},
+			},
+		}
+
+		primaryRoute.Destination = &api.ServiceRouteDestination{
+			Service:               name,
+			ServiceSubset:         fmt.Sprintf("%s-primary", name),
+			NumRetries:            5,
+			RetryOnConnectFailure: true,
+			RetryOnStatusCodes:    []uint32{503},
+		}
+
+		primaryRoute.Match = primaryRouteHTTP
+		defaults.Routes = append(defaults.Routes, primaryRoute)
+
+		canaryRoute := api.ServiceRoute{}
+
+		canaryRouteHTTP := &api.ServiceRouteMatch{}
+		canaryRouteHTTP.HTTP = &api.ServiceRouteHTTPMatch{
+			Header: []api.ServiceRouteHTTPMatchHeader{
+				api.ServiceRouteHTTPMatchHeader{Name: "x-canary", Exact: "true"},
+			},
+		}
+
+		canaryRoute.Destination = &api.ServiceRouteDestination{
+			Service:               name,
+			ServiceSubset:         fmt.Sprintf("%s-canary", name),
+			NumRetries:            5,
+			RetryOnConnectFailure: true,
+			RetryOnStatusCodes:    []uint32{503},
+		}
+
+		canaryRoute.Match = canaryRouteHTTP
+		defaults.Routes = append(defaults.Routes, canaryRoute)
 	}
-
-	primaryRoute.Destination = &api.ServiceRouteDestination{
-		Service:               name,
-		ServiceSubset:         fmt.Sprintf("%s-primary", name),
-		NumRetries:            5,
-		RetryOnConnectFailure: true,
-		RetryOnStatusCodes:    []uint32{503},
-	}
-
-	primaryRoute.Match = primaryRouteHTTP
-
-	canaryRoute := api.ServiceRoute{}
-
-	canaryRouteHTTP := &api.ServiceRouteMatch{}
-	canaryRouteHTTP.HTTP = &api.ServiceRouteHTTPMatch{
-		Header: []api.ServiceRouteHTTPMatchHeader{
-			api.ServiceRouteHTTPMatchHeader{Name: "x-canary", Exact: "true"},
-		},
-	}
-
-	canaryRoute.Destination = &api.ServiceRouteDestination{
-		Service:               name,
-		ServiceSubset:         fmt.Sprintf("%s-canary", name),
-		NumRetries:            5,
-		RetryOnConnectFailure: true,
-		RetryOnStatusCodes:    []uint32{503},
-	}
-
-	canaryRoute.Match = canaryRouteHTTP
 
 	defaultRoute := api.ServiceRoute{}
 
@@ -164,7 +179,7 @@ func (c *ConsulImpl) CreateServiceRouter(name string) error {
 
 	defaultRoute.Match = defaultRouteHTTP
 
-	defaults.Routes = []api.ServiceRoute{canaryRoute, primaryRoute, defaultRoute}
+	defaults.Routes = append(defaults.Routes, defaultRoute)
 
 	_, _, err := c.client.ConfigEntries().Set(defaults, &api.WriteOptions{})
 	return err
@@ -182,7 +197,7 @@ func (c *ConsulImpl) DeleteServiceDefaults(name string) error {
 	}
 
 	// if we did not create this return
-	if ce.GetMeta()["created-by"] != "consul-release-controller" {
+	if ce.GetMeta()[MetaCreatedTag] != MetaCreatedValue {
 		return nil
 	}
 

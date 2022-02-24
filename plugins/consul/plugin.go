@@ -13,6 +13,8 @@ import (
 	"github.com/sethvargo/go-retry"
 )
 
+var syncDelay = 2 * time.Second
+
 type Plugin struct {
 	log          hclog.Logger
 	consulClient clients.Consul
@@ -63,7 +65,9 @@ func (s *Plugin) Configure(data json.RawMessage) error {
 func (p *Plugin) Setup(ctx context.Context) error {
 	p.log.Info("Initializing deployment", "service", p.config.ConsulService)
 
-	// create the service defaults for the main service
+	// create the service defaults for the main service if they do not exist
+	// TODO if the service defaults exist and they are not set to HTTP or gRPC we should fail as
+	// we can not split traffic for TCP services
 	p.log.Debug("Create service defaults", "service", p.config.ConsulService)
 	err := p.consulClient.CreateServiceDefaults(p.config.ConsulService)
 	if err != nil {
@@ -84,7 +88,7 @@ func (p *Plugin) Setup(ctx context.Context) error {
 
 	// create the service router
 	p.log.Debug("Create service router", "service", p.config.ConsulService)
-	err = p.consulClient.CreateServiceRouter(p.config.ConsulService)
+	err = p.consulClient.CreateServiceRouter(p.config.ConsulService, false)
 	if err != nil {
 		p.log.Error("Unable to create Consul ServiceRouter", "name", p.config.ConsulService, "error", err)
 
@@ -114,13 +118,17 @@ func (p *Plugin) Scale(ctx context.Context, value int) error {
 func (p *Plugin) Destroy(ctx context.Context) error {
 	p.log.Info("Remove Consul config", "name", p.config.ConsulService)
 
-	p.log.Debug("Delete router", "name", p.config.ConsulService)
-	err := p.consulClient.DeleteServiceRouter(p.config.ConsulService)
+	// update the router to remove the direct references to the canary and primary but
+	// keep the retry, this is important to ensure no 503 errors as the clusters update
+	p.log.Debug("Update router", "name", p.config.ConsulService)
+	err := p.consulClient.CreateServiceRouter(p.config.ConsulService, true)
 	if err != nil {
 		p.log.Error("Unable to delete Consul ServiceRouter", "name", p.config.ConsulService, "error", err)
 
 		return err
 	}
+
+	time.Sleep(syncDelay)
 
 	p.log.Debug("Delete splitter", "name", p.config.ConsulService)
 	err = p.consulClient.DeleteServiceSplitter(p.config.ConsulService)
@@ -130,6 +138,8 @@ func (p *Plugin) Destroy(ctx context.Context) error {
 		return err
 	}
 
+	time.Sleep(syncDelay)
+
 	p.log.Debug("Delete resolver", "name", p.config.ConsulService)
 	err = p.consulClient.DeleteServiceResolver(p.config.ConsulService)
 	if err != nil {
@@ -138,6 +148,19 @@ func (p *Plugin) Destroy(ctx context.Context) error {
 		return err
 	}
 
+	time.Sleep(syncDelay)
+
+	p.log.Debug("Delete router", "name", p.config.ConsulService)
+	err = p.consulClient.DeleteServiceRouter(p.config.ConsulService)
+	if err != nil {
+		p.log.Error("Unable to delete Consul ServiceRouter", "name", p.config.ConsulService, "error", err)
+
+		return err
+	}
+
+	time.Sleep(syncDelay)
+
+	// delete will only happen if this plugin created the defaults
 	p.log.Debug("Delete defaults", "name", p.config.ConsulService)
 	err = p.consulClient.DeleteServiceDefaults(p.config.ConsulService)
 	if err != nil {

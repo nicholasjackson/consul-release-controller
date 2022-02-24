@@ -27,8 +27,8 @@ func (mc *ConsulMock) CreateServiceSplitter(name string, primaryTraffic, canaryT
 	return args.Error(0)
 }
 
-func (mc *ConsulMock) CreateServiceRouter(name string) error {
-	args := mc.Called(name)
+func (mc *ConsulMock) CreateServiceRouter(name string, onlyDefault bool) error {
+	args := mc.Called(name, onlyDefault)
 
 	return args.Error(0)
 }

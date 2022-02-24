@@ -213,6 +213,13 @@ func (s *StateMachine) doConfigure() func(e *fsm.Event) {
 				return
 			}
 
+			// updating consul configuration is an asynchronous process, it is possible
+			// that a deployment can be removed before the data plane has updated its
+			// configuration. this can cause issues where requests are sent to service instances
+			// that do not exist.
+			//
+			// since we can not exactly determine when the state has converged in the data plane
+			// wait an arbitrary period of time.
 			time.Sleep(stepDelay)
 
 			// if a deployment already exists copy this to the primary
@@ -304,6 +311,13 @@ func (s *StateMachine) doDeploy() func(e *fsm.Event) {
 			if status == interfaces.RuntimeDeploymentUpdate {
 				s.logger.Debug("Deploy completed, created primary, waiting for next candidate deployment")
 
+				// updating consul configuration is an asynchronous process, it is possible
+				// that a deployment can be removed before the data plane has updated its
+				// configuration. this can cause issues where requests are sent to service instances
+				// that do not exist.
+				//
+				// since we can not exactly determine when the state has converged in the data plane
+				// wait an arbitrary period of time.
 				time.Sleep(stepDelay)
 				// remove the candidate and wait for the next deployment
 				err = s.runtimePlugin.RemoveCandidate(ctx)
@@ -417,6 +431,13 @@ func (s *StateMachine) doPromote() func(e *fsm.Event) {
 				return
 			}
 
+			// updating consul configuration is an asynchronous process, it is possible
+			// that a deployment can be removed before the data plane has updated its
+			// configuration. this can cause issues where requests are sent to service instances
+			// that do not exist.
+			//
+			// since we can not exactly determine when the state has converged in the data plane
+			// wait an arbitrary period of time.
 			time.Sleep(stepDelay)
 
 			// promote the candidate to primary
@@ -470,6 +491,13 @@ func (s *StateMachine) doRollback() func(e *fsm.Event) {
 				return
 			}
 
+			// updating consul configuration is an asynchronous process, it is possible
+			// that a deployment can be removed before the data plane has updated its
+			// configuration. this can cause issues where requests are sent to service instances
+			// that do not exist.
+			//
+			// since we can not exactly determine when the state has converged in the data plane
+			// wait an arbitrary period of time.
 			time.Sleep(stepDelay)
 
 			// scale down the canary
@@ -499,6 +527,7 @@ func (s *StateMachine) doDestroy() func(e *fsm.Event) {
 				return
 			}
 
+			// ensure that the original version is healthy in consul before progressing
 			err = s.releaserPlugin.WaitUntilServiceHealthy(ctx, interfaces.Candidate)
 			if err != nil {
 				s.logger.Error("Configure completed with error", "error", err)
@@ -514,6 +543,13 @@ func (s *StateMachine) doDestroy() func(e *fsm.Event) {
 				return
 			}
 
+			// updating consul configuration is an asynchronous process, it is possible
+			// that a deployment can be removed before the data plane has updated its
+			// configuration. this can cause issues where requests are sent to service instances
+			// that do not exist.
+			//
+			// since we can not exactly determine when the state has converged in the data plane
+			// wait an arbitrary period of time.
 			time.Sleep(stepDelay)
 
 			// destroy the primary

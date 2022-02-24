@@ -76,6 +76,23 @@ func TestEventConfigureWithInitErrorSetsStatusFail(t *testing.T) {
 	require.Eventually(t, func() bool { return historyContains(sm, interfaces.StateFail) }, 100*time.Millisecond, 1*time.Millisecond)
 	pm.ReleaserMock.AssertCalled(t, "Setup", mock.Anything)
 	pm.RuntimeMock.AssertCalled(t, "InitPrimary", mock.Anything)
+	pm.RuntimeMock.AssertNotCalled(t, "WaitUntilServiceHealthy", mock.Anything, interfaces.Primary)
+}
+
+func TestEventConfigureWithHealthCheckErrorSetsStatusFail(t *testing.T) {
+	_, sm, pm := setupTests(t)
+
+	testutils.ClearMockCall(&pm.ReleaserMock.Mock, "WaitUntilServiceHealthy")
+	pm.ReleaserMock.On("WaitUntilServiceHealthy", mock.Anything, mock.Anything).Return(fmt.Errorf("boom"))
+
+	sm.SetState(interfaces.StateStart)
+	sm.Event(interfaces.EventConfigure)
+
+	require.Eventually(t, func() bool { return historyContains(sm, interfaces.StateFail) }, 100*time.Millisecond, 1*time.Millisecond)
+	pm.ReleaserMock.AssertCalled(t, "Setup", mock.Anything)
+	pm.RuntimeMock.AssertCalled(t, "InitPrimary", mock.Anything)
+	pm.ReleaserMock.AssertCalled(t, "WaitUntilServiceHealthy", mock.Anything, interfaces.Primary)
+	pm.ReleaserMock.AssertNotCalled(t, "Scale", mock.Anything, mock.Anything)
 }
 
 func TestEventConfigureWithScaleErrorSetsStatusFail(t *testing.T) {
@@ -132,6 +149,21 @@ func TestEventDeployWithInitErrorSetsStatusFail(t *testing.T) {
 
 	require.Eventually(t, func() bool { return historyContains(sm, interfaces.StateFail) }, 100*time.Millisecond, 1*time.Millisecond)
 	pm.RuntimeMock.AssertCalled(t, "InitPrimary", mock.Anything)
+}
+
+func TestEventDeployWithHealthCheckErrorSetsStatusFail(t *testing.T) {
+	_, sm, pm := setupTests(t)
+
+	testutils.ClearMockCall(&pm.ReleaserMock.Mock, "WaitUntilServiceHealthy")
+	pm.ReleaserMock.On("WaitUntilServiceHealthy", mock.Anything, mock.Anything).Return(fmt.Errorf("boom"))
+
+	sm.SetState(interfaces.StateIdle)
+	sm.Event(interfaces.EventDeploy)
+
+	require.Eventually(t, func() bool { return historyContains(sm, interfaces.StateFail) }, 100*time.Millisecond, 1*time.Millisecond)
+	pm.RuntimeMock.AssertCalled(t, "InitPrimary", mock.Anything)
+	pm.ReleaserMock.AssertCalled(t, "WaitUntilServiceHealthy", mock.Anything, interfaces.Primary)
+	pm.ReleaserMock.AssertNotCalled(t, "Scale", mock.Anything, mock.Anything)
 }
 
 func TestEventDeployWithScaleErrorSetsStatusFail(t *testing.T) {
@@ -290,6 +322,21 @@ func TestEventCompleteWithPromoteErrorSetsStatusFail(t *testing.T) {
 	pm.RuntimeMock.AssertCalled(t, "PromoteCandidate", mock.Anything)
 }
 
+func TestEventCompleteWithHealthCheckErrorSetsStatusFail(t *testing.T) {
+	_, sm, pm := setupTests(t)
+
+	testutils.ClearMockCall(&pm.ReleaserMock.Mock, "WaitUntilServiceHealthy")
+	pm.ReleaserMock.On("WaitUntilServiceHealthy", mock.Anything, mock.Anything).Return(fmt.Errorf("boom"))
+
+	sm.SetState(interfaces.StateMonitor)
+	sm.Event(interfaces.EventComplete)
+
+	require.Eventually(t, func() bool { return historyContains(sm, interfaces.StateFail) }, 100*time.Millisecond, 1*time.Millisecond)
+	pm.ReleaserMock.AssertCalled(t, "Scale", mock.Anything, 100)
+	pm.ReleaserMock.AssertCalled(t, "WaitUntilServiceHealthy", mock.Anything, interfaces.Primary)
+	pm.ReleaserMock.AssertNotCalled(t, "Scale", mock.Anything, 0)
+}
+
 func TestEventCompleteWithScalePrimaryErrorSetsStatusFail(t *testing.T) {
 	_, sm, pm := setupTests(t)
 
@@ -384,6 +431,21 @@ func TestEventDestroyWithRestoreOriginalErrorSetsStatusFail(t *testing.T) {
 
 	require.Eventually(t, func() bool { return historyContains(sm, interfaces.StateFail) }, 100*time.Millisecond, 1*time.Millisecond)
 	pm.RuntimeMock.AssertCalled(t, "RestoreOriginal", mock.Anything)
+}
+
+func TestEventDestroyWithHealthCheckErrorSetsStatusFail(t *testing.T) {
+	_, sm, pm := setupTests(t)
+
+	testutils.ClearMockCall(&pm.ReleaserMock.Mock, "WaitUntilServiceHealthy")
+	pm.ReleaserMock.On("WaitUntilServiceHealthy", mock.Anything, mock.Anything).Return(fmt.Errorf("boom"))
+
+	sm.SetState(interfaces.StateIdle)
+	sm.Event(interfaces.EventDestroy)
+
+	require.Eventually(t, func() bool { return historyContains(sm, interfaces.StateFail) }, 100*time.Millisecond, 1*time.Millisecond)
+	pm.RuntimeMock.AssertCalled(t, "RestoreOriginal", mock.Anything)
+	pm.ReleaserMock.AssertCalled(t, "WaitUntilServiceHealthy", mock.Anything, interfaces.Candidate)
+	pm.ReleaserMock.AssertNotCalled(t, "Scale", mock.Anything, 100)
 }
 
 func TestEventDestroyWithScaleErrorSetsStatusFail(t *testing.T) {

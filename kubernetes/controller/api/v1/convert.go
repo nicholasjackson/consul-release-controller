@@ -65,6 +65,8 @@ func getJSONRaw(i interface{}) json.RawMessage {
 
 type releaserConfigSnake struct {
 	ConsulService string `json:"consul_service"`
+	Namespace     string `json:"namespace,omitempty"`
+	Partition     string `json:"partition,omitempty"`
 }
 
 type runtimeConfigSnake struct {

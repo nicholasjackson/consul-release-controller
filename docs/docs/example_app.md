@@ -1588,6 +1588,8 @@ and that is `consul`.
 | parameter     | required | type   | values | description                                                     |
 | ------------- | -------- | ------ | ------ | --------------------------------------------------------------- |
 | consulService | yes      | string |        | name of the service as registered in consul service mesh        |
+| namespace     | no       | string |        | Consul namespace (Enterprise only)                              |
+| partition     | yes      | string |        | Consul admin partition (Enterprise only)                        |
 
 #### runtime
 

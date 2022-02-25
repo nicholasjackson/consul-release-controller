@@ -65,8 +65,14 @@ spec:
                     properties:
                       consulService:
                         type: string
+                      namespace:
+                        type: string
+                      partition:
+                        type: string
                     required:
                     - consulService
+                    - namespace
+                    - partition
                     type: object
                   pluginName:
                     type: string

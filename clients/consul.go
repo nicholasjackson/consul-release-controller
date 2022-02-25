@@ -27,24 +27,44 @@ type Consul interface {
 	CheckHealth(name string, t interfaces.ServiceVariant) error
 }
 
-func NewConsul() (Consul, error) {
+type ConsulOptions struct {
+	Namespace string // Enterprise only
+	Partition string // Enterprise only
+}
+
+func NewConsul(options *ConsulOptions) (Consul, error) {
 	// Get a new client
 	client, err := api.NewClient(api.DefaultConfig())
 	if err != nil {
 		return nil, err
 	}
 
-	return &ConsulImpl{client}, nil
+	if options == nil {
+		options = &ConsulOptions{}
+	}
+
+	return &ConsulImpl{client, options}, nil
 }
 
 type ConsulImpl struct {
-	client *api.Client
+	client  *api.Client
+	options *ConsulOptions
 }
 
 // CreateServiceDefaults if does not exist
 func (c *ConsulImpl) CreateServiceDefaults(name string) error {
+	qo := &api.QueryOptions{}
+
+	if c.options.Namespace != "" {
+		qo.Namespace = c.options.Namespace
+	}
+
+	if c.options.Partition != "" {
+		qo.Partition = c.options.Partition
+	}
+
 	// first check to see if the config already exists,
-	ce, _, err := c.client.ConfigEntries().Get(api.ServiceDefaults, name, &api.QueryOptions{})
+	ce, _, err := c.client.ConfigEntries().Get(api.ServiceDefaults, name, qo)
 	if err != nil {
 		// is the item not found if so the error will contain a 404
 		if !strings.Contains(err.Error(), "404") {
@@ -63,7 +83,25 @@ func (c *ConsulImpl) CreateServiceDefaults(name string) error {
 	defaults.Protocol = "http"
 	defaults.Meta = map[string]string{MetaCreatedTag: MetaCreatedValue}
 
-	_, _, err = c.client.ConfigEntries().Set(defaults, &api.WriteOptions{})
+	if c.options.Namespace != "" {
+		defaults.Namespace = c.options.Namespace
+	}
+
+	if c.options.Partition != "" {
+		defaults.Partition = c.options.Partition
+	}
+
+	wo := &api.WriteOptions{}
+
+	if c.options.Namespace != "" {
+		wo.Namespace = c.options.Namespace
+	}
+
+	if c.options.Partition != "" {
+		wo.Partition = c.options.Partition
+	}
+
+	_, _, err = c.client.ConfigEntries().Set(defaults, wo)
 
 	return err
 }
@@ -74,6 +112,14 @@ func (c *ConsulImpl) CreateServiceResolver(name string) error {
 	defaults.Kind = api.ServiceResolver
 	defaults.Meta = map[string]string{MetaCreatedTag: MetaCreatedValue}
 	defaults.DefaultSubset = fmt.Sprintf("%s-canary", name)
+
+	if c.options.Namespace != "" {
+		defaults.Namespace = c.options.Namespace
+	}
+
+	if c.options.Partition != "" {
+		defaults.Partition = c.options.Partition
+	}
 
 	primarySubset := &api.ServiceResolverSubset{}
 	primarySubset.Filter = fmt.Sprintf(`Service.ID contains "%s-deployment-primary"`, name)
@@ -88,7 +134,17 @@ func (c *ConsulImpl) CreateServiceResolver(name string) error {
 		fmt.Sprintf("%s-canary", name):  *canarySubset,
 	}
 
-	_, _, err := c.client.ConfigEntries().Set(defaults, &api.WriteOptions{})
+	wo := &api.WriteOptions{}
+
+	if c.options.Namespace != "" {
+		wo.Namespace = c.options.Namespace
+	}
+
+	if c.options.Partition != "" {
+		wo.Partition = c.options.Partition
+	}
+
+	_, _, err := c.client.ConfigEntries().Set(defaults, wo)
 
 	return err
 }
@@ -98,6 +154,14 @@ func (c *ConsulImpl) CreateServiceSplitter(name string, primaryTraffic, canaryTr
 	defaults.Kind = api.ServiceSplitter
 	defaults.Name = name
 	defaults.Meta = map[string]string{MetaCreatedTag: MetaCreatedValue}
+
+	if c.options.Namespace != "" {
+		defaults.Namespace = c.options.Namespace
+	}
+
+	if c.options.Partition != "" {
+		defaults.Partition = c.options.Partition
+	}
 
 	primarySplit := api.ServiceSplit{}
 	primarySplit.ServiceSubset = fmt.Sprintf("%s-primary", name)
@@ -109,7 +173,17 @@ func (c *ConsulImpl) CreateServiceSplitter(name string, primaryTraffic, canaryTr
 
 	defaults.Splits = []api.ServiceSplit{primarySplit, canarySplit}
 
-	_, _, err := c.client.ConfigEntries().Set(defaults, &api.WriteOptions{})
+	wo := &api.WriteOptions{}
+
+	if c.options.Namespace != "" {
+		wo.Namespace = c.options.Namespace
+	}
+
+	if c.options.Partition != "" {
+		wo.Partition = c.options.Partition
+	}
+
+	_, _, err := c.client.ConfigEntries().Set(defaults, wo)
 
 	return err
 }
@@ -122,6 +196,14 @@ func (c *ConsulImpl) CreateServiceRouter(name string, onlyDefault bool) error {
 	defaults.Kind = api.ServiceRouter
 	defaults.Meta = map[string]string{MetaCreatedTag: MetaCreatedValue}
 	defaults.Routes = []api.ServiceRoute{}
+
+	if c.options.Namespace != "" {
+		defaults.Namespace = c.options.Namespace
+	}
+
+	if c.options.Partition != "" {
+		defaults.Partition = c.options.Partition
+	}
 
 	if !onlyDefault {
 		primaryRoute := api.ServiceRoute{}
@@ -181,13 +263,32 @@ func (c *ConsulImpl) CreateServiceRouter(name string, onlyDefault bool) error {
 
 	defaults.Routes = append(defaults.Routes, defaultRoute)
 
-	_, _, err := c.client.ConfigEntries().Set(defaults, &api.WriteOptions{})
+	wo := &api.WriteOptions{}
+
+	if c.options.Namespace != "" {
+		wo.Namespace = c.options.Namespace
+	}
+
+	if c.options.Partition != "" {
+		wo.Partition = c.options.Partition
+	}
+	_, _, err := c.client.ConfigEntries().Set(defaults, wo)
 	return err
 }
 
 func (c *ConsulImpl) DeleteServiceDefaults(name string) error {
+	qo := &api.QueryOptions{}
+
+	if c.options.Namespace != "" {
+		qo.Namespace = c.options.Namespace
+	}
+
+	if c.options.Partition != "" {
+		qo.Partition = c.options.Partition
+	}
+
 	// check that we created this
-	ce, _, err := c.client.ConfigEntries().Get(api.ServiceDefaults, name, &api.QueryOptions{})
+	ce, _, err := c.client.ConfigEntries().Get(api.ServiceDefaults, name, qo)
 	if err != nil && ce != nil {
 		return nil
 	}
@@ -201,28 +302,78 @@ func (c *ConsulImpl) DeleteServiceDefaults(name string) error {
 		return nil
 	}
 
-	_, err = c.client.ConfigEntries().Delete("service-defaults", name, &api.WriteOptions{})
+	wo := &api.WriteOptions{}
+
+	if c.options.Namespace != "" {
+		wo.Namespace = c.options.Namespace
+	}
+
+	if c.options.Partition != "" {
+		wo.Partition = c.options.Partition
+	}
+
+	_, err = c.client.ConfigEntries().Delete("service-defaults", name, wo)
 	return err
 }
 
 func (c *ConsulImpl) DeleteServiceResolver(name string) error {
-	_, err := c.client.ConfigEntries().Delete("service-resolver", name, &api.WriteOptions{})
+	wo := &api.WriteOptions{}
+
+	if c.options.Namespace != "" {
+		wo.Namespace = c.options.Namespace
+	}
+
+	if c.options.Partition != "" {
+		wo.Partition = c.options.Partition
+	}
+
+	_, err := c.client.ConfigEntries().Delete("service-resolver", name, wo)
 	return err
 }
 
 func (c *ConsulImpl) DeleteServiceSplitter(name string) error {
-	_, err := c.client.ConfigEntries().Delete("service-splitter", name, &api.WriteOptions{})
+	wo := &api.WriteOptions{}
+
+	if c.options.Namespace != "" {
+		wo.Namespace = c.options.Namespace
+	}
+
+	if c.options.Partition != "" {
+		wo.Partition = c.options.Partition
+	}
+
+	_, err := c.client.ConfigEntries().Delete("service-splitter", name, wo)
 	return err
 }
 
 func (c *ConsulImpl) DeleteServiceRouter(name string) error {
-	_, err := c.client.ConfigEntries().Delete("service-router", name, &api.WriteOptions{})
+	wo := &api.WriteOptions{}
+
+	if c.options.Namespace != "" {
+		wo.Namespace = c.options.Namespace
+	}
+
+	if c.options.Partition != "" {
+		wo.Partition = c.options.Partition
+	}
+
+	_, err := c.client.ConfigEntries().Delete("service-router", name, wo)
 	return err
 }
 
 // CheckHealth returns an error if the named service has any health checks that are failing
 func (c *ConsulImpl) CheckHealth(name string, t interfaces.ServiceVariant) error {
-	checks, _, err := c.client.Health().Service(name, "", false, &api.QueryOptions{})
+	qo := &api.QueryOptions{}
+
+	if c.options.Namespace != "" {
+		qo.Namespace = c.options.Namespace
+	}
+
+	if c.options.Partition != "" {
+		qo.Partition = c.options.Partition
+	}
+
+	checks, _, err := c.client.Health().Service(name, "", false, qo)
 	if err != nil {
 		return fmt.Errorf("unable to check health for service %s: %s", name, err)
 	}
@@ -237,7 +388,7 @@ func (c *ConsulImpl) CheckHealth(name string, t interfaces.ServiceVariant) error
 		}
 
 		if chk.Checks.AggregatedStatus() != "passing" {
-			return fmt.Errorf("Service health checks failing: %s, %s", chk.Service.ID, chk.Checks.AggregatedStatus())
+			return fmt.Errorf("service health checks failing: %s, %s", chk.Service.ID, chk.Checks.AggregatedStatus())
 		}
 	}
 

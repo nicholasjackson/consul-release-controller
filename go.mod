@@ -8,9 +8,8 @@ require (
 	github.com/go-chi/chi/v5 v5.0.7
 	github.com/go-chi/httplog v0.2.1
 	github.com/go-playground/validator/v10 v10.10.0
-	github.com/hashicorp/consul/api v1.11.0
+	github.com/hashicorp/consul/api v1.12.0
 	github.com/hashicorp/go-hclog v1.1.0
-	github.com/kr/pretty v0.3.0
 	github.com/looplab/fsm v0.3.0
 	github.com/nicholasjackson/consul-release-controller/kubernetes/controller v0.0.0-20220119105946-cedeca178c18
 	github.com/prometheus/client_golang v1.12.1
@@ -65,7 +64,6 @@ require (
 	github.com/hashicorp/serf v0.9.6 // indirect
 	github.com/imdario/mergo v0.3.12 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
-	github.com/kr/text v0.2.0 // indirect
 	github.com/leodido/go-urn v1.2.1 // indirect
 	github.com/mattn/go-colorable v0.1.7 // indirect
 	github.com/mattn/go-isatty v0.0.12 // indirect
@@ -79,7 +77,6 @@ require (
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/prometheus/client_model v0.2.0 // indirect
 	github.com/prometheus/procfs v0.7.3 // indirect
-	github.com/rogpeppe/go-internal v1.8.0 // indirect
 	github.com/rs/zerolog v1.18.1-0.20200514152719-663cbb4c8469 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/stretchr/objx v0.2.0 // indirect

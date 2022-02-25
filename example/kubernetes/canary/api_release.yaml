@@ -9,16 +9,19 @@ spec:
     pluginName: "consul"
     config:
       consulService: "api"
+#     namespace: "mynamespace"
+#     adminPartition: "mypartition"
   runtime:
     pluginName: "kubernetes"
     config:
       deployment: "api-deployment"
+      namespace: "default"
   strategy:
     pluginName: "canary"
     config:
       initialDelay: "30s"
-      interval: "30s"
       initialTraffic: 10
+      interval: "30s"
       trafficStep: 20
       maxTraffic: 100
       errorThreshold: 5
@@ -34,3 +37,19 @@ spec:
           preset: "envoy-request-duration"
           min: 20
           max: 200
+#       - name: "mycustom"
+#         min: 20
+#         max: 200
+#         query: |
+#           histogram_quantile(
+#             0.99,
+#             sum(
+#               rate(
+#                 envoy_cluster_upstream_rq_time_bucket{
+#                   namespace="{{ .Namespace }}",
+#                   envoy_cluster_name="local_app",
+#                   pod=~"{{ .Name }}-[0-9a-zA-Z]+(-[0-9a-zA-Z]+)"
+#                 }[{{ .Interval }}]
+#               )
+#             ) by (le)
+#           )

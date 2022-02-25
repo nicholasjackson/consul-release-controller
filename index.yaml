@@ -2,6 +2,16 @@ apiVersion: v1
 entries:
   consul-release-controller:
   - apiVersion: v2
+    appVersion: 0.0.10
+    created: "2022-02-25T16:53:58.590385983Z"
+    description: A Helm chart for installing the Consul release controller
+    digest: 2d69b7183f72dcfe74f749e032bc6f41d7a013fddf12cdb02d08b6468b80d6d2
+    name: consul-release-controller
+    type: application
+    urls:
+    - https://github.com/nicholasjackson/consul-release-controller/releases/download/v0.0.10/consul-release-controller-0.0.10.tgz
+    version: 0.0.10
+  - apiVersion: v2
     appVersion: 0.0.9
     created: "2022-02-24T11:44:49.858327507Z"
     description: A Helm chart for installing the Consul release controller
@@ -11,44 +21,4 @@ entries:
     urls:
     - https://github.com/nicholasjackson/consul-release-controller/releases/download/v0.0.9/consul-release-controller-0.0.9.tgz
     version: 0.0.9
-  - apiVersion: v2
-    appVersion: 0.0.8
-    created: "2022-02-24T09:26:08.577286893Z"
-    description: A Helm chart for installing the Consul release controller
-    digest: f245eb88a2e187c74ab307fa5f50f291ccb99e8740631a0dbcdb075f84c0046d
-    name: consul-release-controller
-    type: application
-    urls:
-    - https://github.com/nicholasjackson/consul-release-controller/releases/download/v0.0.8/consul-release-controller-0.0.8.tgz
-    version: 0.0.8
-  - apiVersion: v2
-    appVersion: 0.0.7
-    created: "2022-02-23T19:57:51.143357544Z"
-    description: A Helm chart for installing the Consul release controller
-    digest: e0d89690df0d66b58215508ae9ba3144cb4158cfbb6245739670254d8d30c89c
-    name: consul-release-controller
-    type: application
-    urls:
-    - https://github.com/nicholasjackson/consul-release-controller/releases/download/v0.0.7/consul-release-controller-0.0.7.tgz
-    version: 0.0.7
-  - apiVersion: v2
-    appVersion: 0.0.6
-    created: "2022-02-21T11:44:43.707757862Z"
-    description: A Helm chart for installing the Consul release controller
-    digest: 3da6ed7b42c74c95b6312e38bce70deb4fd8ccb4be82e7ffe98c898a525edcaa
-    name: consul-release-controller
-    type: application
-    urls:
-    - https://github.com/nicholasjackson/consul-release-controller/releases/download/v0.0.6/consul-release-controller-0.0.6.tgz
-    version: 0.0.6
-  - apiVersion: v2
-    appVersion: 0.0.4
-    created: "2022-02-10T11:21:32.289681702Z"
-    description: A Helm chart for installing the Consul release controller
-    digest: d812a2fa76e85db0120c4c2bf8315eb0e4974f1d8e096c419afaf80cd4abca77
-    name: consul-release-controller
-    type: application
-    urls:
-    - https://github.com/nicholasjackson/consul-release-controller/releases/download/v0.0.4/consul-release-controller-0.0.4.tgz
-    version: 0.0.4
-generated: "2022-02-24T11:44:49.8570219Z"
+generated: "2022-02-25T16:53:58.588096968Z"

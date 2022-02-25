@@ -1,5 +1,5 @@
 ---
-sidebar_position: 2
+sidebar_position: 3
 ---
 
 # Installing the example application
@@ -1529,7 +1529,13 @@ After applying the load test configuration you should start to see some activity
 
 Let's now setup Consul Release Controller to monitor and perform canary releases for your `API` deployment.
 
-## Creating the new Canary release
+## Creating the new Release
+
+To create a release in Kubernetes you can use the Kubernetes `Release` CRD, this mirrors the JSON API endpoint but 
+provides kubernetes user with a convenient way to create a release using `kubectl`.
+
+The full details of a release looks like the following example, the `spec` section is broken down into sections for
+each plugin that Consul Release Controller will use.
 
 ```yaml
 ---
@@ -1553,7 +1559,7 @@ spec:
       initialDelay: "30s"
       interval: "30s"
       initialTraffic: 10
-      trafficStep: 40
+      trafficStep: 20
       maxTraffic: 100
       errorThreshold: 5
   monitor:
@@ -1569,3 +1575,260 @@ spec:
           min: 20
           max: 200
 ```
+
+Let's break this down, section by section.
+
+### Release config
+#### releaser
+
+The releaser plugin is responsible for interacting with the service mesh, there is only one supported plugin
+and that is `consul`.
+
+##### config
+| parameter     | required | type   | values | description                                                     |
+| ------------- | -------- | ------ | ------ | --------------------------------------------------------------- |
+| consulService | yes      | string |        | name of the service as registered in consul service mesh        |
+
+#### runtime
+
+The runtime plugin is responsible for interacting with the platform or scheduler where the application
+running, at present the only supported runtime is `kubernetes`, however, other runtimes are planned.
+
+##### config
+| parameter  | required | type   | values | description                                                     |
+| ---------- | -------- | ------ | ------ | --------------------------------------------------------------- |
+| deployment | yes      | string |        | name of the deployment that will be managed by the controller   |
+
+#### strategy
+
+The strategy plugin is responsible for determining how the release happens. The `canary` plugin will gradually
+increase traffic to the new version by the amounts specified in the configuration.
+
+##### config
+
+| parameter      | required | type     | values | description                                                     |
+| ------------   | -------- | -------- | ------ | --------------------------------------------------------------- |
+| initialDelay   | yes      | duration |        | duration to wait after a new deployment before applying initial traffic |
+| initialTraffic | yes      | integer  |        | percentage of traffic to send to the canary after the initial delay |
+| interval       | yes      | duration |        | duration to wait between steps                                      |
+| trafficStep    | yes      | integer  |        | percentage of traffic to increase with each step |
+| maxTraffic     | no       | integer  |        | when traffic to the canary reaches this level, the canary will be promoted to primary |
+| errorThreshold | yes      | integer  |        | number of failed health checks before the release is rolled back |
+
+#### monitor
+
+The monitor plugin is responsible for querying the health of the deployment. Consul Release Controller queries the 
+monitoring system like Prometheus, Datadog, Honeycomb and uses the result to decide if the strategy should progress or
+if it should be rolled back.
+
+##### config
+| parameter      | required | type     | values | description                                                     |
+| ------------   | -------- | -------- | ------ | --------------------------------------------------------------- |
+| address        | yes      | string   |        | address of the Prometheus server that should be queried         |
+
+#### queries
+
+`queries` is an array that contains one or more queries that determine the health of the deployment. All specified 
+queries must be successful for the strategy to progress.
+
+| parameter      | required | type     | values | description                                                     |
+| ------------   | -------- | -------- | ------ | --------------------------------------------------------------- |
+| name           | yes      | string   |        | name of the query |
+| preset         | yes      | string   | envoy-request-success, envoy-request-duration | preset query to execute |
+| min            | no       | integer  |        | minimum value that must be returned by the query for the strategy to progress |
+| max            | no       | integer  |        | maximum value that must be returned by the query for the strategy to progress |
+
+#### Applying the release
+
+Let's now create the release for the `API` service. If you look at the existing `api` pods you will see that 
+there are three pods with the prefix `api-deployment`.
+
+```yaml
+➜ k get pods -l "app=api"
+NAME                              READY   STATUS    RESTARTS   AGE
+api-deployment-54dc89bcc9-77skf   2/2     Running   0          122m
+api-deployment-54dc89bcc9-545zp   2/2     Running   0          122m
+api-deployment-54dc89bcc9-bh267   2/2     Running   0          122m
+```
+
+These are created by the deployment `api-deployment`:
+
+```yaml
+➜ k get deployment
+NAME                        READY   UP-TO-DATE   AVAILABLE   AGE
+api-deployment              3/3     3            3           123m
+web-deployment              1/1     1            1           123m
+load-generator-deployment   1/1     1            1           123m
+```
+
+When creating a new release Consul Release Controller will clone `api-deployment` creating a new managed deployment
+`api-deployment-primary`, this becomes the current golden version and all production traffic is sent to it. Once the 
+primary deployment has been created and is healthy then the original `api-deployment` will be scaled to `0` pods. 
+
+Let's deploy the release and see this in action.
+
+```shell
+kubectl apply \
+-f https://raw.githubusercontent.com/nicholasjackson/consul-release-controller/main/example/kubernetes/canary/api_release.yaml
+```
+
+Once the release has been applied you will start to see the existing `api-deployment` be cloned.
+
+```shell
+➜ k get pods -l "app=api"
+NAME                                      READY   STATUS    RESTARTS   AGE
+api-deployment-54dc89bcc9-77skf           2/2     Running   0          146m
+api-deployment-54dc89bcc9-545zp           2/2     Running   0          146m
+api-deployment-54dc89bcc9-bh267           2/2     Running   0          146m
+api-deployment-primary-54dc89bcc9-9kwd9   1/2     Running   0          12s
+api-deployment-primary-54dc89bcc9-4qwnn   1/2     Running   0          12s
+api-deployment-primary-54dc89bcc9-fqmp7   1/2     Running   0          12s
+```
+
+Eventually you will see the original deployment be scaled to `0` and the pods removed. 
+
+```shell
+➜ k get pods -l "app=api"
+NAME                                      READY   STATUS    RESTARTS   AGE
+api-deployment-primary-54dc89bcc9-4qwnn   2/2     Running   0          68s
+api-deployment-primary-54dc89bcc9-9kwd9   2/2     Running   0          68s
+api-deployment-primary-54dc89bcc9-fqmp7   2/2     Running   0          68s
+```
+
+If you look at the dashboard you will also see that it is now showing 3 `API Primary` pods and that the `API` traffic
+has shifted to the `Primary`. This is because Consul Release Controller has automatically created the necessary service
+mesh configuration that is needed to configure 100% of traffic to be sent to the new Primary release. 
+
+![](/img/docs/grafana_4.png)
+
+When you next deploy a version of `api-deployment`, Consul Release Controller considers this the `candidate` and does
+not initially send any traffic to the new service. Once the candidate is healthy then the strategy starts and traffic
+will begin to be sent to the candidate service.
+
+Let's created a new deployment, the new version of the deployment still uses Fake Service but has been upgraded to 
+version 2. 
+
+<details>
+  <summary>Full listing for the new API deployment <b>canary/api.yaml</b></summary>
+
+```yaml
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-deployment
+  namespace: default
+  labels:
+    app: api_v2
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: api
+  template:
+    metadata:
+      labels:
+        app: api
+        metrics: enabled
+      annotations:
+        consul.hashicorp.com/connect-inject: 'true'
+        #consul.hashicorp.com/transparent-proxy: 'true'
+        #consul.hashicorp.com/transparent-proxy-overwrite-probes: 'true'
+    spec:  
+      serviceAccountName: api
+      automountServiceAccountToken: true
+      containers:
+        - name: api
+          image: nicholasjackson/fake-service:v0.22.8
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 9090
+          env:
+            - name: "NAME"
+              value: "API V2"
+            - name: "LISTEN_ADDR"
+              value: "0.0.0.0:9090"
+            - name: "TIMING_50_PERCENTILE"
+              value: "10ms"
+            - name: "TRACING_ZIPKIN"
+              value: "http://tempo:9411"
+            - name: "READY_CHECK_RESPONSE_DELAY"
+              value: "10s"
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 9090
+            periodSeconds: 5
+            initialDelaySeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 9090
+            periodSeconds: 5
+            initialDelaySeconds: 5
+```
+
+</details>
+
+### Deploying a new version
+
+Let's now deploy the new version and you will see how Consul Release Controller manages the traffic to the candidate
+version before promoting it as the new Primary.
+
+```shell
+kubectl apply \
+-f https://raw.githubusercontent.com/nicholasjackson/consul-release-controller/main/example/kubernetes/canary/api.yaml
+```
+
+After you deploy the new version you will see that 6 pods are running on the cluster, 3 for the original primary
+and 3 of the new version.
+
+```yaml
+➜ kubectl get pods -l "app=api"
+NAME                                      READY   STATUS    RESTARTS   AGE
+api-deployment-primary-54dc89bcc9-4qwnn   2/2     Running   0          26m
+api-deployment-primary-54dc89bcc9-9kwd9   2/2     Running   0          26m
+api-deployment-primary-54dc89bcc9-fqmp7   2/2     Running   0          26m
+api-deployment-566478699c-p4sgh           2/2     Running   0          30s
+api-deployment-566478699c-4795z           2/2     Running   0          30s
+api-deployment-566478699c-r8674           2/2     Running   0          30s
+```
+
+Looking at the chart in Grafana, you will see the traffic slowly transition from the primary deployment to the canary. At the end of the operation, assuming the new version of your deployment remains healthy 100% of traffic will be transitioned before the primary
+deployment will be replaced by the canary.
+
+![](/img/docs/grafana_5.png)
+
+At this point the release is complete and Consul Release Controller will wait for your next deployment before starting the cycle again.
+
+## Removing the release
+
+Should you no longer wish to use Consul Release Controller to manage your deployment you remove it by deleting the release 
+resource. Any Consul configuration that was created by Consul Release Controller will be removed and the state of the cluster
+will be returned to the original state.
+
+Let's see how that works, if you run the following command to remove the API release:
+
+```shell
+kubectl delete \
+-f https://raw.githubusercontent.com/nicholasjackson/consul-release-controller/main/example/kubernetes/canary/api_release.yaml
+```
+
+After deleting the release you will see that the original `api-deployment` is restored.
+
+```
+➜ kubectl get pods -l "app=api"
+NAME                                      READY   STATUS    RESTARTS   AGE
+api-deployment-primary-566478699c-qrvd7   2/2     Running   0          12m
+api-deployment-primary-566478699c-qnnjl   2/2     Running   0          12m
+api-deployment-primary-566478699c-ktwmf   2/2     Running   0          12m
+api-deployment-779d949b6d-6x49k           2/2     Running   0          15s
+api-deployment-779d949b6d-9j2lb           2/2     Running   0          15s
+api-deployment-779d949b6d-6wd6j           2/2     Running   0          15s
+```
+
+Technically this is not the original application that existed before you created the release but a copy of the primary.
+Once the original deployment has been restored and is healthy, then Consul Release Controller will divert all traffic to this
+version before removing any configuration that was created.
+
+![](/img/docs/grafana_6.png)

@@ -19,7 +19,7 @@ spec:
       initialDelay: "30s"
       interval: "30s"
       initialTraffic: 10
-      trafficStep: 40
+      trafficStep: 20
       maxTraffic: 100
       errorThreshold: 5
   monitor:

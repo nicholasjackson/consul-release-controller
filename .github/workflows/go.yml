@@ -5,6 +5,7 @@ on: [push]
 jobs:
 
   build_controller:
+    name: Build Controller
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -21,6 +22,7 @@ jobs:
       run: go test -v ./...
 
   check-kubebuilder:
+    name: Check Kubebuilder
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -46,6 +48,7 @@ jobs:
       run: cd kubernetes/controller && make generate
    
   functional_tests:
+    name: Run Functional Tests
     runs-on: ubuntu-latest
     needs:
       - build_controller
@@ -109,6 +112,7 @@ jobs:
 
   # Main branch workflow
   check_labels:
+    name: Check PR labels
     runs-on: ubuntu-latest
     if: ${{ github.ref == 'refs/heads/main' }}
     steps:

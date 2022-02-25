@@ -9,5 +9,5 @@ variable "helm_chart_install" {
 }
 
 module "dev_env" {
-  source = "../kubernetes"
+  source = "github.com/nicholasjackson/consul-release-controller//shipyard/kubernetes"
 }

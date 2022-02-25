@@ -40,9 +40,11 @@ func setupPlugin(t *testing.T) (*Plugin, *clients.ConsulMock) {
 	jsn, err := json.Marshal(conf)
 	assert.NoError(t, err)
 
-	p := &Plugin{log: log, consulClient: mc}
+	p, _ := New(log)
 	err = p.Configure(jsn)
 	assert.NoError(t, err)
+
+	p.consulClient = mc
 
 	return p, mc
 }

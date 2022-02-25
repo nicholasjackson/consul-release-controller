@@ -78,6 +78,8 @@ type Releaser struct {
 
 type ReleaserConfig struct {
 	ConsulService string `json:"consulService"`
+	Namespace     string `json:"namespace"`
+	Partition     string `json:"partition"`
 }
 
 type Runtime struct {

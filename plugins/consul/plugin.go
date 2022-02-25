@@ -23,18 +23,14 @@ type Plugin struct {
 
 type PluginConfig struct {
 	ConsulService string `json:"consul_service" validate:"required"`
+	Namespace     string `json:"namespace"`
+	Partition     string `json:"partition"`
 }
 
 var ErrConsulService = fmt.Errorf("ConsulService is a required field, please specify the name of the Consul service for the release.")
 
 func New(l hclog.Logger) (*Plugin, error) {
-	// create a new Consul client
-	cc, err := clients.NewConsul()
-	if err != nil {
-		return nil, err
-	}
-
-	return &Plugin{log: l, consulClient: cc}, nil
+	return &Plugin{log: l}, nil
 }
 
 func (s *Plugin) Configure(data json.RawMessage) error {
@@ -57,6 +53,19 @@ func (s *Plugin) Configure(data json.RawMessage) error {
 
 		return fmt.Errorf(errorMessage)
 	}
+
+	opts := &clients.ConsulOptions{
+		Namespace: s.config.Namespace,
+		Partition: s.config.Partition,
+	}
+
+	// create a new Consul client
+	cc, err := clients.NewConsul(opts)
+	if err != nil {
+		return err
+	}
+
+	s.consulClient = cc
 
 	return nil
 }

@@ -38,6 +38,9 @@ type Query struct {
 	// Preset is an optional default metric query
 	Preset string `json:"preset"`
 
+	// Query is an optional query when the preset is not specified
+	Query string `json:"query"`
+
 	// Minimum value for success, optional when Max specified
 	Min *int `json:"min,omitempty"` // default 0
 
@@ -45,15 +48,18 @@ type Query struct {
 	Max *int `json:"max,omitempty"` // default 0
 }
 
-func New(l hclog.Logger) (*Plugin, error) {
+func New(name, namespace, runtime string, l hclog.Logger) (*Plugin, error) {
 	c, _ := clients.NewPrometheus()
-	return &Plugin{log: l, client: c}, nil
+	return &Plugin{
+		log:       l,
+		client:    c,
+		runtime:   runtime,
+		name:      name,
+		namespace: namespace,
+	}, nil
 }
 
-func (s *Plugin) Configure(name, namespace, runtime string, data json.RawMessage) error {
-	s.runtime = runtime
-	s.name = name
-	s.namespace = namespace
+func (s *Plugin) Configure(data json.RawMessage) error {
 	s.config = &PluginConfig{}
 
 	err := json.Unmarshal(data, s.config)

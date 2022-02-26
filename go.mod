@@ -3,6 +3,7 @@ module github.com/nicholasjackson/consul-release-controller
 go 1.17
 
 require (
+	github.com/DisgoOrg/disgo v0.7.2
 	github.com/armon/go-metrics v0.3.10
 	github.com/cucumber/godog v0.12.2
 	github.com/go-chi/chi/v5 v5.0.7
@@ -33,6 +34,8 @@ require (
 	github.com/Azure/go-autorest/autorest/date v0.3.0 // indirect
 	github.com/Azure/go-autorest/logger v0.2.1 // indirect
 	github.com/Azure/go-autorest/tracing v0.6.0 // indirect
+	github.com/DisgoOrg/log v1.1.3 // indirect
+	github.com/DisgoOrg/snowflake v1.0.4 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/cespare/xxhash/v2 v2.1.2 // indirect
 	github.com/cucumber/gherkin-go/v19 v19.0.3 // indirect
@@ -49,10 +52,11 @@ require (
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
-	github.com/google/go-cmp v0.5.6 // indirect
+	github.com/google/go-cmp v0.5.7 // indirect
 	github.com/google/gofuzz v1.2.0 // indirect
 	github.com/google/uuid v1.1.2 // indirect
 	github.com/googleapis/gnostic v0.5.5 // indirect
+	github.com/gorilla/websocket v1.4.2 // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
 	github.com/hashicorp/go-immutable-radix v1.3.0 // indirect
 	github.com/hashicorp/go-memdb v1.3.1 // indirect
@@ -78,6 +82,7 @@ require (
 	github.com/prometheus/client_model v0.2.0 // indirect
 	github.com/prometheus/procfs v0.7.3 // indirect
 	github.com/rs/zerolog v1.18.1-0.20200514152719-663cbb4c8469 // indirect
+	github.com/sasha-s/go-csync v0.0.0-20210812194225-61421b77c44b // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/stretchr/objx v0.2.0 // indirect
 	golang.org/x/crypto v0.0.0-20210817164053-32db794688a5 // indirect

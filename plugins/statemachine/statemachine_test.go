@@ -32,11 +32,11 @@ func setupTests(t *testing.T) (*models.Release, *StateMachine, *mocks.Mocks) {
 	pp.AssertCalled(t, "CreateRuntime", r.Runtime.Name)
 	pm.RuntimeMock.AssertCalled(t, "Configure", r.Runtime.Config)
 
-	pp.AssertCalled(t, "CreateMonitor", r.Monitor.Name)
-	pm.MonitorMock.AssertCalled(t, "Configure", "api-deployment", "default", r.Runtime.Name, r.Monitor.Config)
+	pp.AssertCalled(t, "CreateMonitor", r.Monitor.Name, pm.RuntimeMock.BaseConfig().Deployment, pm.RuntimeMock.BaseConfig().Namespace, r.Runtime.Name)
+	pm.MonitorMock.AssertCalled(t, "Configure", r.Monitor.Config)
 
 	pp.AssertCalled(t, "CreateStrategy", r.Strategy.Name)
-	pm.StrategyMock.AssertCalled(t, "Configure", r.Name, r.Namespace, r.Strategy.Config)
+	pm.StrategyMock.AssertCalled(t, "Configure", r.Strategy.Config)
 
 	return r, sm, pm
 }

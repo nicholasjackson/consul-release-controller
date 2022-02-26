@@ -16,7 +16,7 @@ import (
 
 func setupPlugin(t *testing.T, config string) (*Plugin, *clients.PrometheusMock) {
 	l := hclog.NewNullLogger()
-	p, _ := New(l)
+	p, _ := New("api-deployment", "default", "kubernetes", l)
 
 	pm := &clients.PrometheusMock{}
 	pm.On("Query", mock.Anything, mock.Anything, mock.Anything, mock.Anything).Return(
@@ -27,7 +27,7 @@ func setupPlugin(t *testing.T, config string) (*Plugin, *clients.PrometheusMock)
 		nil,
 	)
 
-	err := p.Configure("api-deployment", "default", "kubernetes", []byte(config))
+	err := p.Configure([]byte(config))
 	require.NoError(t, err)
 
 	p.client = pm

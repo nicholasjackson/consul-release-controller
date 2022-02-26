@@ -13,8 +13,6 @@ import (
 
 type Plugin struct {
 	log            hclog.Logger
-	name           string
-	namespace      string
 	config         *PluginConfig
 	monitoring     interfaces.Monitor
 	currentTraffic int
@@ -52,10 +50,8 @@ func New(l hclog.Logger, m interfaces.Monitor) (*Plugin, error) {
 
 // Configure the plugin with the given json
 // returns an error when validation fails for the config
-func (p *Plugin) Configure(name, namespace string, data json.RawMessage) error {
+func (p *Plugin) Configure(data json.RawMessage) error {
 	p.config = &PluginConfig{}
-	p.name = name
-	p.namespace = namespace
 
 	err := json.Unmarshal(data, p.config)
 	if err != nil {

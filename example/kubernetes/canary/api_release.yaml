@@ -5,6 +5,10 @@ metadata:
   name: api
   namespace: default
 spec:
+  webhooks:
+    - name: discord 
+      type: discord
+      url: https://discord.com/api/webhooks/947009151765196821/-OoJOZtJJoAjLBhREuuTtTxlP4q3J219SOGIF5X4O1rroL9lj3gaeIPk8CPzPWXnSxBj
   releaser:
     pluginName: "consul"
     config:

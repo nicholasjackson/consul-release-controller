@@ -40,7 +40,7 @@ func New(r *models.Release, pluginProvider interfaces.Provider) (*StateMachine, 
 	sm.logger = pluginProvider.GetLogger().Named("statemachine")
 	sm.metrics = pluginProvider.GetMetrics()
 
-	// configure the setup plugin
+	// create the setup plugin
 	relP, err := pluginProvider.CreateReleaser(r.Releaser.Name)
 	if err != nil {
 		return nil, err
@@ -60,25 +60,25 @@ func New(r *models.Release, pluginProvider interfaces.Provider) (*StateMachine, 
 	runP.Configure(r.Runtime.Config)
 	sm.runtimePlugin = runP
 
-	// configure the monitor plugin
-	monP, err := pluginProvider.CreateMonitor(r.Monitor.Name)
+	// create the monitor plugin
+	rc := runP.BaseConfig()
+	monP, err := pluginProvider.CreateMonitor(r.Monitor.Name, rc.Deployment, rc.Namespace, r.Runtime.Name)
 	if err != nil {
 		return nil, err
 	}
 
 	// configure the monitor plugin
-	rc := runP.BaseConfig()
-	monP.Configure(rc.Deployment, rc.Namespace, r.Runtime.Name, r.Monitor.Config)
+	monP.Configure(r.Monitor.Config)
 	sm.monitorPlugin = monP
 
-	// configure the monitor plugin
+	// create the strategy plugin
 	stratP, err := pluginProvider.CreateStrategy(r.Strategy.Name, monP)
 	if err != nil {
 		return nil, err
 	}
 
 	// configure the strategy plugin
-	stratP.Configure(r.Name, r.Namespace, r.Strategy.Config)
+	stratP.Configure(r.Strategy.Config)
 	sm.strategyPlugin = stratP
 
 	f := fsm.NewFSM(

@@ -46,7 +46,7 @@ func (p *ProviderImpl) CreateRuntime(pluginName string) (interfaces.Runtime, err
 		return kubernetes.New(p.log.Named("runtime-plugin-kubernetes"))
 	}
 
-	return nil, fmt.Errorf("not implemented")
+	return nil, fmt.Errorf("invalid Runtime plugin type: %s", pluginName)
 }
 
 func (p *ProviderImpl) CreateMonitor(pluginName, name, namespace, runtime string) (interfaces.Monitor, error) {
@@ -54,7 +54,7 @@ func (p *ProviderImpl) CreateMonitor(pluginName, name, namespace, runtime string
 		return prometheus.New(name, namespace, runtime, p.log.Named("monitor-plugin-prometheus"))
 	}
 
-	return nil, fmt.Errorf("not implemented")
+	return nil, fmt.Errorf("invalid Monitor plugin type: %s", pluginName)
 }
 
 func (p *ProviderImpl) CreateStrategy(pluginName string, mp interfaces.Monitor) (interfaces.Strategy, error) {
@@ -62,7 +62,7 @@ func (p *ProviderImpl) CreateStrategy(pluginName string, mp interfaces.Monitor) 
 		return canary.New(p.log.Named("strategy-plugin-canary"), mp)
 	}
 
-	return nil, fmt.Errorf("not implemented")
+	return nil, fmt.Errorf("invalid Strategy plugin type: %s", pluginName)
 }
 
 func (p *ProviderImpl) CreateWebhook(pluginName string) (interfaces.Webhook, error) {
@@ -70,7 +70,7 @@ func (p *ProviderImpl) CreateWebhook(pluginName string) (interfaces.Webhook, err
 		return discord.New(p.log.Named("webhook-plugin-discord"))
 	}
 
-	return nil, fmt.Errorf("not implemented")
+	return nil, fmt.Errorf("invalid Webhook plugin type: %s", pluginName)
 }
 
 func (p *ProviderImpl) GetLogger() hclog.Logger {

@@ -45,5 +45,14 @@
         }
       ]
     }
-  }
+  },
+  "webhooks": [
+    {
+      "plugin_name": "discord",
+      "config": {
+        "id":"myid",
+        "token":"mytoken"
+      }
+    }
+  ]
 }

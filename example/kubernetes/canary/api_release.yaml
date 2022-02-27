@@ -6,20 +6,27 @@ metadata:
   namespace: default
 spec:
   webhooks:
-    - name: discord 
-      type: discord
-      url: https://discord.com/api/webhooks/947009151765196821/-OoJOZtJJoAjLBhREuuTtTxlP4q3J219SOGIF5X4O1rroL9lj3gaeIPk8CPzPWXnSxBj
+    - name: "discord"
+      pluginName: "discord"
+      config:
+        id: "947009151765196821"
+        token: "-OoJOZtJJoAjLBhREuuTtTxlP4q3J219SOGIF5X4O1rroL9lj3gaeIPk8CPzPWXnSxBj"
+        template: |
+          {{ .State }}
+          {{ .Error }}
+          {{ .Outcome }}
+          {{ .Name }}
+          {{ .Namespace }}
   releaser:
     pluginName: "consul"
     config:
       consulService: "api"
 #     namespace: "mynamespace"
-#     adminPartition: "mypartition"
+#     partition: "mypartition"
   runtime:
     pluginName: "kubernetes"
     config:
       deployment: "api-deployment"
-      namespace: "default"
   strategy:
     pluginName: "canary"
     config:

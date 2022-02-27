@@ -24,6 +24,7 @@ type StateMachine struct {
 	runtimePlugin  interfaces.Runtime
 	monitorPlugin  interfaces.Monitor
 	strategyPlugin interfaces.Strategy
+	webhookPlugins []interfaces.Webhook
 	logger         hclog.Logger
 	metrics        interfaces.Metrics
 
@@ -35,7 +36,7 @@ type StateMachine struct {
 }
 
 func New(r *models.Release, pluginProvider interfaces.Provider) (*StateMachine, error) {
-	sm := &StateMachine{release: r}
+	sm := &StateMachine{release: r, webhookPlugins: []interfaces.Webhook{}}
 	sm.stateHistory = []interfaces.StateHistory{interfaces.StateHistory{Time: time.Now(), State: interfaces.StateStart}}
 	sm.logger = pluginProvider.GetLogger().Named("statemachine")
 	sm.metrics = pluginProvider.GetMetrics()
@@ -80,6 +81,17 @@ func New(r *models.Release, pluginProvider interfaces.Provider) (*StateMachine, 
 	// configure the strategy plugin
 	stratP.Configure(r.Strategy.Config)
 	sm.strategyPlugin = stratP
+
+	// configure the webhooks
+	for _, w := range r.Webhooks {
+		wp, err := pluginProvider.CreateWebhook(w.Name)
+		if err != nil {
+			return nil, err
+		}
+
+		wp.Configure(w.Config)
+		sm.webhookPlugins = append(sm.webhookPlugins, wp)
+	}
 
 	f := fsm.NewFSM(
 		interfaces.StateStart,
@@ -262,6 +274,8 @@ func (s *StateMachine) doConfigure() func(e *fsm.Event) {
 			}
 
 			s.logger.Debug("Configure completed successfully")
+
+			s.callWebhooks(s.webhookPlugins, "Release configured", interfaces.StateConfigure, interfaces.EventConfigured, nil)
 
 			e.FSM.Event(interfaces.EventConfigured)
 		}()
@@ -568,5 +582,27 @@ func (s *StateMachine) doDestroy() func(e *fsm.Event) {
 
 			e.FSM.Event(interfaces.EventComplete)
 		}()
+	}
+}
+
+// callWebhooks calls the defined webhooks, in the event of failure this function will log an error
+// but does not interupt flow
+func (s *StateMachine) callWebhooks(wh []interfaces.Webhook, title, state, result string, err error) {
+	for _, w := range wh {
+		s.logger.Debug("Calling webhook", "title", title)
+
+		message := interfaces.WebhookMessage{
+			Title:     title,
+			Name:      s.release.Name,
+			Namespace: s.release.Namespace,
+			Outcome:   result,
+			State:     state,
+			Error:     err,
+		}
+
+		err := w.Send(message)
+		if err != nil {
+			s.logger.Error("Unable to call webhook", "title", title, "error", err)
+		}
 	}
 }

@@ -38,6 +38,9 @@ func setupTests(t *testing.T) (*models.Release, *StateMachine, *mocks.Mocks) {
 	pp.AssertCalled(t, "CreateStrategy", r.Strategy.Name)
 	pm.StrategyMock.AssertCalled(t, "Configure", r.Strategy.Config)
 
+	pp.AssertCalled(t, "CreateWebhook", r.Webhooks[0].Name)
+	pm.WebhookMock.AssertCalled(t, "Configure", r.Webhooks[0].Config)
+
 	return r, sm, pm
 }
 
@@ -62,6 +65,7 @@ func TestEventConfigureWithSetupErrorSetsStatusFail(t *testing.T) {
 
 	require.Eventually(t, func() bool { return historyContains(sm, interfaces.StateFail) }, 100*time.Millisecond, 1*time.Millisecond)
 	pm.ReleaserMock.AssertCalled(t, "Setup", mock.Anything)
+
 }
 
 func TestEventConfigureWithInitErrorSetsStatusFail(t *testing.T) {
@@ -136,6 +140,9 @@ func TestEventConfigureWithNoErrorSetsStatusIdle(t *testing.T) {
 	pm.RuntimeMock.AssertCalled(t, "InitPrimary", mock.Anything)
 	pm.ReleaserMock.AssertCalled(t, "Scale", mock.Anything, 0)
 	pm.RuntimeMock.AssertCalled(t, "RemoveCandidate", mock.Anything)
+
+	// ensure webhook dispatched
+	pm.WebhookMock.AssertCalled(t, "", mock.Anything, mock.Anything)
 }
 
 func TestEventDeployWithInitErrorSetsStatusFail(t *testing.T) {

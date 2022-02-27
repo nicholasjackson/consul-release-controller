@@ -1,8 +1,10 @@
 package discord
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
+	"text/template"
 
 	"github.com/DisgoOrg/disgo/discord"
 	"github.com/DisgoOrg/disgo/rest"
@@ -11,6 +13,7 @@ import (
 	"github.com/DisgoOrg/snowflake"
 	"github.com/go-playground/validator/v10"
 	"github.com/hashicorp/go-hclog"
+	"github.com/nicholasjackson/consul-release-controller/plugins/interfaces"
 )
 
 type discordClient interface {
@@ -24,8 +27,9 @@ type Plugin struct {
 }
 
 type PluginConfig struct {
-	ID    string `json:"id" validate:"required"`
-	Token string `json:"token" validate:"required"`
+	ID       string `json:"id" validate:"required"`
+	Token    string `json:"token" validate:"required"`
+	Template string `json:"template" validate:"required"`
 }
 
 func New(l hclog.Logger) (*Plugin, error) {
@@ -68,15 +72,33 @@ func (p *Plugin) Configure(data json.RawMessage) error {
 	return nil
 }
 
-func (p *Plugin) Send(title, content string) error {
-	log.Debug("Sending message to Discord", "id", p.config.ID, "title", title, "content", content)
+func (p *Plugin) Send(message interfaces.WebhookMessage) error {
+	log.Debug("Sending message to Discord", "id", p.config.ID, "message", message)
 
-	_, err := p.client.CreateEmbeds([]discord.Embed{
+	tmpl, err := template.New("discord").Parse(defaultContent)
+	if err != nil {
+		return fmt.Errorf("unable to process message template for Webhook plugin: %s", err)
+	}
+
+	out := bytes.NewBufferString("")
+	err = tmpl.Execute(out, message)
+	if err != nil {
+		return fmt.Errorf("unable to execute template for Webhook plugin: %s", err)
+	}
+
+	_, err = p.client.CreateEmbeds([]discord.Embed{
 		discord.NewEmbedBuilder().
-			SetTitle(title).
-			SetDescription(content).
+			SetTitle(message.Title).
+			SetDescription(out.String()).
 			Build(),
 	})
 
 	return err
 }
+
+var defaultContent = `
+Consul Release Controller state has changed to {{ .State }} for
+the release {{ .Name }} in the namespace {{ .Namespace }}.
+
+The outcome was {{ .Outcome }}
+`

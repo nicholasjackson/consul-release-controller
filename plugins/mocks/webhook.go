@@ -3,6 +3,7 @@ package mocks
 import (
 	"encoding/json"
 
+	"github.com/nicholasjackson/consul-release-controller/plugins/interfaces"
 	"github.com/stretchr/testify/mock"
 )
 
@@ -16,8 +17,8 @@ func (m *WebhookMock) Configure(c json.RawMessage) error {
 	return args.Error(0)
 }
 
-func (m *WebhookMock) Send(title, content string) error {
-	args := m.Called(title, content)
+func (m *WebhookMock) Send(msg interfaces.WebhookMessage) error {
+	args := m.Called(msg)
 
 	return args.Error(0)
 }

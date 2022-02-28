@@ -78,6 +78,7 @@ func getJSONRaw(i interface{}) json.RawMessage {
 type webhookConfigSnake struct {
 	ID       string `json:"id"`
 	Token    string `json:"token"`
+	URL      string `json:"url"`
 	Template string `json:"template"`
 }
 

@@ -11,6 +11,7 @@ import (
 	"github.com/nicholasjackson/consul-release-controller/plugins/interfaces"
 	"github.com/nicholasjackson/consul-release-controller/plugins/kubernetes"
 	"github.com/nicholasjackson/consul-release-controller/plugins/prometheus"
+	"github.com/nicholasjackson/consul-release-controller/plugins/slack"
 	"github.com/nicholasjackson/consul-release-controller/plugins/statemachine"
 )
 
@@ -66,8 +67,11 @@ func (p *ProviderImpl) CreateStrategy(pluginName string, mp interfaces.Monitor) 
 }
 
 func (p *ProviderImpl) CreateWebhook(pluginName string) (interfaces.Webhook, error) {
-	if pluginName == PluginStrategyTypeDiscord {
+	switch pluginName {
+	case PluginWebhookTypeDiscord:
 		return discord.New(p.log.Named("webhook-plugin-discord"))
+	case PluginWebhookTypeSlack:
+		return slack.New(p.log.Named("webhook-plugin-slack"))
 	}
 
 	return nil, fmt.Errorf("invalid Webhook plugin type: %s", pluginName)

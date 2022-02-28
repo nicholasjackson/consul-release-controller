@@ -112,6 +112,13 @@ func (k *KubernetesImpl) GetDeployment(ctx context.Context, name, namespace stri
 }
 
 func (k *KubernetesImpl) UpsertDeployment(ctx context.Context, dep *appsv1.Deployment) error {
+	// set modified by
+	if dep.Labels == nil {
+		dep.Labels = map[string]string{}
+	}
+
+	dep.Labels["modified-by"] = "consul-release-controller"
+
 	_, err := k.GetDeployment(ctx, dep.Name, dep.Namespace)
 	if err == ErrDeploymentNotFound {
 		_, err = k.clientset.AppsV1().Deployments(dep.Namespace).Create(ctx, dep, v1.CreateOptions{})

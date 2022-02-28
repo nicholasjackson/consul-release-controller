@@ -6,7 +6,7 @@ type WebhookMessage struct {
 	Namespace string
 	State     string
 	Outcome   string
-	Error     error
+	Error     string
 }
 
 type Webhook interface {

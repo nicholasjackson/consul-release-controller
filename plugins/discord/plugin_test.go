@@ -7,6 +7,7 @@ import (
 	"github.com/DisgoOrg/disgo/rest"
 	"github.com/DisgoOrg/disgo/webhook"
 	"github.com/hashicorp/go-hclog"
+	"github.com/nicholasjackson/consul-release-controller/plugins/interfaces"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 )
@@ -55,12 +56,67 @@ func TestConfiguresWithoutError(t *testing.T) {
 	assert.NoError(t, err)
 }
 
-func TestSendsMessage(t *testing.T) {
+func TestSendsMessageWithDefaultContent(t *testing.T) {
 	p, mc := setupTests(t, validConfig)
 
-	p.Send("my title", "my content string")
+	p.Send(interfaces.WebhookMessage{
+		Name:      "testname",
+		Namespace: "testnamespace",
+		Title:     "testtitle",
+		Outcome:   "testoutcome",
+		State:     "teststate",
+		Error:     "",
+	})
 
 	mc.AssertCalled(t, "CreateEmbeds", mock.Anything, mock.Anything)
+
+	args := mc.Calls[0].Arguments
+	embed := args.Get(0).([]discord.Embed)
+
+	assert.Equal(t, "testtitle", embed[0].Title)
+	assert.Contains(t, embed[0].Description, `has changed to "teststate"`)
+}
+
+func TestSendsMessageWithCustomContent(t *testing.T) {
+	p, mc := setupTests(t, validConfigWithTemplate)
+
+	p.Send(interfaces.WebhookMessage{
+		Name:      "testname",
+		Namespace: "testnamespace",
+		Title:     "testtitle",
+		Outcome:   "testoutcome",
+		State:     "teststate",
+		Error:     "",
+	})
+
+	mc.AssertCalled(t, "CreateEmbeds", mock.Anything, mock.Anything)
+
+	args := mc.Calls[0].Arguments
+	embed := args.Get(0).([]discord.Embed)
+
+	assert.Equal(t, "testtitle", embed[0].Title)
+	assert.Contains(t, embed[0].Description, `my template teststate`)
+}
+
+func TestSendsMessageWithDefaultContentError(t *testing.T) {
+	p, mc := setupTests(t, validConfig)
+
+	p.Send(interfaces.WebhookMessage{
+		Name:      "testname",
+		Namespace: "testnamespace",
+		Title:     "testtitle",
+		Outcome:   "testoutcome",
+		State:     "teststate",
+		Error:     "It went boom",
+	})
+
+	mc.AssertCalled(t, "CreateEmbeds", mock.Anything, mock.Anything)
+
+	args := mc.Calls[0].Arguments
+	embed := args.Get(0).([]discord.Embed)
+
+	assert.Equal(t, "testtitle", embed[0].Title)
+	assert.Contains(t, embed[0].Description, `An error occurred when processing: It went boom`)
 }
 
 var configWithMissingID = `
@@ -79,5 +135,13 @@ var validConfig = `
 {
 	"token": "abcdef",
 	"id": "abcdef"
+}
+`
+
+var validConfigWithTemplate = `
+{
+	"token": "abcdef",
+	"id": "abcdef",
+	"template": "my template {{ .State }}"
 }
 `

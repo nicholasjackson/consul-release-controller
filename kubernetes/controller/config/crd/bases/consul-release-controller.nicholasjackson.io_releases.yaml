@@ -138,9 +138,8 @@ spec:
                           type: string
                         token:
                           type: string
-                      required:
-                      - id
-                      - token
+                        url:
+                          type: string
                       type: object
                     name:
                       type: string

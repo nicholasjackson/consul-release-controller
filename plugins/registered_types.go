@@ -5,5 +5,6 @@ const (
 	PluginRuntimeTypeKubernetes = "kubernetes"
 	PluginMonitorTypePromethus  = "prometheus"
 	PluginStrategyTypeCanary    = "canary"
-	PluginStrategyTypeDiscord   = "discord"
+	PluginWebhookTypeDiscord    = "discord"
+	PluginWebhookTypeSlack      = "slack"
 )

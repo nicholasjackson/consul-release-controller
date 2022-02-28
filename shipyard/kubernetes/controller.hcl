@@ -12,10 +12,56 @@ autoencrypt:
   enabled: ${var.consul_tls_enabled}
 acls:
   enabled: ${var.consul_acls_enabled}
+#{{- if eq .Vars.external_controller true }}
+webhook:
+  additionalDNSNames:
+    - controller-webhook.shipyard.svc
+    - external-webhook.consul.svc
+  serviceOverride: controller-webhook
+  namespaceOverride: shipyard
+  #{{ end }}
   EOF
 
   destination = "${data("kube_setup")}/helm-values.yaml"
+
+  vars = {
+    external_controller = !var.helm_controller_enabled
+  }
 }
+
+//template "controller_service" {
+//  disabled = !var.helm_chart_install
+//
+//  source = <<EOF
+//---
+//apiVersion: v1
+//kind: Service
+//metadata:
+//  name: external-webhook
+//  namespace: consul
+//spec:
+//  type: ExternalName
+//  externalName: controller-webhook.shipyard.svc
+//  EOF
+//
+//  destination = "${data("kube_setup")}/service.yaml"
+//}
+//
+//k8s_config "controller_service" {
+//  disabled = !var.helm_chart_install
+//
+//  depends_on = [
+//    "module.consul",
+//  ]
+//
+//  cluster = "k8s_cluster.dc1"
+//
+//  paths = [
+//    "${data("kube_setup")}/service.yaml"
+//  ]
+//
+//  wait_until_ready = true
+//}
 
 helm "consul-release-controller" {
   disabled = !var.helm_chart_install
@@ -92,6 +138,28 @@ exec_remote "exec_standalone" {
   }
 }
 
+ingress "controller-webhook" {
+  disabled = !var.helm_chart_install
+
+  source {
+    driver = "k8s"
+
+    config {
+      cluster = "k8s_cluster.dc1"
+      port    = 19443
+    }
+  }
+
+  destination {
+    driver = "local"
+
+    config {
+      address = "localhost"
+      port    = 19443
+    }
+  }
+}
+
 output "TLS_CERT" {
   disabled = !var.helm_chart_install
 
@@ -102,26 +170,4 @@ output "TLS_KEY" {
   disabled = !var.helm_chart_install
 
   value = "${data("kube_setup")}/tls.key"
-}
-
-ingress "controller-webhook" {
-  disabled = !var.helm_chart_install
-
-  source {
-    driver = "k8s"
-
-    config {
-      cluster = "k8s_cluster.dc1"
-      port    = 9443
-    }
-  }
-
-  destination {
-    driver = "local"
-
-    config {
-      address = "localhost"
-      port    = 9443
-    }
-  }
 }

@@ -47,6 +47,8 @@ func BuildMocks(t *testing.T) (*ProviderMock, *Mocks) {
 	stratMock := &StrategyMock{}
 	stratMock.On("Configure", mock.Anything).Return(nil)
 	stratMock.On("Execute", mock.Anything).Return(interfaces.StrategyStatusSuccess, 10, nil)
+	stratMock.On("GetPrimaryTraffic", mock.Anything).Return(40)
+	stratMock.On("GetCandidateTraffic", mock.Anything).Return(60)
 
 	metricsMock := &MetricsMock{}
 	metricsMock.On("ServiceStarting")

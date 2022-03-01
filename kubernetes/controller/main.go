@@ -114,7 +114,12 @@ func (k *Kubernetes) Start() error {
 	hookServer := mgr.GetWebhookServer()
 
 	setupLog.Info("registering webhooks to the webhook server")
-	hookServer.Register("/mutate-v1-deployment", &webhook.Admission{Handler: &deploymentAdmission{Client: mgr.GetClient()}})
+	hookServer.Register(
+		"/validate-v1-deployment",
+		&webhook.Admission{
+			Handler: NewDeploymentAdmission(mgr.GetClient(), k.provider, k.log.ResetNamed("kubernetes-webhook")),
+		},
+	)
 
 	setupLog.Info("Starting Kubernetes controller")
 	if err := mgr.Start(k.ctx); err != nil {

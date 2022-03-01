@@ -64,7 +64,7 @@ func TestSendsMessageWithDefaultContentNoError(t *testing.T) {
 	content := args.Get(1).(string)
 
 	assert.Contains(t, content, `has changed to "teststate"`)
-	assert.Contains(t, content, `The outcome was "testoutcome"`)
+	assert.Contains(t, content, `The outcome is "testoutcome"`)
 }
 
 func TestSendsMessageWithDefaultContentError(t *testing.T) {
@@ -108,6 +108,21 @@ func TestSendsMessageWithCustomContent(t *testing.T) {
 	assert.Contains(t, content, `my template teststate`)
 }
 
+func TestDoesNotSendWhenStatusNotMatching(t *testing.T) {
+	p, mc := setupTests(t, validConfigWithStatus)
+
+	p.Send(interfaces.WebhookMessage{
+		Name:      "testname",
+		Namespace: "testnamespace",
+		Title:     "testtitle",
+		Outcome:   "testoutcome",
+		State:     "teststate",
+		Error:     "",
+	})
+
+	mc.AssertNotCalled(t, "Send", mock.Anything, mock.Anything)
+}
+
 var configWithMissingURL = `
 {
 	"template": "abcdef"
@@ -124,5 +139,12 @@ var validConfigWithTemplate = `
 {
 	"url": "abcdef",
 	"template": "my template {{ .State }}"
+}
+`
+
+var validConfigWithStatus = `
+{
+	"url": "abcdef",
+	"status": ["state_destroy"]
 }
 `

@@ -119,6 +119,21 @@ func TestSendsMessageWithDefaultContentError(t *testing.T) {
 	assert.Contains(t, embed[0].Description, `An error occurred when processing: It went boom`)
 }
 
+func TestDoesNotSendWhenStatusNotMatching(t *testing.T) {
+	p, mc := setupTests(t, validConfigWithStatus)
+
+	p.Send(interfaces.WebhookMessage{
+		Name:      "testname",
+		Namespace: "testnamespace",
+		Title:     "testtitle",
+		Outcome:   "testoutcome",
+		State:     "teststate",
+		Error:     "",
+	})
+
+	mc.AssertNotCalled(t, "Send", mock.Anything, mock.Anything)
+}
+
 var configWithMissingID = `
 {
 	"token": "abcdef"
@@ -143,5 +158,13 @@ var validConfigWithTemplate = `
 	"token": "abcdef",
 	"id": "abcdef",
 	"template": "my template {{ .State }}"
+}
+`
+
+var validConfigWithStatus = `
+{
+	"token": "abcdef",
+	"id": "abcdef",
+	"status": ["state_destroy"]
 }
 `

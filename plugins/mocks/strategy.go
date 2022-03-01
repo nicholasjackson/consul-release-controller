@@ -23,3 +23,11 @@ func (r *StrategyMock) Execute(ctx context.Context) (interfaces.StrategyStatus, 
 
 	return interfaces.StrategyStatus(args.Get(0).(string)), args.Get(1).(int), args.Error(2)
 }
+
+func (p *StrategyMock) GetPrimaryTraffic() int {
+	return p.Called().Int(0)
+}
+
+func (p *StrategyMock) GetCandidateTraffic() int {
+	return p.Called().Int(0)
+}

@@ -39,8 +39,12 @@ type Plugin struct {
 }
 
 type PluginConfig struct {
-	URL      string `json:"url" validate:"required"`
-	Template string `json:"template"`
+	// URL of the slack webhook
+	URL string `json:"url" validate:"required"`
+	// Optional template to use instead of default messages
+	Template string `json:"template,omitempty"`
+	// List of status to which the webhook applies, if empty all status are used
+	Status []string `json:"status,omitempty"`
 }
 
 func New(l hclog.Logger) (*Plugin, error) {
@@ -79,6 +83,22 @@ func (p *Plugin) Configure(data json.RawMessage) error {
 }
 
 func (p *Plugin) Send(message interfaces.WebhookMessage) error {
+	// only send if current status is in our list of status
+	if len(p.config.Status) > 0 {
+		progress := false
+		for _, s := range p.config.Status {
+			if s == message.State {
+				progress = true
+			}
+		}
+
+		// status not in our list
+		if !progress {
+			log.Debug("Ignoring Slack message", "url", p.config.URL, "message", message, "status", message.State, "statuses", p.config.Status)
+			return nil
+		}
+	}
+
 	log.Debug("Sending message to Slack", "url", p.config.URL, "message", message)
 
 	templateContent := defaultContent
@@ -101,12 +121,17 @@ func (p *Plugin) Send(message interfaces.WebhookMessage) error {
 }
 
 var defaultContent = `
+{{ .Title }}
+
 Consul Release Controller state has changed to "{{ .State }}" for
 the release "{{ .Name }}" in the namespace "{{ .Namespace }}".
+
+Primary traffic: {{ .PrimaryTraffic }}
+Candidate traffic: {{ .CandidateTraffic }}
 
 {{ if ne .Error "" }}
 An error occurred when processing: {{ .Error }}
 {{ else }}
-The outcome was "{{ .Outcome }}"
+The outcome is "{{ .Outcome }}"
 {{ end }}
 `

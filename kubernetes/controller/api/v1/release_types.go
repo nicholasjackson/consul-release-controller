@@ -80,10 +80,11 @@ type Webhook struct {
 }
 
 type WebhookConfig struct {
-	ID       string `json:"id,omitempty"`
-	Token    string `json:"token,omitempty"`
-	URL      string `json:"url,omitempty"`
-	Template string `json:"template,omitempty"`
+	ID       string   `json:"id,omitempty"`
+	Token    string   `json:"token,omitempty"`
+	URL      string   `json:"url,omitempty"`
+	Template string   `json:"template,omitempty"`
+	Status   []string `json:"status,omitempty"`
 }
 
 type Releaser struct {

@@ -117,7 +117,7 @@ func (k *KubernetesImpl) UpsertDeployment(ctx context.Context, dep *appsv1.Deplo
 		dep.Labels = map[string]string{}
 	}
 
-	dep.Labels["modified-by"] = "consul-release-controller"
+	dep.Labels["consul-release-controller-version"] = dep.ResourceVersion
 
 	_, err := k.GetDeployment(ctx, dep.Name, dep.Namespace)
 	if err == ErrDeploymentNotFound {

@@ -27,9 +27,14 @@ type Plugin struct {
 }
 
 type PluginConfig struct {
-	ID       string `json:"id" validate:"required"`
-	Token    string `json:"token" validate:"required"`
+	// ID of the Discord webhook
+	ID string `json:"id" validate:"required"`
+	// Token from Discord webhook
+	Token string `json:"token" validate:"required"`
+	// Optional template to use instead of default messages
 	Template string `json:"template"`
+	// List of status to which the webhook applies, if empty all status are used
+	Status []string `json:"status,omitempty"`
 }
 
 func New(l hclog.Logger) (*Plugin, error) {
@@ -73,6 +78,22 @@ func (p *Plugin) Configure(data json.RawMessage) error {
 }
 
 func (p *Plugin) Send(message interfaces.WebhookMessage) error {
+	// only send if current status is in our list of status
+	if len(p.config.Status) > 0 {
+		progress := false
+		for _, s := range p.config.Status {
+			if s == message.State {
+				progress = true
+			}
+		}
+
+		// status not in our list
+		if !progress {
+			log.Debug("Ignoring Discord message", "id", p.config.ID, "message", message, "status", message.State, "statuses", p.config.Status)
+			return nil
+		}
+	}
+
 	log.Debug("Sending message to Discord", "id", p.config.ID, "message", message)
 
 	templateContent := defaultContent
@@ -109,9 +130,12 @@ var defaultContent = `
 Consul Release Controller state has changed to "{{ .State }}" for
 the release "{{ .Name }}" in the namespace "{{ .Namespace }}".
 
+Primary traffic: {{ .PrimaryTraffic }}
+Candidate traffic: {{ .CandidateTraffic }}
+
 {{ if ne .Error "" }}
 An error occurred when processing: {{ .Error }}
 {{ else }}
-The outcome was "{{ .Outcome }}"
+The outcome is "{{ .Outcome }}"
 {{ end }}
 `

@@ -1,9 +1,9 @@
 ---
 apiVersion: admissionregistration.k8s.io/v1
-kind: MutatingWebhookConfiguration
+kind: ValidatingWebhookConfiguration
 metadata:
   creationTimestamp: null
-  name: mutating-webhook-configuration
+  name: validating-webhook-configuration
 webhooks:
 - admissionReviewVersions:
   - v1
@@ -11,7 +11,7 @@ webhooks:
     service:
       name: webhook-service
       namespace: system
-      path: /mutate-v1-deployment
+      path: /validate-v1-deployment
   failurePolicy: Fail
   name: controller-webhook.nicholasjackson.io
   rules:

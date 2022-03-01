@@ -13,7 +13,7 @@ controller:
       repository: nicholasjackson/consul-release-controller
       pullPolicy: IfNotPresent
       # Overrides the image tag whose default is the chart appVersion.
-      tag: "8b0cb76"
+      tag: "a00b72f"
 
     # Set the CONSUL_HTTP_ADDR to the address of the Consul cluster, this env is only used when
     # autoEncrypt is disabled as autoEncrypt adds a https variable.
@@ -140,11 +140,10 @@ prometheus:
   
 # Not currently used, conversion webhooks will be eventually enabled
 webhook:
-  enabled: "true"
+  enabled: "false"
   type: ClusterIP
-
-  # Use a different service, useful for running an external webhook
-  serviceOverride: ""
+  port: 443
+  service: consul-release-controller-webhook
   namespaceOverride: ""
 
   # Allows adding additional DNS Names to the cert generated

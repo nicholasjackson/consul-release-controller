@@ -134,6 +134,10 @@ spec:
                       properties:
                         id:
                           type: string
+                        status:
+                          items:
+                            type: string
+                          type: array
                         template:
                           type: string
                         token:

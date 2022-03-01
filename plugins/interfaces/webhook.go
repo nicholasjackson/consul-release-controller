@@ -1,12 +1,14 @@
 package interfaces
 
 type WebhookMessage struct {
-	Title     string
-	Name      string
-	Namespace string
-	State     string
-	Outcome   string
-	Error     string
+	Title            string
+	Name             string
+	Namespace        string
+	State            string
+	Outcome          string
+	PrimaryTraffic   int
+	CandidateTraffic int
+	Error            string
 }
 
 type Webhook interface {

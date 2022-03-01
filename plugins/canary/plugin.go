@@ -166,6 +166,14 @@ func (p *Plugin) Execute(ctx context.Context) (interfaces.StrategyStatus, int, e
 	}
 }
 
+func (p *Plugin) GetPrimaryTraffic() int {
+	return 100 - p.currentTraffic
+}
+
+func (p *Plugin) GetCandidateTraffic() int {
+	return p.currentTraffic
+}
+
 // validates that a string is a duration
 func validateDuration(field validator.FieldLevel) bool {
 	_, err := time.ParseDuration(field.Field().String())

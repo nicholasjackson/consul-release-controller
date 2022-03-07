@@ -11,3 +11,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Webhooks for Slack and Discord
 - Validating admission controller to ensure Kubernetes deployments do not override an active release
+- Ability to set custom queries for prometheus

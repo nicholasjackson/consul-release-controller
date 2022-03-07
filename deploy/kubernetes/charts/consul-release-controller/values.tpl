@@ -140,7 +140,7 @@ prometheus:
   
 # Not currently used, conversion webhooks will be eventually enabled
 webhook:
-  enabled: "false"
+  enabled: "true"
   type: ClusterIP
   port: 443
   service: consul-release-controller-webhook

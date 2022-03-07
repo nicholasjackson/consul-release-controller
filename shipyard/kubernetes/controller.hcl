@@ -3,29 +3,32 @@ template "controller_values" {
 
   source = <<EOF
 controller:
-  enabled: "${var.helm_controller_enabled}"
+  enabled: "#{{ .Vars.controller_enabled }}"
   container_config:
     image:
-      repository: "${var.controller_repo}"
-      tag: "${var.controller_version}"
+      repository: "#{{ .Vars.controller_repo }}"
+      tag: "#{{ .Vars.controller_version }}"
 autoencrypt:
-  enabled: ${var.consul_tls_enabled}
+  enabled: #{{ .Vars.tls_enabled }}
 acls:
-  enabled: ${var.consul_acls_enabled}
-#{{- if eq .Vars.external_controller true }}
+  enabled: #{{ .Vars.acls_enabled }}
+#{{- if eq .Vars.controller_enabled false }}
 webhook:
   additionalDNSNames:
     - controller-webhook.shipyard.svc
-    - external-webhook.consul.svc
   serviceOverride: controller-webhook
   namespaceOverride: shipyard
-  #{{ end }}
-  EOF
+#{{ end }}
+EOF
 
   destination = "${data("kube_setup")}/helm-values.yaml"
 
   vars = {
-    external_controller = !var.helm_controller_enabled
+    controller_enabled = var.helm_controller_enabled
+    acls_enabled       = var.consul_acls_enabled
+    tls_enabled        = var.consul_tls_enabled
+    controller_repo    = var.controller_repo
+    controller_version = var.controller_version
   }
 }
 

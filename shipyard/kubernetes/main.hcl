@@ -22,14 +22,14 @@ variable "consul_acls_enabled" {
   default     = true
 }
 
-variable "consul_image" {
-  default = "hashicorp/consul:1.9.13"
-}
-
-variable "consul_envoy_image" {
-  default     = "envoyproxy/envoy:v1.16.5"
-  description = "Using the debian base images as alpine does not support arm"
-}
+//variable "consul_image" {
+//  default = "hashicorp/consul:1.9.13"
+//}
+//
+//variable "consul_envoy_image" {
+//  default     = "envoyproxy/envoy:v1.16.5"
+//  description = "Using the debian base images as alpine does not support arm"
+//}
 
 //variable "consul_image" {
 //  default = "hashicorp/consul:1.11.1"

@@ -30,9 +30,9 @@ func theControllerIsRunningOnKubernetes() error {
 		err := executeCommand([]string{
 			"/usr/local/bin/shipyard",
 			"run",
-			"--var='controller_enabled=false'",
+			`--var="helm_controller_enabled=false"`,
 			"./shipyard/kubernetes",
-		})
+		}, true)
 
 		if err != nil {
 			return fmt.Errorf("unable to create Kubernetes environment: %s", err)

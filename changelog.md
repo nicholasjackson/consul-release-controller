@@ -7,8 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.0.10 - 2022-03-01
+## [0.0.11 - 2022-03-08
 ### Added
 - Webhooks for Slack and Discord
 - Validating admission controller to ensure Kubernetes deployments do not override an active release
 - Ability to set custom queries for prometheus
+
+### Fixed
+- Fix Helm chart values when TLS not used
+- Fix CRDs to make Consul enterprise `namespace` and `partition` optional

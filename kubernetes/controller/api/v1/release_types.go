@@ -58,6 +58,8 @@ type ReleaseSpec struct {
 	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
 
+	Webhooks []Webhook `json:"webhooks,omitempty"`
+
 	// Releaser defines the configuration for the releaser plugin
 	Releaser Releaser `json:"releaser,omitempty"`
 
@@ -71,30 +73,44 @@ type ReleaseSpec struct {
 	Monitor Monitor `json:"monitor,omitempty"`
 }
 
+type Webhook struct {
+	Name       string        `json:"name"`
+	PluginName string        `json:"pluginName"`
+	Config     WebhookConfig `json:"config"`
+}
+
+type WebhookConfig struct {
+	ID       string   `json:"id,omitempty"`
+	Token    string   `json:"token,omitempty"`
+	URL      string   `json:"url,omitempty"`
+	Template string   `json:"template,omitempty"`
+	Status   []string `json:"status,omitempty"`
+}
+
 type Releaser struct {
-	PluginName string         `json:"pluginName,omitempty"`
-	Config     ReleaserConfig `json:"config,omitempty"`
+	PluginName string         `json:"pluginName"`
+	Config     ReleaserConfig `json:"config"`
 }
 
 type ReleaserConfig struct {
 	ConsulService string `json:"consulService"`
-	Namespace     string `json:"namespace"`
-	Partition     string `json:"partition"`
+	Namespace     string `json:"namespace,omitempty"`
+	Partition     string `json:"partition,omitempty"`
 }
 
 type Runtime struct {
-	PluginName string        `json:"pluginName,omitempty"`
-	Config     RuntimeConfig `json:"config,omitempty"`
+	PluginName string        `json:"pluginName"`
+	Config     RuntimeConfig `json:"config"`
 }
 
 type RuntimeConfig struct {
 	// Name of an existing Deployment in the same namespace
-	Deployment string `json:"deployment,omitempty"`
+	Deployment string `json:"deployment"`
 }
 
 type Strategy struct {
-	PluginName string         `json:"pluginName,omitempty"`
-	Config     StrategyConfig `json:"config,omitempty"`
+	PluginName string         `json:"pluginName"`
+	Config     StrategyConfig `json:"config"`
 }
 
 type StrategyConfig struct {
@@ -107,12 +123,12 @@ type StrategyConfig struct {
 }
 
 type Monitor struct {
-	PluginName string        `json:"pluginName,omitempty"`
-	Config     MonitorConfig `json:"config,omitempty"`
+	PluginName string        `json:"pluginName"`
+	Config     MonitorConfig `json:"config"`
 }
 
 type MonitorConfig struct {
-	Address string  `json:"address,omitempty"`
+	Address string  `json:"address"`
 	Queries []Query `json:"queries,omitempty"`
 }
 
@@ -121,6 +137,7 @@ type Query struct {
 	Preset string `json:"preset,omitempty"`
 	Min    int    `json:"min,omitempty"`
 	Max    int    `json:"max,omitempty"`
+	Query  string `json:"query,omitempty"`
 }
 
 func init() {

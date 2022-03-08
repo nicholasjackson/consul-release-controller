@@ -12,8 +12,8 @@ type StrategyMock struct {
 	mock.Mock
 }
 
-func (r *StrategyMock) Configure(name, namespace string, c json.RawMessage) error {
-	args := r.Called(name, namespace, c)
+func (r *StrategyMock) Configure(c json.RawMessage) error {
+	args := r.Called(c)
 
 	return args.Error(0)
 }
@@ -22,4 +22,12 @@ func (r *StrategyMock) Execute(ctx context.Context) (interfaces.StrategyStatus, 
 	args := r.Called(ctx)
 
 	return interfaces.StrategyStatus(args.Get(0).(string)), args.Get(1).(int), args.Error(2)
+}
+
+func (p *StrategyMock) GetPrimaryTraffic() int {
+	return p.Called().Int(0)
+}
+
+func (p *StrategyMock) GetCandidateTraffic() int {
+	return p.Called().Int(0)
 }

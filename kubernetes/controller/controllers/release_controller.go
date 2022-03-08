@@ -20,21 +20,13 @@ import (
 	"context"
 	"fmt"
 
-	"k8s.io/apimachinery/pkg/fields"
 	"k8s.io/apimachinery/pkg/runtime"
-	"k8s.io/apimachinery/pkg/types"
 	ctrl "sigs.k8s.io/controller-runtime"
-	"sigs.k8s.io/controller-runtime/pkg/builder"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-	"sigs.k8s.io/controller-runtime/pkg/handler"
 	"sigs.k8s.io/controller-runtime/pkg/log"
-	"sigs.k8s.io/controller-runtime/pkg/predicate"
-	"sigs.k8s.io/controller-runtime/pkg/reconcile"
-	"sigs.k8s.io/controller-runtime/pkg/source"
 
 	"github.com/go-logr/logr"
 	"github.com/nicholasjackson/consul-release-controller/plugins/interfaces"
-	appsv1 "k8s.io/api/apps/v1"
 
 	consulreleasecontrollerv1 "github.com/nicholasjackson/consul-release-controller/kubernetes/controller/api/v1"
 )
@@ -148,75 +140,7 @@ func (r *ReleaseReconciler) SetupWithManager(mgr ctrl.Manager) error {
 
 	return ctrl.NewControllerManagedBy(mgr).
 		For(&consulreleasecontrollerv1.Release{}).
-		Watches(
-			&source.Kind{Type: &appsv1.Deployment{}},
-			handler.EnqueueRequestsFromMapFunc(r.findObjectsForDeployment),
-			builder.WithPredicates(predicate.GenerationChangedPredicate{}),
-		).
 		Complete(r)
-}
-
-// Function that determines which Kubernetes deployments submitted to the system should trigger a reconcile
-// for the controller.
-// Reconcile will get called every time the spec portion of the deployment changes
-func (r *ReleaseReconciler) findObjectsForDeployment(deployment client.Object) []reconcile.Request {
-	dep := deployment.(*appsv1.Deployment)
-
-	// deleting, ignore
-	if !dep.ObjectMeta.DeletionTimestamp.IsZero() {
-		return []reconcile.Request{}
-	}
-
-	// we also need to ignore changes to scaling
-	if dep.Spec.Replicas == nil || *dep.Spec.Replicas == 0 {
-		return []reconcile.Request{}
-	}
-
-	// ignore if the generation has not changed
-	if dep.Status.ObservedGeneration == dep.Generation {
-		return []reconcile.Request{}
-	}
-
-	// ignore deleted
-	dep1 := appsv1.Deployment{}
-	err := r.Client.Get(context.TODO(), types.NamespacedName{Namespace: deployment.GetNamespace(), Name: deployment.GetName()}, &dep1)
-	if err != nil {
-
-		return []reconcile.Request{}
-	}
-
-	// query the releases and find any that have this deployment referenced
-	attachedReleases := &consulreleasecontrollerv1.ReleaseList{}
-	listOps := &client.ListOptions{
-		FieldSelector: fields.OneTermEqualSelector(deploymentField, deployment.GetName()),
-		Namespace:     deployment.GetNamespace(),
-	}
-
-	err = r.List(context.TODO(), attachedReleases, listOps)
-	if err != nil {
-		return []reconcile.Request{}
-	}
-
-	requests := make([]reconcile.Request, len(attachedReleases.Items))
-	for i, item := range attachedReleases.Items {
-		requests[i] = reconcile.Request{
-			NamespacedName: types.NamespacedName{
-				Name:      item.GetName(),
-				Namespace: item.GetNamespace(),
-			},
-		}
-	}
-
-	//if len(requests) > 0 {
-	//	fmt.Println("Returning requests")
-	//	fmt.Println(requests)
-
-	//	fmt.Println("For deployment")
-	//	d, _ := json.MarshalIndent(dep, "", " ")
-	//	fmt.Println(string(d))
-	//}
-
-	return requests
 }
 
 func (r *ReleaseReconciler) updateRelease(rc *consulreleasecontrollerv1.Release, log logr.Logger) error {

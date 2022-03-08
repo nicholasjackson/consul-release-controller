@@ -2,7 +2,6 @@ package interfaces
 
 import (
 	"context"
-	"encoding/json"
 )
 
 type ServiceVariant int
@@ -15,8 +14,7 @@ const (
 
 // Releaser defines methods for configuring and manipulating traffic in the service mesh
 type Releaser interface {
-	// Configure the plugin with the given json
-	Configure(config json.RawMessage) error
+	Configurable
 
 	// Setup the necessary configuration for the service mesh
 	// Returning an error from this function will fail the deployment

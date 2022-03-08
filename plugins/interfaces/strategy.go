@@ -1,8 +1,6 @@
 package interfaces
 
 import (
-	"encoding/json"
-
 	"golang.org/x/net/context"
 )
 
@@ -16,10 +14,14 @@ const (
 
 // Strategy defines the interface for a roll out strategy like a Canary or a Blue/Green
 type Strategy interface {
-	// Configure the plugin with the given json
-	Configure(name, namespace string, config json.RawMessage) error
+	Configurable
 
 	// Execute the strategy and return the StrategyStatus on a successfull check
 	// when StrategyStatusSuccess is returned the new traffic amount to be sent to the service is returned
 	Execute(ctx context.Context) (status StrategyStatus, traffic int, err error)
+
+	// GetPrimaryTraffic returns the percentage of traffic distributed to the primary instance
+	GetPrimaryTraffic() int
+	// GetCandidateTraffic returns the percentage of traffic distributed to the candidate instance
+	GetCandidateTraffic() int
 }

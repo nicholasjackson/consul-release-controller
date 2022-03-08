@@ -101,7 +101,7 @@ func initializeScenario(ctx *godog.ScenarioContext) {
 
 		// only destroy the environment when the flag is true
 		if *createEnvironment && !*dontDestroy {
-			err := executeCommand([]string{"/usr/local/bin/shipyard", "destroy"})
+			err := executeCommand([]string{"/usr/local/bin/shipyard", "destroy"}, false)
 			if err != nil {
 				logger.Error("Unable to destroy shipyard resources", "error", err)
 				showLog = true
@@ -125,11 +125,14 @@ func initializeScenario(ctx *godog.ScenarioContext) {
 	})
 }
 
-func executeCommand(command []string) error {
+func executeCommand(command []string, log bool) error {
 	cmd := exec.Command(command[0], command[1:]...)
 	cmd.Dir = "../"
-	cmd.Stdout = logger.StandardWriter(&hclog.StandardLoggerOptions{ForceLevel: hclog.Debug})
-	cmd.Stderr = logger.StandardWriter(&hclog.StandardLoggerOptions{ForceLevel: hclog.Error})
+
+	if log {
+		cmd.Stdout = logger.StandardWriter(&hclog.StandardLoggerOptions{ForceLevel: hclog.Debug})
+		cmd.Stderr = logger.StandardWriter(&hclog.StandardLoggerOptions{ForceLevel: hclog.Error})
+	}
 
 	return cmd.Run()
 }

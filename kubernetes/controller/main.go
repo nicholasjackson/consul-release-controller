@@ -19,6 +19,7 @@ package controller
 import (
 	"context"
 	"os"
+	"path"
 
 	// Import all Kubernetes client auth plugins (e.g. Azure, GCP, OIDC, etc.)
 	// to ensure that exec-entrypoint and run can make use of them.
@@ -29,6 +30,7 @@ import (
 	clientgoscheme "k8s.io/client-go/kubernetes/scheme"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
+	"sigs.k8s.io/controller-runtime/pkg/webhook"
 
 	"github.com/go-logr/logr"
 	"github.com/hashicorp/go-hclog"
@@ -51,31 +53,47 @@ func init() {
 }
 
 type Kubernetes struct {
-	mngr     manager.Manager
-	ctx      context.Context
-	cancel   context.CancelFunc
-	log      hclog.Logger
-	provider interfaces.Provider
+	mngr        manager.Manager
+	ctx         context.Context
+	cancel      context.CancelFunc
+	log         hclog.Logger
+	provider    interfaces.Provider
+	tlsCert     string
+	tlsKey      string
+	webhookPort int
 }
 
-func New(p interfaces.Provider) *Kubernetes {
+func New(p interfaces.Provider, tlsCert, tlsKey string, webhookPort int) *Kubernetes {
 	ctx, cancelFunc := context.WithCancel(context.Background())
 
-	return &Kubernetes{ctx: ctx, cancel: cancelFunc, log: p.GetLogger().Named("kubernetes-controller"), provider: p}
+	return &Kubernetes{
+		ctx:         ctx,
+		cancel:      cancelFunc,
+		log:         p.GetLogger().Named("kubernetes-controller"),
+		provider:    p,
+		tlsCert:     tlsCert,
+		tlsKey:      tlsKey,
+		webhookPort: webhookPort,
+	}
 }
 
 func (k *Kubernetes) Start() error {
 	logSink := newSinkLogger(k.log)
 	ctrl.SetLogger(logr.New(logSink))
 
+	webhookServer := webhook.Server{}
+	webhookServer.CertDir = path.Dir(k.tlsCert)
+	webhookServer.CertName = path.Base(k.tlsCert)
+	webhookServer.KeyName = path.Base(k.tlsKey)
+	webhookServer.Port = k.webhookPort
+
 	mgr, err := ctrl.NewManager(ctrl.GetConfigOrDie(), ctrl.Options{
 		Scheme:                 scheme,
 		MetricsBindAddress:     "0",
-		Port:                   19443,
 		HealthProbeBindAddress: "0",
 		LeaderElection:         false,
 		LeaderElectionID:       "4224bb32.nicholasjackson.io",
-		WebhookServer:          nil,
+		WebhookServer:          &webhookServer,
 	})
 	if err != nil {
 		setupLog.Error(err, "unable to start manager")
@@ -91,6 +109,17 @@ func (k *Kubernetes) Start() error {
 		return err
 	}
 	//+kubebuilder:scaffold:builder
+
+	setupLog.Info("setting up webhook server")
+	hookServer := mgr.GetWebhookServer()
+
+	setupLog.Info("registering webhooks to the webhook server")
+	hookServer.Register(
+		"/validate-v1-deployment",
+		&webhook.Admission{
+			Handler: NewDeploymentAdmission(mgr.GetClient(), k.provider, k.log.ResetNamed("kubernetes-webhook")),
+		},
+	)
 
 	setupLog.Info("Starting Kubernetes controller")
 	if err := mgr.Start(k.ctx); err != nil {

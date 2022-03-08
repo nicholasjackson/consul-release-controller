@@ -55,12 +55,32 @@ func (r *Release) ConvertToModel() *models.Release {
 		Config: getJSONRaw(mpc),
 	}
 
+	webhooks := []*models.PluginConfig{}
+
+	for _, w := range r.Spec.Webhooks {
+		wpc := webhookConfigSnake(w.Config)
+		webhooks = append(webhooks, &models.PluginConfig{
+			Name:   w.PluginName,
+			Config: getJSONRaw(wpc),
+		})
+	}
+
+	mr.Webhooks = webhooks
+
 	return mr
 }
 
 func getJSONRaw(i interface{}) json.RawMessage {
 	d, _ := json.Marshal(i)
 	return d
+}
+
+type webhookConfigSnake struct {
+	ID       string   `json:"id"`
+	Token    string   `json:"token"`
+	URL      string   `json:"url"`
+	Template string   `json:"template"`
+	Status   []string `json:"status,omitempty"`
 }
 
 type releaserConfigSnake struct {
@@ -93,4 +113,5 @@ type monitorQuerySnake struct {
 	Preset string `json:"preset,omitempty"`
 	Min    int    `json:"min,omitempty"`
 	Max    int    `json:"max,omitempty"`
+	Query  string `json:"query,omitempty"`
 }

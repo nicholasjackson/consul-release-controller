@@ -23,7 +23,7 @@ controller:
         fieldRef:
           fieldPath: status.hostIP
     - name: CONSUL_HTTP_ADDR
-      value: http://$(HOST_IP):8501
+      value: http://$(HOST_IP):8500
     
     # Configure additional environment variables to be added to the controller container 
     env: []
@@ -140,7 +140,7 @@ prometheus:
   
 # Not currently used, conversion webhooks will be eventually enabled
 webhook:
-  enabled: "false"
+  enabled: "true"
   type: ClusterIP
   port: 443
   service: consul-release-controller-webhook

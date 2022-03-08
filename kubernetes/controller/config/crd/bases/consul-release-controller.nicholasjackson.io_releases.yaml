@@ -53,11 +53,18 @@ spec:
                               type: string
                             preset:
                               type: string
+                            query:
+                              type: string
                           type: object
                         type: array
+                    required:
+                    - address
                     type: object
                   pluginName:
                     type: string
+                required:
+                - config
+                - pluginName
                 type: object
               releaser:
                 description: Releaser defines the configuration for the releaser plugin
@@ -72,11 +79,12 @@ spec:
                         type: string
                     required:
                     - consulService
-                    - namespace
-                    - partition
                     type: object
                   pluginName:
                     type: string
+                required:
+                - config
+                - pluginName
                 type: object
               runtime:
                 description: Runtime defines the configuration for the runtime plugin
@@ -86,9 +94,14 @@ spec:
                       deployment:
                         description: Name of an existing Deployment in the same namespace
                         type: string
+                    required:
+                    - deployment
                     type: object
                   pluginName:
                     type: string
+                required:
+                - config
+                - pluginName
                 type: object
               strategy:
                 description: Strategy defines the configuration for the strategy plugin
@@ -110,7 +123,38 @@ spec:
                     type: object
                   pluginName:
                     type: string
+                required:
+                - config
+                - pluginName
                 type: object
+              webhooks:
+                items:
+                  properties:
+                    config:
+                      properties:
+                        id:
+                          type: string
+                        status:
+                          items:
+                            type: string
+                          type: array
+                        template:
+                          type: string
+                        token:
+                          type: string
+                        url:
+                          type: string
+                      type: object
+                    name:
+                      type: string
+                    pluginName:
+                      type: string
+                  required:
+                  - config
+                  - name
+                  - pluginName
+                  type: object
+                type: array
             type: object
           status:
             description: ReleaseStatus defines the observed state of Release

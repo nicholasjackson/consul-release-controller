@@ -7,9 +7,11 @@ import (
 	"github.com/nicholasjackson/consul-release-controller/models"
 	"github.com/nicholasjackson/consul-release-controller/plugins/canary"
 	"github.com/nicholasjackson/consul-release-controller/plugins/consul"
+	"github.com/nicholasjackson/consul-release-controller/plugins/discord"
 	"github.com/nicholasjackson/consul-release-controller/plugins/interfaces"
 	"github.com/nicholasjackson/consul-release-controller/plugins/kubernetes"
 	"github.com/nicholasjackson/consul-release-controller/plugins/prometheus"
+	"github.com/nicholasjackson/consul-release-controller/plugins/slack"
 	"github.com/nicholasjackson/consul-release-controller/plugins/statemachine"
 )
 
@@ -45,15 +47,15 @@ func (p *ProviderImpl) CreateRuntime(pluginName string) (interfaces.Runtime, err
 		return kubernetes.New(p.log.Named("runtime-plugin-kubernetes"))
 	}
 
-	return nil, fmt.Errorf("not implemented")
+	return nil, fmt.Errorf("invalid Runtime plugin type: %s", pluginName)
 }
 
-func (p *ProviderImpl) CreateMonitor(pluginName string) (interfaces.Monitor, error) {
+func (p *ProviderImpl) CreateMonitor(pluginName, name, namespace, runtime string) (interfaces.Monitor, error) {
 	if pluginName == PluginMonitorTypePromethus {
-		return prometheus.New(p.log.Named("monitor-plugin-prometheus"))
+		return prometheus.New(name, namespace, runtime, p.log.Named("monitor-plugin-prometheus"))
 	}
 
-	return nil, fmt.Errorf("not implemented")
+	return nil, fmt.Errorf("invalid Monitor plugin type: %s", pluginName)
 }
 
 func (p *ProviderImpl) CreateStrategy(pluginName string, mp interfaces.Monitor) (interfaces.Strategy, error) {
@@ -61,7 +63,18 @@ func (p *ProviderImpl) CreateStrategy(pluginName string, mp interfaces.Monitor) 
 		return canary.New(p.log.Named("strategy-plugin-canary"), mp)
 	}
 
-	return nil, fmt.Errorf("not implemented")
+	return nil, fmt.Errorf("invalid Strategy plugin type: %s", pluginName)
+}
+
+func (p *ProviderImpl) CreateWebhook(pluginName string) (interfaces.Webhook, error) {
+	switch pluginName {
+	case PluginWebhookTypeDiscord:
+		return discord.New(p.log.Named("webhook-plugin-discord"))
+	case PluginWebhookTypeSlack:
+		return slack.New(p.log.Named("webhook-plugin-slack"))
+	}
+
+	return nil, fmt.Errorf("invalid Webhook plugin type: %s", pluginName)
 }
 
 func (p *ProviderImpl) GetLogger() hclog.Logger {

@@ -23,7 +23,7 @@ func setupPlugin(t *testing.T, config string) (*Plugin, *mocks.MonitorMock) {
 	// set the traffic to initial traffic, this is the state after the first run
 	p.currentTraffic = 10
 
-	err := p.Configure("test", "testnamespace", []byte(config))
+	err := p.Configure([]byte(config))
 	require.NoError(t, err)
 
 	return p, m.MonitorMock
@@ -43,7 +43,7 @@ func TestValidatesConfig(t *testing.T) {
 	// set the traffic to initial traffic, this is the state after the first run
 	p.currentTraffic = 10
 
-	err := p.Configure("test", "testnamespace", []byte(canaryStrategyWithValidationErrors))
+	err := p.Configure([]byte(canaryStrategyWithValidationErrors))
 	require.Error(t, err)
 
 	require.Contains(t, err.Error(), ErrInvalidInitialDelay.Error())
@@ -130,6 +130,24 @@ func TestReturnsErrorWhenChecksFail(t *testing.T) {
 
 	// should call check 5 times due to error threshold
 	mm.AssertNumberOfCalls(t, "Check", 5)
+}
+
+func TestGetPrimaryTrafficReturnsCorrectValue(t *testing.T) {
+	p, _ := setupPlugin(t, canaryStrategy)
+	p.currentTraffic = 80
+
+	traf := p.GetPrimaryTraffic()
+
+	require.Equal(t, 20, traf)
+}
+
+func TestGetCandidateTrafficReturnsCorrectValue(t *testing.T) {
+	p, _ := setupPlugin(t, canaryStrategy)
+	p.currentTraffic = 80
+
+	traf := p.GetCandidateTraffic()
+
+	require.Equal(t, 80, traf)
 }
 
 const canaryStrategyWithoutInitialDelay = `

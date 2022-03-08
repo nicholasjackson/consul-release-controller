@@ -1516,11 +1516,11 @@ The load test is configured to send load to the Consul Ingress Gateway `consul-i
 if your setup uses a different port for the ingress gateway or you have installed it in a different namespace, you will need
 to change the settings in `loadtest.yaml` before applying the configuration.
 
-Assuming you are using the Shipyard cluster or have configured your own setup using the example settings in the prerequi
+Assuming you are using the Shipyard cluster or have configured your own setup using the example settings in the prerequisites
 
 ```shell
 kubectl apply \
--f https://raw.githubusercontent.com/nicholasjackson/consul-release-controller/main/example/kubernetes/metrics.yaml
+-f https://raw.githubusercontent.com/nicholasjackson/consul-release-controller/main/example/kubernetes/loadtest.yaml
 ```
 
 After applying the load test configuration you should start to see some activity in your Grafana dashboard.

@@ -10,12 +10,11 @@ spec:
     config:
       consulService: "api"
 #     namespace: "mynamespace"
-#     adminPartition: "mypartition"
+#     partition: "mypartition"
   runtime:
     pluginName: "kubernetes"
     config:
       deployment: "api-deployment"
-      namespace: "default"
   strategy:
     pluginName: "canary"
     config:

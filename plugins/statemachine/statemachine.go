@@ -24,6 +24,7 @@ type StateMachine struct {
 	runtimePlugin  interfaces.Runtime
 	monitorPlugin  interfaces.Monitor
 	strategyPlugin interfaces.Strategy
+	webhookPlugins []interfaces.Webhook
 	logger         hclog.Logger
 	metrics        interfaces.Metrics
 
@@ -35,12 +36,12 @@ type StateMachine struct {
 }
 
 func New(r *models.Release, pluginProvider interfaces.Provider) (*StateMachine, error) {
-	sm := &StateMachine{release: r}
+	sm := &StateMachine{release: r, webhookPlugins: []interfaces.Webhook{}}
 	sm.stateHistory = []interfaces.StateHistory{interfaces.StateHistory{Time: time.Now(), State: interfaces.StateStart}}
 	sm.logger = pluginProvider.GetLogger().Named("statemachine")
 	sm.metrics = pluginProvider.GetMetrics()
 
-	// configure the setup plugin
+	// create the setup plugin
 	relP, err := pluginProvider.CreateReleaser(r.Releaser.Name)
 	if err != nil {
 		return nil, err
@@ -60,26 +61,37 @@ func New(r *models.Release, pluginProvider interfaces.Provider) (*StateMachine, 
 	runP.Configure(r.Runtime.Config)
 	sm.runtimePlugin = runP
 
-	// configure the monitor plugin
-	monP, err := pluginProvider.CreateMonitor(r.Monitor.Name)
+	// create the monitor plugin
+	rc := runP.BaseConfig()
+	monP, err := pluginProvider.CreateMonitor(r.Monitor.Name, rc.Deployment, rc.Namespace, r.Runtime.Name)
 	if err != nil {
 		return nil, err
 	}
 
 	// configure the monitor plugin
-	rc := runP.BaseConfig()
-	monP.Configure(rc.Deployment, rc.Namespace, r.Runtime.Name, r.Monitor.Config)
+	monP.Configure(r.Monitor.Config)
 	sm.monitorPlugin = monP
 
-	// configure the monitor plugin
+	// create the strategy plugin
 	stratP, err := pluginProvider.CreateStrategy(r.Strategy.Name, monP)
 	if err != nil {
 		return nil, err
 	}
 
 	// configure the strategy plugin
-	stratP.Configure(r.Name, r.Namespace, r.Strategy.Config)
+	stratP.Configure(r.Strategy.Config)
 	sm.strategyPlugin = stratP
+
+	// configure the webhooks
+	for _, w := range r.Webhooks {
+		wp, err := pluginProvider.CreateWebhook(w.Name)
+		if err != nil {
+			return nil, err
+		}
+
+		wp.Configure(w.Config)
+		sm.webhookPlugins = append(sm.webhookPlugins, wp)
+	}
 
 	f := fsm.NewFSM(
 		interfaces.StateStart,
@@ -210,6 +222,8 @@ func (s *StateMachine) doConfigure() func(e *fsm.Event) {
 				s.logger.Error("Configure completed with error", "error", err)
 
 				e.FSM.Event(interfaces.EventFail)
+
+				s.callWebhooks(s.webhookPlugins, "Configure release failed", interfaces.StateConfigure, interfaces.EventFail, 0, 100, err)
 				return
 			}
 
@@ -227,6 +241,7 @@ func (s *StateMachine) doConfigure() func(e *fsm.Event) {
 			if err != nil {
 				s.logger.Error("Configure completed with error", "status", status, "error", err)
 
+				s.callWebhooks(s.webhookPlugins, "Configure release failed", interfaces.StateConfigure, interfaces.EventFail, 0, 100, err)
 				e.FSM.Event(interfaces.EventFail)
 				return
 			}
@@ -237,6 +252,7 @@ func (s *StateMachine) doConfigure() func(e *fsm.Event) {
 				if err != nil {
 					s.logger.Error("Configure completed with error", "error", err)
 
+					s.callWebhooks(s.webhookPlugins, "Configure release failed", interfaces.StateConfigure, interfaces.EventFail, 0, 100, err)
 					e.FSM.Event(interfaces.EventFail)
 					return
 				}
@@ -245,6 +261,7 @@ func (s *StateMachine) doConfigure() func(e *fsm.Event) {
 				if err != nil {
 					s.logger.Error("Configure completed with error", "error", err)
 
+					s.callWebhooks(s.webhookPlugins, "Configure release failed", interfaces.StateConfigure, interfaces.EventFail, 0, 100, err)
 					e.FSM.Event(interfaces.EventFail)
 					return
 				}
@@ -256,6 +273,7 @@ func (s *StateMachine) doConfigure() func(e *fsm.Event) {
 				if err != nil {
 					s.logger.Error("Configure completed with error", "error", err)
 
+					s.callWebhooks(s.webhookPlugins, "Configure release failed", interfaces.StateConfigure, interfaces.EventFail, 100, 0, err)
 					e.FSM.Event(interfaces.EventFail)
 					return
 				}
@@ -263,6 +281,7 @@ func (s *StateMachine) doConfigure() func(e *fsm.Event) {
 
 			s.logger.Debug("Configure completed successfully")
 
+			s.callWebhooks(s.webhookPlugins, "Configure release succeeded", interfaces.StateConfigure, interfaces.EventConfigured, 100, 0, nil)
 			e.FSM.Event(interfaces.EventConfigured)
 		}()
 	}
@@ -285,6 +304,7 @@ func (s *StateMachine) doDeploy() func(e *fsm.Event) {
 			if err != nil {
 				s.logger.Error("Deploy completed with error", "error", err)
 
+				s.callWebhooks(s.webhookPlugins, "New Deployment failed", interfaces.StateDeploy, interfaces.EventFail, 100, 0, err)
 				e.FSM.Event(interfaces.EventFail)
 				return
 			}
@@ -293,6 +313,7 @@ func (s *StateMachine) doDeploy() func(e *fsm.Event) {
 			if err != nil {
 				s.logger.Error("Configure completed with error", "error", err)
 
+				s.callWebhooks(s.webhookPlugins, "New Deployment failed", interfaces.StateDeploy, interfaces.EventFail, 100, 0, err)
 				e.FSM.Event(interfaces.EventFail)
 				return
 			}
@@ -303,6 +324,7 @@ func (s *StateMachine) doDeploy() func(e *fsm.Event) {
 			if err != nil {
 				s.logger.Error("Deploy completed with error", "error", err)
 
+				s.callWebhooks(s.webhookPlugins, "New Deployment failed", interfaces.StateDeploy, interfaces.EventFail, 100, 0, err)
 				e.FSM.Event(interfaces.EventFail)
 				return
 			}
@@ -319,21 +341,25 @@ func (s *StateMachine) doDeploy() func(e *fsm.Event) {
 				// since we can not exactly determine when the state has converged in the data plane
 				// wait an arbitrary period of time.
 				time.Sleep(stepDelay)
+
 				// remove the candidate and wait for the next deployment
 				err = s.runtimePlugin.RemoveCandidate(ctx)
 				if err != nil {
 					s.logger.Error("Deploy completed with error", "error", err)
 
+					s.callWebhooks(s.webhookPlugins, "New deployment failed", interfaces.StateDeploy, interfaces.EventFail, 100, 0, err)
 					e.FSM.Event(interfaces.EventFail)
 					return
 				}
 
+				s.callWebhooks(s.webhookPlugins, "New deployment succeeded", interfaces.StateDeploy, interfaces.EventComplete, 100, 0, nil)
 				e.FSM.Event(interfaces.EventComplete)
 				return
 			}
 
 			// new deployment run the strategy
 			s.logger.Debug("Deploy completed, executing strategy")
+			s.callWebhooks(s.webhookPlugins, "New deployment succeeded, executing strategy", interfaces.StateDeploy, interfaces.EventDeployed, 100, 0, nil)
 			e.FSM.Event(interfaces.EventDeployed)
 		}()
 	}
@@ -353,6 +379,16 @@ func (s *StateMachine) doMonitor() func(e *fsm.Event) {
 			// strategy has failed with an error
 			if err != nil {
 				s.logger.Error("Monitor completed with error", "error", err)
+
+				s.callWebhooks(
+					s.webhookPlugins,
+					"Monitoring deployment failed",
+					interfaces.StateMonitor,
+					interfaces.EventFail,
+					s.strategyPlugin.GetPrimaryTraffic(),
+					s.strategyPlugin.GetCandidateTraffic(),
+					err,
+				)
 
 				e.FSM.Event(interfaces.EventFail)
 			}
@@ -375,6 +411,16 @@ func (s *StateMachine) doMonitor() func(e *fsm.Event) {
 			// the strategy has reported that the deployment is unhealthy, rollback
 			case interfaces.StrategyStatusFail:
 				s.logger.Debug("Monitor checks completed, candidate unhealthy")
+
+				s.callWebhooks(
+					s.webhookPlugins,
+					"Monitor deployment failed",
+					interfaces.StateMonitor,
+					interfaces.EventUnhealthy,
+					s.strategyPlugin.GetPrimaryTraffic(),
+					s.strategyPlugin.GetCandidateTraffic(),
+					err,
+				)
 
 				e.FSM.Event(interfaces.EventUnhealthy)
 			}
@@ -405,11 +451,32 @@ func (s *StateMachine) doScale() func(e *fsm.Event) {
 			if err != nil {
 				s.logger.Error("Scale completed with error", "error", err)
 
+				s.callWebhooks(
+					s.webhookPlugins,
+					"Scaling deployment failed",
+					interfaces.StateMonitor,
+					interfaces.EventFail,
+					s.strategyPlugin.GetPrimaryTraffic(),
+					s.strategyPlugin.GetCandidateTraffic(),
+					err,
+				)
+
 				e.FSM.Event(interfaces.EventFail)
 				return
 			}
 
 			s.logger.Debug("Scale completed successfully")
+
+			s.callWebhooks(
+				s.webhookPlugins,
+				"Scaling deployment succeeded",
+				interfaces.StateMonitor,
+				interfaces.EventScaled,
+				s.strategyPlugin.GetPrimaryTraffic(),
+				s.strategyPlugin.GetCandidateTraffic(),
+				nil,
+			)
+
 			e.FSM.Event(interfaces.EventScaled)
 		}()
 	}
@@ -428,6 +495,7 @@ func (s *StateMachine) doPromote() func(e *fsm.Event) {
 			err := s.releaserPlugin.Scale(ctx, 100)
 			if err != nil {
 				e.FSM.Event(interfaces.EventFail)
+				s.callWebhooks(s.webhookPlugins, "Promoting candidate failed", interfaces.StatePromote, interfaces.EventFail, 0, 100, err)
 				return
 			}
 
@@ -444,6 +512,7 @@ func (s *StateMachine) doPromote() func(e *fsm.Event) {
 			_, err = s.runtimePlugin.PromoteCandidate(ctx)
 			if err != nil {
 				e.FSM.Event(interfaces.EventFail)
+				s.callWebhooks(s.webhookPlugins, "Promoting candidate failed", interfaces.StatePromote, interfaces.EventFail, 0, 100, err)
 				return
 			}
 
@@ -452,6 +521,7 @@ func (s *StateMachine) doPromote() func(e *fsm.Event) {
 				s.logger.Error("Configure completed with error", "error", err)
 
 				e.FSM.Event(interfaces.EventFail)
+				s.callWebhooks(s.webhookPlugins, "Promoting candidate failed", interfaces.StatePromote, interfaces.EventFail, 0, 100, err)
 				return
 			}
 
@@ -459,6 +529,7 @@ func (s *StateMachine) doPromote() func(e *fsm.Event) {
 			err = s.releaserPlugin.Scale(ctx, 0)
 			if err != nil {
 				e.FSM.Event(interfaces.EventFail)
+				s.callWebhooks(s.webhookPlugins, "Promoting candidate failed", interfaces.StatePromote, interfaces.EventFail, 0, 100, err)
 				return
 			}
 
@@ -468,9 +539,11 @@ func (s *StateMachine) doPromote() func(e *fsm.Event) {
 			err = s.runtimePlugin.RemoveCandidate(ctx)
 			if err != nil {
 				e.FSM.Event(interfaces.EventFail)
+				s.callWebhooks(s.webhookPlugins, "Promoting candidate failed", interfaces.StatePromote, interfaces.EventFail, 100, 0, err)
 				return
 			}
 
+			s.callWebhooks(s.webhookPlugins, "Promoting candidate to primary succeeded", interfaces.StatePromote, interfaces.EventPromoted, 100, 0, err)
 			e.FSM.Event(interfaces.EventPromoted)
 		}()
 	}
@@ -488,6 +561,17 @@ func (s *StateMachine) doRollback() func(e *fsm.Event) {
 			err := s.releaserPlugin.Scale(ctx, 0)
 			if err != nil {
 				e.FSM.Event(interfaces.EventFail)
+
+				s.callWebhooks(
+					s.webhookPlugins,
+					"Rolling back deployment failed",
+					interfaces.StateRollback,
+					interfaces.EventFail,
+					s.strategyPlugin.GetPrimaryTraffic(),
+					s.strategyPlugin.GetCandidateTraffic(),
+					err,
+				)
+
 				return
 			}
 
@@ -504,9 +588,11 @@ func (s *StateMachine) doRollback() func(e *fsm.Event) {
 			err = s.runtimePlugin.RemoveCandidate(ctx)
 			if err != nil {
 				e.FSM.Event(interfaces.EventFail)
+				s.callWebhooks(s.webhookPlugins, "Rolling back deployment failed", interfaces.StateRollback, interfaces.EventFail, 100, 0, err)
 				return
 			}
 
+			s.callWebhooks(s.webhookPlugins, "Deployment rolled back", interfaces.StateRollback, interfaces.EventComplete, 100, 0, err)
 			e.FSM.Event(interfaces.EventComplete)
 		}()
 	}
@@ -524,6 +610,7 @@ func (s *StateMachine) doDestroy() func(e *fsm.Event) {
 			err := s.runtimePlugin.RestoreOriginal(ctx)
 			if err != nil {
 				e.FSM.Event(interfaces.EventFail)
+				s.callWebhooks(s.webhookPlugins, "Remove release failed", interfaces.StateDestroy, interfaces.EventFail, 100, 0, err)
 				return
 			}
 
@@ -533,6 +620,7 @@ func (s *StateMachine) doDestroy() func(e *fsm.Event) {
 				s.logger.Error("Configure completed with error", "error", err)
 
 				e.FSM.Event(interfaces.EventFail)
+				s.callWebhooks(s.webhookPlugins, "Remove release failed", interfaces.StateDestroy, interfaces.EventFail, 100, 0, err)
 				return
 			}
 
@@ -540,6 +628,7 @@ func (s *StateMachine) doDestroy() func(e *fsm.Event) {
 			err = s.releaserPlugin.Scale(ctx, 100)
 			if err != nil {
 				e.FSM.Event(interfaces.EventFail)
+				s.callWebhooks(s.webhookPlugins, "Remove release failed", interfaces.StateDestroy, interfaces.EventFail, 100, 0, err)
 				return
 			}
 
@@ -556,6 +645,7 @@ func (s *StateMachine) doDestroy() func(e *fsm.Event) {
 			err = s.runtimePlugin.RemovePrimary(ctx)
 			if err != nil {
 				e.FSM.Event(interfaces.EventFail)
+				s.callWebhooks(s.webhookPlugins, "Remove release failed", interfaces.StateDestroy, interfaces.EventFail, 0, 100, err)
 				return
 			}
 
@@ -563,10 +653,41 @@ func (s *StateMachine) doDestroy() func(e *fsm.Event) {
 			err = s.releaserPlugin.Destroy(ctx)
 			if err != nil {
 				e.FSM.Event(interfaces.EventFail)
+				s.callWebhooks(s.webhookPlugins, "Remove release failed", interfaces.StateDestroy, interfaces.EventFail, 0, 100, err)
 				return
 			}
 
+			s.callWebhooks(s.webhookPlugins, "Remove release succeeded", interfaces.StateDestroy, interfaces.EventComplete, 0, 100, err)
 			e.FSM.Event(interfaces.EventComplete)
 		}()
+	}
+}
+
+// callWebhooks calls the defined webhooks, in the event of failure this function will log an error
+// but does not interupt flow
+func (s *StateMachine) callWebhooks(wh []interfaces.Webhook, title, state, result string, primaryTraffic, candidateTraffic int, err error) {
+	for _, w := range wh {
+		s.logger.Debug("Calling webhook", "title", title)
+
+		errString := ""
+		if err != nil {
+			errString = err.Error()
+		}
+
+		message := interfaces.WebhookMessage{
+			Title:            title,
+			Name:             s.release.Name,
+			Namespace:        s.release.Namespace,
+			Outcome:          result,
+			State:            state,
+			PrimaryTraffic:   primaryTraffic,
+			CandidateTraffic: candidateTraffic,
+			Error:            errString,
+		}
+
+		err := w.Send(message)
+		if err != nil {
+			s.logger.Error("Unable to call webhook", "title", title, "error", err)
+		}
 	}
 }

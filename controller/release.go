@@ -48,7 +48,7 @@ func (r *Release) Start() error {
 	provider := plugins.GetProvider(r.log, r.metrics, store)
 
 	// create the kubernetes controller
-	kc := kubernetes.New(provider)
+	kc := kubernetes.New(provider, os.Getenv("TLS_CERT"), os.Getenv("TLS_KEY"), 19443)
 	r.kubernetesController = kc
 	go kc.Start()
 

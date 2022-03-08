@@ -1,0 +1,26 @@
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingWebhookConfiguration
+metadata:
+  name: consul-release-controller-webhook
+  labels:
+    app: consul-release-controller-webhook
+    kind: mutator
+  annotations:
+    cert-manager.io/inject-ca-from: '{{ .Release.Namespace }}/consul-release-controller-certificate'
+webhooks:
+  - name: consul-release-controller.consul.io
+    failurePolicy: {{ .Values.webhook.failurePolicy }}
+    admissionReviewVersions: ["v1"]
+    sideEffects: None
+    clientConfig:
+      service:
+        name: {{ default (include "consul-release-controller.fullname" .) .Values.webhook.serviceOverride }}
+        namespace: {{ default .Release.Namespace .Values.webhook.namespaceOverride | quote }}
+        path: /validate-v1-deployment
+        port: 19443
+    rules:
+      - operations: ["CREATE", "UPDATE"]
+        apiGroups: ["*"]
+        apiVersions: ["*"]
+        resources: ["deployments"]

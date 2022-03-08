@@ -38,6 +38,9 @@ type Query struct {
 	// Preset is an optional default metric query
 	Preset string `json:"preset"`
 
+	// Query is an optional query when the preset is not specified
+	Query string `json:"query"`
+
 	// Minimum value for success, optional when Max specified
 	Min *int `json:"min,omitempty"` // default 0
 
@@ -45,15 +48,18 @@ type Query struct {
 	Max *int `json:"max,omitempty"` // default 0
 }
 
-func New(l hclog.Logger) (*Plugin, error) {
+func New(name, namespace, runtime string, l hclog.Logger) (*Plugin, error) {
 	c, _ := clients.NewPrometheus()
-	return &Plugin{log: l, client: c}, nil
+	return &Plugin{
+		log:       l,
+		client:    c,
+		runtime:   runtime,
+		name:      name,
+		namespace: namespace,
+	}, nil
 }
 
-func (s *Plugin) Configure(name, namespace, runtime string, data json.RawMessage) error {
-	s.runtime = runtime
-	s.name = name
-	s.namespace = namespace
+func (s *Plugin) Configure(data json.RawMessage) error {
 	s.config = &PluginConfig{}
 
 	err := json.Unmarshal(data, s.config)
@@ -71,19 +77,30 @@ func (s *Plugin) Check(ctx context.Context, interval time.Duration) error {
 
 	// first check that the given queries have valid presets
 	for _, q := range s.config.Queries {
-		switch fmt.Sprintf("%s-%s", s.runtime, q.Preset) {
-		case "kubernetes-envoy-request-success":
-			querySQL = append(querySQL, KubernetesEnvoyRequestSuccess)
-		case "kubernetes-envoy-request-duration":
-			querySQL = append(querySQL, KubernetesEnvoyRequestDuration)
-		default:
-			return fmt.Errorf("preset query %s, does not exist", q.Preset)
+		if q.Preset != "" {
+			// use a preset if present
+			switch fmt.Sprintf("%s-%s", s.runtime, q.Preset) {
+			case "kubernetes-envoy-request-success":
+				querySQL = append(querySQL, KubernetesEnvoyRequestSuccess)
+			case "kubernetes-envoy-request-duration":
+				querySQL = append(querySQL, KubernetesEnvoyRequestDuration)
+			default:
+				return fmt.Errorf("preset query %s, does not exist", q.Preset)
+			}
+		} else {
+			// use the custom query
+			querySQL = append(querySQL, q.Query)
 		}
 	}
 
 	// execute the queries
 	for i, q := range querySQL {
 		query := s.config.Queries[i]
+
+		// check the query is not empty
+		if q == "" {
+			return fmt.Errorf("query %s is empty, please specify a valid Prometheus query", query.Name)
+		}
 
 		// add the interpolation for the queries
 		tmpl, err := template.New("query").Parse(q)

@@ -34,3 +34,6 @@ patches:
 - path: rbac-role-patch.yaml
   target:
     kind: RoleBinding
+- path: webhook-patch.yaml
+  target:
+    kind: MutatingWebhookConfiguration

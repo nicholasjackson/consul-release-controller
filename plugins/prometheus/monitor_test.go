@@ -16,7 +16,7 @@ import (
 
 func setupPlugin(t *testing.T, config string) (*Plugin, *clients.PrometheusMock) {
 	l := hclog.NewNullLogger()
-	p, _ := New(l)
+	p, _ := New("api-deployment", "default", "kubernetes", l)
 
 	pm := &clients.PrometheusMock{}
 	pm.On("Query", mock.Anything, mock.Anything, mock.Anything, mock.Anything).Return(
@@ -27,7 +27,7 @@ func setupPlugin(t *testing.T, config string) (*Plugin, *clients.PrometheusMock)
 		nil,
 	)
 
-	err := p.Configure("api-deployment", "default", "kubernetes", []byte(config))
+	err := p.Configure([]byte(config))
 	require.NoError(t, err)
 
 	p.client = pm
@@ -37,6 +37,15 @@ func setupPlugin(t *testing.T, config string) (*Plugin, *clients.PrometheusMock)
 
 func TestPluginReturnsErrorWhenPresetNotFound(t *testing.T) {
 	p, pm := setupPlugin(t, twoDefaultQueriesInvalidPreset)
+
+	err := p.Check(context.Background(), 30*time.Second)
+	require.Error(t, err)
+
+	pm.AssertNotCalled(t, "Query")
+}
+
+func TestPluginReturnsErrorWhenCustomQueryBlank(t *testing.T) {
+	p, pm := setupPlugin(t, twoQueriesCustomEmpty)
 
 	err := p.Check(context.Background(), 30*time.Second)
 	require.Error(t, err)
@@ -133,6 +142,27 @@ func TestPluginExecutesQueriesAndChecksValue(t *testing.T) {
 	require.Contains(t, call2Args, `[30s]`)
 }
 
+func TestPluginExecutesCustomQueriesAndChecksValue(t *testing.T) {
+	p, pm := setupPlugin(t, twoQueriesOneCustom)
+
+	err := p.Check(context.Background(), 30*time.Second)
+	require.NoError(t, err)
+
+	pm.AssertNumberOfCalls(t, "Query", 2)
+
+	// check that the query interpolation was added correctly
+	call1Args := pm.Calls[0].Arguments[1]
+	call2Args := pm.Calls[1].Arguments[1]
+
+	require.Contains(t, call1Args, `namespace="default"`)
+	require.Contains(t, call1Args, `pod=~"api-deployment-[0-9a-zA-Z]+(-[0-9a-zA-Z]+)"`)
+	require.Contains(t, call1Args, `[30s]`)
+
+	require.Contains(t, call2Args, `namespace="default"`)
+	require.Contains(t, call2Args, `pod=~"api-deployment-[0-9a-zA-Z]+(-[0-9a-zA-Z]+)"`)
+	require.Contains(t, call2Args, `[30s]`)
+}
+
 const twoDefaultQueries = `
 {
 	"address": "http://prometheus-kube-prometheus-prometheus.monitoring.svc:9090",
@@ -166,6 +196,44 @@ const twoDefaultQueriesInvalidPreset = `
 	    "preset": "not-found",
 	    "min":20,
 	    "max": 200
+	  }
+	]
+}
+`
+
+const twoQueriesCustomEmpty = `
+{
+	"address": "http://prometheus-kube-prometheus-prometheus.monitoring.svc:9090",
+	"queries": [
+	  {
+	    "name": "request-success",
+	    "preset": "envoy-request-success",
+	    "min":99
+	  },
+	  {
+	    "name": "request-duration",
+	    "min":20,
+	    "max": 200,
+			"query": ""
+	  }
+	]
+}
+`
+
+const twoQueriesOneCustom = `
+{
+	"address": "http://prometheus-kube-prometheus-prometheus.monitoring.svc:9090",
+	"queries": [
+	  {
+	    "name": "request-success",
+	    "preset": "envoy-request-success",
+	    "min":99
+	  },
+	  {
+	    "name": "request-duration",
+	    "min":20,
+	    "max": 200,
+			"query": "histogram_quantile(0.99,sum(rate(envoy_cluster_upstream_rq_time_bucket{namespace=\"{{ .Namespace }}\",envoy_cluster_name=\"local_app\",pod=~\"{{ .Name }}-[0-9a-zA-Z]+(-[0-9a-zA-Z]+)\"}[{{ .Interval }}])) by (le))"
 	  }
 	]
 }

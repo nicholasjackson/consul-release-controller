@@ -2,7 +2,6 @@ package interfaces
 
 import (
 	"context"
-	"encoding/json"
 )
 
 type RuntimeDeploymentStatus string
@@ -23,8 +22,7 @@ type RuntimeBaseConfig struct {
 // Runtime defines an interface that all concrete platforms like Kubernetes must
 // implement
 type Runtime interface {
-	// Configure the plugin with the given json
-	Configure(config json.RawMessage) error
+	Configurable
 
 	// BaseConfig returns the base Runtime config
 	// all Runtime plugins should embed RuntimeBaseConfig in their own config

@@ -14,12 +14,15 @@ type Provider interface {
 	CreateRuntime(pluginName string) (Runtime, error)
 
 	// CreateMonitoring returns a Monitor plugin that corresponds to the given name
-	CreateMonitor(pluginName string) (Monitor, error)
+	CreateMonitor(pluginName, deploymentName, namespace, runtime string) (Monitor, error)
 
 	// CreateStrategy returns a Strategy plugin that corresponds to the given name
 	// Strategy is responsible for checking metrics to determine health, it requires a
 	// Monitor plugin in order to do this
 	CreateStrategy(pluginName string, mp Monitor) (Strategy, error)
+
+	// CreateWebhook returns a Webhook plugin that corresponds to the given name
+	CreateWebhook(pluginName string) (Webhook, error)
 
 	// Gets an instance of the current logger
 	GetLogger() hclog.Logger

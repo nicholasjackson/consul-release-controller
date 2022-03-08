@@ -23,7 +23,7 @@ controller:
         fieldRef:
           fieldPath: status.hostIP
     - name: CONSUL_HTTP_ADDR
-      value: http://$(HOST_IP):8501
+      value: http://$(HOST_IP):8500
     
     # Configure additional environment variables to be added to the controller container 
     env: []

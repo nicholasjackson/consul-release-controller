@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ## [0.0.11 - 2022-03-08
+### Changed
+- Updated Kubernetes deployment health timeout to 10 minutes from 1 minute.
+## [0.0.11 - 2022-03-08
 ### Added
 - Webhooks for Slack and Discord
 - Validating admission controller to ensure Kubernetes deployments do not override an active release

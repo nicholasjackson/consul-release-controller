@@ -13,7 +13,7 @@ import (
 	v1 "k8s.io/api/apps/v1"
 )
 
-var retryTimeout = 60 * time.Second
+var retryTimeout = 600 * time.Second
 var retryInterval = 1 * time.Second
 
 type Plugin struct {

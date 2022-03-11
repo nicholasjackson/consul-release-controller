@@ -14,10 +14,8 @@ acls:
   enabled: #{{ .Vars.acls_enabled }}
 #{{- if eq .Vars.controller_enabled false }}
 webhook:
-  additionalDNSNames:
-    - controller-webhook.shipyard.svc
-  serviceOverride: controller-webhook
-  namespaceOverride: shipyard
+  service: controller-webhook
+  namespace: shipyard
 #{{ end }}
 EOF
 
@@ -31,40 +29,6 @@ EOF
     controller_version = var.controller_version
   }
 }
-
-//template "controller_service" {
-//  disabled = !var.helm_chart_install
-//
-//  source = <<EOF
-//---
-//apiVersion: v1
-//kind: Service
-//metadata:
-//  name: external-webhook
-//  namespace: consul
-//spec:
-//  type: ExternalName
-//  externalName: controller-webhook.shipyard.svc
-//  EOF
-//
-//  destination = "${data("kube_setup")}/service.yaml"
-//}
-//
-//k8s_config "controller_service" {
-//  disabled = !var.helm_chart_install
-//
-//  depends_on = [
-//    "module.consul",
-//  ]
-//
-//  cluster = "k8s_cluster.dc1"
-//
-//  paths = [
-//    "${data("kube_setup")}/service.yaml"
-//  ]
-//
-//  wait_until_ready = true
-//}
 
 helm "consul-release-controller" {
   disabled = !var.helm_chart_install

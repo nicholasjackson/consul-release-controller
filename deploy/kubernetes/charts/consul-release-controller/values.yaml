@@ -143,8 +143,11 @@ webhook:
   enabled: "true"
   type: ClusterIP
   port: 443
-  service: consul-release-controller-webhook
-  namespaceOverride: ""
+
+  # Override the default webhook service name and namespace
+  # This can be used when running the controller locally
+  service: "" 
+  namespace: "" 
 
   # Allows adding additional DNS Names to the cert generated
   # for the webhook

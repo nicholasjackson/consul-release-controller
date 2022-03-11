@@ -7,7 +7,7 @@ metadata:
 spec:
   secretName: consul-release-controller-certificate
   dnsNames:
-  - {{ printf "%s.%s.svc" (default (include "consul-release-controller.fullname" .) .Values.webhook.service) .Release.Namespace  | quote }}
+  - {{ printf "%s.%s.svc" (default (include "consul-release-controller.fullname" .) .Values.webhook.service) (default .Release.Namespace .Values.webhook.namespace) | quote }}
   {{- range $dnsName := .Values.webhook.additionalDNSNames }}
   - {{ $dnsName | quote }}
   {{- end }}

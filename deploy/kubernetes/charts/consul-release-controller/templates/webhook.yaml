@@ -15,8 +15,8 @@ webhooks:
     sideEffects: None
     clientConfig:
       service:
-        name: {{ default (include "consul-release-controller.fullname" .) .Values.webhook.serviceOverride }}
-        namespace: {{ default .Release.Namespace .Values.webhook.namespaceOverride | quote }}
+        name: {{ default (include "consul-release-controller.fullname" .) .Values.webhook.service }}
+        namespace: {{ default .Release.Namespace .Values.webhook.namespace | quote }}
         path: /validate-v1-deployment
         port: 19443
     rules:

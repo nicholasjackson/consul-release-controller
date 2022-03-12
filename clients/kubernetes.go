@@ -168,6 +168,12 @@ func (k *KubernetesImpl) GetHealthyDeployment(ctx context.Context, name, namespa
 			return retry.RetryableError(fmt.Errorf("error calling GetDeployment: %s", lastError))
 		}
 
+		zero := int32(0)
+		// if the scale is set to 0 fail fast and return deployment not found
+		if deployment.Spec.Replicas == &zero {
+			return ErrDeploymentNotFound
+		}
+
 		k.logger.Debug(
 			"Deployment health",
 			"name", name,

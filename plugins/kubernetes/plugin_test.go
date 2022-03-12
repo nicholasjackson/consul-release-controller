@@ -67,7 +67,7 @@ func TestInitPrimaryDoesNothingWhenPrimaryExists(t *testing.T) {
 	require.Equal(t, interfaces.RuntimeDeploymentNoAction, status)
 
 	km.AssertCalled(t, "GetDeployment", mock.Anything, "test-deployment-primary", "testnamespace")
-	km.AssertCalled(t, "GetHealthyDeployment", mock.Anything, "test-deployment", "testnamespace")
+	km.AssertNotCalled(t, "GetHealthyDeployment", mock.Anything, "test-deployment", "testnamespace")
 	km.AssertNotCalled(t, "UpsertDeployment", mock.Anything, mock.Anything)
 }
 

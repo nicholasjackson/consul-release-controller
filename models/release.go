@@ -16,11 +16,12 @@ type Release struct {
 	Created     time.Time `json:"created"`
 	LastUpdated time.Time `json:"last_updated"`
 
-	Releaser *PluginConfig   `json:"releaser"`
-	Runtime  *PluginConfig   `json:"runtime"`
-	Strategy *PluginConfig   `json:"strategy"`
-	Monitor  *PluginConfig   `json:"monitor"`
-	Webhooks []*PluginConfig `json:"webhooks"`
+	Releaser           *PluginConfig   `json:"releaser"`
+	Runtime            *PluginConfig   `json:"runtime"`
+	Strategy           *PluginConfig   `json:"strategy"`
+	Monitor            *PluginConfig   `json:"monitor"`
+	Webhooks           []*PluginConfig `json:"webhooks"`
+	PostDeploymentTest []*PluginConfig `json:"post_deployment_test"`
 }
 
 type PluginConfig struct {

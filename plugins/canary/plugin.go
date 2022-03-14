@@ -65,7 +65,7 @@ func (p *Plugin) Configure(data json.RawMessage) error {
 
 	// validate the plugin config
 	validate := validator.New()
-	validate.RegisterValidation("duration", validateDuration)
+	validate.RegisterValidation("duration", interfaces.ValidateDuration)
 	err = validate.Struct(p.config)
 
 	if err != nil {
@@ -172,10 +172,4 @@ func (p *Plugin) GetPrimaryTraffic() int {
 
 func (p *Plugin) GetCandidateTraffic() int {
 	return p.currentTraffic
-}
-
-// validates that a string is a duration
-func validateDuration(field validator.FieldLevel) bool {
-	_, err := time.ParseDuration(field.Field().String())
-	return err == nil
 }

@@ -1,6 +1,7 @@
 package mocks
 
 import (
+	"bytes"
 	"testing"
 	"time"
 
@@ -19,6 +20,7 @@ type Mocks struct {
 	StoreMock        *StoreMock
 	StateMachineMock *StateMachineMock
 	WebhookMock      *WebhookMock
+	LogBuffer        *bytes.Buffer
 }
 
 // BuildMocks builds a mock provider and mock plugins for testing
@@ -80,13 +82,22 @@ func BuildMocks(t *testing.T) (*ProviderMock, *Mocks) {
 	provMock.On("CreateStrategy", mock.Anything).Return(stratMock, nil)
 	provMock.On("CreateWebhook", mock.Anything).Return(webhookMock, nil)
 
-	provMock.On("GetLogger", mock.Anything).Return(hclog.New(&hclog.LoggerOptions{Color: hclog.AutoColor, Level: hclog.Debug}))
+	logBuffer := bytes.NewBufferString("")
+
+	logger := hclog.New(
+		&hclog.LoggerOptions{
+			Level:  hclog.Trace,
+			Output: logBuffer,
+		},
+	)
+
+	provMock.On("GetLogger", mock.Anything).Return(logger)
 	provMock.On("GetMetrics").Return(metricsMock)
 	provMock.On("GetDataStore").Return(storeMock)
 	provMock.On("GetStateMachine", mock.Anything).Return(stateMock, nil)
 	provMock.On("DeleteStateMachine", mock.Anything).Return(nil)
 
-	return provMock, &Mocks{relMock, runMock, monMock, stratMock, metricsMock, storeMock, stateMock, webhookMock}
+	return provMock, &Mocks{relMock, runMock, monMock, stratMock, metricsMock, storeMock, stateMock, webhookMock, logBuffer}
 }
 
 // ProviderMock is a mock implementation of the provider that can be used for testing

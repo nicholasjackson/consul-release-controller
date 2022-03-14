@@ -41,6 +41,12 @@ func setupTests(t *testing.T) (*models.Release, *StateMachine, *mocks.Mocks) {
 	pp.AssertCalled(t, "CreateWebhook", r.Webhooks[0].Name)
 	pm.WebhookMock.AssertCalled(t, "Configure", r.Webhooks[0].Config)
 
+	t.Cleanup(func() {
+		if t.Failed() {
+			fmt.Println(pm.LogBuffer.String())
+		}
+	})
+
 	return r, sm, pm
 }
 

@@ -221,9 +221,8 @@ func (s *StateMachine) doConfigure() func(e *fsm.Event) {
 			if err != nil {
 				s.logger.Error("Configure completed with error", "error", err)
 
-				e.FSM.Event(interfaces.EventFail)
-
 				s.callWebhooks(s.webhookPlugins, "Configure release failed", interfaces.StateConfigure, interfaces.EventFail, 0, 100, err)
+				e.FSM.Event(interfaces.EventFail)
 				return
 			}
 
@@ -494,8 +493,8 @@ func (s *StateMachine) doPromote() func(e *fsm.Event) {
 			// scale all traffic to the candidate before promoting
 			err := s.releaserPlugin.Scale(ctx, 100)
 			if err != nil {
-				e.FSM.Event(interfaces.EventFail)
 				s.callWebhooks(s.webhookPlugins, "Promoting candidate failed", interfaces.StatePromote, interfaces.EventFail, 0, 100, err)
+				e.FSM.Event(interfaces.EventFail)
 				return
 			}
 
@@ -511,8 +510,8 @@ func (s *StateMachine) doPromote() func(e *fsm.Event) {
 			// promote the candidate to primary
 			_, err = s.runtimePlugin.PromoteCandidate(ctx)
 			if err != nil {
-				e.FSM.Event(interfaces.EventFail)
 				s.callWebhooks(s.webhookPlugins, "Promoting candidate failed", interfaces.StatePromote, interfaces.EventFail, 0, 100, err)
+				e.FSM.Event(interfaces.EventFail)
 				return
 			}
 
@@ -520,16 +519,16 @@ func (s *StateMachine) doPromote() func(e *fsm.Event) {
 			if err != nil {
 				s.logger.Error("Configure completed with error", "error", err)
 
-				e.FSM.Event(interfaces.EventFail)
 				s.callWebhooks(s.webhookPlugins, "Promoting candidate failed", interfaces.StatePromote, interfaces.EventFail, 0, 100, err)
+				e.FSM.Event(interfaces.EventFail)
 				return
 			}
 
 			// scale all traffic to the primary
 			err = s.releaserPlugin.Scale(ctx, 0)
 			if err != nil {
-				e.FSM.Event(interfaces.EventFail)
 				s.callWebhooks(s.webhookPlugins, "Promoting candidate failed", interfaces.StatePromote, interfaces.EventFail, 0, 100, err)
+				e.FSM.Event(interfaces.EventFail)
 				return
 			}
 
@@ -538,8 +537,8 @@ func (s *StateMachine) doPromote() func(e *fsm.Event) {
 			// scale down the canary
 			err = s.runtimePlugin.RemoveCandidate(ctx)
 			if err != nil {
-				e.FSM.Event(interfaces.EventFail)
 				s.callWebhooks(s.webhookPlugins, "Promoting candidate failed", interfaces.StatePromote, interfaces.EventFail, 100, 0, err)
+				e.FSM.Event(interfaces.EventFail)
 				return
 			}
 
@@ -587,8 +586,8 @@ func (s *StateMachine) doRollback() func(e *fsm.Event) {
 			// scale down the canary
 			err = s.runtimePlugin.RemoveCandidate(ctx)
 			if err != nil {
-				e.FSM.Event(interfaces.EventFail)
 				s.callWebhooks(s.webhookPlugins, "Rolling back deployment failed", interfaces.StateRollback, interfaces.EventFail, 100, 0, err)
+				e.FSM.Event(interfaces.EventFail)
 				return
 			}
 
@@ -609,8 +608,8 @@ func (s *StateMachine) doDestroy() func(e *fsm.Event) {
 			// restore the original deployment
 			err := s.runtimePlugin.RestoreOriginal(ctx)
 			if err != nil {
-				e.FSM.Event(interfaces.EventFail)
 				s.callWebhooks(s.webhookPlugins, "Remove release failed", interfaces.StateDestroy, interfaces.EventFail, 100, 0, err)
+				e.FSM.Event(interfaces.EventFail)
 				return
 			}
 
@@ -619,16 +618,16 @@ func (s *StateMachine) doDestroy() func(e *fsm.Event) {
 			if err != nil {
 				s.logger.Error("Configure completed with error", "error", err)
 
-				e.FSM.Event(interfaces.EventFail)
 				s.callWebhooks(s.webhookPlugins, "Remove release failed", interfaces.StateDestroy, interfaces.EventFail, 100, 0, err)
+				e.FSM.Event(interfaces.EventFail)
 				return
 			}
 
 			// scale all traffic to the candidate
 			err = s.releaserPlugin.Scale(ctx, 100)
 			if err != nil {
-				e.FSM.Event(interfaces.EventFail)
 				s.callWebhooks(s.webhookPlugins, "Remove release failed", interfaces.StateDestroy, interfaces.EventFail, 100, 0, err)
+				e.FSM.Event(interfaces.EventFail)
 				return
 			}
 
@@ -644,16 +643,16 @@ func (s *StateMachine) doDestroy() func(e *fsm.Event) {
 			// destroy the primary
 			err = s.runtimePlugin.RemovePrimary(ctx)
 			if err != nil {
-				e.FSM.Event(interfaces.EventFail)
 				s.callWebhooks(s.webhookPlugins, "Remove release failed", interfaces.StateDestroy, interfaces.EventFail, 0, 100, err)
+				e.FSM.Event(interfaces.EventFail)
 				return
 			}
 
 			// remove the consul config
 			err = s.releaserPlugin.Destroy(ctx)
 			if err != nil {
-				e.FSM.Event(interfaces.EventFail)
 				s.callWebhooks(s.webhookPlugins, "Remove release failed", interfaces.StateDestroy, interfaces.EventFail, 0, 100, err)
+				e.FSM.Event(interfaces.EventFail)
 				return
 			}
 

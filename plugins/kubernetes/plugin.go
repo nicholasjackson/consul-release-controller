@@ -78,9 +78,6 @@ func (p *Plugin) InitPrimary(ctx context.Context) (interfaces.RuntimeDeploymentS
 	// have we already created the primary? if so return
 	_, primaryErr := p.kubeClient.GetDeployment(ctx, primaryName, p.config.Namespace)
 
-	// fetch the current deployment
-	candidateDeployment, err = p.kubeClient.GetHealthyDeployment(ctx, p.config.Deployment, p.config.Namespace)
-
 	// if we already have a primary exit
 	if primaryErr == nil {
 		p.log.Debug("Primary deployment already exists", "name", primaryName, "namespace", p.config.Namespace)
@@ -88,6 +85,8 @@ func (p *Plugin) InitPrimary(ctx context.Context) (interfaces.RuntimeDeploymentS
 		return interfaces.RuntimeDeploymentNoAction, nil
 	}
 
+	// fetch the current deployment
+	candidateDeployment, err = p.kubeClient.GetHealthyDeployment(ctx, p.config.Deployment, p.config.Namespace)
 	// if we have no Candidate there is nothing we can do
 	if err != nil || candidateDeployment == nil {
 		return interfaces.RuntimeDeploymentNoAction, nil

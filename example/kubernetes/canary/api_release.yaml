@@ -24,33 +24,6 @@ spec:
       trafficStep: 20
       maxTraffic: 100
       errorThreshold: 5
-      
-      # Post Deployment Test executes after a deployment has been marked healthy
-      # and before the initial traffic is sent to the deployment and monitoring started.
-      # It is a way of actively health checking the deployment before exposing it to production
-      # traffic.
-      #
-      # Once a deployment has been marked healthy, Consul Release Controller will
-      # execute requests against the candidate deployment and monitor the results
-      # using the defined monitoring queries.
-      #
-      # If the deployment fails to pass the monitoring queries, the deployment will
-      # be rolled back and the release will be marked as failed.
-      #postDeploymentTest:
-      #  # The path of the API 
-      #  url: /myapi
-      #  # The HTTP method of the request
-      #  method: POST
-      #  # The payload to send with the request
-      #  payload: |
-      #    {
-      #      "something": "something"
-      #    }
-      #  # The number of itterations to run the test
-      #  itterations: 3
-      #  # The number of seconds to wait between itterations
-      #  delay: "1s"
-
   monitor:
     pluginName: "prometheus"
     config:

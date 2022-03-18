@@ -13,7 +13,7 @@ jobs:
     - name: Set up Go
       uses: actions/setup-go@v2
       with:
-        go-version: 1.17
+        go-version: 1.18
 
     - name: Build
       run: go build -v ./...
@@ -30,7 +30,7 @@ jobs:
     - name: Set up Go
       uses: actions/setup-go@v2
       with:
-        go-version: 1.17
+        go-version: 1.18
 
     - name: Setup Kubebuilder
       run: |
@@ -64,7 +64,7 @@ jobs:
     - name: Set up Go
       uses: actions/setup-go@v2
       with:
-        go-version: 1.17
+        go-version: 1.18
 
     - name: Setup Functional Tests
       run: |
@@ -185,10 +185,10 @@ jobs:
     if: ${{ needs.check_labels.outputs.pr_labels_set == 'true' }}
     
     steps:
-    - name: Set up Go 1.17
+    - name: Set up Go 1.18
       uses: actions/setup-go@v2
       with:
-        go-version: 1.17
+        go-version: 1.18
 
     - name: Set up Node 14
       uses: actions/setup-node@v2

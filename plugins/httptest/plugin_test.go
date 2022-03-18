@@ -1,20 +1,61 @@
 package httptest
 
 import (
+	"context"
+	"io/ioutil"
+	"net/http"
+	"net/http/httptest"
 	"testing"
+	"time"
 
+	"github.com/hashicorp/go-hclog"
+	"github.com/nicholasjackson/consul-release-controller/plugins/mocks"
+	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
 )
 
-func setupPlugin(t *testing.T) *Plugin {
-	p, err := New(nil, nil)
+type httpRequest struct {
+	Headers http.Header
+	Host    string
+	Path    string
+	Body    []byte
+	Method  string
+}
+
+func setupPlugin(t *testing.T) (*Plugin, *mocks.MonitorMock, *[]*httpRequest) {
+	mm := &mocks.MonitorMock{}
+
+	p, err := New("test", "testnamespace", "kubernetes", hclog.NewNullLogger(), mm)
 	require.NoError(t, err)
 
-	return p
+	reqs := []*httpRequest{}
+
+	// start the test server
+	s := httptest.NewServer(http.HandlerFunc(
+		func(rw http.ResponseWriter, r *http.Request) {
+			defer r.Body.Close()
+
+			hr := &httpRequest{}
+			hr.Path = r.URL.Path
+			hr.Body, _ = ioutil.ReadAll(r.Body)
+			hr.Headers = r.Header
+			hr.Method = r.Method
+			hr.Host = r.Host
+
+			reqs = append(reqs, hr)
+		}))
+
+	t.Setenv("UPSTREAMS", s.URL)
+
+	t.Cleanup(func() {
+		s.Close()
+	})
+
+	return p, mm, &reqs
 }
 
 func TestValidatesOK(t *testing.T) {
-	p := setupPlugin(t)
+	p, _, _ := setupPlugin(t)
 
 	err := p.Configure([]byte(configValid))
 
@@ -22,7 +63,7 @@ func TestValidatesOK(t *testing.T) {
 }
 
 func TestValidatesPath(t *testing.T) {
-	p := setupPlugin(t)
+	p, _, _ := setupPlugin(t)
 
 	err := p.Configure([]byte(configInvalidPath))
 
@@ -31,7 +72,7 @@ func TestValidatesPath(t *testing.T) {
 }
 
 func TestValidatesMissingPath(t *testing.T) {
-	p := setupPlugin(t)
+	p, _, _ := setupPlugin(t)
 
 	err := p.Configure([]byte(configMissingPath))
 
@@ -40,7 +81,7 @@ func TestValidatesMissingPath(t *testing.T) {
 }
 
 func TestValidatesMethod(t *testing.T) {
-	p := setupPlugin(t)
+	p, _, _ := setupPlugin(t)
 
 	err := p.Configure([]byte(configInvalidMethod))
 
@@ -49,7 +90,7 @@ func TestValidatesMethod(t *testing.T) {
 }
 
 func TestValidatesMissingMethod(t *testing.T) {
-	p := setupPlugin(t)
+	p, _, _ := setupPlugin(t)
 
 	err := p.Configure([]byte(configMissingMethod))
 
@@ -58,7 +99,7 @@ func TestValidatesMissingMethod(t *testing.T) {
 }
 
 func TestValidatesInterval(t *testing.T) {
-	p := setupPlugin(t)
+	p, _, _ := setupPlugin(t)
 
 	err := p.Configure([]byte(configInvalidInterval))
 
@@ -67,7 +108,7 @@ func TestValidatesInterval(t *testing.T) {
 }
 
 func TestValidatesMissingInterval(t *testing.T) {
-	p := setupPlugin(t)
+	p, _, _ := setupPlugin(t)
 
 	err := p.Configure([]byte(configMissingInterval))
 
@@ -76,7 +117,7 @@ func TestValidatesMissingInterval(t *testing.T) {
 }
 
 func TestValidatesDuration(t *testing.T) {
-	p := setupPlugin(t)
+	p, _, _ := setupPlugin(t)
 
 	err := p.Configure([]byte(configInvalidDuration))
 
@@ -85,7 +126,7 @@ func TestValidatesDuration(t *testing.T) {
 }
 
 func TestValidatesMissingDuration(t *testing.T) {
-	p := setupPlugin(t)
+	p, _, _ := setupPlugin(t)
 
 	err := p.Configure([]byte(configMissingDuration))
 
@@ -93,13 +134,41 @@ func TestValidatesMissingDuration(t *testing.T) {
 	require.Contains(t, err.Error(), ErrInvalidDuration.Error())
 }
 
+func TestExecuteCallsExternalServer(t *testing.T) {
+	p, _, hr := setupPlugin(t)
+
+	err := p.Configure([]byte(configValid))
+	require.NoError(t, err)
+
+	err = p.Execute(context.TODO())
+	require.NoError(t, err)
+
+	require.Len(t, *hr, 1)
+	require.Equal(t, "/", (*hr)[0].Path)
+	require.Equal(t, "GET", (*hr)[0].Method)
+	require.Equal(t, "test.testnamespace", (*hr)[0].Host)
+	require.Equal(t, "{\"foo\": \"bar\"}", string((*hr)[0].Body))
+}
+
+func TestExecuteCallsCheck(t *testing.T) {
+	p, mm, _ := setupPlugin(t)
+
+	err := p.Configure([]byte(configValid))
+	require.NoError(t, err)
+
+	err = p.Execute(context.TODO())
+	require.NoError(t, err)
+
+	mm.AssertCalled(t, "Check", mock.Anything, 10*time.Nanosecond)
+}
+
 var configValid = `
 {
 	"path": "/",
 	"method": "GET",
 	"payload": "{\"foo\": \"bar\"}",
-	"interval": "10s",
-	"duration": "10s"
+	"interval": "10ns",
+	"duration": "10ns"
 }
 `
 

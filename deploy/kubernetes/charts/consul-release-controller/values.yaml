@@ -154,4 +154,4 @@ webhook:
   # for the webhook
   additionalDNSNames: []
 
-  failurePolicy: Fail
+  failurePolicy: Ignore

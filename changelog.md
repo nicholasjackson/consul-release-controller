@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- Helm chart Webhook config failure policy now defaults to `Ignore`
+- Configuration for the server moved to global `config` package
+
+### Added
+- PostDeploymentTests
+
 ## [0.0.14 - 2022-03-14
 ### Fixed
 - Ensure a release reconfigures the plugins on update

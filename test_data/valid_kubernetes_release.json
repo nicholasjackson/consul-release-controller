@@ -46,6 +46,7 @@
       ]
     }
   },
+
   "webhooks": [
     {
       "plugin_name": "discord",
@@ -54,5 +55,16 @@
         "token":"mytoken"
       }
     }
-  ]
+  ],
+
+  "post_deployment_test": {
+    "plugin_name": "http",
+    "config": {
+      "path": "/",
+      "method": "GET",
+      "required_test_passes": 5,
+      "interval": "10s",
+      "timeout": "180s"
+    }
+  }
 }

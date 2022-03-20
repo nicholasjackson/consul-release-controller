@@ -12,15 +12,16 @@ import (
 )
 
 type Mocks struct {
-	ReleaserMock     *ReleaserMock
-	RuntimeMock      *RuntimeMock
-	MonitorMock      *MonitorMock
-	StrategyMock     *StrategyMock
-	MetricsMock      *MetricsMock
-	StoreMock        *StoreMock
-	StateMachineMock *StateMachineMock
-	WebhookMock      *WebhookMock
-	LogBuffer        *bytes.Buffer
+	ReleaserMock       *ReleaserMock
+	RuntimeMock        *RuntimeMock
+	MonitorMock        *MonitorMock
+	StrategyMock       *StrategyMock
+	PostDeploymentMock *PostDeploymentTestMock
+	MetricsMock        *MetricsMock
+	StoreMock          *StoreMock
+	StateMachineMock   *StateMachineMock
+	WebhookMock        *WebhookMock
+	LogBuffer          *bytes.Buffer
 }
 
 // BuildMocks builds a mock provider and mock plugins for testing
@@ -74,6 +75,10 @@ func BuildMocks(t *testing.T) (*ProviderMock, *Mocks) {
 	webhookMock.On("Configure", mock.Anything).Return(nil)
 	webhookMock.On("Send", mock.Anything, mock.Anything).Return(nil)
 
+	postDeploymentMock := &PostDeploymentTestMock{}
+	postDeploymentMock.On("Configure", mock.Anything).Return(nil)
+	postDeploymentMock.On("Execute", mock.Anything, mock.Anything).Return(nil)
+
 	provMock := &ProviderMock{}
 
 	provMock.On("CreateReleaser", mock.Anything).Return(relMock, nil)
@@ -81,6 +86,7 @@ func BuildMocks(t *testing.T) (*ProviderMock, *Mocks) {
 	provMock.On("CreateMonitor", mock.Anything, mock.Anything, mock.Anything, mock.Anything).Return(monMock, nil)
 	provMock.On("CreateStrategy", mock.Anything).Return(stratMock, nil)
 	provMock.On("CreateWebhook", mock.Anything).Return(webhookMock, nil)
+	provMock.On("CreatePostDeploymentTest", mock.Anything, mock.Anything, mock.Anything, mock.Anything, mock.Anything).Return(postDeploymentMock, nil)
 
 	logBuffer := bytes.NewBufferString("")
 
@@ -97,7 +103,7 @@ func BuildMocks(t *testing.T) (*ProviderMock, *Mocks) {
 	provMock.On("GetStateMachine", mock.Anything).Return(stateMock, nil)
 	provMock.On("DeleteStateMachine", mock.Anything).Return(nil)
 
-	return provMock, &Mocks{relMock, runMock, monMock, stratMock, metricsMock, storeMock, stateMock, webhookMock, logBuffer}
+	return provMock, &Mocks{relMock, runMock, monMock, stratMock, postDeploymentMock, metricsMock, storeMock, stateMock, webhookMock, logBuffer}
 }
 
 // ProviderMock is a mock implementation of the provider that can be used for testing
@@ -133,6 +139,12 @@ func (p *ProviderMock) CreateWebhook(pluginName string) (interfaces.Webhook, err
 	args := p.Called(pluginName)
 
 	return args.Get(0).(interfaces.Webhook), args.Error(1)
+}
+
+func (p *ProviderMock) CreatePostDeploymentTest(pluginName, deploymentName, namespace, runtime string, mp interfaces.Monitor) (interfaces.PostDeploymentTest, error) {
+	args := p.Called(pluginName, deploymentName, namespace, runtime, mp)
+
+	return args.Get(0).(interfaces.PostDeploymentTest), args.Error(1)
 }
 
 func (p *ProviderMock) GetLogger() hclog.Logger {

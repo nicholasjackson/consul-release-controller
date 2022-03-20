@@ -21,7 +21,7 @@ type Release struct {
 	Strategy           *PluginConfig   `json:"strategy"`
 	Monitor            *PluginConfig   `json:"monitor"`
 	Webhooks           []*PluginConfig `json:"webhooks"`
-	PostDeploymentTest []*PluginConfig `json:"post_deployment_test"`
+	PostDeploymentTest *PluginConfig   `json:"post_deployment_test"`
 }
 
 type PluginConfig struct {

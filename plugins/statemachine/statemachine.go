@@ -24,6 +24,7 @@ type StateMachine struct {
 	runtimePlugin  interfaces.Runtime
 	monitorPlugin  interfaces.Monitor
 	strategyPlugin interfaces.Strategy
+	testPlugin     interfaces.PostDeploymentTest
 	webhookPlugins []interfaces.Webhook
 	logger         hclog.Logger
 	metrics        interfaces.Metrics
@@ -89,8 +90,27 @@ func New(r *models.Release, pluginProvider interfaces.Provider) (*StateMachine, 
 			return nil, err
 		}
 
-		wp.Configure(w.Config)
+		err = wp.Configure(w.Config)
+		if err != nil {
+			return nil, err
+		}
+
 		sm.webhookPlugins = append(sm.webhookPlugins, wp)
+	}
+
+	// configure the post deployment tests
+	if r.PostDeploymentTest != nil {
+		testP, err := pluginProvider.CreatePostDeploymentTest(r.PostDeploymentTest.Name, rc.Deployment, rc.Namespace, r.Runtime.Name, monP)
+		if err != nil {
+			return nil, err
+		}
+
+		err = testP.Configure(r.PostDeploymentTest.Config)
+		if err != nil {
+			return nil, err
+		}
+
+		sm.testPlugin = testP
 	}
 
 	f := fsm.NewFSM(
@@ -372,6 +392,30 @@ func (s *StateMachine) doMonitor() func(e *fsm.Event) {
 		go func() {
 			// clean up resources if we finish before timeout
 			defer cancel()
+
+			// run the post deployment tests if we have any
+			if s.testPlugin != nil {
+				s.logger.Debug("Executing post deployment tests")
+				err := s.testPlugin.Execute(ctx, 30*time.Second)
+
+				if err != nil {
+					// post deployment tests have failed rollback
+					s.logger.Error("Post deployment tests completed with error", "error", err)
+
+					s.callWebhooks(
+						s.webhookPlugins,
+						"post deployment tests failed",
+						interfaces.StateMonitor,
+						interfaces.EventFail,
+						s.strategyPlugin.GetPrimaryTraffic(),
+						s.strategyPlugin.GetCandidateTraffic(),
+						err,
+					)
+
+					e.FSM.Event(interfaces.EventFail)
+					return
+				}
+			}
 
 			result, traffic, err := s.strategyPlugin.Execute(ctx)
 

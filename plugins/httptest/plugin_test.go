@@ -2,6 +2,7 @@ package httptest
 
 import (
 	"context"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
@@ -9,7 +10,9 @@ import (
 	"time"
 
 	"github.com/hashicorp/go-hclog"
+	"github.com/nicholasjackson/consul-release-controller/plugins/interfaces"
 	"github.com/nicholasjackson/consul-release-controller/plugins/mocks"
+	"github.com/nicholasjackson/consul-release-controller/testutils"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
 )
@@ -24,6 +27,7 @@ type httpRequest struct {
 
 func setupPlugin(t *testing.T) (*Plugin, *mocks.MonitorMock, *[]*httpRequest) {
 	mm := &mocks.MonitorMock{}
+	mm.On("Check", mock.Anything, 30*time.Second).Return(interfaces.CheckSuccess, nil)
 
 	p, err := New("test", "testnamespace", "kubernetes", hclog.NewNullLogger(), mm)
 	require.NoError(t, err)
@@ -119,19 +123,37 @@ func TestValidatesMissingInterval(t *testing.T) {
 func TestValidatesDuration(t *testing.T) {
 	p, _, _ := setupPlugin(t)
 
-	err := p.Configure([]byte(configInvalidDuration))
+	err := p.Configure([]byte(configInvalidTimeout))
 
 	require.Error(t, err)
-	require.Contains(t, err.Error(), ErrInvalidDuration.Error())
+	require.Contains(t, err.Error(), ErrInvalidTimeout.Error())
 }
 
 func TestValidatesMissingDuration(t *testing.T) {
 	p, _, _ := setupPlugin(t)
 
-	err := p.Configure([]byte(configMissingDuration))
+	err := p.Configure([]byte(configMissingTimeout))
 
 	require.Error(t, err)
-	require.Contains(t, err.Error(), ErrInvalidDuration.Error())
+	require.Contains(t, err.Error(), ErrInvalidTimeout.Error())
+}
+
+func TestValidatesRequiredTestPasses(t *testing.T) {
+	p, _, _ := setupPlugin(t)
+
+	err := p.Configure([]byte(configInvalidTestPasses))
+
+	require.Error(t, err)
+	require.Contains(t, err.Error(), ErrInvalidTestPasses.Error())
+}
+
+func TestValidatesMissingTestPasses(t *testing.T) {
+	p, _, _ := setupPlugin(t)
+
+	err := p.Configure([]byte(configMissingTestPasses))
+
+	require.Error(t, err)
+	require.Contains(t, err.Error(), ErrInvalidTestPasses.Error())
 }
 
 func TestExecuteCallsExternalServer(t *testing.T) {
@@ -143,14 +165,14 @@ func TestExecuteCallsExternalServer(t *testing.T) {
 	err = p.Execute(context.TODO())
 	require.NoError(t, err)
 
-	require.Len(t, *hr, 1)
+	require.Len(t, *hr, 5)
 	require.Equal(t, "/", (*hr)[0].Path)
 	require.Equal(t, "GET", (*hr)[0].Method)
 	require.Equal(t, "test.testnamespace", (*hr)[0].Host)
 	require.Equal(t, "{\"foo\": \"bar\"}", string((*hr)[0].Body))
 }
 
-func TestExecuteCallsCheck(t *testing.T) {
+func TestExecuteCallsCheck5Times(t *testing.T) {
 	p, mm, _ := setupPlugin(t)
 
 	err := p.Configure([]byte(configValid))
@@ -159,7 +181,44 @@ func TestExecuteCallsCheck(t *testing.T) {
 	err = p.Execute(context.TODO())
 	require.NoError(t, err)
 
-	mm.AssertCalled(t, "Check", mock.Anything, 10*time.Nanosecond)
+	mm.AssertCalled(t, "Check", mock.Anything, 30*time.Second)
+	mm.AssertNumberOfCalls(t, "Check", 5)
+}
+
+func TestExecuteCallsCheck8TimesWhenOneTestFails(t *testing.T) {
+	p, mm, _ := setupPlugin(t)
+	testutils.ClearMockCall(&mm.Mock, "Check")
+
+	mm.On("Check", mock.Anything, mock.Anything).Once().Return(interfaces.CheckSuccess, nil)
+	mm.On("Check", mock.Anything, mock.Anything).Once().Return(interfaces.CheckSuccess, nil)
+	mm.On("Check", mock.Anything, mock.Anything).Once().Return(interfaces.CheckFailed, fmt.Errorf("oops"))
+	mm.On("Check", mock.Anything, mock.Anything).Once().Return(interfaces.CheckSuccess, nil)
+	mm.On("Check", mock.Anything, mock.Anything).Once().Return(interfaces.CheckSuccess, nil)
+	mm.On("Check", mock.Anything, mock.Anything).Once().Return(interfaces.CheckSuccess, nil)
+	mm.On("Check", mock.Anything, mock.Anything).Once().Return(interfaces.CheckSuccess, nil)
+	mm.On("Check", mock.Anything, mock.Anything).Once().Return(interfaces.CheckSuccess, nil)
+
+	err := p.Configure([]byte(configValid))
+	require.NoError(t, err)
+
+	err = p.Execute(context.TODO())
+	require.NoError(t, err)
+
+	mm.AssertCalled(t, "Check", mock.Anything, 30*time.Second)
+	mm.AssertNumberOfCalls(t, "Check", 8)
+}
+
+func TestExecuteTimesoutIfNoSuccess(t *testing.T) {
+	p, mm, _ := setupPlugin(t)
+	testutils.ClearMockCall(&mm.Mock, "Check")
+	mm.On("Check", mock.Anything, mock.Anything).Return(interfaces.CheckFailed, fmt.Errorf("oops"))
+
+	err := p.Configure([]byte(configValid))
+	require.NoError(t, err)
+
+	err = p.Execute(context.TODO())
+	require.Error(t, err)
+	require.Contains(t, err.Error(), "timeout")
 }
 
 var configValid = `
@@ -168,7 +227,8 @@ var configValid = `
 	"method": "GET",
 	"payload": "{\"foo\": \"bar\"}",
 	"interval": "10ns",
-	"duration": "10ns"
+	"required_test_passes": 5,
+	"timeout": "10ms"
 }
 `
 
@@ -178,7 +238,8 @@ var configInvalidPath = `
 	"method": "GET",
 	"payload": "{\"foo\": \"bar\"}",
 	"interval": "10s",
-	"duration": "10s"
+	"required_test_passes": 5,
+	"timeout": "10s"
 }
 `
 
@@ -187,7 +248,8 @@ var configMissingPath = `
 	"method": "GET",
 	"payload": "{\"foo\": \"bar\"}",
 	"interval": "10s",
-	"duration": "10s"
+	"required_test_passes": 5,
+	"timeout": "10s"
 }
 `
 
@@ -197,7 +259,8 @@ var configInvalidMethod = `
 	"method": "GIT",
 	"payload": "{\"foo\": \"bar\"}",
 	"interval": "10s",
-	"duration": "10s"
+	"required_test_passes": 5,
+	"timeout": "10s"
 }
 `
 
@@ -206,7 +269,8 @@ var configMissingMethod = `
 	"path": "/",
 	"payload": "{\"foo\": \"bar\"}",
 	"interval": "10s",
-	"duration": "10s"
+	"required_test_passes": 5,
+	"timeout": "10s"
 }
 `
 
@@ -216,7 +280,8 @@ var configInvalidInterval = `
 	"method": "GET",
 	"payload": "{\"foo\": \"bar\"}",
 	"interval": "10",
-	"duration": "10s"
+	"required_test_passes": 5,
+	"timeout": "10s"
 }
 `
 var configMissingInterval = `
@@ -224,25 +289,49 @@ var configMissingInterval = `
 	"path": "/",
 	"method": "GET",
 	"payload": "{\"foo\": \"bar\"}",
-	"duration": "10s"
+	"required_test_passes": 5,
+	"timeout": "10s"
 }
 `
 
-var configInvalidDuration = `
+var configInvalidTimeout = `
+{
+	"path": "/",
+	"method": "GET",
+	"payload": "{\"foo\": \"bar\"}",
+	"duration": "10",
+	"required_test_passes": 5,
+	"timeout": "10"
+}
+`
+
+var configMissingTimeout = `
 {
 	"path": "/",
 	"method": "GET",
 	"payload": "{\"foo\": \"bar\"}",
 	"interval": "10s",
-	"duration": "10"
+	"required_test_passes": 5
 }
 `
 
-var configMissingDuration = `
+var configInvalidTestPasses = `
 {
 	"path": "/",
 	"method": "GET",
 	"payload": "{\"foo\": \"bar\"}",
-	"interval": "10s"
+	"interval": "10s",
+	"required_test_passes": 0,
+	"timeout": "10s"
+}
+`
+
+var configMissingTestPasses = `
+{
+	"path": "/",
+	"method": "GET",
+	"payload": "{\"foo\": \"bar\"}",
+	"interval": "10s",
+	"timeout": "10s"
 }
 `

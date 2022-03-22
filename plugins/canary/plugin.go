@@ -135,7 +135,7 @@ func (p *Plugin) Execute(ctx context.Context) (interfaces.StrategyStatus, int, e
 
 		p.log.Debug("Checking metrics", "type", "canary")
 
-		err := p.monitoring.Check(queryCtx, d)
+		_, err := p.monitoring.Check(queryCtx, d)
 		if err != nil {
 			p.log.Debug("Check failed", "type", "canary", "error", err)
 			failCount++

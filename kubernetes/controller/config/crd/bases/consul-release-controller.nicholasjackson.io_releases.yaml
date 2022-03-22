@@ -66,6 +66,37 @@ spec:
                 - config
                 - pluginName
                 type: object
+              postDeploymentTest:
+                description: PostDeploymentTest defines the configuration for the
+                  post deployment tests plugin
+                properties:
+                  config:
+                    properties:
+                      interval:
+                        type: string
+                      method:
+                        type: string
+                      path:
+                        type: string
+                      payload:
+                        type: string
+                      requiredTestPasses:
+                        type: integer
+                      timeout:
+                        type: string
+                    required:
+                    - interval
+                    - method
+                    - path
+                    - requiredTestPasses
+                    - timeout
+                    type: object
+                  pluginName:
+                    type: string
+                required:
+                - config
+                - pluginName
+                type: object
               releaser:
                 description: Releaser defines the configuration for the releaser plugin
                 properties:

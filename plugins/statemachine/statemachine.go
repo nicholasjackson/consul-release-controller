@@ -52,6 +52,9 @@ func New(r *models.Release, pluginProvider interfaces.Provider) (*StateMachine, 
 	relP.Configure(r.Releaser.Config)
 	sm.releaserPlugin = relP
 
+	// get the releaser config
+	releaserConfig := relP.BaseConfig()
+
 	// configure the runtime plugin
 	runP, err := pluginProvider.CreateRuntime(r.Runtime.Name)
 	if err != nil {
@@ -62,9 +65,11 @@ func New(r *models.Release, pluginProvider interfaces.Provider) (*StateMachine, 
 	runP.Configure(r.Runtime.Config)
 	sm.runtimePlugin = runP
 
+	// get the runtime config
+	runtimeConfig := runP.BaseConfig()
+
 	// create the monitor plugin
-	rc := runP.BaseConfig()
-	monP, err := pluginProvider.CreateMonitor(r.Monitor.Name, rc.Deployment, rc.Namespace, r.Runtime.Name)
+	monP, err := pluginProvider.CreateMonitor(r.Monitor.Name, runtimeConfig.Deployment, runtimeConfig.Namespace, r.Runtime.Name)
 	if err != nil {
 		return nil, err
 	}
@@ -100,7 +105,7 @@ func New(r *models.Release, pluginProvider interfaces.Provider) (*StateMachine, 
 
 	// configure the post deployment tests
 	if r.PostDeploymentTest != nil {
-		testP, err := pluginProvider.CreatePostDeploymentTest(r.PostDeploymentTest.Name, rc.Deployment, rc.Namespace, r.Runtime.Name, monP)
+		testP, err := pluginProvider.CreatePostDeploymentTest(r.PostDeploymentTest.Name, releaserConfig.ConsulService, releaserConfig.Namespace, r.Runtime.Name, monP)
 		if err != nil {
 			return nil, err
 		}

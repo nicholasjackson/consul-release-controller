@@ -24,8 +24,11 @@ k8s_config "upstreams-proxy" {
   cluster = "k8s_cluster.dc1"
   paths = [
     "./fake-controller.yaml",
-    "./example-config.yaml",
   ]
 
   wait_until_ready = true
+}
+
+output "UPSTREAMS" {
+  value = "http://localhost:28080"
 }

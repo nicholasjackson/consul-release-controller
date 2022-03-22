@@ -67,6 +67,14 @@ func (r *Release) ConvertToModel() *models.Release {
 
 	mr.Webhooks = webhooks
 
+	if r.Spec.PostDeploymentTest.PluginName != "" {
+		tcs := testConfigSnake(r.Spec.PostDeploymentTest.Config)
+		mr.PostDeploymentTest = &models.PluginConfig{
+			Name:   r.Spec.PostDeploymentTest.PluginName,
+			Config: getJSONRaw(tcs),
+		}
+	}
+
 	return mr
 }
 
@@ -114,4 +122,13 @@ type monitorQuerySnake struct {
 	Min    int    `json:"min,omitempty"`
 	Max    int    `json:"max,omitempty"`
 	Query  string `json:"query,omitempty"`
+}
+
+type testConfigSnake struct {
+	Path               string `json:"path"`
+	Method             string `json:"method"`
+	Payload            string `json:"payload,omitempty"`
+	RequiredTestPasses int    `json:"required_test_passes"`
+	Interval           string `json:"interval"`
+	Timeout            string `json:"timeout"`
 }

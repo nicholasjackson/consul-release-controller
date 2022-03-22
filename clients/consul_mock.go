@@ -27,8 +27,20 @@ func (mc *ConsulMock) CreateServiceSplitter(name string, primaryTraffic, canaryT
 	return args.Error(0)
 }
 
-func (mc *ConsulMock) CreateServiceRouter(name string, onlyDefault bool) error {
-	args := mc.Called(name, onlyDefault)
+func (mc *ConsulMock) CreateServiceRouter(name string) error {
+	args := mc.Called(name)
+
+	return args.Error(0)
+}
+
+func (mc *ConsulMock) CreateUpstreamRouter(name string) error {
+	args := mc.Called(name)
+
+	return args.Error(0)
+}
+
+func (mc *ConsulMock) CreateServiceIntention(name string) error {
+	args := mc.Called(name)
 
 	return args.Error(0)
 }
@@ -53,6 +65,18 @@ func (mc *ConsulMock) DeleteServiceSplitter(name string) error {
 }
 
 func (mc *ConsulMock) DeleteServiceRouter(name string) error {
+	args := mc.Called(name)
+
+	return args.Error(0)
+}
+
+func (mc *ConsulMock) DeleteUpstreamRouter(name string) error {
+	args := mc.Called(name)
+
+	return args.Error(0)
+}
+
+func (mc *ConsulMock) DeleteServiceIntention(name string) error {
 	args := mc.Called(name)
 
 	return args.Error(0)

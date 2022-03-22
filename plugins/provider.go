@@ -8,6 +8,7 @@ import (
 	"github.com/nicholasjackson/consul-release-controller/plugins/canary"
 	"github.com/nicholasjackson/consul-release-controller/plugins/consul"
 	"github.com/nicholasjackson/consul-release-controller/plugins/discord"
+	"github.com/nicholasjackson/consul-release-controller/plugins/httptest"
 	"github.com/nicholasjackson/consul-release-controller/plugins/interfaces"
 	"github.com/nicholasjackson/consul-release-controller/plugins/kubernetes"
 	"github.com/nicholasjackson/consul-release-controller/plugins/prometheus"
@@ -75,6 +76,14 @@ func (p *ProviderImpl) CreateWebhook(pluginName string) (interfaces.Webhook, err
 	}
 
 	return nil, fmt.Errorf("invalid Webhook plugin type: %s", pluginName)
+}
+
+func (p *ProviderImpl) CreatePostDeploymentTest(pluginName, name, namespace, runtime string, mp interfaces.Monitor) (interfaces.PostDeploymentTest, error) {
+	if pluginName == PluginDeploymentTestTypeHTTP {
+		return httptest.New(name, namespace, runtime, p.log.Named("monitor-plugin-test-http"), mp)
+	}
+
+	return nil, fmt.Errorf("invalid Post deployment test plugin type: %s", pluginName)
 }
 
 func (p *ProviderImpl) GetLogger() hclog.Logger {

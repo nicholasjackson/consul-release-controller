@@ -13,7 +13,7 @@ controller:
       repository: nicholasjackson/consul-release-controller
       pullPolicy: IfNotPresent
       # Overrides the image tag whose default is the chart appVersion.
-      tag: "0.0.13"
+      tag: "44a059e"
 
     # Set the CONSUL_HTTP_ADDR to the address of the Consul cluster, this env is only used when
     # autoEncrypt is disabled as autoEncrypt adds a https variable.
@@ -154,4 +154,4 @@ webhook:
   # for the webhook
   additionalDNSNames: []
 
-  failurePolicy: Ignore
+  failurePolicy: Fail

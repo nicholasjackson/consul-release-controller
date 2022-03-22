@@ -55,6 +55,11 @@ var ErrInvalidTimeout = fmt.Errorf("Timeout is not a valid duration, please spec
 var ErrInvalidTestPasses = fmt.Errorf("RequiredTestPasses is not valid, please specify a value greater than 0")
 
 func New(name, namespace, runtime string, l hclog.Logger, m interfaces.Monitor) (*Plugin, error) {
+	// if there is no namespaces set, then use the convention for default to ensure the upstream routing works
+	if namespace == "" {
+		namespace = "default"
+	}
+
 	return &Plugin{log: l, monitoring: m, name: name, namespace: namespace, runtime: runtime}, nil
 }
 
@@ -96,7 +101,7 @@ func (p *Plugin) Configure(data json.RawMessage) error {
 	return nil
 }
 
-func (p *Plugin) Execute(ctx context.Context) error {
+func (p *Plugin) Execute(ctx context.Context, i time.Duration) error {
 	timeoutDuration, err := time.ParseDuration(p.config.Timeout)
 	if err != nil {
 		return fmt.Errorf("unable to parse timeout as duration: %s", err)
@@ -112,6 +117,11 @@ func (p *Plugin) Execute(ctx context.Context) error {
 
 	for {
 		// Make a call to the external service to an instance of Envoy proxy that exposes the different services using HOST header on the same port
+		url := fmt.Sprintf("%s%s", config.ConsulServiceUpstreams(), p.config.Path)
+		host := fmt.Sprintf("%s.%s", p.name, p.namespace)
+
+		p.log.Debug("Executing request to upstream", "url", url, "upstream", host)
+
 		httpreq, err := http.NewRequest(p.config.Method, fmt.Sprintf("%s%s", config.ConsulServiceUpstreams(), p.config.Path), bytes.NewBufferString(p.config.Payload))
 		if err != nil {
 			p.log.Error("Unable to create HTTP request", "error", err)
@@ -120,15 +130,20 @@ func (p *Plugin) Execute(ctx context.Context) error {
 
 		// The envoy proxy that is providing access to the candidate service has been configured to use HOST header to
 		// differentiate between the services. The convention is service.namespace
-		httpreq.Host = fmt.Sprintf("%s.%s", p.name, p.namespace)
+		httpreq.Host = host
 
-		_, err = http.DefaultClient.Do(httpreq)
+		resp, err := http.DefaultClient.Do(httpreq)
 		if err != nil {
 			return err
 		}
 
-		// We are ignoring the status code as we are using the Monitoring checks as a measure of success
+		p.log.Debug("Response from upstream",
+			"url", url,
+			"upstream", host,
+			"status_code", resp.StatusCode,
+		)
 
+		// We are ignoring the status code as we are using the Monitoring checks as a measure of success
 		res, _ := p.monitoring.Check(ctx, 30*time.Second)
 		if res == interfaces.CheckSuccess {
 			successCount++

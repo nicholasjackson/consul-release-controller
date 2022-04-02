@@ -4,7 +4,7 @@ Feature: Kubernetes
   I need to ensure the code funcionality is working as specified
 
   @k8s_canary_existing
-  Scenario: Canary Deployment existing candidate
+  Scenario: Canary Deployment existing candidate succeeds
     Given the controller is running on Kubernetes
     When I delete the Kubernetes deployment "api-deployment"
       Then a Kubernetes deployment called "api-deployment" should not exist
@@ -46,7 +46,7 @@ Feature: Kubernetes
         """
 
   @k8s_canary_none
-  Scenario: Canary Deployment no candidate
+  Scenario: Canary Deployment no candidate succeeds
     Given the controller is running on Kubernetes
     When I delete the Kubernetes deployment "api-deployment"
       Then a Kubernetes deployment called "api-deployment" should not exist
@@ -89,7 +89,7 @@ Feature: Kubernetes
         """
 
   @k8s_canary_rollback
-  Scenario: Canary Deployment with Rollback
+  Scenario: Canary Deployment with candidate rollsback
     Given the controller is running on Kubernetes
     When I delete the Kubernetes deployment "api-deployment"
     And I create a new version of the Kubernetes deployment "./config/api.yaml"
@@ -129,7 +129,7 @@ Feature: Kubernetes
         """
 
   @k8s_canary_with_post_deployment_test
-  Scenario: Canary Deployment no candidate
+  Scenario: Canary Deployment with passing post deployment test succeeds
     Given the controller is running on Kubernetes
     When I delete the Kubernetes deployment "api-deployment"
       Then a Kubernetes deployment called "api-deployment" should not exist
@@ -172,7 +172,7 @@ Feature: Kubernetes
         """
 
   @k8s_canary_with_post_deployment_test_fail
-  Scenario: Canary Deployment with Rollback
+  Scenario: Canary Deployment with failing post deployment test rollsback
     Given the controller is running on Kubernetes
     When I delete the Kubernetes deployment "api-deployment"
     And I create a new version of the Kubernetes deployment "./config/api.yaml"

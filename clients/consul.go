@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	MetaCreatedTag        = "created-by"
+	MetaCreatedTag        = "external-source"
 	MetaCreatedValue      = "consul-release-controller"
 	SubsetPrefix          = "crc"
 	UpstreamRouterName    = "consul-release-controller-upstreams"
@@ -94,13 +94,19 @@ type ConsulImpl struct {
 // CreateServiceDefaults if does not exist
 func (c *ConsulImpl) CreateServiceDefaults(name string) error {
 	qo := &api.QueryOptions{}
+	wo := &api.WriteOptions{}
+	defaults := &api.ServiceConfigEntry{}
 
 	if c.options.Namespace != "" {
 		qo.Namespace = c.options.Namespace
+		wo.Namespace = c.options.Namespace
+		defaults.Namespace = c.options.Namespace
 	}
 
 	if c.options.Partition != "" {
 		qo.Partition = c.options.Partition
+		wo.Partition = c.options.Partition
+		defaults.Partition = c.options.Partition
 	}
 
 	// first check to see if the config already exists,
@@ -135,45 +141,16 @@ func (c *ConsulImpl) CreateServiceDefaults(name string) error {
 			return nil
 		case "tcp":
 			// update the existing defaults
-			wo := &api.WriteOptions{}
-
-			if c.options.Namespace != "" {
-				wo.Namespace = c.options.Namespace
-			}
-
-			if c.options.Partition != "" {
-				wo.Partition = c.options.Partition
-			}
-
 			ce.(*api.ServiceConfigEntry).Protocol = "http"
 			_, _, err := c.client.ConfigEntries().Set(ce, wo)
 			return err
 		}
 	}
 
-	defaults := &api.ServiceConfigEntry{}
 	defaults.Name = name
 	defaults.Kind = api.ServiceDefaults
 	defaults.Protocol = "http"
 	defaults.Meta = map[string]string{MetaCreatedTag: MetaCreatedValue}
-
-	if c.options.Namespace != "" {
-		defaults.Namespace = c.options.Namespace
-	}
-
-	if c.options.Partition != "" {
-		defaults.Partition = c.options.Partition
-	}
-
-	wo := &api.WriteOptions{}
-
-	if c.options.Namespace != "" {
-		wo.Namespace = c.options.Namespace
-	}
-
-	if c.options.Partition != "" {
-		wo.Partition = c.options.Partition
-	}
 
 	_, _, err = c.client.ConfigEntries().Set(defaults, wo)
 
@@ -182,6 +159,9 @@ func (c *ConsulImpl) CreateServiceDefaults(name string) error {
 
 func (c *ConsulImpl) CreateServiceResolver(name string) error {
 	defaults := &api.ServiceResolverConfigEntry{}
+	qo := &api.QueryOptions{}
+	wo := &api.WriteOptions{}
+
 	defaults.Name = name
 	defaults.Kind = api.ServiceResolver
 	defaults.Meta = map[string]string{MetaCreatedTag: MetaCreatedValue}
@@ -192,27 +172,27 @@ func (c *ConsulImpl) CreateServiceResolver(name string) error {
 	defaults.DefaultSubset = fmt.Sprintf("%s-%s-candidate", SubsetPrefix, name)
 
 	if c.options.Namespace != "" {
+		qo.Namespace = c.options.Namespace
+		wo.Namespace = c.options.Namespace
 		defaults.Namespace = c.options.Namespace
 	}
 
 	if c.options.Partition != "" {
-		defaults.Partition = c.options.Partition
-	}
-
-	// check that a resolver does not already exist if so modify rather than overwrite
-	qo := &api.QueryOptions{}
-
-	if c.options.Namespace != "" {
-		qo.Namespace = c.options.Namespace
-	}
-
-	if c.options.Partition != "" {
 		qo.Partition = c.options.Partition
+		wo.Partition = c.options.Partition
+		defaults.Partition = c.options.Partition
 	}
 
 	// check that we created this
 	ce, _, err := c.client.ConfigEntries().Get(api.ServiceResolver, name, qo)
-	if err != nil && ce != nil {
+	if err != nil {
+		// is the item not found if so the error will contain a 404
+		if !strings.Contains(err.Error(), "404") {
+			return err
+		}
+	}
+
+	if ce != nil {
 		// we have an existing entry, mutate rather than overwrite
 		defaults = ce.(*api.ServiceResolverConfigEntry)
 	}
@@ -228,33 +208,27 @@ func (c *ConsulImpl) CreateServiceResolver(name string) error {
 	defaults.Subsets[fmt.Sprintf("%s-%s-primary", SubsetPrefix, name)] = primarySubset
 	defaults.Subsets[fmt.Sprintf("%s-%s-candidate", SubsetPrefix, name)] = canarySubset
 
-	wo := &api.WriteOptions{}
-
-	if c.options.Namespace != "" {
-		wo.Namespace = c.options.Namespace
-	}
-
-	if c.options.Partition != "" {
-		wo.Partition = c.options.Partition
-	}
-
 	_, _, err = c.client.ConfigEntries().Set(defaults, wo)
 
 	return err
 }
 
 func (c *ConsulImpl) CreateServiceSplitter(name string, primaryTraffic, canaryTraffic int) error {
+	wo := &api.WriteOptions{}
 	defaults := &api.ServiceSplitterConfigEntry{}
+
 	defaults.Kind = api.ServiceSplitter
 	defaults.Name = name
 	defaults.Meta = map[string]string{MetaCreatedTag: MetaCreatedValue}
 
 	if c.options.Namespace != "" {
 		defaults.Namespace = c.options.Namespace
+		wo.Namespace = c.options.Namespace
 	}
 
 	if c.options.Partition != "" {
 		defaults.Partition = c.options.Partition
+		wo.Partition = c.options.Partition
 	}
 
 	primarySplit := api.ServiceSplit{}
@@ -267,16 +241,6 @@ func (c *ConsulImpl) CreateServiceSplitter(name string, primaryTraffic, canaryTr
 
 	defaults.Splits = []api.ServiceSplit{primarySplit, canarySplit}
 
-	wo := &api.WriteOptions{}
-
-	if c.options.Namespace != "" {
-		wo.Namespace = c.options.Namespace
-	}
-
-	if c.options.Partition != "" {
-		wo.Partition = c.options.Partition
-	}
-
 	_, _, err := c.client.ConfigEntries().Set(defaults, wo)
 
 	return err
@@ -284,7 +248,10 @@ func (c *ConsulImpl) CreateServiceSplitter(name string, primaryTraffic, canaryTr
 
 // CreateServiceRouter creates a new service router
 func (c *ConsulImpl) CreateServiceRouter(name string) error {
+	qo := &api.QueryOptions{}
+	wo := &api.WriteOptions{}
 	defaults := &api.ServiceRouterConfigEntry{}
+
 	defaults.Name = name
 	defaults.Kind = api.ServiceRouter
 	defaults.Meta = map[string]string{MetaCreatedTag: MetaCreatedValue}
@@ -292,26 +259,26 @@ func (c *ConsulImpl) CreateServiceRouter(name string) error {
 
 	if c.options.Namespace != "" {
 		defaults.Namespace = c.options.Namespace
+		qo.Namespace = c.options.Namespace
+		wo.Namespace = c.options.Namespace
 	}
 
 	if c.options.Partition != "" {
 		defaults.Partition = c.options.Partition
-	}
-
-	// check that a router does not already exist if so modify rather than overwrite
-	qo := &api.QueryOptions{}
-
-	if c.options.Namespace != "" {
-		qo.Namespace = c.options.Namespace
-	}
-
-	if c.options.Partition != "" {
 		qo.Partition = c.options.Partition
+		wo.Partition = c.options.Partition
 	}
 
 	// check that there is not an existing router, if so use it
 	ce, _, err := c.client.ConfigEntries().Get(api.ServiceRouter, name, qo)
-	if err != nil && ce != nil {
+	if err != nil {
+		// is the item not found if so the error will contain a 404
+		if !strings.Contains(err.Error(), "404") {
+			return err
+		}
+	}
+
+	if ce != nil {
 		// we have an existing entry, mutate rather than overwrite
 		defaults = ce.(*api.ServiceRouterConfigEntry)
 	}
@@ -357,16 +324,6 @@ func (c *ConsulImpl) CreateServiceRouter(name string) error {
 	canaryRoute.Match = canaryRouteHTTP
 	defaults.Routes = append(defaults.Routes, canaryRoute)
 
-	wo := &api.WriteOptions{}
-
-	if c.options.Namespace != "" {
-		wo.Namespace = c.options.Namespace
-	}
-
-	if c.options.Partition != "" {
-		wo.Partition = c.options.Partition
-	}
-
 	_, _, err = c.client.ConfigEntries().Set(defaults, wo)
 	return err
 }
@@ -394,7 +351,14 @@ func (c *ConsulImpl) CreateUpstreamRouter(name string) error {
 
 	// check that there is not an existing router, if so use it
 	ce, _, err := c.client.ConfigEntries().Get(api.ServiceRouter, UpstreamRouterName, qo)
-	if err != nil && ce != nil {
+	if err != nil {
+		// is the item not found if so the error will contain a 404
+		if !strings.Contains(err.Error(), "404") {
+			return err
+		}
+	}
+
+	if ce != nil {
 		// we have an existing entry, mutate rather than overwrite
 		defaults = ce.(*api.ServiceRouterConfigEntry)
 	}
@@ -442,40 +406,52 @@ func (c *ConsulImpl) CreateServiceIntention(name string) error {
 	defaults.Meta = map[string]string{MetaCreatedTag: MetaCreatedValue}
 	defaults.Sources = []*api.SourceIntention{}
 
-	qo := &api.QueryOptions{}
+	// create the intention allowing access for the controller
 	i := &api.SourceIntention{}
+	i.Name = ControllerServiceName
+	i.Action = "allow"
+
+	qo := &api.QueryOptions{}
+	wo := &api.WriteOptions{}
 
 	if c.options.Namespace != "" {
 		defaults.Namespace = c.options.Namespace
-		i.Namespace = c.options.Namespace
 		qo.Namespace = c.options.Namespace
+		wo.Namespace = c.options.Namespace
+
+		// TODO
+		// this assumes that the consul release controller is running in the same
+		// namespace as the destination service, this needs fixed
+		i.Namespace = c.options.Namespace
 	}
 
 	if c.options.Partition != "" {
 		defaults.Partition = c.options.Partition
-		i.Partition = c.options.Partition
 		qo.Partition = c.options.Partition
+		wo.Partition = c.options.Partition
+
+		// TODO
+		// this assumes that the consul release controller is running in the same
+		// partition as the destination service, this needs fixed
+		i.Partition = c.options.Partition
 	}
 
-	// check that there is not an existing router, if so use it
+	// check that there is not an existing intention, if so use it
 	ce, _, err := c.client.ConfigEntries().Get(api.ServiceIntentions, name, qo)
-	if err != nil && ce != nil {
+	if err != nil {
+		// is the item not found if so the error will contain a 404
+		if !strings.Contains(err.Error(), "404") {
+			return err
+		}
+	}
+
+	if ce != nil {
 		// we have an existing entry, mutate rather than overwrite
 		defaults = ce.(*api.ServiceIntentionsConfigEntry)
 	}
 
-	i.Name = ControllerServiceName
-	i.Action = "allow"
+	// update the list of intentions adding the controller intention
 	defaults.Sources = append(defaults.Sources, i)
-
-	wo := &api.WriteOptions{}
-	if c.options.Namespace != "" {
-		wo.Namespace = c.options.Namespace
-	}
-
-	if c.options.Partition != "" {
-		wo.Partition = c.options.Partition
-	}
 
 	_, _, err = c.client.ConfigEntries().Set(defaults, wo)
 
@@ -484,13 +460,16 @@ func (c *ConsulImpl) CreateServiceIntention(name string) error {
 
 func (c *ConsulImpl) DeleteServiceDefaults(name string) error {
 	qo := &api.QueryOptions{}
+	wo := &api.WriteOptions{}
 
 	if c.options.Namespace != "" {
 		qo.Namespace = c.options.Namespace
+		wo.Namespace = c.options.Namespace
 	}
 
 	if c.options.Partition != "" {
 		qo.Partition = c.options.Partition
+		wo.Partition = c.options.Partition
 	}
 
 	// check that we created this
@@ -508,47 +487,32 @@ func (c *ConsulImpl) DeleteServiceDefaults(name string) error {
 		return nil
 	}
 
-	wo := &api.WriteOptions{}
-
-	if c.options.Namespace != "" {
-		wo.Namespace = c.options.Namespace
-	}
-
-	if c.options.Partition != "" {
-		wo.Partition = c.options.Partition
-	}
-
 	_, err = c.client.ConfigEntries().Delete("service-defaults", name, wo)
 	return err
 }
 
 func (c *ConsulImpl) DeleteServiceResolver(name string) error {
 	qo := &api.QueryOptions{}
-
-	if c.options.Namespace != "" {
-		qo.Namespace = c.options.Namespace
-	}
-
-	if c.options.Partition != "" {
-		qo.Partition = c.options.Partition
-	}
-
 	wo := &api.WriteOptions{}
 
 	if c.options.Namespace != "" {
+		qo.Namespace = c.options.Namespace
 		wo.Namespace = c.options.Namespace
 	}
 
 	if c.options.Partition != "" {
+		qo.Partition = c.options.Partition
 		wo.Partition = c.options.Partition
 	}
 
 	// check that we created this
 	ce, _, err := c.client.ConfigEntries().Get(api.ServiceResolver, name, qo)
+	// no config entry found
 	if err != nil && ce != nil {
 		return nil
 	}
 
+	// internal error
 	if err != nil || ce == nil {
 		return err
 	}
@@ -583,22 +547,15 @@ func (c *ConsulImpl) DeleteServiceSplitter(name string) error {
 
 func (c *ConsulImpl) DeleteServiceRouter(name string) error {
 	qo := &api.QueryOptions{}
-
-	if c.options.Namespace != "" {
-		qo.Namespace = c.options.Namespace
-	}
-
-	if c.options.Partition != "" {
-		qo.Partition = c.options.Partition
-	}
-
 	wo := &api.WriteOptions{}
 
 	if c.options.Namespace != "" {
+		qo.Namespace = c.options.Namespace
 		wo.Namespace = c.options.Namespace
 	}
 
 	if c.options.Partition != "" {
+		qo.Partition = c.options.Partition
 		wo.Partition = c.options.Partition
 	}
 
@@ -633,22 +590,15 @@ func (c *ConsulImpl) DeleteServiceRouter(name string) error {
 
 func (c *ConsulImpl) DeleteUpstreamRouter(name string) error {
 	qo := &api.QueryOptions{}
-
-	if c.options.Namespace != "" {
-		qo.Namespace = c.options.Namespace
-	}
-
-	if c.options.Partition != "" {
-		qo.Partition = c.options.Partition
-	}
-
 	wo := &api.WriteOptions{}
 
 	if c.options.Namespace != "" {
+		qo.Namespace = c.options.Namespace
 		wo.Namespace = c.options.Namespace
 	}
 
 	if c.options.Partition != "" {
+		qo.Partition = c.options.Partition
 		wo.Partition = c.options.Partition
 	}
 
@@ -661,10 +611,12 @@ func (c *ConsulImpl) DeleteUpstreamRouter(name string) error {
 		return err
 	}
 
+	sre := ce.(*api.ServiceRouterConfigEntry)
+
 	// remove the route for this service
 	routes := []api.ServiceRoute{}
 
-	for _, r := range ce.(*api.ServiceRouterConfigEntry).Routes {
+	for _, r := range sre.Routes {
 		if r.Destination.Service != name {
 			routes = append(routes, r)
 		}
@@ -672,34 +624,27 @@ func (c *ConsulImpl) DeleteUpstreamRouter(name string) error {
 
 	// no routes left, clean up config
 	if len(routes) == 0 {
-		_, err = c.client.ConfigEntries().Delete(api.ServiceRouter, name, wo)
+		_, err = c.client.ConfigEntries().Delete(api.ServiceRouter, UpstreamRouterName, wo)
 		return err
 	}
 
 	// update the config
-	ce.(*api.ServiceRouterConfigEntry).Routes = routes
-	_, _, err = c.client.ConfigEntries().Set(ce, wo)
+	sre.Routes = routes
+	_, _, err = c.client.ConfigEntries().Set(sre, wo)
 	return err
 }
 
 func (c *ConsulImpl) DeleteServiceIntention(name string) error {
 	qo := &api.QueryOptions{}
-
-	if c.options.Namespace != "" {
-		qo.Namespace = c.options.Namespace
-	}
-
-	if c.options.Partition != "" {
-		qo.Partition = c.options.Partition
-	}
-
 	wo := &api.WriteOptions{}
 
 	if c.options.Namespace != "" {
+		qo.Namespace = c.options.Namespace
 		wo.Namespace = c.options.Namespace
 	}
 
 	if c.options.Partition != "" {
+		qo.Partition = c.options.Partition
 		wo.Partition = c.options.Partition
 	}
 

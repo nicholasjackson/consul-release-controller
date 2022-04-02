@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"os"
 	"os/exec"
+	"path"
 	"strings"
 	"time"
 
@@ -109,7 +110,13 @@ func initializeScenario(ctx *godog.ScenarioContext) {
 		}
 
 		if showLog && !*alwaysLog {
-			fmt.Println(logStore.String())
+			pwd, _ := os.Getwd()
+			logfile := path.Join(pwd, "tests.log")
+			// create log file
+			os.Remove(logfile)
+			os.WriteFile(logfile, logStore.Bytes(), os.ModePerm)
+
+			fmt.Printf("Error log written to file %s", logfile)
 		}
 
 		// exit after the scenario when don't destroy is set

@@ -417,7 +417,7 @@ func (s *StateMachine) doMonitor() func(e *fsm.Event) {
 						err,
 					)
 
-					e.FSM.Event(interfaces.EventFail)
+					e.FSM.Event(interfaces.EventUnhealthy)
 					return
 				}
 			}

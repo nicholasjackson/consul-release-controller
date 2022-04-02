@@ -86,9 +86,10 @@ func (p *Plugin) InitPrimary(ctx context.Context) (interfaces.RuntimeDeploymentS
 	}
 
 	// fetch the current deployment
-	candidateDeployment, err = p.kubeClient.GetHealthyDeployment(ctx, p.config.Deployment, p.config.Namespace)
+	candidateDeployment, err = p.kubeClient.GetDeployment(ctx, p.config.Deployment, p.config.Namespace)
 	// if we have no Candidate there is nothing we can do
 	if err != nil || candidateDeployment == nil {
+		p.log.Debug("No candidate deployment, nothing to do")
 		return interfaces.RuntimeDeploymentNoAction, nil
 	}
 

@@ -13,7 +13,7 @@ import (
 	"github.com/sethvargo/go-retry"
 )
 
-var syncDelay = 2 * time.Second
+var syncDelay = 1 * time.Second
 
 type Plugin struct {
 	log          hclog.Logger
@@ -87,6 +87,8 @@ func (p *Plugin) Setup(ctx context.Context) error {
 		return err
 	}
 
+	time.Sleep(syncDelay)
+
 	// create the service defaults for the controller and the virtual service that allows
 	// access to candidate deployments
 	err = p.consulClient.CreateServiceDefaults(clients.ControllerServiceName)
@@ -96,12 +98,16 @@ func (p *Plugin) Setup(ctx context.Context) error {
 		return err
 	}
 
+	time.Sleep(syncDelay)
+
 	err = p.consulClient.CreateServiceDefaults(clients.UpstreamRouterName)
 	if err != nil {
 		p.log.Error("Unable to create Consul ServiceDefaults", "name", clients.UpstreamRouterName, "error", err)
 
 		return err
 	}
+
+	time.Sleep(syncDelay)
 
 	// create the service resolver
 	p.log.Debug("Create service resolver", "service", p.config.ConsulService)
@@ -112,6 +118,8 @@ func (p *Plugin) Setup(ctx context.Context) error {
 		return err
 	}
 
+	time.Sleep(syncDelay)
+
 	// create the service router
 	p.log.Debug("Create service router", "service", p.config.ConsulService)
 	err = p.consulClient.CreateServiceRouter(p.config.ConsulService)
@@ -120,6 +128,8 @@ func (p *Plugin) Setup(ctx context.Context) error {
 
 		return err
 	}
+
+	time.Sleep(syncDelay)
 
 	// create the service router to enable post deployment tests
 	p.log.Debug("Create upstream service router", "service", p.config.ConsulService)
@@ -130,15 +140,10 @@ func (p *Plugin) Setup(ctx context.Context) error {
 		return err
 	}
 
+	time.Sleep(syncDelay)
+
 	// create the service intentions to allow an upstream from the controller to
-	p.log.Debug("Create service intentions for the upstreams", "service", "consul-release-controller")
-	err = p.consulClient.CreateServiceIntention("consul-release-controller")
-	if err != nil {
-		p.log.Error("Unable to create Consul ServiceIntention", "name", "consul-release-controller", "error", err)
-
-		return err
-	}
-
+	p.log.Debug("Create service intentions for the upstreams", "service", p.config.ConsulService)
 	err = p.consulClient.CreateServiceIntention(p.config.ConsulService)
 	if err != nil {
 		p.log.Error("Unable to create Consul ServiceIntention", "name", p.config.ConsulService, "error", err)
@@ -179,6 +184,26 @@ func (p *Plugin) Destroy(ctx context.Context) error {
 
 	time.Sleep(syncDelay)
 
+	p.log.Debug("Cleanup router", "name", p.config.ConsulService)
+	err = p.consulClient.DeleteServiceRouter(p.config.ConsulService)
+	if err != nil {
+		p.log.Error("Unable to delete Consul ServiceRouter", "name", p.config.ConsulService, "error", err)
+
+		return err
+	}
+
+	time.Sleep(syncDelay)
+
+	p.log.Debug("Cleanup upstream router", "name", p.config.ConsulService)
+	err = p.consulClient.DeleteUpstreamRouter(p.config.ConsulService)
+	if err != nil {
+		p.log.Error("Unable to delete upstream Consul ServiceRouter", "name", p.config.ConsulService, "error", err)
+
+		return err
+	}
+
+	time.Sleep(syncDelay)
+
 	p.log.Debug("Cleanup resolver", "name", p.config.ConsulService)
 	err = p.consulClient.DeleteServiceResolver(p.config.ConsulService)
 	if err != nil {
@@ -189,10 +214,11 @@ func (p *Plugin) Destroy(ctx context.Context) error {
 
 	time.Sleep(syncDelay)
 
-	p.log.Debug("Cleanup router", "name", p.config.ConsulService)
-	err = p.consulClient.DeleteServiceRouter(p.config.ConsulService)
+	// delete will only happen if this plugin created the defaults
+	p.log.Debug("Cleanup service intentions", "name", p.config.ConsulService)
+	err = p.consulClient.DeleteServiceIntention(p.config.ConsulService)
 	if err != nil {
-		p.log.Error("Unable to delete Consul ServiceRouter", "name", p.config.ConsulService, "error", err)
+		p.log.Error("Unable to delete Consul ServiceIntention", "name", p.config.ConsulService, "error", err)
 
 		return err
 	}

@@ -120,7 +120,7 @@ func TestReturnsErrorWhenChecksFail(t *testing.T) {
 	p, mm := setupPlugin(t, canaryStrategy)
 	testutils.ClearMockCall(&mm.Mock, "Check")
 
-	mm.On("Check", mock.Anything, mock.Anything, mock.Anything, mock.Anything).Return(fmt.Errorf("boom"))
+	mm.On("Check", mock.Anything, mock.Anything, mock.Anything, mock.Anything).Return(interfaces.CheckFailed, fmt.Errorf("boom"))
 
 	state, traffic, err := p.Execute(context.Background())
 	require.NoError(t, err)

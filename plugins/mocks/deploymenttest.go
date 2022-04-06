@@ -3,7 +3,6 @@ package mocks
 import (
 	"context"
 	"encoding/json"
-	"time"
 
 	"github.com/stretchr/testify/mock"
 )
@@ -20,8 +19,8 @@ func (r *PostDeploymentTestMock) Configure(c json.RawMessage) error {
 	return args.Error(0)
 }
 
-func (r *PostDeploymentTestMock) Execute(ctx context.Context, interval time.Duration) error {
-	args := r.Called(ctx, interval)
+func (r *PostDeploymentTestMock) Execute(ctx context.Context) error {
+	args := r.Called(ctx)
 
 	return args.Error(0)
 }

@@ -12,7 +12,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Configuration for the server moved to global `config` package
 
 ### Added
-- PostDeploymentTests
+- Added features to run manual tests for candidate services before initial traffic is sent.
+  Post deployment tests can be configured to automatically call the defined endpoint for the consul
+  service under test. All traffic is routed over consul service mesh ensuring no requirement to have 
+  the candidate service exposed outside of the mesh.
+
+```yaml
+postDeploymentTest:
+  pluginName: "http"
+  config:
+    path: "/"
+    method: "GET"
+    requiredTestPasses: 3
+    interval: "10s"
+    timeout: "120s"
+```
+
+- Added sidecar to controller deployment to allow communication with consul services for post deployment tests
 
 ## [0.0.14 - 2022-03-14
 ### Fixed

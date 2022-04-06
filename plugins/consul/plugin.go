@@ -44,7 +44,7 @@ func (s *Plugin) Configure(data json.RawMessage) error {
 		errorMessage := ""
 		for _, err := range err.(validator.ValidationErrors) {
 			switch err.Namespace() {
-			case "PluginConfig.ConsulService":
+			case "PluginConfig.ReleaserBaseConfig.ConsulService":
 				errorMessage += ErrConsulService.Error() + "\n"
 			}
 		}

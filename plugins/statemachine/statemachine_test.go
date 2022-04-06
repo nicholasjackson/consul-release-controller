@@ -41,7 +41,7 @@ func setupTests(t *testing.T) (*models.Release, *StateMachine, *mocks.Mocks) {
 	pp.AssertCalled(t, "CreateWebhook", r.Webhooks[0].Name)
 	pm.WebhookMock.AssertCalled(t, "Configure", r.Webhooks[0].Config)
 
-	pp.AssertCalled(t, "CreatePostDeploymentTest", r.PostDeploymentTest.Name, pm.RuntimeMock.BaseConfig().Deployment, pm.RuntimeMock.BaseConfig().Namespace, r.Runtime.Name, pm.MonitorMock)
+	pp.AssertCalled(t, "CreatePostDeploymentTest", r.PostDeploymentTest.Name, pm.ReleaserMock.BaseConfig().ConsulService, "", r.Runtime.Name, pm.MonitorMock)
 	pm.PostDeploymentMock.AssertCalled(t, "Configure", r.PostDeploymentTest.Config)
 
 	t.Cleanup(func() {
@@ -249,7 +249,7 @@ func TestEventDeployWithNoErrorSetsStatusIdle(t *testing.T) {
 	pm.WebhookMock.AssertCalled(t, "Send", mock.Anything)
 }
 
-func TestEventDeployedWithPostDeploymentTestErrorSetsStatusFail(t *testing.T) {
+func TestEventDeployedWithPostDeploymentTestErrorSetsStatusRollback(t *testing.T) {
 	_, sm, pm := setupTests(t)
 
 	testutils.ClearMockCall(&pm.PostDeploymentMock.Mock, "Execute")
@@ -258,7 +258,7 @@ func TestEventDeployedWithPostDeploymentTestErrorSetsStatusFail(t *testing.T) {
 	sm.SetState(interfaces.StateDeploy)
 	sm.Event(interfaces.EventDeployed)
 
-	require.Eventually(t, func() bool { return historyContains(sm, interfaces.StateFail) }, 100*time.Millisecond, 1*time.Millisecond)
+	require.Eventually(t, func() bool { return historyContains(sm, interfaces.StateRollback) }, 100*time.Millisecond, 1*time.Millisecond)
 	pm.PostDeploymentMock.AssertCalled(t, "Execute", mock.Anything, mock.Anything)
 	pm.StrategyMock.AssertNotCalled(t, "Execute", mock.Anything)
 	pm.WebhookMock.AssertCalled(t, "Send", mock.Anything)

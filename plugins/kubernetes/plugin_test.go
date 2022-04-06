@@ -76,7 +76,7 @@ func TestInitPrimaryDoesNothingWhenCandidateDoesNotExist(t *testing.T) {
 
 	testutils.ClearMockCall(&km.Mock, "GetDeployment")
 	km.On("GetDeployment", mock.Anything, "test-deployment-primary", "testnamespace").Return(nil, fmt.Errorf("Primary not found"))
-	km.On("GetHealthyDeployment", mock.Anything, "test-deployment", "testnamespace").Return(nil, fmt.Errorf("Candidate not Found"))
+	km.On("GetDeployment", mock.Anything, "test-deployment", "testnamespace").Return(nil, fmt.Errorf("Candidate not Found"))
 
 	status, err := p.InitPrimary(context.Background())
 	require.NoError(t, err)
@@ -88,7 +88,7 @@ func TestInitPrimaryCreatesPrimaryWhenCandidateExists(t *testing.T) {
 
 	testutils.ClearMockCall(&km.Mock, "GetDeployment")
 	km.On("GetDeployment", mock.Anything, "test-deployment-primary", "testnamespace").Once().Return(nil, fmt.Errorf("Primary not found"))
-	km.On("GetHealthyDeployment", mock.Anything, "test-deployment", "testnamespace").Return(dep, nil)
+	km.On("GetDeployment", mock.Anything, "test-deployment", "testnamespace").Return(dep, nil)
 	km.On("UpsertDeployment", mock.Anything, mock.Anything).Once().Return(nil)
 	km.On("GetHealthyDeployment", mock.Anything, "test-deployment-primary", "testnamespace").Return(cloneDep, nil)
 

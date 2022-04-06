@@ -160,7 +160,7 @@ func (s *Plugin) Check(ctx context.Context, interval time.Duration) (interfaces.
 			}
 		} else {
 			s.log.Error("invalid value returned from query", "name", query.Name, "preset", query.Preset, "value", val)
-			return interfaces.CheckError, fmt.Errorf("check failed for query %s using preset %s, got value %v", query.Name, query.Preset, val)
+			return interfaces.CheckNoMetrics, fmt.Errorf("check failed for query %s using preset %s, got value %v", query.Name, query.Preset, val)
 		}
 	}
 

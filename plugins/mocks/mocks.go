@@ -29,6 +29,7 @@ func BuildMocks(t *testing.T) (*ProviderMock, *Mocks) {
 	// create the mock plugins
 	relMock := &ReleaserMock{}
 	relMock.On("Configure", mock.Anything).Return(nil)
+	relMock.On("BaseConfig").Return(nil)
 	relMock.On("Setup", mock.Anything).Return(nil)
 	relMock.On("Scale", mock.Anything, mock.Anything).Return(nil)
 	relMock.On("Destroy", mock.Anything, mock.Anything).Return(nil)
@@ -45,7 +46,7 @@ func BuildMocks(t *testing.T) (*ProviderMock, *Mocks) {
 
 	monMock := &MonitorMock{}
 	monMock.On("Configure", mock.Anything).Return(nil)
-	monMock.On("Check", mock.Anything, mock.Anything).Return(nil)
+	monMock.On("Check", mock.Anything, mock.Anything).Return(interfaces.CheckSuccess, nil)
 
 	stratMock := &StrategyMock{}
 	stratMock.On("Configure", mock.Anything).Return(nil)
@@ -77,7 +78,7 @@ func BuildMocks(t *testing.T) (*ProviderMock, *Mocks) {
 
 	postDeploymentMock := &PostDeploymentTestMock{}
 	postDeploymentMock.On("Configure", mock.Anything).Return(nil)
-	postDeploymentMock.On("Execute", mock.Anything, mock.Anything).Return(nil)
+	postDeploymentMock.On("Execute", mock.Anything).Return(nil)
 
 	provMock := &ProviderMock{}
 

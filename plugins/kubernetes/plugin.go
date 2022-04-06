@@ -38,7 +38,16 @@ func New(l hclog.Logger) (*Plugin, error) {
 
 func (p *Plugin) Configure(data json.RawMessage) error {
 	p.config = &PluginConfig{}
-	return json.Unmarshal(data, p.config)
+	err := json.Unmarshal(data, p.config)
+	if err != nil {
+		return err
+	}
+
+	if p.config.Namespace == "" {
+		p.config.Namespace = "default"
+	}
+
+	return nil
 }
 
 func (p *Plugin) BaseConfig() interfaces.RuntimeBaseConfig {

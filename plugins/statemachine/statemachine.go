@@ -401,7 +401,7 @@ func (s *StateMachine) doMonitor() func(e *fsm.Event) {
 			// run the post deployment tests if we have any
 			if s.testPlugin != nil {
 				s.logger.Debug("Executing post deployment tests")
-				err := s.testPlugin.Execute(ctx, 30*time.Second)
+				err := s.testPlugin.Execute(ctx)
 
 				if err != nil {
 					// post deployment tests have failed rollback

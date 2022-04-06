@@ -167,8 +167,8 @@ func startServer() error {
 func retryOperation(f func() error) error {
 	// max time to wait 300s
 	attempt := 0
-	maxAttempts := 60
-	delay := 5 * time.Second
+	maxAttempts := 100
+	delay := 10 * time.Second
 
 	var funcError error
 	for attempt = 0; attempt < maxAttempts; attempt++ {

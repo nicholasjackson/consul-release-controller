@@ -2,7 +2,6 @@ package interfaces
 
 import (
 	"context"
-	"time"
 )
 
 // PostDeploymentTest defines a plugin that validates the health of a new deployment by
@@ -11,5 +10,5 @@ type PostDeploymentTest interface {
 	Configurable
 
 	// Execute the tests and return an error if the test fails
-	Execute(ctx context.Context, interval time.Duration) error
+	Execute(ctx context.Context) error
 }

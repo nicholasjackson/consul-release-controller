@@ -101,7 +101,7 @@ func (p *Plugin) Configure(data json.RawMessage) error {
 	return nil
 }
 
-func (p *Plugin) Execute(ctx context.Context, i time.Duration) error {
+func (p *Plugin) Execute(ctx context.Context) error {
 	timeoutDuration, err := time.ParseDuration(p.config.Timeout)
 	if err != nil {
 		return fmt.Errorf("unable to parse timeout as duration: %s", err)

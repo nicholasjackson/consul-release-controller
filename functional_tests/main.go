@@ -87,16 +87,11 @@ func initializeScenario(ctx *godog.ScenarioContext) {
 	ctx.Step(`^I delete the Canary "([^"]*)"$`, iDeleteTheCanary)
 
 	ctx.After(func(ctx context.Context, sc *godog.Scenario, scenarioError error) (context.Context, error) {
-		showLog := false
-		if scenarioError != nil {
-			showLog = true
-		}
-
 		if server != nil {
 			err := server.Shutdown()
 			if err != nil {
 				logger.Error("Unable to shutdown server", "error", err)
-				showLog = true
+				scenarioError = err
 			}
 		}
 
@@ -105,23 +100,26 @@ func initializeScenario(ctx *godog.ScenarioContext) {
 			err := executeCommand([]string{"/usr/local/bin/shipyard", "destroy"}, false)
 			if err != nil {
 				logger.Error("Unable to destroy shipyard resources", "error", err)
-				showLog = true
+				scenarioError = err
 			}
 		}
 
-		if showLog && !*alwaysLog {
+		if scenarioError != nil && !*alwaysLog {
 			pwd, _ := os.Getwd()
 			logfile := path.Join(pwd, "tests.log")
 			// create log file
 			os.Remove(logfile)
 			os.WriteFile(logfile, logStore.Bytes(), os.ModePerm)
 
+			d, _ := ioutil.ReadFile(logfile)
+			fmt.Printf("%s\n", string(d))
+
 			fmt.Printf("Error log written to file %s", logfile)
 		}
 
 		// exit after the scenario when don't destroy is set
 		if *dontDestroy {
-			if showLog {
+			if scenarioError != nil {
 				os.Exit(1)
 			}
 

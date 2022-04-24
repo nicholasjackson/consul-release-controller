@@ -5,7 +5,11 @@ sidebar_position: 5
 Post deployment tests allow the execution of HTTP requests against the candidate version of a service before it any production
 traffic is sent to it.
 
+When a post deployment test is defined, Consul Release Controller will expose an upstream target to the candidate, this allows
+all tests to be executed over the service mesh with no manual routing changes required.
 
+If the tests pass, the release controller will progress with the strategy, however, should the tests fail, the release controller
+will roll back the deployment.
 
 ```yaml
 ---

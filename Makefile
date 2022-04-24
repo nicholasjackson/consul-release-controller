@@ -89,6 +89,10 @@ generate_helm:
 # First generate the Helm specific kustomize config that creates the RBAC and CRDs
 	kustomize build ./kubernetes/controller/config/helm -o ./deploy/kubernetes/charts/consul-release-controller/templates
 
+# Move the crds to the crds folder for helm
+	mv ./deploy/kubernetes/charts/consul-release-controller/templates/apiextensions.k8s.io_v1_customresourcedefinition_releases.consul-release-controller.nicholasjackson.io.yaml \
+		./deploy/kubernetes/charts/consul-release-controller/templates/crds/apiextensions.k8s.io_v1_customresourcedefinition_releases.consul-release-controller.nicholasjackson.io.yaml
+
 # Set the version in the chart
 	cp ./deploy/kubernetes/charts/consul-release-controller/Chart.tpl ./deploy/kubernetes/charts/consul-release-controller/Chart.yaml
 	sedi=(-i) && [ "$(UNAME)" == "Darwin" ] && sedi=(-i '') ; \
@@ -97,6 +101,9 @@ generate_helm:
 	cp ./deploy/kubernetes/charts/consul-release-controller/values.tpl ./deploy/kubernetes/charts/consul-release-controller/values.yaml
 	sedi=(-i) && [ "$(UNAME)" == "Darwin" ] && sedi=(-i '') ; \
 		sed "$${sedi[@]}" -e 's/##VERSION##/${VERSION}/' ./deploy/kubernetes/charts/consul-release-controller/values.yaml
+
+# Fetch the chart deps
+	helm dep up ./deploy/kubernetes/charts/consul-release-controller 
 
 # Now package the Helm chart into a tarball
 	helm package ./deploy/kubernetes/charts/consul-release-controller

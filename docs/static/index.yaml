@@ -53,12 +53,16 @@ entries:
     version: 0.0.9
   - apiVersion: v2
     appVersion: 0.0.3-dev
-    created: "2022-03-20T16:45:58.012949488Z"
+    created: "2022-04-23T10:52:12.762720368+01:00"
+    dependencies:
+    - name: cert-manager
+      repository: https://charts.jetstack.io
+      version: ~1.8.0
     description: A Helm chart for installing the Consul release controller
-    digest: e9dc529f0a0f05974eac00ebb5d3284fd654771cedb6b1311257f3b226d96531
+    digest: 7db627f64fde5519e7569c69c7dc211d645d4bbe3c5ff8ca134c568955c312a1
     name: consul-release-controller
     type: application
     urls:
-    - https://github.com/nicholasjackson/consul-release-controller/releases/download/v44a059e/consul-release-controller-0.0.3-dev.tgz
+    - https://github.com/nicholasjackson/consul-release-controller/releases/download/vb533cfc/consul-release-controller-0.0.3-dev.tgz
     version: 0.0.3-dev
-generated: "2022-03-20T16:45:58.012016804Z"
+generated: "2022-04-23T10:52:12.758345169+01:00"

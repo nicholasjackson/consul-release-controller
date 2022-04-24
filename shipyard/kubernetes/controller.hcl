@@ -30,13 +30,38 @@ EOF
   }
 }
 
-helm "consul-release-controller" {
+helm "cert_manager" {
+  cluster          = "k8s_cluster.dc1"
+  namespace        = "cert-manager"
+  create_namespace = true
+
+  repository {
+    name = "jetstack"
+    url  = "https://charts.jetstack.io"
+  }
+
+  chart   = "jetstack/cert-manager"
+  version = "v1.8.0"
+
+  health_check {
+    timeout = "120s"
+    pods = [
+      "app=cert-manager",
+    ]
+  }
+
+  values_string = {
+    "installCRDs" = true
+  }
+}
+
+helm "consul_release_controller" {
   disabled = !var.helm_chart_install
 
-  # wait for certmanager to be installed and the template to be processed
+  # wait for Consul to be installed and the template to be processed
   depends_on = [
     "template.controller_values",
-    "k8s_config.cert-manager-controller",
+    "helm.cert_manager",
     "module.consul",
   ]
 
@@ -72,7 +97,7 @@ exec_remote "exec_standalone" {
   disabled = !var.helm_chart_install
 
   depends_on = [
-    "helm.consul-release-controller",
+    "helm.consul_release_controller",
     "template.certs_script",
   ]
 

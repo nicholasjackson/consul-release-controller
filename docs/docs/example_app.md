@@ -1562,6 +1562,14 @@ spec:
       trafficStep: 20
       maxTraffic: 100
       errorThreshold: 5
+  postDeploymentTest:
+    pluginName: "http"
+    config:
+      path: "/"
+      method: "GET"
+      requiredTestPasses: 3
+      interval: "10s"
+      timeout: "120s"
   monitor:
     pluginName: "prometheus"
     config:

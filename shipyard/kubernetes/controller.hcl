@@ -75,30 +75,51 @@ helm "consul_release_controller" {
 }
 
 // fetch the certifcates
-template "certs_script" {
+template "get_certs" {
   disabled = !var.helm_chart_install
 
   source = <<EOF
-#! /bin/sh -e
+#!/bin/bash
 
-kubectl get secret consul-release-controller-certificate -n consul -o json | \
-	jq -r '.data."tls.crt"' | \
-	base64 -d > /output/tls.crt
+getSecret () {
+  kubectl get secret consul-release-controller-certificate -n consul -o json | \
+    jq -r ".data.\"$1\"" | \
+    base64 -d > /output/$1
 
-kubectl get secret consul-release-controller-certificate -n consul -o json | \
-	jq -r '.data."tls.key"' | \
-	base64 -d > /output/tls.key
+  [ -s /output/$1 ] || return 1
+
+  return 0
+}
+
+max_retry=5
+counter=0
+until getSecret "tls.crt"
+do
+  sleep 10
+  [[ $counter -eq $max_retry ]] && echo "Failed!" && exit 1
+  echo "Trying again. Try #$counter"
+  ((counter++))
+done
+
+counter=0
+until getSecret "tls.key"
+do
+  sleep 10
+  [[ $counter -eq $max_retry ]] && echo "Failed!" && exit 1
+  echo "Trying again. Try #$counter"
+  ((counter++))
+done
   EOF
 
   destination = "${data("kube_setup")}/fetch_certs.sh"
 }
 
-exec_remote "exec_standalone" {
+exec_remote "get_certs" {
   disabled = !var.helm_chart_install
 
   depends_on = [
     "helm.consul_release_controller",
-    "template.certs_script",
+    "template.get_certs",
   ]
 
   network {

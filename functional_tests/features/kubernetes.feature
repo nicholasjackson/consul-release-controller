@@ -20,7 +20,6 @@ Feature: Kubernetes
       And a Kubernetes deployment called "api-deployment" should not exist
       And a Consul "service-defaults" called "api" should be created
       And a Consul "service-resolver" called "api" should be created
-      And a Consul "service-router" called "api" should be created
       And a Consul "service-splitter" called "api" should be created
       And eventually a call to the URL "https://localhost:9443/v1/releases" contains the text
         """
@@ -58,7 +57,6 @@ Feature: Kubernetes
         """
       And a Consul "service-defaults" called "api" should be created
       And a Consul "service-resolver" called "api" should be created
-      And a Consul "service-router" called "api" should be created
     When I create a new version of the Kubernetes deployment "./config/api.yaml"
       Then a Kubernetes deployment called "api-deployment-primary" should exist
       And a Kubernetes deployment called "api-deployment" should not exist
@@ -101,7 +99,6 @@ Feature: Kubernetes
       And a Kubernetes deployment called "api-deployment" should not exist
       And a Consul "service-defaults" called "api" should be created
       And a Consul "service-resolver" called "api" should be created
-      And a Consul "service-router" called "api" should be created
       And eventually a call to the URL "https://localhost:9443/v1/releases" contains the text
         """
         "status":"state_idle"
@@ -135,7 +132,7 @@ Feature: Kubernetes
     When I create a new Kubernetes release "./config/api_release_with_check.yaml"
       Then a Consul "service-defaults" called "api" should be created
       And a Consul "service-resolver" called "api" should be created
-      And a Consul "service-router" called "api" should be created
+      And a Consul "service-router" called "consul-release-controller-upstreams" should be created
       And eventually a call to the URL "https://localhost:9443/v1/releases" contains the text
         """
         "status":"state_idle"
@@ -186,7 +183,7 @@ Feature: Kubernetes
       And a Kubernetes deployment called "api-deployment" should not exist
       And a Consul "service-defaults" called "api" should be created
       And a Consul "service-resolver" called "api" should be created
-      And a Consul "service-router" called "api" should be created
+      And a Consul "service-router" called "consul-release-controller-upstreams" should be created
       And eventually a call to the URL "https://localhost:9443/v1/releases" contains the text
         """
         "status":"state_idle"

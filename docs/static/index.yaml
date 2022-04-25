@@ -2,6 +2,16 @@ apiVersion: v1
 entries:
   consul-release-controller:
   - apiVersion: v2
+    appVersion: 0.0.14
+    created: "2022-03-14T11:51:35.260572149Z"
+    description: A Helm chart for installing the Consul release controller
+    digest: b4889e08ac5750a332554557ad6f577c0abcd4b53b5e8b01e2d4fe0c79d4455a
+    name: consul-release-controller
+    type: application
+    urls:
+    - https://github.com/nicholasjackson/consul-release-controller/releases/download/v0.0.14/consul-release-controller-0.0.14.tgz
+    version: 0.0.14
+  - apiVersion: v2
     appVersion: 0.0.13
     created: "2022-03-11T10:37:28.31702731Z"
     description: A Helm chart for installing the Consul release controller
@@ -51,18 +61,4 @@ entries:
     urls:
     - https://github.com/nicholasjackson/consul-release-controller/releases/download/v0.0.9/consul-release-controller-0.0.9.tgz
     version: 0.0.9
-  - apiVersion: v2
-    appVersion: 0.0.3-dev
-    created: "2022-04-23T10:52:12.762720368+01:00"
-    dependencies:
-    - name: cert-manager
-      repository: https://charts.jetstack.io
-      version: ~1.8.0
-    description: A Helm chart for installing the Consul release controller
-    digest: 7db627f64fde5519e7569c69c7dc211d645d4bbe3c5ff8ca134c568955c312a1
-    name: consul-release-controller
-    type: application
-    urls:
-    - https://github.com/nicholasjackson/consul-release-controller/releases/download/vb533cfc/consul-release-controller-0.0.3-dev.tgz
-    version: 0.0.3-dev
-generated: "2022-04-23T10:52:12.758345169+01:00"
+generated: "2022-03-14T11:51:35.257912615Z"

@@ -120,17 +120,6 @@ func (p *Plugin) Setup(ctx context.Context) error {
 
 	time.Sleep(syncDelay)
 
-	// create the service router
-	p.log.Debug("Create service router", "service", p.config.ConsulService)
-	err = p.consulClient.CreateServiceRouter(p.config.ConsulService)
-	if err != nil {
-		p.log.Error("Unable to create Consul ServiceRouter", "name", p.config.ConsulService, "error", err)
-
-		return err
-	}
-
-	time.Sleep(syncDelay)
-
 	// create the service router to enable post deployment tests
 	p.log.Debug("Create upstream service router", "service", p.config.ConsulService)
 	err = p.consulClient.CreateUpstreamRouter(p.config.ConsulService)
@@ -178,16 +167,6 @@ func (p *Plugin) Destroy(ctx context.Context) error {
 	err := p.consulClient.DeleteServiceSplitter(p.config.ConsulService)
 	if err != nil {
 		p.log.Error("Unable to delete Consul ServiceSplitter", "name", p.config.ConsulService, "error", err)
-
-		return err
-	}
-
-	time.Sleep(syncDelay)
-
-	p.log.Debug("Cleanup router", "name", p.config.ConsulService)
-	err = p.consulClient.DeleteServiceRouter(p.config.ConsulService)
-	if err != nil {
-		p.log.Error("Unable to delete Consul ServiceRouter", "name", p.config.ConsulService, "error", err)
 
 		return err
 	}

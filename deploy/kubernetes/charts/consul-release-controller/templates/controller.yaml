@@ -107,7 +107,7 @@ spec:
       volumes:
         - name: tls-secret
           secret:
-            secretName: {{include "consul-release-controller.fullname" .}}-certificate
+            secretName: consul-release-controller-certificate
         {{- if .Values.controller.additional_volumes }}
         {{- toYaml .Values.controller.additional_volumes | nindent 8 }}
         {{- end }}

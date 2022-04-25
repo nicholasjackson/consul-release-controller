@@ -24,7 +24,6 @@ func setupPlugin(t *testing.T) (*Plugin, *clients.ConsulMock) {
 
 	mc.On("CreateServiceDefaults", mock.Anything).Return(nil)
 	mc.On("CreateServiceResolver", mock.Anything).Return(nil)
-	mc.On("CreateServiceRouter", mock.Anything, mock.Anything).Return(nil)
 	mc.On("CreateUpstreamRouter", mock.Anything, mock.Anything).Return(nil)
 	mc.On("CreateServiceSplitter", mock.Anything, mock.Anything, mock.Anything).Return(nil)
 	mc.On("CreateServiceIntention", mock.Anything, mock.Anything).Return(nil)
@@ -32,7 +31,6 @@ func setupPlugin(t *testing.T) (*Plugin, *clients.ConsulMock) {
 	mc.On("DeleteServiceSplitter", mock.Anything).Return(nil)
 	mc.On("DeleteServiceDefaults", mock.Anything).Return(nil)
 	mc.On("DeleteServiceResolver", mock.Anything).Return(nil)
-	mc.On("DeleteServiceRouter", mock.Anything).Return(nil)
 	mc.On("DeleteUpstreamRouter", mock.Anything).Return(nil)
 	mc.On("DeleteServiceIntention", mock.Anything).Return(nil)
 
@@ -146,25 +144,6 @@ func TestSetupFailsOnCreateServiceResolverError(t *testing.T) {
 	require.Error(t, err)
 }
 
-func TestSetupCreatesConsulServiceRouter(t *testing.T) {
-	p, mc := setupPlugin(t)
-
-	err := p.Setup(context.Background())
-	require.NoError(t, err)
-
-	mc.AssertCalled(t, "CreateServiceRouter", "api")
-}
-
-func TestSetupFailsOnCreateServiceRouterError(t *testing.T) {
-	p, mc := setupPlugin(t)
-
-	testutils.ClearMockCall(&mc.Mock, "CreateServiceRouter")
-	mc.On("CreateServiceRouter", mock.Anything).Return(fmt.Errorf("boom"))
-
-	err := p.Setup(context.Background())
-	require.Error(t, err)
-}
-
 func TestSetupCreatesUpstreamServiceRouter(t *testing.T) {
 	p, mc := setupPlugin(t)
 
@@ -236,25 +215,6 @@ func TestDestroyFailsOnDeletesServiceSplitterError(t *testing.T) {
 
 	testutils.ClearMockCall(&mc.Mock, "DeleteServiceSplitter")
 	mc.On("DeleteServiceSplitter", mock.Anything).Return(fmt.Errorf("boom"))
-
-	err := p.Destroy(context.Background())
-	require.Error(t, err)
-}
-
-func TestDestroyDeletesServiceRouter(t *testing.T) {
-	p, mc := setupPlugin(t)
-
-	err := p.Destroy(context.Background())
-	require.NoError(t, err)
-
-	mc.AssertCalled(t, "DeleteServiceRouter", "api")
-}
-
-func TestDestroyFailsOnDeleteServiceRouterError(t *testing.T) {
-	p, mc := setupPlugin(t)
-
-	testutils.ClearMockCall(&mc.Mock, "DeleteServiceRouter")
-	mc.On("DeleteServiceRouter", mock.Anything).Return(fmt.Errorf("boom"))
 
 	err := p.Destroy(context.Background())
 	require.Error(t, err)

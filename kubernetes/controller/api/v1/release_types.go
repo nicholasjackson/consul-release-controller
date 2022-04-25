@@ -71,6 +71,9 @@ type ReleaseSpec struct {
 
 	// Monitor defines the configuration for the strategy plugin
 	Monitor Monitor `json:"monitor,omitempty"`
+
+	// PostDeploymentTest defines the configuration for the post deployment tests plugin
+	PostDeploymentTest Test `json:"postDeploymentTest,omitempty"`
 }
 
 type Webhook struct {
@@ -138,6 +141,20 @@ type Query struct {
 	Min    int    `json:"min,omitempty"`
 	Max    int    `json:"max,omitempty"`
 	Query  string `json:"query,omitempty"`
+}
+
+type Test struct {
+	PluginName string     `json:"pluginName"`
+	Config     TestConfig `json:"config"`
+}
+
+type TestConfig struct {
+	Path               string `json:"path"`
+	Method             string `json:"method"`
+	Payload            string `json:"payload,omitempty"`
+	RequiredTestPasses int    `json:"requiredTestPasses"`
+	Interval           string `json:"interval"`
+	Timeout            string `json:"timeout"`
 }
 
 func init() {

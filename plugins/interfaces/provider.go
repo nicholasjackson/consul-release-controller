@@ -24,6 +24,9 @@ type Provider interface {
 	// CreateWebhook returns a Webhook plugin that corresponds to the given name
 	CreateWebhook(pluginName string) (Webhook, error)
 
+	// CreatePostDeploymentTest returns a PostDeploymentTest plugin that corresponds to the given name
+	CreatePostDeploymentTest(pluginName, deploymentName, namespace, runtime string, mp Monitor) (PostDeploymentTest, error)
+
 	// Gets an instance of the current logger
 	GetLogger() hclog.Logger
 

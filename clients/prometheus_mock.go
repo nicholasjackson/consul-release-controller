@@ -17,5 +17,9 @@ type PrometheusMock struct {
 func (mq *PrometheusMock) Query(ctx context.Context, address, query string, ts time.Time) (model.Value, v1.Warnings, error) {
 	args := mq.Called(ctx, query, ts)
 
-	return args.Get(0).(model.Value), args.Get(1).(v1.Warnings), args.Error(2)
+	if mv, ok := args.Get(0).(model.Value); ok {
+		return mv, args.Get(1).(v1.Warnings), args.Error(2)
+	}
+
+	return nil, args.Get(1).(v1.Warnings), args.Error(2)
 }

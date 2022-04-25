@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/nicholasjackson/consul-release-controller/clients"
+	"github.com/nicholasjackson/consul-release-controller/plugins/interfaces"
 	"github.com/prometheus/common/model"
 
 	"github.com/hashicorp/go-hclog"
@@ -72,7 +73,7 @@ func (s *Plugin) Configure(data json.RawMessage) error {
 
 // Check executes queries to the Prometheus server and returns an error if any of the queries
 // are not within the defined min and max thresholds
-func (s *Plugin) Check(ctx context.Context, interval time.Duration) error {
+func (s *Plugin) Check(ctx context.Context, interval time.Duration) (interfaces.CheckResult, error) {
 	querySQL := []string{}
 
 	// first check that the given queries have valid presets
@@ -85,7 +86,7 @@ func (s *Plugin) Check(ctx context.Context, interval time.Duration) error {
 			case "kubernetes-envoy-request-duration":
 				querySQL = append(querySQL, KubernetesEnvoyRequestDuration)
 			default:
-				return fmt.Errorf("preset query %s, does not exist", q.Preset)
+				return interfaces.CheckError, fmt.Errorf("preset query %s, does not exist", q.Preset)
 			}
 		} else {
 			// use the custom query
@@ -99,13 +100,13 @@ func (s *Plugin) Check(ctx context.Context, interval time.Duration) error {
 
 		// check the query is not empty
 		if q == "" {
-			return fmt.Errorf("query %s is empty, please specify a valid Prometheus query", query.Name)
+			return interfaces.CheckError, fmt.Errorf("query %s is empty, please specify a valid Prometheus query", query.Name)
 		}
 
 		// add the interpolation for the queries
 		tmpl, err := template.New("query").Parse(q)
 		if err != nil {
-			return err
+			return interfaces.CheckError, fmt.Errorf("unable to process query template: %s", err)
 		}
 
 		context := struct {
@@ -121,7 +122,7 @@ func (s *Plugin) Check(ctx context.Context, interval time.Duration) error {
 		out := bytes.NewBufferString("")
 		err = tmpl.Execute(out, context)
 		if err != nil {
-			return err
+			return interfaces.CheckError, fmt.Errorf("unable to process query template: %s", err)
 		}
 
 		s.log.Debug("querying prometheus", "address", s.config.Address, "name", query.Name, "query", out)
@@ -130,7 +131,7 @@ func (s *Plugin) Check(ctx context.Context, interval time.Duration) error {
 		if err != nil {
 			s.log.Error("unable to query prometheus", "error", err)
 
-			return err
+			return interfaces.CheckError, fmt.Errorf("unable to query prometheus: %s", err)
 		}
 
 		s.log.Debug("query value returned", "name", query.Name, "preset", query.Preset, "value", val, "value_type", reflect.TypeOf(val), "warnings", warn)
@@ -139,7 +140,7 @@ func (s *Plugin) Check(ctx context.Context, interval time.Duration) error {
 			checkFail := false
 
 			if len(v) == 0 {
-				return fmt.Errorf("check failed for query %s using preset %s, null value returned by query: %v", query.Name, query.Preset, val)
+				return interfaces.CheckNoMetrics, fmt.Errorf("check failed for query %s using preset %s, null value returned by query: %v", query.Name, query.Preset, val)
 			}
 
 			value := int(v[0].Value)
@@ -155,13 +156,13 @@ func (s *Plugin) Check(ctx context.Context, interval time.Duration) error {
 			}
 
 			if checkFail {
-				return fmt.Errorf("check failed for query %s using preset %s, got value %d", query.Name, query.Preset, value)
+				return interfaces.CheckFailed, fmt.Errorf("check failed for query %s using preset %s, got value %d", query.Name, query.Preset, value)
 			}
 		} else {
 			s.log.Error("invalid value returned from query", "name", query.Name, "preset", query.Preset, "value", val)
-			return fmt.Errorf("check failed for query %s using preset %s, got value %v", query.Name, query.Preset, val)
+			return interfaces.CheckNoMetrics, fmt.Errorf("check failed for query %s using preset %s, got value %v", query.Name, query.Preset, val)
 		}
 	}
 
-	return nil
+	return interfaces.CheckSuccess, nil
 }

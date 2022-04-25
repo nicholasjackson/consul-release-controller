@@ -1,0 +1,50 @@
+---
+apiVersion: consul.hashicorp.com/v1alpha1
+kind: ServiceDefaults
+metadata:
+  name: consul-release-controller-upstreams
+spec:
+  protocol: http
+
+---
+apiVersion: consul.hashicorp.com/v1alpha1
+kind: ServiceRouter
+metadata:
+  name: consul-release-controller-upstreams
+spec:
+  routes:
+    - match:
+        http:
+          header:
+            - name: HOST
+              # Convention is Cosnul service.namespace
+              exact: 'api.default'
+      destination:
+        service: api
+        #serviceSubset: default
+
+#---
+#apiVersion: consul.hashicorp.com/v1alpha1
+#kind: ServiceIntentions
+#metadata:
+#  name: api
+#spec:
+#  destination:
+#    name: api
+#  sources:
+#    - name: web
+#      action: allow
+#    - name: consul-release-controller
+#      action: allow
+
+---
+apiVersion: consul.hashicorp.com/v1alpha1
+kind: ServiceIntentions
+metadata:
+  name: consul-release-controller-upstreams
+spec:
+  destination:
+    name: consul-release-controller-upstreams
+  sources:
+    - name: consul-release-controller
+      action: allow

@@ -1562,6 +1562,14 @@ spec:
       trafficStep: 20
       maxTraffic: 100
       errorThreshold: 5
+  postDeploymentTest:
+    pluginName: "http"
+    config:
+      path: "/"
+      method: "GET"
+      requiredTestPasses: 3
+      interval: "10s"
+      timeout: "120s"
   monitor:
     pluginName: "prometheus"
     config:
@@ -1619,7 +1627,7 @@ increase traffic to the new version by the amounts specified in the configuratio
 
 #### monitor
 
-The monitor plugin is responsible for querying the health of the deployment. Consul Release Controller queries the 
+The `monitor` plugin is responsible for querying the health of the deployment. Consul Release Controller queries the 
 monitoring system like Prometheus, Datadog, Honeycomb and uses the result to decide if the strategy should progress or
 if it should be rolled back.
 
@@ -1627,6 +1635,7 @@ if it should be rolled back.
 | parameter      | required | type     | values | description                                                     |
 | ------------   | -------- | -------- | ------ | --------------------------------------------------------------- |
 | address        | yes      | string   |        | address of the Prometheus server that should be queried         |
+| queries        | yes      | array    |        | queries to execute to validate the deployment                   | 
 
 #### queries
 
@@ -1639,6 +1648,22 @@ queries must be successful for the strategy to progress.
 | preset         | yes      | string   | envoy-request-success, envoy-request-duration | preset query to execute |
 | min            | no       | integer  |        | minimum value that must be returned by the query for the strategy to progress |
 | max            | no       | integer  |        | maximum value that must be returned by the query for the strategy to progress |
+
+#### postDeploymentTest
+
+`postDeploymentTest` configures tests that execute the defined request before production traffic is distributed to the
+candidate deployment as part of the strategy. Should the tests fail the deployment is rolled back, if the tests
+pass the roll out strategy continues. 
+
+##### config
+| parameter          | required | type     | values                           | description                                                     |
+| ------------       | -------- | -------- | -------------------------------- | --------------------------------------------------------------- |
+| path               | yes      | string   |                                  | request path for the test                                       |
+| method             | yes      | string   | GET,POST,DELETE,HEAD,OPTIONS,PUT | HTTP method to use for executing the tests                      |
+| requiredTestPasses | yes      | integer  |                                  | number of successful responses before the test is considered a success  |
+| interval           | yes      | duration |                                  | interval between test executions                                |
+| timeout            | yes      | duration |                                  | maximum duration for postDeploymentTest execution               |
+| payload            | no       | string   |                                  | Payload to send with POST or PUT requests                       |
 
 #### Applying the release
 

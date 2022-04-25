@@ -7,6 +7,7 @@ import (
 
 	"github.com/hashicorp/go-hclog"
 	"github.com/nicholasjackson/consul-release-controller/clients"
+	"github.com/nicholasjackson/consul-release-controller/plugins/interfaces"
 	"github.com/nicholasjackson/consul-release-controller/testutils"
 	v1 "github.com/prometheus/client_golang/api/prometheus/v1"
 	"github.com/prometheus/common/model"
@@ -38,7 +39,7 @@ func setupPlugin(t *testing.T, config string) (*Plugin, *clients.PrometheusMock)
 func TestPluginReturnsErrorWhenPresetNotFound(t *testing.T) {
 	p, pm := setupPlugin(t, twoDefaultQueriesInvalidPreset)
 
-	err := p.Check(context.Background(), 30*time.Second)
+	_, err := p.Check(context.Background(), 30*time.Second)
 	require.Error(t, err)
 
 	pm.AssertNotCalled(t, "Query")
@@ -47,14 +48,14 @@ func TestPluginReturnsErrorWhenPresetNotFound(t *testing.T) {
 func TestPluginReturnsErrorWhenCustomQueryBlank(t *testing.T) {
 	p, pm := setupPlugin(t, twoQueriesCustomEmpty)
 
-	err := p.Check(context.Background(), 30*time.Second)
+	_, err := p.Check(context.Background(), 30*time.Second)
 	require.Error(t, err)
 
 	pm.AssertNotCalled(t, "Query")
 }
 
 func TestPluginReturnsErrorWhenNilValue(t *testing.T) {
-	p, pm := setupPlugin(t, twoDefaultQueriesInvalidPreset)
+	p, pm := setupPlugin(t, twoDefaultQueries)
 
 	testutils.ClearMockCall(&pm.Mock, "Query")
 	pm.On("Query", mock.Anything, mock.Anything, mock.Anything, mock.Anything).Return(
@@ -63,14 +64,15 @@ func TestPluginReturnsErrorWhenNilValue(t *testing.T) {
 		nil,
 	)
 
-	err := p.Check(context.Background(), 30*time.Second)
+	result, err := p.Check(context.Background(), 30*time.Second)
 	require.Error(t, err)
+	require.Equal(t, interfaces.CheckNoMetrics, result)
 
 	pm.AssertNotCalled(t, "Query")
 }
 
 func TestPluginReturnsErrorWhenEmptyVector(t *testing.T) {
-	p, pm := setupPlugin(t, twoDefaultQueriesInvalidPreset)
+	p, pm := setupPlugin(t, twoDefaultQueries)
 
 	testutils.ClearMockCall(&pm.Mock, "Query")
 	pm.On("Query", mock.Anything, mock.Anything, mock.Anything, mock.Anything).Return(
@@ -79,8 +81,9 @@ func TestPluginReturnsErrorWhenEmptyVector(t *testing.T) {
 		nil,
 	)
 
-	err := p.Check(context.Background(), 30*time.Second)
+	result, err := p.Check(context.Background(), 30*time.Second)
 	require.Error(t, err)
+	require.Equal(t, interfaces.CheckNoMetrics, result)
 
 	pm.AssertNotCalled(t, "Query")
 }
@@ -97,8 +100,9 @@ func TestPluginReturnsErrorWhenQueryValueLessThanMin(t *testing.T) {
 		nil,
 	)
 
-	err := p.Check(context.Background(), 30*time.Second)
+	result, err := p.Check(context.Background(), 30*time.Second)
 	require.Error(t, err)
+	require.Equal(t, interfaces.CheckFailed, result)
 
 	pm.AssertNumberOfCalls(t, "Query", 1)
 }
@@ -115,8 +119,9 @@ func TestPluginReturnsErrorWhenQueryValueGreaterThanMax(t *testing.T) {
 		nil,
 	)
 
-	err := p.Check(context.Background(), 30*time.Second)
+	result, err := p.Check(context.Background(), 30*time.Second)
 	require.Error(t, err)
+	require.Equal(t, interfaces.CheckFailed, result)
 
 	pm.AssertNumberOfCalls(t, "Query", 2)
 }
@@ -124,7 +129,7 @@ func TestPluginReturnsErrorWhenQueryValueGreaterThanMax(t *testing.T) {
 func TestPluginExecutesQueriesAndChecksValue(t *testing.T) {
 	p, pm := setupPlugin(t, twoDefaultQueries)
 
-	err := p.Check(context.Background(), 30*time.Second)
+	_, err := p.Check(context.Background(), 30*time.Second)
 	require.NoError(t, err)
 
 	pm.AssertNumberOfCalls(t, "Query", 2)
@@ -145,7 +150,7 @@ func TestPluginExecutesQueriesAndChecksValue(t *testing.T) {
 func TestPluginExecutesCustomQueriesAndChecksValue(t *testing.T) {
 	p, pm := setupPlugin(t, twoQueriesOneCustom)
 
-	err := p.Check(context.Background(), 30*time.Second)
+	_, err := p.Check(context.Background(), 30*time.Second)
 	require.NoError(t, err)
 
 	pm.AssertNumberOfCalls(t, "Query", 2)

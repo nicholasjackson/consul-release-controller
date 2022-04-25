@@ -1,0 +1,68 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: consul-release-controller-upstreams
+  namespace: default
+spec:
+  ports:
+    - name: http
+      protocol: TCP
+      port: 18080
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: consul-release-controller
+  namespace: default
+spec:
+  selector:
+    app: consul-release-controller
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8080
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: consul-release-controller
+  namespace: default
+automountServiceAccountToken: false
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: consul-release-controller-deployment
+  namespace: default
+  labels:
+    app: consul-release-controller
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: consul-release-controller
+  template:
+    metadata:
+      labels:
+        app: consul-release-controller
+      annotations:
+        consul.hashicorp.com/connect-inject: 'true'
+        consul.hashicorp.com/transparent-proxy: 'false'
+        consul.hashicorp.com/connect-service-upstreams: "consul-release-controller-upstreams:18080"
+    spec:  
+      serviceAccountName: consul-release-controller
+      automountServiceAccountToken: true
+      containers:
+        - name: consul-release-controller
+          image: alpine/socat
+          args: [
+            "TCP-LISTEN:8080,fork",
+            "TCP:127.0.0.1:18080"
+          ]
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080

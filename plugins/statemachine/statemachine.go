@@ -24,6 +24,7 @@ type StateMachine struct {
 	runtimePlugin  interfaces.Runtime
 	monitorPlugin  interfaces.Monitor
 	strategyPlugin interfaces.Strategy
+	testPlugin     interfaces.PostDeploymentTest
 	webhookPlugins []interfaces.Webhook
 	logger         hclog.Logger
 	metrics        interfaces.Metrics
@@ -51,6 +52,9 @@ func New(r *models.Release, pluginProvider interfaces.Provider) (*StateMachine, 
 	relP.Configure(r.Releaser.Config)
 	sm.releaserPlugin = relP
 
+	// get the releaser config
+	releaserConfig := relP.BaseConfig()
+
 	// configure the runtime plugin
 	runP, err := pluginProvider.CreateRuntime(r.Runtime.Name)
 	if err != nil {
@@ -61,9 +65,11 @@ func New(r *models.Release, pluginProvider interfaces.Provider) (*StateMachine, 
 	runP.Configure(r.Runtime.Config)
 	sm.runtimePlugin = runP
 
+	// get the runtime config
+	runtimeConfig := runP.BaseConfig()
+
 	// create the monitor plugin
-	rc := runP.BaseConfig()
-	monP, err := pluginProvider.CreateMonitor(r.Monitor.Name, rc.Deployment, rc.Namespace, r.Runtime.Name)
+	monP, err := pluginProvider.CreateMonitor(r.Monitor.Name, runtimeConfig.Deployment, runtimeConfig.Namespace, r.Runtime.Name)
 	if err != nil {
 		return nil, err
 	}
@@ -89,8 +95,27 @@ func New(r *models.Release, pluginProvider interfaces.Provider) (*StateMachine, 
 			return nil, err
 		}
 
-		wp.Configure(w.Config)
+		err = wp.Configure(w.Config)
+		if err != nil {
+			return nil, err
+		}
+
 		sm.webhookPlugins = append(sm.webhookPlugins, wp)
+	}
+
+	// configure the post deployment tests
+	if r.PostDeploymentTest != nil {
+		testP, err := pluginProvider.CreatePostDeploymentTest(r.PostDeploymentTest.Name, releaserConfig.ConsulService, releaserConfig.Namespace, r.Runtime.Name, monP)
+		if err != nil {
+			return nil, err
+		}
+
+		err = testP.Configure(r.PostDeploymentTest.Config)
+		if err != nil {
+			return nil, err
+		}
+
+		sm.testPlugin = testP
 	}
 
 	f := fsm.NewFSM(
@@ -372,6 +397,30 @@ func (s *StateMachine) doMonitor() func(e *fsm.Event) {
 		go func() {
 			// clean up resources if we finish before timeout
 			defer cancel()
+
+			// run the post deployment tests if we have any
+			if s.testPlugin != nil {
+				s.logger.Debug("Executing post deployment tests")
+				err := s.testPlugin.Execute(ctx)
+
+				if err != nil {
+					// post deployment tests have failed rollback
+					s.logger.Error("Post deployment tests completed with error", "error", err)
+
+					s.callWebhooks(
+						s.webhookPlugins,
+						"post deployment tests failed",
+						interfaces.StateMonitor,
+						interfaces.EventFail,
+						s.strategyPlugin.GetPrimaryTraffic(),
+						s.strategyPlugin.GetCandidateTraffic(),
+						err,
+					)
+
+					e.FSM.Event(interfaces.EventUnhealthy)
+					return
+				}
+			}
 
 			result, traffic, err := s.strategyPlugin.Execute(ctx)
 

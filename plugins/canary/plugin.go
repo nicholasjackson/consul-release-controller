@@ -65,7 +65,7 @@ func (p *Plugin) Configure(data json.RawMessage) error {
 
 	// validate the plugin config
 	validate := validator.New()
-	validate.RegisterValidation("duration", validateDuration)
+	validate.RegisterValidation("duration", interfaces.ValidateDuration)
 	err = validate.Struct(p.config)
 
 	if err != nil {
@@ -135,7 +135,7 @@ func (p *Plugin) Execute(ctx context.Context) (interfaces.StrategyStatus, int, e
 
 		p.log.Debug("Checking metrics", "type", "canary")
 
-		err := p.monitoring.Check(queryCtx, d)
+		_, err := p.monitoring.Check(queryCtx, d)
 		if err != nil {
 			p.log.Debug("Check failed", "type", "canary", "error", err)
 			failCount++
@@ -172,10 +172,4 @@ func (p *Plugin) GetPrimaryTraffic() int {
 
 func (p *Plugin) GetCandidateTraffic() int {
 	return p.currentTraffic
-}
-
-// validates that a string is a duration
-func validateDuration(field validator.FieldLevel) bool {
-	_, err := time.ParseDuration(field.Field().String())
-	return err == nil
 }

@@ -10,12 +10,25 @@ import (
 
 type ReleaserMock struct {
 	mock.Mock
+	baseConfig *interfaces.ReleaserBaseConfig
 }
 
 func (s *ReleaserMock) Configure(config json.RawMessage) error {
 	args := s.Called(config)
 
+	s.baseConfig = &interfaces.ReleaserBaseConfig{}
+	json.Unmarshal(config, s.baseConfig)
+
 	return args.Error(0)
+}
+
+func (s *ReleaserMock) BaseConfig() interfaces.ReleaserBaseConfig {
+	args := s.Called()
+	if bc, ok := args.Get(0).(interfaces.ReleaserBaseConfig); ok {
+		return bc
+	}
+
+	return *s.baseConfig
 }
 
 func (s *ReleaserMock) Setup(ctx context.Context) error {

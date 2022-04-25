@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"time"
 
+	"github.com/nicholasjackson/consul-release-controller/plugins/interfaces"
 	"github.com/stretchr/testify/mock"
 )
 
@@ -18,8 +19,8 @@ func (r *MonitorMock) Configure(c json.RawMessage) error {
 	return args.Error(0)
 }
 
-func (r *MonitorMock) Check(ctx context.Context, interval time.Duration) error {
+func (r *MonitorMock) Check(ctx context.Context, interval time.Duration) (interfaces.CheckResult, error) {
 	args := r.Called(ctx, interval)
 
-	return args.Error(0)
+	return args.Get(0).(interfaces.CheckResult), args.Error(1)
 }

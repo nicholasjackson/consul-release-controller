@@ -12,9 +12,19 @@ const (
 	Candidate ServiceVariant = 2
 )
 
+type ReleaserBaseConfig struct {
+	ConsulService string `json:"consul_service" validate:"required"`
+	Namespace     string `json:"namespace"`
+	Partition     string `json:"partition"`
+}
+
 // Releaser defines methods for configuring and manipulating traffic in the service mesh
 type Releaser interface {
 	Configurable
+
+	// BaseConfig returns the base Runtime config
+	// all Runtime plugins should embed RuntimeBaseConfig in their own config
+	BaseConfig() ReleaserBaseConfig
 
 	// Setup the necessary configuration for the service mesh
 	// Returning an error from this function will fail the deployment

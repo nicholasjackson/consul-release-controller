@@ -22,6 +22,11 @@ variable "consul_acls_enabled" {
   default     = true
 }
 
+variable "consul_release_controller_enabled" {
+  description = "Enable the Consul release controller using the blueprint"
+  default     = false
+}
+
 //variable "consul_image" {
 //  default = "hashicorp/consul:1.9.13"
 //}
@@ -97,24 +102,8 @@ k8s_cluster "dc1" {
   }
 }
 
-k8s_config "cert-manager-controller" {
-  cluster = "k8s_cluster.dc1"
-
-  paths = [
-    "${file_dir()}/cert-manager.yaml",
-  ]
-
-  wait_until_ready = true
-
-  health_check {
-    timeout = "60s"
-    pods    = ["app.kubernetes.io/instance=cert-manager"]
-  }
-}
-
-
 module "consul" {
-  source = "github.com/shipyard-run/blueprints?ref=89c98c1f9f5e5d6ec0e3577fee43783bfe0062b0/modules//kubernetes-consul"
+  source = "github.com/shipyard-run/blueprints?ref=f4c6e96fe5188b934b1179087f0e91575db2a61e/modules//kubernetes-consul"
 }
 
 ingress "web" {

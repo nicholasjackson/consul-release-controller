@@ -12,6 +12,7 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/httplog"
 	"github.com/hashicorp/go-hclog"
+	"github.com/nicholasjackson/consul-release-controller/config"
 	"github.com/nicholasjackson/consul-release-controller/handlers/api"
 	kubernetes "github.com/nicholasjackson/consul-release-controller/kubernetes/controller"
 	"github.com/nicholasjackson/consul-release-controller/plugins"
@@ -29,7 +30,7 @@ type Release struct {
 }
 
 func New(log hclog.Logger) (*Release, error) {
-	metrics, err := prometheus.NewMetrics("0.0.0.0", 9102, "/metrics")
+	metrics, err := prometheus.NewMetrics(config.MetricsBindAddress(), config.MetricsPort(), "/metrics")
 	if err != nil {
 		log.Error("failed to create metrics", "error", err)
 		return nil, err
@@ -48,7 +49,7 @@ func (r *Release) Start() error {
 	provider := plugins.GetProvider(r.log, r.metrics, store)
 
 	// create the kubernetes controller
-	kc := kubernetes.New(provider, os.Getenv("TLS_CERT"), os.Getenv("TLS_KEY"), 19443)
+	kc := kubernetes.New(provider, config.TLSCertificate(), config.TLSKey(), config.KubernetesControllerPort())
 	r.kubernetesController = kc
 	go kc.Start()
 
@@ -72,7 +73,7 @@ func (r *Release) Start() error {
 	rtr.Get("/v1/releases/{name}", apiHandler.GetSingle)
 	rtr.Delete("/v1/releases/{name}", apiHandler.Delete)
 
-	certificate, err := tls.LoadX509KeyPair(os.Getenv("TLS_CERT"), os.Getenv("TLS_KEY"))
+	certificate, err := tls.LoadX509KeyPair(config.TLSCertificate(), config.TLSKey())
 	if err != nil {
 		r.log.Error("Error loading certificates", "error", err)
 		return fmt.Errorf("unable to load TLS certificates:	%s", err)

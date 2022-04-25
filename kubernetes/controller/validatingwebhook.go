@@ -6,7 +6,6 @@ import (
 	"net/http"
 
 	"github.com/hashicorp/go-hclog"
-	"github.com/kr/pretty"
 	"github.com/nicholasjackson/consul-release-controller/plugins/interfaces"
 	"github.com/nicholasjackson/consul-release-controller/plugins/kubernetes"
 	appsv1 "k8s.io/api/apps/v1"
@@ -34,17 +33,27 @@ func (a *deploymentAdmission) Handle(ctx context.Context, req admission.Request)
 
 	err := a.decoder.Decode(req, deployment)
 	if err != nil {
+		a.log.Error("Error decoding deployment", "request", req, "error", err)
+
 		return admission.Errored(http.StatusBadRequest, err)
 	}
 
+	a.log.Debug("Handle deployment admission", "deployment", deployment.Name, "namespaces", deployment.Namespace)
+
 	// was the deployment modified by the release controller, if so, ignore
-	pretty.Println(deployment.Labels)
-	if deployment.Labels != nil && deployment.Labels["consul-release-controller-version"] == deployment.ResourceVersion {
+	if deployment.Labels != nil && deployment.Labels["consul-release-controller-version"] != "" && deployment.Labels["consul-release-controller-version"] == deployment.ResourceVersion {
+		a.log.Debug("Ignore deployment, resource was modified by the controller", "name", deployment.Name, "namespace", deployment.Namespace, "labels", deployment.Labels)
+
 		return admission.Allowed("resource modified by controller")
 	}
 
 	// is there release for this deployment?
 	rels, err := a.provider.GetDataStore().ListReleases(&interfaces.ListOptions{"kubernetes"})
+	if err != nil {
+		a.log.Error("Error fetching releases", "name", deployment.Name, "namespace", deployment.Namespace, "error", err)
+		return admission.Errored(500, err)
+	}
+
 	for _, rel := range rels {
 		conf := &kubernetes.PluginConfig{}
 		json.Unmarshal(rel.Runtime.Config, conf)
@@ -53,15 +62,17 @@ func (a *deploymentAdmission) Handle(ctx context.Context, req admission.Request)
 			// found a release for this deployment, check the state
 			sm, err := a.provider.GetStateMachine(rel)
 			if err != nil {
+				a.log.Error("Error fetching statemachine", "name", deployment.Name, "namespace", deployment.Namespace, "error", err)
 				return admission.Errored(500, err)
 			}
 
-			a.log.Debug("Found existing release", "state", sm.CurrentState())
+			a.log.Debug("Found existing release", "name", deployment.Name, "namespace", deployment.Namespace, "state", sm.CurrentState())
 
-			if sm.CurrentState() == interfaces.StateIdle {
+			if sm.CurrentState() == interfaces.StateIdle || sm.CurrentState() == interfaces.StateFail {
 				// kick off a new deployment
 				err = sm.Deploy()
 				if err != nil {
+					a.log.Error("Error initializing new deployment", "name", deployment.Name, "namespace", deployment.Namespace, "error", err)
 					return admission.Errored(500, err)
 				}
 
@@ -69,6 +80,7 @@ func (a *deploymentAdmission) Handle(ctx context.Context, req admission.Request)
 			}
 
 			// release currently active, reject deployment
+			a.log.Debug("Reject deployment, there is currently an active release for this deployment", "name", deployment.Name, "namespace", deployment.Namespace, "state", sm.CurrentState())
 			return admission.Denied("A release is currently active")
 		}
 	}

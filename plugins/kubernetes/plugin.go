@@ -38,7 +38,16 @@ func New(l hclog.Logger) (*Plugin, error) {
 
 func (p *Plugin) Configure(data json.RawMessage) error {
 	p.config = &PluginConfig{}
-	return json.Unmarshal(data, p.config)
+	err := json.Unmarshal(data, p.config)
+	if err != nil {
+		return err
+	}
+
+	if p.config.Namespace == "" {
+		p.config.Namespace = "default"
+	}
+
+	return nil
 }
 
 func (p *Plugin) BaseConfig() interfaces.RuntimeBaseConfig {
@@ -86,9 +95,10 @@ func (p *Plugin) InitPrimary(ctx context.Context) (interfaces.RuntimeDeploymentS
 	}
 
 	// fetch the current deployment
-	candidateDeployment, err = p.kubeClient.GetHealthyDeployment(ctx, p.config.Deployment, p.config.Namespace)
+	candidateDeployment, err = p.kubeClient.GetDeployment(ctx, p.config.Deployment, p.config.Namespace)
 	// if we have no Candidate there is nothing we can do
 	if err != nil || candidateDeployment == nil {
+		p.log.Debug("No candidate deployment, nothing to do")
 		return interfaces.RuntimeDeploymentNoAction, nil
 	}
 

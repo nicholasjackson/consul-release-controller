@@ -1,0 +1,19 @@
+# Service that provides the Consul Release Controller with the ability to connect
+# to service mesh services. This is required when using post deployment tests as
+# the Consul Release Controller requires the ability to 
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "consul-release-controller.fullname" . }}-upstreams
+  namespace: {{ .Release.Namespace | quote }}
+  labels:
+    {{- include "consul-release-controller.labels" . | nindent 4 }}
+spec:
+  selector:
+    app.kubernetes.io/name: consul-release-controller-upstreams
+  ports:
+  - name: http
+    protocol: TCP
+    port: 80
+    targetPort: 80

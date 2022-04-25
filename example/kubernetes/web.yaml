@@ -33,7 +33,7 @@ metadata:
   labels:
     app: web_v1
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: web

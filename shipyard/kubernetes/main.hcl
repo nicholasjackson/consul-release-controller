@@ -103,7 +103,7 @@ k8s_cluster "dc1" {
 }
 
 module "consul" {
-  source = "github.com/shipyard-run/blueprints?ref=f4c6e96fe5188b934b1179087f0e91575db2a61e/modules//kubernetes-consul"
+  source = "github.com/shipyard-run/blueprints?ref=d0ef4e69081263dad65edcf05ea3dc8da395b418/modules//kubernetes-consul"
 }
 
 ingress "web" {

@@ -19,7 +19,7 @@ spec:
       annotations:
         'consul.hashicorp.com/connect-inject': 'true'
         'consul.hashicorp.com/transparent-proxy': 'false'
-        'consul.hashicorp.com/connect-service-upstreams': "{{ include "consul-release-controller.fullname" . }}-upstreams:80"
+        'consul.hashicorp.com/connect-service-upstreams': "{{ include "consul-release-controller.fullname" . }}-upstreams:18080"
         {{- with .Values.controller.podAnnotations }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
@@ -80,6 +80,8 @@ spec:
               value: /tmp/serving-certs/tls.crt
             - name: TLS_KEY
               value: /tmp/serving-certs/tls.key
+            - name: UPSTREAMS
+              value: "http://localhost:18080"
             {{- if eq (toString .Values.autoEncrypt.enabled) "false" }}
             {{- toYaml .Values.controller.container_config.hostEnv | nindent 12 }}
             {{- end }}

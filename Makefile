@@ -69,6 +69,9 @@ create_dev_env_no_controller_no_app:
 create_dev_env_local_controller:
 	shipyard run ./shipyard/kubernetes --var="helm_controller_enabled=false"
 
+create_dev_env_local_controller_no_app:
+	shipyard run ./shipyard/kubernetes --var="helm_controller_enabled=false" --var="example_app=false"
+
 # Create a dev environment with Shipyard and install the controller
 create_dev_env_docker_controller:
 	shipyard run ./shipyard/kubernetes --var="controller_version=${VERSION}.dev"

@@ -16,14 +16,6 @@ spec:
 
 ---
 apiVersion: consul.hashicorp.com/v1alpha1
-kind: ServiceDefaults
-metadata:
-  name: payments-db
-spec:
-  protocol: tcp
-
----
-apiVersion: consul.hashicorp.com/v1alpha1
 kind: IngressGateway
 metadata:
   name: ingress-gateway
@@ -69,16 +61,4 @@ spec:
     name: payments
   sources:
     - name: api
-      action: allow
-
----
-apiVersion: consul.hashicorp.com/v1alpha1
-kind: ServiceIntentions
-metadata:
-  name: payments-db
-spec:
-  destination:
-    name: payments-db
-  sources:
-    - name: payments
       action: allow

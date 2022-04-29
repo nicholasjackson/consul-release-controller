@@ -36,9 +36,9 @@ variable "consul_release_controller_enabled" {
 //  description = "Using the debian base images as alpine does not support arm"
 //}
 
-//variable "consul_image" {
-//  default = "hashicorp/consul:1.11.1"
-//}
+variable "consul_image" {
+  default = "hashicorp/consul:1.11.5"
+}
 //
 //variable "consul_envoy_image" {
 //  default     = "envoyproxy/envoy:v1.20.0"

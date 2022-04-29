@@ -1,17 +1,17 @@
 {
-  "name":"api",
+  "name":"payments",
 
   "releaser": {
     "plugin_name": "consul",
     "config": {
-      "consul_service": "api"
+      "consul_service": "payments"
     }
   },
   
   "runtime": {
     "plugin_name": "kubernetes",
     "config": {
-      "deployment": "api-deployment",
+      "deployment": "payments-deployment",
       "namespace": "default"
     }
   },

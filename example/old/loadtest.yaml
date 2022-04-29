@@ -56,10 +56,11 @@ data:
         },
       }
       // our HTTP request, note that we are saving the response to res, which can be accessed later
-      const res = http.post('http://consul-ingress-gateway.consul.svc:18080/v1/pay');
-      
+      //const res = http.get('http://app.dev.hashicraft.com');
+      const res = http.get('http://consul-ingress-gateway.consul.svc:18080');
+      //const res = http.get('http://api.default.svc:8080');
       const checkRes = check(res, {
-        'status is ok': (r) => r.status === 200 || r.status === 304,
+        'status is 200': (r) => r.status === 200,
       });
 
       sleep(randomIntBetween(0.2, 1.5));
@@ -88,13 +89,6 @@ spec:
       containers:
       - name: load-generator
         image: loadimpact/k6
-        resources:
-          requests:
-            memory: "256Mi"
-            cpu: "1000m"
-          limits:
-            memory: "512Mi"
-            cpu: "1500m"
         command: ["k6", "run", "--out", "statsd", "/etc/config/load_test.js"]
         env:
           - name: K6_STATSD_ADDR
@@ -104,13 +98,6 @@ spec:
           mountPath: /etc/config
       - name: statsd-exporter
         image: prom/statsd-exporter 
-        resources:
-          requests:
-            memory: "128Mi"
-            cpu: "250m"
-          limits:
-            memory: "256Mi"
-            cpu: "500m"
         ports:
           - containerPort: 9102
       volumes:

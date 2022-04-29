@@ -290,7 +290,8 @@ func (s *StateMachine) doConfigure() func(e *fsm.Event) {
 					return
 				}
 
-				time.Sleep(stepDelay)
+				// we can't determine when the configuration is synced to t he proxy, wait an arbitrary period of time
+				time.Sleep(stepDelay * 4)
 
 				// remove the candidate
 				err = s.runtimePlugin.RemoveCandidate(ctx)
@@ -364,7 +365,7 @@ func (s *StateMachine) doDeploy() func(e *fsm.Event) {
 				//
 				// since we can not exactly determine when the state has converged in the data plane
 				// wait an arbitrary period of time.
-				time.Sleep(stepDelay)
+				time.Sleep(stepDelay * 4)
 
 				// remove the candidate and wait for the next deployment
 				err = s.runtimePlugin.RemoveCandidate(ctx)

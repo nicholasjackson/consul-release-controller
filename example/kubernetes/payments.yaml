@@ -2,17 +2,18 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: api
+  name: payments
+  namespace: default
   labels:
     app: metrics
 spec:
   selector:
-    app: api
+    app: payments
   ports:
     - name: http
       protocol: TCP
-      port: 3001
-      targetPort: 3001
+      port: 9090
+      targetPort: 9090
     - name: metrics # prom scraping port
       protocol: TCP
       port: 20200
@@ -22,54 +23,52 @@ spec:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: api
+  name: payments
+  namespace: default
 automountServiceAccountToken: false
 
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: api-deployment
+  name: payments-deployment
+  namespace: default
   labels:
-    app: api_v1
+    app: payments_v1
 spec:
-  replicas: 2
+  replicas: 3
   selector:
     matchLabels:
-      app: api
+      app: payments
   template:
     metadata:
       labels:
-        app: api
+        app: payments
         metrics: enabled
       annotations:
         consul.hashicorp.com/connect-inject: 'true'
-        consul.hashicorp.com/connect-service-upstreams: 'payments:3000'
+        consul.hashicorp.com/connect-service-upstreams: 'payments-db:5432'
         #consul.hashicorp.com/transparent-proxy: 'true'
         #consul.hashicorp.com/transparent-proxy-overwrite-probes: 'true'
-        #consul.hashicorp.com/transparent-proxy-exclude-inbound-ports: '9090'
     spec:  
-      serviceAccountName: api
+      serviceAccountName: payments
       automountServiceAccountToken: true
       containers:
-        - name: api
-          image: nicholasjackson/canary-api:0.0.4
+        - name: payments
+          image: nicholasjackson/canary-payments:0.0.7
           imagePullPolicy: IfNotPresent
           ports:
-            - containerPort: 3001
-          env:
-            - name: "PAYMENTS"
-              value: "http://localhost:3000"
+            - containerPort: 3000
           readinessProbe:
             httpGet:
               path: /ready
-              port: 3001
+              port: 3000
             periodSeconds: 5
             initialDelaySeconds: 5
           livenessProbe:
             httpGet:
               path: /health
-              port: 3001
+              port: 3000
             periodSeconds: 5
             initialDelaySeconds: 5
           resources:

@@ -30,7 +30,7 @@ EOF
   }
 }
 
-helm "cert_manager" {
+helm "cert_manager_local" {
   cluster          = "k8s_cluster.dc1"
   namespace        = "cert-manager"
   create_namespace = true

@@ -2,17 +2,17 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: web
+  name: api
   labels:
     app: metrics
 spec:
   selector:
-    app: web
+    app: api
   ports:
     - name: http
       protocol: TCP
-      port: 9090
-      targetPort: 9090
+      port: 3001
+      targetPort: 3001
     - name: metrics # prom scraping port
       protocol: TCP
       port: 20200
@@ -22,63 +22,60 @@ spec:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: web
+  name: api
 automountServiceAccountToken: false
 
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: web-deployment
+  name: api-deployment
   labels:
-    app: web_v1
+    app: api_v1
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: web
+      app: api
   template:
     metadata:
       labels:
-        app: web
+        app: api
         metrics: enabled
       annotations:
         consul.hashicorp.com/connect-inject: 'true'
-        consul.hashicorp.com/connect-service-upstreams: 'api:9091'
+        consul.hashicorp.com/connect-service-upstreams: 'payments:3000'
         #consul.hashicorp.com/transparent-proxy: 'true'
         #consul.hashicorp.com/transparent-proxy-overwrite-probes: 'true'
         #consul.hashicorp.com/transparent-proxy-exclude-inbound-ports: '9090'
     spec:  
-      serviceAccountName: web
+      serviceAccountName: api
       automountServiceAccountToken: true
       containers:
-        - name: web
-          image: nicholasjackson/fake-service:v0.23.1
+        - name: api
+          image: nicholasjackson/canary-api:0.0.4
           imagePullPolicy: IfNotPresent
           ports:
-            - containerPort: 9090
+            - containerPort: 3001
           env:
-            - name: "NAME"
-              value: "WEB"
-            - name: "LISTEN_ADDR"
-              value: "0.0.0.0:9090"
-            - name: "UPSTREAM_URIS"
-              value: "http://localhost:9091"
-            - name: "TIMING_50_PERCENTILE"
-              value: "10ms"
-            - name: "TRACING_ZIPKIN"
-              value: "http://tempo:9411"
-            - name: "READY_CHECK_RESPONSE_DELAY"
-              value: "10s"
+            - name: "PAYMENTS"
+              value: "http://localhost:3000"
           readinessProbe:
             httpGet:
               path: /ready
-              port: 9090
+              port: 3001
             periodSeconds: 5
             initialDelaySeconds: 5
           livenessProbe:
             httpGet:
               path: /health
-              port: 9090
+              port: 3001
             periodSeconds: 5
             initialDelaySeconds: 5
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "250m"
+            limits:
+              memory: "256Mi"
+              cpu: "500m"

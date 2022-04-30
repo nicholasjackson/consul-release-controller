@@ -1,0 +1,20 @@
+---
+apiVersion: consul.hashicorp.com/v1alpha1
+kind: ServiceRouter
+metadata:
+  name: payments
+spec:
+  routes:
+    - match:
+        http:
+          pathPrefix: /
+      destination:
+        service: payments
+        numRetries: 3
+        retryOnConnectFailure: true
+        retryOnStatusCodes:
+          - 429
+          - 500
+          - 502
+          - 503
+          - 504

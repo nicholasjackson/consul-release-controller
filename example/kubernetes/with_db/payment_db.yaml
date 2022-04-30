@@ -1,0 +1,62 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: payments-db
+spec:
+  selector:
+    app: payments-db
+  ports:
+    - name: postgres
+      protocol: TCP
+      port: 5432
+      targetPort: 5432
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: payments-db
+automountServiceAccountToken: false
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payments-db-deployment
+  labels:
+    app: paments_db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: payments-db
+  template:
+    metadata:
+      labels:
+        app: payments-db
+      annotations:
+        consul.hashicorp.com/connect-inject: 'true'
+    spec:  
+      serviceAccountName: payments-db
+      automountServiceAccountToken: true
+      containers:
+        - name: payments-db
+          image: postgres:14.2
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 5432
+          env:
+            - name: "POSTGRES_USER"
+              value: "payments"
+            - name: "POSTGRES_PASSWORD"
+              value: "password"
+            - name: "POSTGRES_DB"
+              value: "payments"
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "250m"
+            limits:
+              memory: "256Mi"
+              cpu: "500m"

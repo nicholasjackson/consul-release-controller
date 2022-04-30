@@ -122,7 +122,7 @@ func (p *Plugin) Execute(ctx context.Context) error {
 
 		p.log.Debug("Executing request to upstream", "url", url, "upstream", host)
 
-		httpreq, err := http.NewRequest(p.config.Method, fmt.Sprintf("%s%s", config.ConsulServiceUpstreams(), p.config.Path), bytes.NewBufferString(p.config.Payload))
+		httpreq, err := http.NewRequest(p.config.Method, url, bytes.NewBufferString(p.config.Payload))
 		if err != nil {
 			p.log.Error("Unable to create HTTP request", "error", err)
 			return err

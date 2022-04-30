@@ -36,9 +36,9 @@ variable "consul_release_controller_enabled" {
 //  description = "Using the debian base images as alpine does not support arm"
 //}
 
-//variable "consul_image" {
-//  default = "hashicorp/consul:1.11.1"
-//}
+variable "consul_image" {
+  default = "hashicorp/consul:1.11.5"
+}
 //
 //variable "consul_envoy_image" {
 //  default     = "envoyproxy/envoy:v1.20.0"
@@ -103,7 +103,7 @@ k8s_cluster "dc1" {
 }
 
 module "consul" {
-  source = "github.com/shipyard-run/blueprints?ref=f4c6e96fe5188b934b1179087f0e91575db2a61e/modules//kubernetes-consul"
+  source = "github.com/shipyard-run/blueprints?ref=d0ef4e69081263dad65edcf05ea3dc8da395b418/modules//kubernetes-consul"
 }
 
 ingress "web" {
@@ -136,7 +136,7 @@ k8s_config "application" {
   cluster = "k8s_cluster.dc1"
 
   paths = [
-    "${file_dir()}/../../example/kubernetes/"
+    "${file_dir()}/../../example/kubernetes/basic"
   ]
 
   wait_until_ready = true

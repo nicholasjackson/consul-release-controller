@@ -2,19 +2,19 @@
 apiVersion: consul-release-controller.nicholasjackson.io/v1
 kind: Release
 metadata:
-  name: api
+  name: payments
   namespace: default
 spec:
   releaser:
     pluginName: "consul"
     config:
-      consulService: "api"
+      consulService: "payments"
 #     namespace: "mynamespace"
 #     partition: "mypartition"
   runtime:
     pluginName: "kubernetes"
     config:
-      deployment: "api-deployment"
+      deployment: "payments-deployment"
   strategy:
     pluginName: "canary"
     config:

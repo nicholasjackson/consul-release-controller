@@ -22,8 +22,3 @@ version: ##VERSION##
 # follow Semantic Versioning. They should reflect the version the application is using.
 # It is recommended to use it with quotes.
 appVersion: "##VERSION##"
-
-dependencies:
-  - name: cert-manager
-    version: ~1.8.0
-    repository: https://charts.jetstack.io

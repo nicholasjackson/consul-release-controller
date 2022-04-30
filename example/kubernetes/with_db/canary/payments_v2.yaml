@@ -1,0 +1,51 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payments-deployment
+  namespace: default
+  labels:
+    app: payments_v2
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: payments
+  template:
+    metadata:
+      labels:
+        app: payments
+        metrics: enabled
+      annotations:
+        consul.hashicorp.com/connect-inject: 'true'
+        consul.hashicorp.com/connect-service-upstreams: 'payments-db:5432'
+        #consul.hashicorp.com/transparent-proxy: 'true'
+        #consul.hashicorp.com/transparent-proxy-overwrite-probes: 'true'
+    spec:  
+      serviceAccountName: payments
+      automountServiceAccountToken: true
+      containers:
+        - name: payments
+          image: nicholasjackson/canary-payments:0.0.6
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3000
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 3000
+            periodSeconds: 5
+            initialDelaySeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            periodSeconds: 5
+            initialDelaySeconds: 5
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "250m"
+            limits:
+              memory: "256Mi"
+              cpu: "500m"

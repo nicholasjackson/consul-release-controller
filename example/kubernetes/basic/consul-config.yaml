@@ -2,7 +2,7 @@
 apiVersion: consul.hashicorp.com/v1alpha1
 kind: ServiceDefaults
 metadata:
-  name: web
+  name: api
 spec:
   protocol: http
 
@@ -10,7 +10,7 @@ spec:
 apiVersion: consul.hashicorp.com/v1alpha1
 kind: ServiceDefaults
 metadata:
-  name: api
+  name: payments
 spec:
   protocol: http
 
@@ -24,7 +24,7 @@ spec:
     - port: 18080
       protocol: http
       services:
-        - name: web
+        - name: api
           hosts: ["*"]
 
 ---
@@ -43,10 +43,10 @@ spec:
 apiVersion: consul.hashicorp.com/v1alpha1
 kind: ServiceIntentions
 metadata:
-  name: web
+  name: api
 spec:
   destination:
-    name: web
+    name: api
   sources:
     - name: ingress-gateway
       action: allow
@@ -55,10 +55,10 @@ spec:
 apiVersion: consul.hashicorp.com/v1alpha1
 kind: ServiceIntentions
 metadata:
-  name: api
+  name: payments
 spec:
   destination:
-    name: api
+    name: payments
   sources:
-    - name: web
+    - name: api
       action: allow

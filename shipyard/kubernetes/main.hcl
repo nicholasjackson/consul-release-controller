@@ -136,7 +136,7 @@ k8s_config "application" {
   cluster = "k8s_cluster.dc1"
 
   paths = [
-    "${file_dir()}/../../example/kubernetes/"
+    "${file_dir()}/../../example/kubernetes/basic"
   ]
 
   wait_until_ready = true

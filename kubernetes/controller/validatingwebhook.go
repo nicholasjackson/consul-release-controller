@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"net/http"
+	"regexp"
 
 	"github.com/hashicorp/go-hclog"
 	"github.com/nicholasjackson/consul-release-controller/plugins/interfaces"
@@ -58,7 +59,15 @@ func (a *deploymentAdmission) Handle(ctx context.Context, req admission.Request)
 		conf := &kubernetes.PluginConfig{}
 		json.Unmarshal(rel.Runtime.Config, conf)
 
-		if conf.Deployment == deployment.Name {
+		// PluginConfig.Deployment can reference deployments using regular expressions
+		// check if this matches
+		re, err := regexp.Compile(conf.Deployment)
+		if err != nil {
+			a.log.Error("Invalid regular expression for deployment in release config", "release", rel.Name, "error", err)
+			continue
+		}
+
+		if re.MatchString(deployment.Name) {
 			// found a release for this deployment, check the state
 			sm, err := a.provider.GetStateMachine(rel)
 			if err != nil {

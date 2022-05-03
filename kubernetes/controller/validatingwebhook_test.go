@@ -16,11 +16,11 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/webhook/admission"
 )
 
-func setupAdmission(t *testing.T) (*deploymentAdmission, *mocks.Mocks) {
+func setupAdmission(t *testing.T, deploymentName string) (*deploymentAdmission, *mocks.Mocks) {
 	pm, mm := mocks.BuildMocks(t)
 
 	pc := &kubernetes.PluginConfig{}
-	pc.Deployment = "test-deployment"
+	pc.Deployment = deploymentName
 
 	pcd, _ := json.Marshal(pc)
 
@@ -74,7 +74,7 @@ func createAdmissionRequest(withVersionLabels bool) admission.Request {
 
 func TestIgnoresDeploymentModifiedByControllerWhenActive(t *testing.T) {
 	ar := createAdmissionRequest(true)
-	d, mm := setupAdmission(t)
+	d, mm := setupAdmission(t, "test-deployment")
 
 	resp := d.Handle(context.TODO(), ar)
 	require.True(t, resp.Allowed)
@@ -83,7 +83,16 @@ func TestIgnoresDeploymentModifiedByControllerWhenActive(t *testing.T) {
 
 func TestCallsDeployForNewDeploymentWhenIdle(t *testing.T) {
 	ar := createAdmissionRequest(false)
-	d, mm := setupAdmission(t)
+	d, mm := setupAdmission(t, "test-deployment")
+
+	resp := d.Handle(context.TODO(), ar)
+	require.True(t, resp.Allowed)
+	mm.StateMachineMock.AssertCalled(t, "Deploy")
+}
+
+func TestCallsDeployForNewDeploymentWhenIdleAndUsingRegularExpressions(t *testing.T) {
+	ar := createAdmissionRequest(false)
+	d, mm := setupAdmission(t, "test-(.*)")
 
 	resp := d.Handle(context.TODO(), ar)
 	require.True(t, resp.Allowed)
@@ -92,7 +101,7 @@ func TestCallsDeployForNewDeploymentWhenIdle(t *testing.T) {
 
 func TestCallsDeployForNewDeploymentWhenFailed(t *testing.T) {
 	ar := createAdmissionRequest(false)
-	d, mm := setupAdmission(t)
+	d, mm := setupAdmission(t, "test-deployment")
 
 	testutils.ClearMockCall(&mm.StateMachineMock.Mock, "CurrentState")
 	mm.StateMachineMock.On("CurrentState").Return(interfaces.StateFail)
@@ -104,7 +113,7 @@ func TestCallsDeployForNewDeploymentWhenFailed(t *testing.T) {
 
 func TestReturnsAllowedWhenReleaseNotFound(t *testing.T) {
 	ar := createAdmissionRequest(false)
-	d, mm := setupAdmission(t)
+	d, mm := setupAdmission(t, "test-deployment")
 
 	testutils.ClearMockCall(&mm.StoreMock.Mock, "ListReleases")
 	mm.StoreMock.On("ListReleases", &interfaces.ListOptions{"kubernetes"}).Return(
@@ -119,7 +128,7 @@ func TestReturnsAllowedWhenReleaseNotFound(t *testing.T) {
 
 func TestReturnsDeniedWhenReleaseActive(t *testing.T) {
 	ar := createAdmissionRequest(false)
-	d, mm := setupAdmission(t)
+	d, mm := setupAdmission(t, "test-deployment")
 
 	testutils.ClearMockCall(&mm.StateMachineMock.Mock, "CurrentState")
 	mm.StateMachineMock.On("CurrentState").Return(interfaces.StateMonitor)

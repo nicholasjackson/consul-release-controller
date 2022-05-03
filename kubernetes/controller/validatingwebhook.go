@@ -67,7 +67,7 @@ func (a *deploymentAdmission) Handle(ctx context.Context, req admission.Request)
 			continue
 		}
 
-		if re.MatchString(deployment.Name) {
+		if re.MatchString(deployment.Name) && conf.Namespace == deployment.Namespace {
 			// found a release for this deployment, check the state
 			sm, err := a.provider.GetStateMachine(rel)
 			if err != nil {

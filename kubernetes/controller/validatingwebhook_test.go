@@ -101,6 +101,18 @@ func TestCallsDeployForNewDeploymentWhenIdle(t *testing.T) {
 	mm.StateMachineMock.AssertCalled(t, "Deploy")
 }
 
+func TestAddsRegExpWordBoundaryAndFailsMatchWhenNotPresent(t *testing.T) {
+	ar := createAdmissionRequest(false)
+
+	// a regexp without a word boundary would match, check we add
+	// the word boundary when not present
+	d, mm := setupAdmission(t, "test-", "default")
+
+	resp := d.Handle(context.TODO(), ar)
+	require.True(t, resp.Allowed)
+	mm.StateMachineMock.AssertNotCalled(t, "Deploy")
+}
+
 func TestCallsDeployForNewDeploymentWhenIdleAndUsingRegularExpressions(t *testing.T) {
 	ar := createAdmissionRequest(false)
 	d, mm := setupAdmission(t, "test-(.*)", "default")

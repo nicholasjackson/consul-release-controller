@@ -7,6 +7,55 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.3 - 2022-05-03
+
+### Changed
+- Ensure deployments are in the same namespace as a release
+- Enable wildcard matching for deployment name
+
+```yaml
+---
+apiVersion: consul-release-controller.nicholasjackson.io/v1
+kind: Release
+metadata:
+  name: payments
+  namespace: default
+spec:
+  releaser:
+    pluginName: "consul"
+    config:
+      consulService: "payments"
+#     namespace: "mynamespace"
+#     partition: "mypartition"
+  runtime:
+    pluginName: "kubernetes"
+    config:
+      deployment: "payments-(.*)"
+  strategy:
+    pluginName: "canary"
+    config:
+      initialDelay: "30s"
+      initialTraffic: 10
+      interval: "30s"
+      trafficStep: 20
+      maxTraffic: 100
+      errorThreshold: 5
+  monitor:
+    pluginName: "prometheus"
+    config:
+      address: "http://prometheus-kube-prometheus-prometheus.monitoring.svc:9090"
+      queries:
+        - name: "request-success"
+          preset: "envoy-request-success"
+          min: 99
+        - name: "request-duration"
+          preset: "envoy-request-duration"
+          min: 20
+          max: 200
+```
+
+## [0.1.2 - 2022-05-01
+
 ### Changed
 - Helm chart Webhook config failure policy now defaults to `Ignore`
 - Configuration for the server moved to global `config` package

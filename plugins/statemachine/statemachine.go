@@ -145,6 +145,7 @@ func New(r *models.Release, pluginProvider interfaces.Provider) (*StateMachine, 
 				interfaces.StateDestroy,
 			}, Dst: interfaces.StateFail},
 			{Name: interfaces.EventDestroy, Src: []string{
+				interfaces.StateFail,
 				interfaces.StateIdle,
 				interfaces.StateDeploy,
 				interfaces.StateMonitor,

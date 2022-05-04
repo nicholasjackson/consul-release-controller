@@ -108,6 +108,13 @@ func (p *Plugin) InitPrimary(ctx context.Context) (interfaces.RuntimeDeploymentS
 	primaryDeployment.Name = primaryName
 	primaryDeployment.ResourceVersion = ""
 
+	// add labels to ensure the deployment is not picked up by the validating webhook
+	if primaryDeployment.Labels == nil {
+		primaryDeployment.Labels = map[string]string{}
+	}
+
+	primaryDeployment.Labels[interfaces.RuntimeDeploymentVersionLabel] = "1"
+
 	// save the new primary
 	err = p.kubeClient.UpsertDeployment(ctx, primaryDeployment)
 	if err != nil {
@@ -162,6 +169,13 @@ func (p *Plugin) PromoteCandidate(ctx context.Context) (interfaces.RuntimeDeploy
 	primary := candidate.DeepCopy()
 	primary.Name = primaryName
 	primary.ResourceVersion = ""
+
+	// add labels to ensure the deployment is not picked up by the validating webhook
+	if primary.Labels == nil {
+		primary.Labels = map[string]string{}
+	}
+
+	primary.Labels[interfaces.RuntimeDeploymentVersionLabel] = "1"
 
 	// save the new deployment
 	err = p.kubeClient.UpsertDeployment(ctx, primary)
@@ -254,6 +268,9 @@ func (p *Plugin) RestoreOriginal(ctx context.Context) error {
 	cd := primaryDeployment.DeepCopy()
 	cd.Name = p.config.Deployment
 	cd.ResourceVersion = ""
+
+	// remove the ownership label so that it can be updated as normal
+	delete(cd.Labels, interfaces.RuntimeDeploymentVersionLabel)
 
 	p.log.Debug("Clone primary to create original deployment", "name", p.config.Deployment, "namespace", p.config.Namespace)
 

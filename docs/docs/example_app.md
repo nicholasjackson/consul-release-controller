@@ -1607,7 +1607,8 @@ running, at present the only supported runtime is `kubernetes`, however, other r
 ##### config
 | parameter  | required | type   | values | description                                                     |
 | ---------- | -------- | ------ | ------ | --------------------------------------------------------------- |
-| deployment | yes      | string |        | name of the deployment that will be managed by the controller   |
+| deployment | yes      | string |        | name of the deployment that will be managed by the controller, can also contain regular expressions, for example 
+                                            a deployment value of test-(.*) would match test-v1 and test-v2 |
 
 #### strategy
 

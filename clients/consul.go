@@ -448,6 +448,14 @@ func (c *ConsulImpl) CreateServiceIntention(name string) error {
 	if ce != nil {
 		// we have an existing entry, mutate rather than overwrite
 		defaults = ce.(*api.ServiceIntentionsConfigEntry)
+
+		// first check to see if the source already exists, if so exit
+		for _, s := range defaults.Sources {
+			if s.Name == ControllerServiceName {
+				// intention already exists, exit
+				return nil
+			}
+		}
 	}
 
 	// update the list of intentions adding the controller intention

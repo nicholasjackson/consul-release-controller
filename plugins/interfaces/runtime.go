@@ -11,6 +11,7 @@ const (
 	RuntimeDeploymentNoAction      RuntimeDeploymentStatus = "runtime_deployment_no_action"
 	RuntimeDeploymentNotFound      RuntimeDeploymentStatus = "runtime_deployment_not_found"
 	RuntimeDeploymentInternalError RuntimeDeploymentStatus = "runtime_deployment_internal_error"
+	RuntimeDeploymentVersionLabel                          = "consul-release-controller-version"
 )
 
 // RuntimeBaseConfig is the base configuration that all runtime plugins must implement

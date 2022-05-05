@@ -58,13 +58,13 @@ func TestSetsIntitialTraficAndReturnsFirstRun(t *testing.T) {
 	// reset the traffic to the initial state
 	p.currentTraffic = -1
 
-	status, traffic, err := p.Execute(context.Background())
+	status, traffic, err := p.Execute(context.Background(), "test-deployment")
 	require.NoError(t, err)
 
 	require.Equal(t, interfaces.StrategyStatusSuccess, string(status))
 	require.Equal(t, 10, traffic)
 
-	mm.AssertNotCalled(t, "Check", mock.Anything)
+	mm.AssertNotCalled(t, "Check", mock.Anything, mock.Anything)
 }
 
 func TestSetsIntitialTraficToTrafficStepWhenNotSetAndReturnsFirstRun(t *testing.T) {
@@ -72,7 +72,7 @@ func TestSetsIntitialTraficToTrafficStepWhenNotSetAndReturnsFirstRun(t *testing.
 	// reset the traffic to the initial state
 	p.currentTraffic = -1
 
-	status, traffic, err := p.Execute(context.Background())
+	status, traffic, err := p.Execute(context.Background(), "test-deployment")
 	require.NoError(t, err)
 
 	require.Equal(t, interfaces.StrategyStatusSuccess, string(status))
@@ -85,10 +85,10 @@ func TestCallsMonitorCheckAndReturnsWhenNoError(t *testing.T) {
 	st := time.Now()
 	p, mm := setupPlugin(t, canaryStrategy)
 
-	_, _, err := p.Execute(context.Background())
+	_, _, err := p.Execute(context.Background(), "test-deployment")
 	require.NoError(t, err)
 
-	mm.AssertCalled(t, "Check", mock.Anything, 30*time.Millisecond)
+	mm.AssertCalled(t, "Check", mock.Anything, mock.Anything, 30*time.Millisecond)
 
 	et := time.Since(st)
 	require.Greater(t, et, 30*time.Millisecond, "Execute should sleep for interval before check")
@@ -98,10 +98,10 @@ func TestExecuteReturnsIncrementsTrafficSubsequentRuns(t *testing.T) {
 	p, _ := setupPlugin(t, canaryStrategy)
 	p.currentTraffic = 10
 
-	state, traffic, err := p.Execute(context.Background())
+	status, traffic, err := p.Execute(context.Background(), "test-deployment")
 	require.NoError(t, err)
 
-	require.Equal(t, interfaces.StrategyStatusSuccess, string(state))
+	require.Equal(t, interfaces.StrategyStatusSuccess, string(status))
 	require.Equal(t, 20, traffic)
 }
 
@@ -109,10 +109,10 @@ func TestExecuteReturnsCompleteWhenAllChecksComplete(t *testing.T) {
 	p, _ := setupPlugin(t, canaryStrategy)
 	p.currentTraffic = 80
 
-	state, traffic, err := p.Execute(context.Background())
+	status, traffic, err := p.Execute(context.Background(), "test-deployment")
 	require.NoError(t, err)
 
-	require.Equal(t, interfaces.StrategyStatusComplete, string(state))
+	require.Equal(t, interfaces.StrategyStatusComplete, string(status))
 	require.Equal(t, 100, traffic)
 }
 
@@ -122,10 +122,10 @@ func TestReturnsErrorWhenChecksFail(t *testing.T) {
 
 	mm.On("Check", mock.Anything, mock.Anything, mock.Anything, mock.Anything).Return(interfaces.CheckFailed, fmt.Errorf("boom"))
 
-	state, traffic, err := p.Execute(context.Background())
+	status, traffic, err := p.Execute(context.Background(), "test-deployment")
 	require.NoError(t, err)
 
-	require.Equal(t, interfaces.StrategyStatusFail, string(state))
+	require.Equal(t, interfaces.StrategyStatusFail, string(status))
 	require.Equal(t, traffic, 0)
 
 	// should call check 5 times due to error threshold

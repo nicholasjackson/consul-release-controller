@@ -97,7 +97,7 @@ func (p *Plugin) Configure(data json.RawMessage) error {
 // interfaces.StrategyStatusSuccess and the percentage of traffic to set to the canditate returned on success of the checks
 // interfaces.StrategyStatusFail and the percentage of traffic to set to the canditate returned on failure of the checks
 // interfaces.StrategyStatusFail and an error is returned on an internal error
-func (p *Plugin) Execute(ctx context.Context) (interfaces.StrategyStatus, int, error) {
+func (p *Plugin) Execute(ctx context.Context, candidateName string) (interfaces.StrategyStatus, int, error) {
 	p.log.Info("Executing strategy", "type", "canary", "traffic", p.currentTraffic)
 
 	// if this is the first run set the initial traffic and return
@@ -135,7 +135,7 @@ func (p *Plugin) Execute(ctx context.Context) (interfaces.StrategyStatus, int, e
 
 		p.log.Debug("Checking metrics", "type", "canary")
 
-		_, err := p.monitoring.Check(queryCtx, d)
+		_, err := p.monitoring.Check(queryCtx, candidateName, d)
 		if err != nil {
 			p.log.Debug("Check failed", "type", "canary", "error", err)
 			failCount++

@@ -4,6 +4,8 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"regexp"
+	"strings"
 	"time"
 
 	"github.com/hashicorp/go-hclog"
@@ -37,6 +39,10 @@ type Kubernetes interface {
 	// Any other error than DeploymentNotFound can be treated like an internal error
 	// in executing the request
 	GetDeployment(ctx context.Context, name, namespace string) (*appsv1.Deployment, error)
+
+	// GetDeploymentWithSelector returns the first deployment whos name and namespace match the given
+	// regular expression and namespace.
+	GetDeploymentWithSelector(ctx context.Context, selector, namespace string) (*appsv1.Deployment, error)
 
 	// UpsertDeployment creates or updates the given Kubernetes Deployment
 	UpsertDeployment(ctx context.Context, dep *appsv1.Deployment) error
@@ -99,6 +105,31 @@ type KubernetesImpl struct {
 	timeout          time.Duration
 	interval         time.Duration
 	logger           hclog.Logger
+}
+
+func (k *KubernetesImpl) GetDeploymentWithSelector(ctx context.Context, selector, namespace string) (*appsv1.Deployment, error) {
+	deps, err := k.clientset.AppsV1().Deployments(namespace).List(ctx, v1.ListOptions{})
+	if err != nil {
+		return nil, ErrDeploymentNotFound
+	}
+
+	if !strings.HasSuffix(selector, "$") {
+		selector = selector + "$"
+	}
+
+	re, err := regexp.Compile(selector)
+	if err != nil {
+		return nil, fmt.Errorf("invalid regular expression for deployment selector: %s, error: %s", selector, err)
+	}
+
+	// iterate over the list and look for a match
+	for _, d := range deps.Items {
+		if re.MatchString(d.Name) {
+			return k.GetDeployment(ctx, d.Name, namespace)
+		}
+	}
+
+	return nil, ErrDeploymentNotFound
 }
 
 func (k *KubernetesImpl) GetDeployment(ctx context.Context, name, namespace string) (*appsv1.Deployment, error) {

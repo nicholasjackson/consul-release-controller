@@ -198,11 +198,11 @@ func (c *ConsulImpl) CreateServiceResolver(name string) error {
 	}
 
 	primarySubset := api.ServiceResolverSubset{}
-	primarySubset.Filter = fmt.Sprintf(`Service.ID contains "%s-deployment-primary"`, name)
+	primarySubset.Filter = fmt.Sprintf(`Service.ID contains "%s-primary"`, name)
 	primarySubset.OnlyPassing = true
 
 	canarySubset := api.ServiceResolverSubset{}
-	canarySubset.Filter = fmt.Sprintf(`Service.ID not contains "%s-deployment-primary"`, name)
+	canarySubset.Filter = fmt.Sprintf(`Service.ID not contains "%s-primary"`, name)
 	canarySubset.OnlyPassing = true
 
 	defaults.Subsets[fmt.Sprintf("%s-%s-primary", SubsetPrefix, name)] = primarySubset

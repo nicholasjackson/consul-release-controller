@@ -73,7 +73,7 @@ func (s *Plugin) Configure(data json.RawMessage) error {
 
 // Check executes queries to the Prometheus server and returns an error if any of the queries
 // are not within the defined min and max thresholds
-func (s *Plugin) Check(ctx context.Context, interval time.Duration) (interfaces.CheckResult, error) {
+func (s *Plugin) Check(ctx context.Context, candidateName string, interval time.Duration) (interfaces.CheckResult, error) {
 	querySQL := []string{}
 
 	// first check that the given queries have valid presets
@@ -110,11 +110,13 @@ func (s *Plugin) Check(ctx context.Context, interval time.Duration) (interfaces.
 		}
 
 		context := struct {
-			Name      string
-			Namespace string
-			Interval  string
+			ReleaseName   string
+			CandidateName string
+			Namespace     string
+			Interval      string
 		}{
 			s.name,
+			candidateName,
 			s.namespace,
 			interval.String(),
 		}

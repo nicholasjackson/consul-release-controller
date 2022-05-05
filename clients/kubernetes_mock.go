@@ -24,6 +24,16 @@ func (k *KubernetesMock) GetDeployment(ctx context.Context, name, namespace stri
 	return nil, args.Error(1)
 }
 
+func (k *KubernetesMock) GetDeploymentWithSelector(ctx context.Context, selector, namespace string) (*appsv1.Deployment, error) {
+	args := k.Called(ctx, selector, namespace)
+
+	if d, ok := args.Get(0).(*appsv1.Deployment); ok {
+		return d, args.Error(1)
+	}
+
+	return nil, args.Error(1)
+}
+
 func (k *KubernetesMock) UpsertDeployment(ctx context.Context, d *appsv1.Deployment) error {
 	args := k.Called(ctx, d)
 

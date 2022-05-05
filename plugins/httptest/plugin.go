@@ -101,7 +101,7 @@ func (p *Plugin) Configure(data json.RawMessage) error {
 	return nil
 }
 
-func (p *Plugin) Execute(ctx context.Context) error {
+func (p *Plugin) Execute(ctx context.Context, candidateName string) error {
 	timeoutDuration, err := time.ParseDuration(p.config.Timeout)
 	if err != nil {
 		return fmt.Errorf("unable to parse timeout as duration: %s", err)
@@ -144,7 +144,7 @@ func (p *Plugin) Execute(ctx context.Context) error {
 		)
 
 		// We are ignoring the status code as we are using the Monitoring checks as a measure of success
-		res, _ := p.monitoring.Check(ctx, 30*time.Second)
+		res, _ := p.monitoring.Check(ctx, candidateName, 30*time.Second)
 		if res == interfaces.CheckSuccess {
 			successCount++
 		} else {

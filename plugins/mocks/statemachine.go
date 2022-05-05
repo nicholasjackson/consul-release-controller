@@ -1,7 +1,6 @@
 package mocks
 
 import (
-	"github.com/nicholasjackson/consul-release-controller/plugins/interfaces"
 	"github.com/stretchr/testify/mock"
 )
 
@@ -35,11 +34,4 @@ func (sm *StateMachineMock) CurrentState() string {
 	args := sm.Called()
 
 	return args.String(0)
-}
-
-// StateHistory returns all the states for the statemachine
-func (sm *StateMachineMock) StateHistory() []interfaces.StateHistory {
-	args := sm.Called()
-
-	return args.Get(0).([]interfaces.StateHistory)
 }

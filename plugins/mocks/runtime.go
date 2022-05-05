@@ -24,8 +24,8 @@ func (r *RuntimeMock) BaseConfig() interfaces.RuntimeBaseConfig {
 	return args.Get(0).(interfaces.RuntimeBaseConfig)
 }
 
-func (r *RuntimeMock) InitPrimary(ctx context.Context) (interfaces.RuntimeDeploymentStatus, error) {
-	args := r.Called(ctx)
+func (r *RuntimeMock) InitPrimary(ctx context.Context, releaseName string) (interfaces.RuntimeDeploymentStatus, error) {
+	args := r.Called(ctx, releaseName)
 
 	return args.Get(0).(interfaces.RuntimeDeploymentStatus), args.Error(1)
 }

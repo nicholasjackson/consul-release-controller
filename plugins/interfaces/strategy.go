@@ -18,7 +18,7 @@ type Strategy interface {
 
 	// Execute the strategy and return the StrategyStatus on a successfull check
 	// when StrategyStatusSuccess is returned the new traffic amount to be sent to the service is returned
-	Execute(ctx context.Context) (status StrategyStatus, traffic int, err error)
+	Execute(ctx context.Context, candidateName string) (status StrategyStatus, traffic int, err error)
 
 	// GetPrimaryTraffic returns the percentage of traffic distributed to the primary instance
 	GetPrimaryTraffic() int

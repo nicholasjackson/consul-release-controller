@@ -31,14 +31,11 @@ type StateMachine struct {
 
 	metricsDone func(int)
 
-	stateHistory []interfaces.StateHistory
-
 	*fsm.FSM
 }
 
 func New(r *models.Release, pluginProvider interfaces.Provider) (*StateMachine, error) {
 	sm := &StateMachine{release: r, webhookPlugins: []interfaces.Webhook{}}
-	sm.stateHistory = []interfaces.StateHistory{interfaces.StateHistory{Time: time.Now(), State: interfaces.StateStart}}
 	sm.logger = pluginProvider.GetLogger().Named("statemachine")
 	sm.metrics = pluginProvider.GetMetrics()
 
@@ -69,7 +66,7 @@ func New(r *models.Release, pluginProvider interfaces.Provider) (*StateMachine, 
 	runtimeConfig := runP.BaseConfig()
 
 	// create the monitor plugin
-	monP, err := pluginProvider.CreateMonitor(r.Monitor.Name, runtimeConfig.Deployment, runtimeConfig.Namespace, r.Runtime.Name)
+	monP, err := pluginProvider.CreateMonitor(r.Monitor.Name, r.Name, runtimeConfig.Namespace, r.Runtime.Name)
 	if err != nil {
 		return nil, err
 	}
@@ -118,8 +115,15 @@ func New(r *models.Release, pluginProvider interfaces.Provider) (*StateMachine, 
 		sm.testPlugin = testP
 	}
 
+	sm.logger.Debug("Current release state", "state", r.CurrentState())
+
+	initialState := interfaces.StateStart
+	if r.CurrentState() != "" {
+		initialState = r.CurrentState()
+	}
+
 	f := fsm.NewFSM(
-		interfaces.StateStart,
+		initialState,
 		fsm.Events{
 			{Name: interfaces.EventConfigure, Src: []string{interfaces.StateStart, interfaces.StateIdle, interfaces.StateFail}, Dst: interfaces.StateConfigure},
 			{Name: interfaces.EventConfigured, Src: []string{interfaces.StateConfigure}, Dst: interfaces.StateIdle},
@@ -168,7 +172,6 @@ func New(r *models.Release, pluginProvider interfaces.Provider) (*StateMachine, 
 		},
 	)
 
-	f.SetState(interfaces.StateStart)
 	sm.FSM = f
 
 	return sm, nil
@@ -194,11 +197,6 @@ func (s *StateMachine) CurrentState() string {
 	return s.FSM.Current()
 }
 
-// CurrentState returns the current state of the machine
-func (s *StateMachine) StateHistory() []interfaces.StateHistory {
-	return s.stateHistory
-}
-
 func (s *StateMachine) logEvent() func(e *fsm.Event) {
 	return func(e *fsm.Event) {
 		s.logger.Debug("Handle event", "event", e.Event, "state", e.FSM.Current())
@@ -213,7 +211,7 @@ func (s *StateMachine) enterState() func(e *fsm.Event) {
 		s.metricsDone = s.metrics.StateChanged(s.release.Name, e.FSM.Current(), nil)
 
 		// append the state history
-		s.stateHistory = append(s.stateHistory, interfaces.StateHistory{Time: time.Now(), State: e.FSM.Current()})
+		s.release.UpdateState(e.FSM.Current())
 	}
 }
 
@@ -262,7 +260,7 @@ func (s *StateMachine) doConfigure() func(e *fsm.Event) {
 			time.Sleep(stepDelay)
 
 			// if a deployment already exists copy this to the primary
-			status, err := s.runtimePlugin.InitPrimary(ctx)
+			status, err := s.runtimePlugin.InitPrimary(ctx, s.release.Name)
 			if err != nil {
 				s.logger.Error("Configure completed with error", "status", status, "error", err)
 
@@ -326,7 +324,7 @@ func (s *StateMachine) doDeploy() func(e *fsm.Event) {
 			defer cancel()
 
 			// Create a primary if one does not exist
-			status, err := s.runtimePlugin.InitPrimary(ctx)
+			status, err := s.runtimePlugin.InitPrimary(ctx, s.release.Name)
 			if err != nil {
 				s.logger.Error("Deploy completed with error", "error", err)
 
@@ -403,7 +401,7 @@ func (s *StateMachine) doMonitor() func(e *fsm.Event) {
 			// run the post deployment tests if we have any
 			if s.testPlugin != nil {
 				s.logger.Debug("Executing post deployment tests")
-				err := s.testPlugin.Execute(ctx)
+				err := s.testPlugin.Execute(ctx, s.runtimePlugin.BaseConfig().CandidateName)
 
 				if err != nil {
 					// post deployment tests have failed rollback
@@ -424,7 +422,7 @@ func (s *StateMachine) doMonitor() func(e *fsm.Event) {
 				}
 			}
 
-			result, traffic, err := s.strategyPlugin.Execute(ctx)
+			result, traffic, err := s.strategyPlugin.Execute(ctx, s.runtimePlugin.BaseConfig().CandidateName)
 
 			// strategy has failed with an error
 			if err != nil {

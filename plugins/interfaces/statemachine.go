@@ -1,7 +1,5 @@
 package interfaces
 
-import "time"
-
 const (
 	EventDeploy     = "event_deploy"     // triggers a new deployment
 	EventDeployed   = "event_deployed"   // fired when a new deployment has completed successfully
@@ -28,12 +26,6 @@ const (
 	StateDestroy   = "state_destroy"   // state when the release is being destroyed
 )
 
-// StateHistory is a struct that defines the state at a point in time
-type StateHistory struct {
-	Time  time.Time
-	State string
-}
-
 type StateMachine interface {
 	// Configure triggers the EventConfigure state
 	Configure() error
@@ -46,7 +38,4 @@ type StateMachine interface {
 
 	// CurrentState returns the current state
 	CurrentState() string
-
-	// StateHistory returns all the states for the statemachine
-	StateHistory() []StateHistory
 }

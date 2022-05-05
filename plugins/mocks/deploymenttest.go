@@ -19,8 +19,8 @@ func (r *PostDeploymentTestMock) Configure(c json.RawMessage) error {
 	return args.Error(0)
 }
 
-func (r *PostDeploymentTestMock) Execute(ctx context.Context) error {
-	args := r.Called(ctx)
+func (r *PostDeploymentTestMock) Execute(ctx context.Context, candidateName string) error {
+	args := r.Called(ctx, candidateName)
 
 	return args.Error(0)
 }

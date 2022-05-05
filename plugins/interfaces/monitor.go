@@ -28,5 +28,5 @@ type Monitor interface {
 	//                  was not in tolerance.
 	// CheckNoMetrics - The check completed successfully but no data was returned from the metrics db.
 	// CheckError     - An internal error occurred.
-	Check(ctx context.Context, interval time.Duration) (CheckResult, error)
+	Check(ctx context.Context, candidateName string, interval time.Duration) (CheckResult, error)
 }

@@ -19,8 +19,8 @@ func (r *MonitorMock) Configure(c json.RawMessage) error {
 	return args.Error(0)
 }
 
-func (r *MonitorMock) Check(ctx context.Context, interval time.Duration) (interfaces.CheckResult, error) {
-	args := r.Called(ctx, interval)
+func (r *MonitorMock) Check(ctx context.Context, candidateName string, interval time.Duration) (interfaces.CheckResult, error) {
+	args := r.Called(ctx, candidateName, interval)
 
 	return args.Get(0).(interfaces.CheckResult), args.Error(1)
 }

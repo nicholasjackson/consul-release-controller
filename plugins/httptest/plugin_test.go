@@ -27,7 +27,7 @@ type httpRequest struct {
 
 func setupPlugin(t *testing.T) (*Plugin, *mocks.MonitorMock, *[]*httpRequest) {
 	mm := &mocks.MonitorMock{}
-	mm.On("Check", mock.Anything, 30*time.Second).Return(interfaces.CheckSuccess, nil)
+	mm.On("Check", mock.Anything, mock.Anything, 30*time.Second).Return(interfaces.CheckSuccess, nil)
 
 	p, err := New("test", "testnamespace", "kubernetes", hclog.NewNullLogger(), mm)
 	require.NoError(t, err)
@@ -162,7 +162,7 @@ func TestExecuteCallsExternalServer(t *testing.T) {
 	err := p.Configure([]byte(configValid))
 	require.NoError(t, err)
 
-	err = p.Execute(context.TODO())
+	err = p.Execute(context.TODO(), "test-deployment")
 	require.NoError(t, err)
 
 	require.Len(t, *hr, 5)
@@ -178,10 +178,10 @@ func TestExecuteCallsCheck5Times(t *testing.T) {
 	err := p.Configure([]byte(configValid))
 	require.NoError(t, err)
 
-	err = p.Execute(context.TODO())
+	err = p.Execute(context.TODO(), "test-deployment")
 	require.NoError(t, err)
 
-	mm.AssertCalled(t, "Check", mock.Anything, 30*time.Second)
+	mm.AssertCalled(t, "Check", mock.Anything, mock.Anything, 30*time.Second)
 	mm.AssertNumberOfCalls(t, "Check", 5)
 }
 
@@ -189,34 +189,34 @@ func TestExecuteCallsCheck8TimesWhenOneTestFails(t *testing.T) {
 	p, mm, _ := setupPlugin(t)
 	testutils.ClearMockCall(&mm.Mock, "Check")
 
-	mm.On("Check", mock.Anything, mock.Anything).Once().Return(interfaces.CheckSuccess, nil)
-	mm.On("Check", mock.Anything, mock.Anything).Once().Return(interfaces.CheckSuccess, nil)
-	mm.On("Check", mock.Anything, mock.Anything).Once().Return(interfaces.CheckFailed, fmt.Errorf("oops"))
-	mm.On("Check", mock.Anything, mock.Anything).Once().Return(interfaces.CheckSuccess, nil)
-	mm.On("Check", mock.Anything, mock.Anything).Once().Return(interfaces.CheckSuccess, nil)
-	mm.On("Check", mock.Anything, mock.Anything).Once().Return(interfaces.CheckSuccess, nil)
-	mm.On("Check", mock.Anything, mock.Anything).Once().Return(interfaces.CheckSuccess, nil)
-	mm.On("Check", mock.Anything, mock.Anything).Once().Return(interfaces.CheckSuccess, nil)
+	mm.On("Check", mock.Anything, mock.Anything, mock.Anything).Once().Return(interfaces.CheckSuccess, nil)
+	mm.On("Check", mock.Anything, mock.Anything, mock.Anything).Once().Return(interfaces.CheckSuccess, nil)
+	mm.On("Check", mock.Anything, mock.Anything, mock.Anything).Once().Return(interfaces.CheckFailed, fmt.Errorf("oops"))
+	mm.On("Check", mock.Anything, mock.Anything, mock.Anything).Once().Return(interfaces.CheckSuccess, nil)
+	mm.On("Check", mock.Anything, mock.Anything, mock.Anything).Once().Return(interfaces.CheckSuccess, nil)
+	mm.On("Check", mock.Anything, mock.Anything, mock.Anything).Once().Return(interfaces.CheckSuccess, nil)
+	mm.On("Check", mock.Anything, mock.Anything, mock.Anything).Once().Return(interfaces.CheckSuccess, nil)
+	mm.On("Check", mock.Anything, mock.Anything, mock.Anything).Once().Return(interfaces.CheckSuccess, nil)
 
 	err := p.Configure([]byte(configValid))
 	require.NoError(t, err)
 
-	err = p.Execute(context.TODO())
+	err = p.Execute(context.TODO(), "test-deployment")
 	require.NoError(t, err)
 
-	mm.AssertCalled(t, "Check", mock.Anything, 30*time.Second)
+	mm.AssertCalled(t, "Check", mock.Anything, mock.Anything, 30*time.Second)
 	mm.AssertNumberOfCalls(t, "Check", 8)
 }
 
 func TestExecuteTimesoutIfNoSuccess(t *testing.T) {
 	p, mm, _ := setupPlugin(t)
 	testutils.ClearMockCall(&mm.Mock, "Check")
-	mm.On("Check", mock.Anything, mock.Anything).Return(interfaces.CheckFailed, fmt.Errorf("oops"))
+	mm.On("Check", mock.Anything, mock.Anything, mock.Anything).Return(interfaces.CheckFailed, fmt.Errorf("oops"))
 
 	err := p.Configure([]byte(configValid))
 	require.NoError(t, err)
 
-	err = p.Execute(context.TODO())
+	err = p.Execute(context.TODO(), "test-deployment")
 	require.Error(t, err)
 	require.Contains(t, err.Error(), "timeout")
 }

@@ -10,5 +10,5 @@ type PostDeploymentTest interface {
 	Configurable
 
 	// Execute the tests and return an error if the test fails
-	Execute(ctx context.Context) error
+	Execute(ctx context.Context, candidateName string) error
 }

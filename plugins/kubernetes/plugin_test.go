@@ -49,7 +49,9 @@ func setupPlugin(t *testing.T) (*Plugin, *clients.KubernetesMock, *appsv1.Deploy
 	p.log = l
 	p.kubeClient = km
 	p.config = &PluginConfig{}
-	p.config.Deployment = "test-deployment"
+	p.config.DeploymentSelector = "test-(.*)"
+	p.config.CandidateName = "test-deployment"
+	p.config.PrimaryName = "test-deployment-primary"
 	p.config.Namespace = "testnamespace"
 
 	return p, km, mockDep.DeepCopy(), mockCloneDep.DeepCopy()
@@ -62,7 +64,7 @@ func TestInitPrimaryDoesNothingWhenPrimaryExists(t *testing.T) {
 	km.On("GetDeployment", mock.Anything, "test-deployment-primary", "testnamespace").Return(cloneDep, nil)
 	km.On("GetHealthyDeployment", mock.Anything, "test-deployment", "testnamespace").Return(dep, nil)
 
-	status, err := p.InitPrimary(context.Background())
+	status, err := p.InitPrimary(context.Background(), "test-deployment")
 	require.NoError(t, err)
 	require.Equal(t, interfaces.RuntimeDeploymentNoAction, status)
 
@@ -76,9 +78,9 @@ func TestInitPrimaryDoesNothingWhenCandidateDoesNotExist(t *testing.T) {
 
 	testutils.ClearMockCall(&km.Mock, "GetDeployment")
 	km.On("GetDeployment", mock.Anything, "test-deployment-primary", "testnamespace").Return(nil, fmt.Errorf("Primary not found"))
-	km.On("GetDeployment", mock.Anything, "test-deployment", "testnamespace").Return(nil, fmt.Errorf("Candidate not Found"))
+	km.On("GetDeploymentWithSelector", mock.Anything, "test-(.*)", "testnamespace").Return(nil, fmt.Errorf("Candidate not Found"))
 
-	status, err := p.InitPrimary(context.Background())
+	status, err := p.InitPrimary(context.Background(), "test-deployment")
 	require.NoError(t, err)
 	require.Equal(t, interfaces.RuntimeDeploymentNoAction, status)
 }
@@ -88,11 +90,11 @@ func TestInitPrimaryCreatesPrimaryWhenCandidateExists(t *testing.T) {
 
 	testutils.ClearMockCall(&km.Mock, "GetDeployment")
 	km.On("GetDeployment", mock.Anything, "test-deployment-primary", "testnamespace").Once().Return(nil, fmt.Errorf("Primary not found"))
-	km.On("GetDeployment", mock.Anything, "test-deployment", "testnamespace").Return(dep, nil)
+	km.On("GetDeploymentWithSelector", mock.Anything, "test-(.*)", "testnamespace").Return(dep, nil)
 	km.On("UpsertDeployment", mock.Anything, mock.Anything).Once().Return(nil)
 	km.On("GetHealthyDeployment", mock.Anything, "test-deployment-primary", "testnamespace").Return(cloneDep, nil)
 
-	status, err := p.InitPrimary(context.Background())
+	status, err := p.InitPrimary(context.Background(), "test-deployment")
 	require.NoError(t, err)
 	require.Equal(t, interfaces.RuntimeDeploymentUpdate, status)
 
@@ -100,7 +102,7 @@ func TestInitPrimaryCreatesPrimaryWhenCandidateExists(t *testing.T) {
 
 	// check that the runtimedeploymentversion label is added to ensure the validating webhook ignores this deployment
 	depArg := getUpsertDeployment(km.Mock)
-	require.Equal(t, depArg.Labels[interfaces.RuntimeDeploymentVersionLabel], "1")
+	require.Equal(t, "primary", depArg.ResourceVersion)
 }
 
 func TestPromoteCandidateDoesNothingWhenCandidateNotExists(t *testing.T) {
@@ -134,7 +136,7 @@ func TestPromoteCandidateDeletesExistingPrimaryAndUpserts(t *testing.T) {
 
 	// check that the runtimedeploymentversion label is added to ensure the validating webhook ignores this deployment
 	depArg := getUpsertDeployment(km.Mock)
-	require.Equal(t, depArg.Labels[interfaces.RuntimeDeploymentVersionLabel], "1")
+	require.Equal(t, "primary", depArg.ResourceVersion)
 }
 
 func TestRemoveCandidateDoesNothingWhenCandidateNotFound(t *testing.T) {

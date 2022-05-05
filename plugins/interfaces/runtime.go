@@ -16,8 +16,15 @@ const (
 
 // RuntimeBaseConfig is the base configuration that all runtime plugins must implement
 type RuntimeBaseConfig struct {
-	Deployment string `hcl:"deployment" json:"deployment"`
-	Namespace  string `hcl:"namespace" json:"namespace"`
+	// DeploymentSelector is used to determine which deployments can trigger a release
+	// can contain regular expressions
+	DeploymentSelector string `hcl:"deployment" json:"deployment"`
+	// Namespace for the deployment that triggers a release
+	Namespace string `hcl:"namespace" json:"namespace"`
+	// CandidateName is the full name of the active candidate deployment
+	CandidateName string `hcl:"candidate_name" json:"candidate_name"`
+	// PrimaryName is the full name of the active primary deployment
+	PrimaryName string `hcl:"primary_name" json:"primary_name"`
 }
 
 // Runtime defines an interface that all concrete platforms like Kubernetes must
@@ -29,8 +36,9 @@ type Runtime interface {
 	// all Runtime plugins should embed RuntimeBaseConfig in their own config
 	BaseConfig() RuntimeBaseConfig
 
-	// Deploy the new test version to the platform
-	InitPrimary(ctx context.Context) (RuntimeDeploymentStatus, error)
+	// Create a copy of the active deployment whos lifecycle will be owned
+	// by the release controller
+	InitPrimary(ctx context.Context, releaseName string) (RuntimeDeploymentStatus, error)
 
 	// Promote the new test version to primary
 	// returns RunTimeDeploymentUpdate when the canary has been successfully promoted to primary

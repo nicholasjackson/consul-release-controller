@@ -1,0 +1,83 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: payments
+  namespace: default
+  labels:
+    app: metrics
+spec:
+  selector:
+    app: payments
+  ports:
+    - name: http
+      protocol: TCP
+      port: 9090
+      targetPort: 9090
+    - name: metrics # prom scraping port
+      protocol: TCP
+      port: 20200
+      targetPort: 20200
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: payments
+  namespace: default
+automountServiceAccountToken: false
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payments-deployment-v1
+  namespace: default
+  labels:
+    app: payments_v1
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: payments
+  template:
+    metadata:
+      labels:
+        app: payments
+        metrics: enabled
+      annotations:
+        consul.hashicorp.com/connect-inject: 'true'
+        #consul.hashicorp.com/transparent-proxy: 'true'
+        #consul.hashicorp.com/transparent-proxy-overwrite-probes: 'true'
+    spec:  
+      serviceAccountName: payments
+      automountServiceAccountToken: true
+      containers:
+        - name: payments
+          image: nicholasjackson/fake-service:v0.23.1
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 9090
+          env:
+            - name: "NAME"
+              value: "Payments V1"
+            - name: "LISTEN_ADDR"
+              value: "0.0.0.0:9090"
+            - name: "TIMING_50_PERCENTILE"
+              value: "10ms"
+            - name: "TRACING_ZIPKIN"
+              value: "http://tempo:9411"
+            - name: "READY_CHECK_RESPONSE_DELAY"
+              value: "10s"
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 9090
+            periodSeconds: 5
+            initialDelaySeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 9090
+            periodSeconds: 5
+            initialDelaySeconds: 5

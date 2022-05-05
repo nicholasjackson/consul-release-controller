@@ -3,6 +3,7 @@ package controller
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"testing"
 
 	"github.com/nicholasjackson/consul-release-controller/models"
@@ -10,6 +11,7 @@ import (
 	"github.com/nicholasjackson/consul-release-controller/plugins/kubernetes"
 	"github.com/nicholasjackson/consul-release-controller/plugins/mocks"
 	"github.com/nicholasjackson/consul-release-controller/testutils"
+	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
 
 	appsv1 "k8s.io/api/apps/v1"
@@ -20,7 +22,7 @@ func setupAdmission(t *testing.T, deploymentName, namespace string) (*deployment
 	pm, mm := mocks.BuildMocks(t)
 
 	pc := &kubernetes.PluginConfig{}
-	pc.Deployment = deploymentName
+	pc.DeploymentSelector = deploymentName
 	pc.Namespace = namespace
 
 	pcd, _ := json.Marshal(pc)
@@ -99,6 +101,25 @@ func TestCallsDeployForNewDeploymentWhenIdle(t *testing.T) {
 	resp := d.Handle(context.TODO(), ar)
 	require.True(t, resp.Allowed)
 	mm.StateMachineMock.AssertCalled(t, "Deploy")
+	mm.StoreMock.AssertCalled(t, "UpsertRelease", mock.Anything)
+
+	// check that the kubernetes deployment name is saved to the release config
+	rbc := getUpsertReleaseConfig(mm.StoreMock.Mock)
+	require.NotNil(t, rbc)
+	require.Equal(t, "test-deployment", rbc.CandidateName)
+}
+
+func TestReturnsErrorWhenNewDeploymentUpsertReleaseFails(t *testing.T) {
+	ar := createAdmissionRequest(false)
+	d, mm := setupAdmission(t, "test-deployment", "default")
+
+	testutils.ClearMockCall(&mm.StoreMock.Mock, "UpsertRelease")
+	mm.StoreMock.On("UpsertRelease", mock.Anything).Return(fmt.Errorf("boom"))
+
+	resp := d.Handle(context.TODO(), ar)
+	require.False(t, resp.Allowed)
+	mm.StateMachineMock.AssertNotCalled(t, "Deploy")
+	mm.StoreMock.AssertCalled(t, "UpsertRelease", mock.Anything)
 }
 
 func TestAddsRegExpWordBoundaryAndFailsMatchWhenNotPresent(t *testing.T) {
@@ -159,4 +180,18 @@ func TestReturnsDeniedWhenReleaseActive(t *testing.T) {
 	resp := d.Handle(context.TODO(), ar)
 	require.False(t, resp.Allowed)
 	mm.StateMachineMock.AssertNotCalled(t, "Deploy")
+}
+
+func getUpsertReleaseConfig(mock mock.Mock) *interfaces.RuntimeBaseConfig {
+	for _, c := range mock.Calls {
+		if c.Method == "UpsertRelease" {
+			if dep, ok := c.Arguments.Get(0).(*models.Release); ok {
+				rbc := &interfaces.RuntimeBaseConfig{}
+				json.Unmarshal(dep.Runtime.Config, rbc)
+				return rbc
+			}
+		}
+	}
+
+	return nil
 }

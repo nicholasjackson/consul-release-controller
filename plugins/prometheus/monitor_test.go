@@ -39,7 +39,7 @@ func setupPlugin(t *testing.T, config string) (*Plugin, *clients.PrometheusMock)
 func TestPluginReturnsErrorWhenPresetNotFound(t *testing.T) {
 	p, pm := setupPlugin(t, twoDefaultQueriesInvalidPreset)
 
-	_, err := p.Check(context.Background(), 30*time.Second)
+	_, err := p.Check(context.Background(), "test-deployment", 30*time.Second)
 	require.Error(t, err)
 
 	pm.AssertNotCalled(t, "Query")
@@ -48,7 +48,7 @@ func TestPluginReturnsErrorWhenPresetNotFound(t *testing.T) {
 func TestPluginReturnsErrorWhenCustomQueryBlank(t *testing.T) {
 	p, pm := setupPlugin(t, twoQueriesCustomEmpty)
 
-	_, err := p.Check(context.Background(), 30*time.Second)
+	_, err := p.Check(context.Background(), "test-deployment", 30*time.Second)
 	require.Error(t, err)
 
 	pm.AssertNotCalled(t, "Query")
@@ -64,7 +64,7 @@ func TestPluginReturnsErrorWhenNilValue(t *testing.T) {
 		nil,
 	)
 
-	result, err := p.Check(context.Background(), 30*time.Second)
+	result, err := p.Check(context.Background(), "test-deployment", 30*time.Second)
 	require.Error(t, err)
 	require.Equal(t, interfaces.CheckNoMetrics, result)
 
@@ -81,7 +81,7 @@ func TestPluginReturnsErrorWhenEmptyVector(t *testing.T) {
 		nil,
 	)
 
-	result, err := p.Check(context.Background(), 30*time.Second)
+	result, err := p.Check(context.Background(), "test-deployment", 30*time.Second)
 	require.Error(t, err)
 	require.Equal(t, interfaces.CheckNoMetrics, result)
 
@@ -100,7 +100,7 @@ func TestPluginReturnsErrorWhenQueryValueLessThanMin(t *testing.T) {
 		nil,
 	)
 
-	result, err := p.Check(context.Background(), 30*time.Second)
+	result, err := p.Check(context.Background(), "test-deployment", 30*time.Second)
 	require.Error(t, err)
 	require.Equal(t, interfaces.CheckFailed, result)
 
@@ -119,7 +119,7 @@ func TestPluginReturnsErrorWhenQueryValueGreaterThanMax(t *testing.T) {
 		nil,
 	)
 
-	result, err := p.Check(context.Background(), 30*time.Second)
+	result, err := p.Check(context.Background(), "test-deployment", 30*time.Second)
 	require.Error(t, err)
 	require.Equal(t, interfaces.CheckFailed, result)
 
@@ -129,7 +129,7 @@ func TestPluginReturnsErrorWhenQueryValueGreaterThanMax(t *testing.T) {
 func TestPluginExecutesQueriesAndChecksValue(t *testing.T) {
 	p, pm := setupPlugin(t, twoDefaultQueries)
 
-	_, err := p.Check(context.Background(), 30*time.Second)
+	_, err := p.Check(context.Background(), "api-candidate", 30*time.Second)
 	require.NoError(t, err)
 
 	pm.AssertNumberOfCalls(t, "Query", 2)
@@ -139,18 +139,19 @@ func TestPluginExecutesQueriesAndChecksValue(t *testing.T) {
 	call2Args := pm.Calls[1].Arguments[1]
 
 	require.Contains(t, call1Args, `namespace="default"`)
-	require.Contains(t, call1Args, `pod=~"api-deployment-[0-9a-zA-Z]+(-[0-9a-zA-Z]+)"`)
+	require.Contains(t, call1Args, `pod!~"api-deployment-primary.*"`)
+	require.Contains(t, call1Args, `pod=~"api-candidate.*"`)
 	require.Contains(t, call1Args, `[30s]`)
 
 	require.Contains(t, call2Args, `namespace="default"`)
-	require.Contains(t, call2Args, `pod=~"api-deployment-[0-9a-zA-Z]+(-[0-9a-zA-Z]+)"`)
+	require.Contains(t, call2Args, `pod!~"api-deployment-primary.*"`)
 	require.Contains(t, call2Args, `[30s]`)
 }
 
 func TestPluginExecutesCustomQueriesAndChecksValue(t *testing.T) {
 	p, pm := setupPlugin(t, twoQueriesOneCustom)
 
-	_, err := p.Check(context.Background(), 30*time.Second)
+	_, err := p.Check(context.Background(), "api-candidate", 30*time.Second)
 	require.NoError(t, err)
 
 	pm.AssertNumberOfCalls(t, "Query", 2)
@@ -160,11 +161,12 @@ func TestPluginExecutesCustomQueriesAndChecksValue(t *testing.T) {
 	call2Args := pm.Calls[1].Arguments[1]
 
 	require.Contains(t, call1Args, `namespace="default"`)
-	require.Contains(t, call1Args, `pod=~"api-deployment-[0-9a-zA-Z]+(-[0-9a-zA-Z]+)"`)
+	require.Contains(t, call1Args, `pod!~"api-deployment-primary.*"`)
+	require.Contains(t, call1Args, `pod=~"api-candidate.*"`)
 	require.Contains(t, call1Args, `[30s]`)
 
 	require.Contains(t, call2Args, `namespace="default"`)
-	require.Contains(t, call2Args, `pod=~"api-deployment-[0-9a-zA-Z]+(-[0-9a-zA-Z]+)"`)
+	require.Contains(t, call2Args, `pod=~"api-candidate-[0-9a-zA-Z]+(-[0-9a-zA-Z]+)"`)
 	require.Contains(t, call2Args, `[30s]`)
 }
 
@@ -238,7 +240,7 @@ const twoQueriesOneCustom = `
 	    "name": "request-duration",
 	    "min":20,
 	    "max": 200,
-			"query": "histogram_quantile(0.99,sum(rate(envoy_cluster_upstream_rq_time_bucket{namespace=\"{{ .Namespace }}\",envoy_cluster_name=\"local_app\",pod=~\"{{ .Name }}-[0-9a-zA-Z]+(-[0-9a-zA-Z]+)\"}[{{ .Interval }}])) by (le))"
+			"query": "histogram_quantile(0.99,sum(rate(envoy_cluster_upstream_rq_time_bucket{namespace=\"{{ .Namespace }}\",envoy_cluster_name=\"local_app\",pod=~\"{{ .CandidateName }}-[0-9a-zA-Z]+(-[0-9a-zA-Z]+)\"}[{{ .Interval }}])) by (le))"
 	  }
 	]
 }

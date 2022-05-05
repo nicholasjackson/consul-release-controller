@@ -108,8 +108,8 @@ func (rh *ReleaseHandler) GetAll(rw http.ResponseWriter, req *http.Request) {
 
 type GetSingleResponse struct {
 	models.Release
-	CurrentState string                    `json:"current_state"`
-	StateHistory []interfaces.StateHistory `json:"state_history"`
+	CurrentState string                `json:"current_state"`
+	StateHistory []models.StateHistory `json:"state_history"`
 }
 
 func (rh *ReleaseHandler) GetSingle(rw http.ResponseWriter, req *http.Request) {
@@ -128,15 +128,8 @@ func (rh *ReleaseHandler) GetSingle(rw http.ResponseWriter, req *http.Request) {
 
 	gsr := GetSingleResponse{}
 	gsr.Release = *rel
-
-	// add the state history
-	sm, err := rh.pluginProviders.GetStateMachine(rel)
-	if err != nil {
-		rh.logger.Error("Unaable to get statemachine for", "release", rel.Name)
-	} else {
-		gsr.CurrentState = sm.CurrentState()
-		gsr.StateHistory = sm.StateHistory()
-	}
+	gsr.CurrentState = rel.CurrentState()
+	gsr.StateHistory = rel.StateHistory()
 
 	json.NewEncoder(rw).Encode(&gsr)
 	mFinal(http.StatusOK)

@@ -19,6 +19,7 @@ import (
 type Plugin struct {
 	log       hclog.Logger
 	config    *PluginConfig
+	store     interfaces.PluginStateStore
 	client    clients.Prometheus
 	runtime   string
 	name      string
@@ -60,7 +61,9 @@ func New(name, namespace, runtime string, l hclog.Logger) (*Plugin, error) {
 	}, nil
 }
 
-func (s *Plugin) Configure(data json.RawMessage) error {
+func (s *Plugin) Configure(data json.RawMessage, log hclog.Logger, store interfaces.PluginStateStore) error {
+	s.log = log
+	s.store = store
 	s.config = &PluginConfig{}
 
 	err := json.Unmarshal(data, s.config)

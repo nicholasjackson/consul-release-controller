@@ -4,6 +4,8 @@ import (
 	"context"
 	"encoding/json"
 
+	"github.com/hashicorp/go-hclog"
+	"github.com/nicholasjackson/consul-release-controller/plugins/interfaces"
 	"github.com/stretchr/testify/mock"
 )
 
@@ -13,8 +15,8 @@ type PostDeploymentTestMock struct {
 	mock.Mock
 }
 
-func (r *PostDeploymentTestMock) Configure(c json.RawMessage) error {
-	args := r.Called(c)
+func (r *PostDeploymentTestMock) Configure(data json.RawMessage, log hclog.Logger, store interfaces.PluginStateStore) error {
+	args := r.Called(data, log, store)
 
 	return args.Error(0)
 }

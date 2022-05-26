@@ -17,6 +17,7 @@ var syncDelay = 1 * time.Second
 
 type Plugin struct {
 	log          hclog.Logger
+	store        interfaces.PluginStateStore
 	consulClient clients.Consul
 	config       *PluginConfig
 }
@@ -27,11 +28,13 @@ type PluginConfig struct {
 
 var ErrConsulService = fmt.Errorf("ConsulService is a required field, please specify the name of the Consul service for the release.")
 
-func New(l hclog.Logger) (*Plugin, error) {
-	return &Plugin{log: l}, nil
+func New() (*Plugin, error) {
+	return &Plugin{}, nil
 }
 
-func (s *Plugin) Configure(data json.RawMessage) error {
+func (s *Plugin) Configure(data json.RawMessage, log hclog.Logger, store interfaces.PluginStateStore) error {
+	s.log = log
+	s.store = store
 	s.config = &PluginConfig{}
 
 	err := json.Unmarshal(data, s.config)
@@ -64,6 +67,8 @@ func (s *Plugin) Configure(data json.RawMessage) error {
 	}
 
 	s.consulClient = cc
+
+	s.log.Debug("Configured Consul Releaser plugin", "service", s.config.ConsulService, "namespace", s.config.Namespace, "partition", s.config.Partition)
 
 	return nil
 }

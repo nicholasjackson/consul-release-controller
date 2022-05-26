@@ -23,7 +23,7 @@ type Release struct {
 	Webhooks           []*PluginConfig `json:"webhooks"`
 	PostDeploymentTest *PluginConfig   `json:"post_deployment_test"`
 
-	stateHistory []StateHistory
+	Statehistory []StateHistory
 }
 
 // StateHistory is a struct that defines the state at a point in time
@@ -58,23 +58,21 @@ func (d *Release) ToJson() []byte {
 
 // StateHistory returns all the states for the statemachine
 func (d *Release) StateHistory() []StateHistory {
-	return d.stateHistory
+	return d.Statehistory
 }
 
 func (d *Release) UpdateState(state string) {
-	if d.stateHistory == nil {
-		d.stateHistory = []StateHistory{}
+	if d.Statehistory == nil {
+		d.Statehistory = []StateHistory{}
 	}
 
-	d.stateHistory = append(d.stateHistory, StateHistory{Time: time.Now(), State: state})
+	d.Statehistory = append(d.Statehistory, StateHistory{Time: time.Now(), State: state})
 }
 
 func (d *Release) CurrentState() string {
-	if len(d.stateHistory) == 0 {
+	if len(d.Statehistory) == 0 {
 		return ""
 	}
 
-	fmt.Println("history", d.stateHistory)
-
-	return d.stateHistory[len(d.stateHistory)-1].State
+	return d.Statehistory[len(d.Statehistory)-1].State
 }

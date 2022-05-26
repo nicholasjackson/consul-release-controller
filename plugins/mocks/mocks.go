@@ -27,7 +27,7 @@ type Mocks struct {
 func BuildMocks(t *testing.T) (*ProviderMock, *Mocks) {
 	// create the mock plugins
 	relMock := &ReleaserMock{}
-	relMock.On("Configure", mock.Anything).Return(nil)
+	relMock.On("Configure", mock.Anything, mock.Anything, mock.Anything).Return(nil)
 	relMock.On("BaseConfig").Return(nil)
 	relMock.On("Setup", mock.Anything).Return(nil)
 	relMock.On("Scale", mock.Anything, mock.Anything).Return(nil)
@@ -35,7 +35,7 @@ func BuildMocks(t *testing.T) (*ProviderMock, *Mocks) {
 	relMock.On("WaitUntilServiceHealthy", mock.Anything, mock.Anything).Return(nil)
 
 	runMock := &RuntimeMock{}
-	runMock.On("Configure", mock.Anything).Return(nil)
+	runMock.On("Configure", mock.Anything, mock.Anything, mock.Anything).Return(nil)
 	runMock.On("BaseConfig").Return(interfaces.RuntimeBaseConfig{DeploymentSelector: "api-(.*)", CandidateName: "api-deployment", Namespace: "default"})
 	runMock.On("InitPrimary", mock.Anything, mock.Anything).Return(interfaces.RuntimeDeploymentUpdate, nil)
 	runMock.On("PromoteCandidate", mock.Anything).Return(interfaces.RuntimeDeploymentUpdate, nil)
@@ -44,11 +44,11 @@ func BuildMocks(t *testing.T) (*ProviderMock, *Mocks) {
 	runMock.On("RemovePrimary", mock.Anything).Return(nil)
 
 	monMock := &MonitorMock{}
-	monMock.On("Configure", mock.Anything).Return(nil)
+	monMock.On("Configure", mock.Anything, mock.Anything, mock.Anything).Return(nil)
 	monMock.On("Check", mock.Anything, mock.Anything, mock.Anything).Return(interfaces.CheckSuccess, nil)
 
 	stratMock := &StrategyMock{}
-	stratMock.On("Configure", mock.Anything).Return(nil)
+	stratMock.On("Configure", mock.Anything, mock.Anything, mock.Anything).Return(nil)
 	stratMock.On("Execute", mock.Anything, mock.Anything).Return(interfaces.StrategyStatusSuccess, 10, nil)
 	stratMock.On("GetPrimaryTraffic", mock.Anything).Return(40)
 	stratMock.On("GetCandidateTraffic", mock.Anything).Return(60)
@@ -69,13 +69,16 @@ func BuildMocks(t *testing.T) (*ProviderMock, *Mocks) {
 	storeMock.On("ListReleases", mock.Anything).Return(nil, nil)
 	storeMock.On("DeleteRelease", mock.Anything).Return(nil)
 	storeMock.On("GetRelease", mock.Anything).Return(nil, nil)
+	storeMock.On("CreatePluginStateStore", mock.Anything, mock.Anything).Return(storeMock)
+	storeMock.On("UpsertState", mock.Anything).Return(nil)
+	storeMock.On("GetState").Return(nil, nil)
 
 	webhookMock := &WebhookMock{}
-	webhookMock.On("Configure", mock.Anything).Return(nil)
+	webhookMock.On("Configure", mock.Anything, mock.Anything, mock.Anything).Return(nil)
 	webhookMock.On("Send", mock.Anything, mock.Anything).Return(nil)
 
 	postDeploymentMock := &PostDeploymentTestMock{}
-	postDeploymentMock.On("Configure", mock.Anything).Return(nil)
+	postDeploymentMock.On("Configure", mock.Anything, mock.Anything, mock.Anything).Return(nil)
 	postDeploymentMock.On("Execute", mock.Anything, mock.Anything).Return(nil)
 
 	provMock := &ProviderMock{}

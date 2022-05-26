@@ -14,6 +14,7 @@ import (
 type Plugin struct {
 	log            hclog.Logger
 	config         *PluginConfig
+	store          interfaces.PluginStateStore
 	monitoring     interfaces.Monitor
 	currentTraffic int
 }
@@ -44,13 +45,16 @@ var ErrTrafficStep = fmt.Errorf("TrafficStep must contain a value between 1 and 
 var ErrMaxTraffic = fmt.Errorf("MaxTraffic must contain a value between 1 and 100")
 var ErrThreshold = fmt.Errorf("ErrorThreshold must contain a value greater than 0")
 
-func New(l hclog.Logger, m interfaces.Monitor) (*Plugin, error) {
-	return &Plugin{log: l, monitoring: m, currentTraffic: -1}, nil
+func New(m interfaces.Monitor) (*Plugin, error) {
+	return &Plugin{monitoring: m, currentTraffic: -1}, nil
 }
 
 // Configure the plugin with the given json
 // returns an error when validation fails for the config
-func (p *Plugin) Configure(data json.RawMessage) error {
+
+func (p *Plugin) Configure(data json.RawMessage, log hclog.Logger, store interfaces.PluginStateStore) error {
+	p.log = log
+	p.store = store
 	p.config = &PluginConfig{}
 
 	err := json.Unmarshal(data, p.config)

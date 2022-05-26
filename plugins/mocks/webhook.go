@@ -3,6 +3,7 @@ package mocks
 import (
 	"encoding/json"
 
+	"github.com/hashicorp/go-hclog"
 	"github.com/nicholasjackson/consul-release-controller/plugins/interfaces"
 	"github.com/stretchr/testify/mock"
 )
@@ -11,8 +12,8 @@ type WebhookMock struct {
 	mock.Mock
 }
 
-func (m *WebhookMock) Configure(c json.RawMessage) error {
-	args := m.Called(c)
+func (m *WebhookMock) Configure(data json.RawMessage, log hclog.Logger, store interfaces.PluginStateStore) error {
+	args := m.Called(data, log, store)
 
 	return args.Error(0)
 }

@@ -9,6 +9,7 @@ import (
 
 	"github.com/hashicorp/go-hclog"
 	"github.com/nicholasjackson/consul-release-controller/clients"
+	"github.com/nicholasjackson/consul-release-controller/plugins/mocks"
 	"github.com/nicholasjackson/consul-release-controller/testutils"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
@@ -42,8 +43,8 @@ func setupPlugin(t *testing.T) (*Plugin, *clients.ConsulMock) {
 	jsn, err := json.Marshal(conf)
 	assert.NoError(t, err)
 
-	p, _ := New(log)
-	err = p.Configure(jsn)
+	p, _ := New()
+	err = p.Configure(jsn, log, &mocks.StoreMock{})
 	assert.NoError(t, err)
 
 	p.consulClient = mc
@@ -60,7 +61,7 @@ func TestSerializesConfig(t *testing.T) {
 func TestConfigureReturnsValidationErrors(t *testing.T) {
 	p := &Plugin{}
 
-	err := p.Configure([]byte{})
+	err := p.Configure([]byte{}, hclog.NewNullLogger(), &mocks.StoreMock{})
 	require.Error(t, err)
 
 	require.Contains(t, err.Error(), ErrConsulService.Error())

@@ -29,7 +29,7 @@ func setupPlugin(t *testing.T) (*Plugin, *mocks.MonitorMock, *[]*httpRequest) {
 	mm := &mocks.MonitorMock{}
 	mm.On("Check", mock.Anything, mock.Anything, 30*time.Second).Return(interfaces.CheckSuccess, nil)
 
-	p, err := New("test", "testnamespace", "kubernetes", hclog.NewNullLogger(), mm)
+	p, err := New("test", "testnamespace", "kubernetes", mm)
 	require.NoError(t, err)
 
 	reqs := []*httpRequest{}
@@ -61,7 +61,7 @@ func setupPlugin(t *testing.T) (*Plugin, *mocks.MonitorMock, *[]*httpRequest) {
 func TestValidatesOK(t *testing.T) {
 	p, _, _ := setupPlugin(t)
 
-	err := p.Configure([]byte(configValid))
+	err := p.Configure([]byte(configValid), hclog.NewNullLogger(), &mocks.StoreMock{})
 
 	require.NoError(t, err)
 }
@@ -69,7 +69,7 @@ func TestValidatesOK(t *testing.T) {
 func TestValidatesPath(t *testing.T) {
 	p, _, _ := setupPlugin(t)
 
-	err := p.Configure([]byte(configInvalidPath))
+	err := p.Configure([]byte(configInvalidPath), hclog.NewNullLogger(), &mocks.StoreMock{})
 
 	require.Error(t, err)
 	require.Contains(t, err.Error(), ErrInvalidPath.Error())
@@ -78,7 +78,7 @@ func TestValidatesPath(t *testing.T) {
 func TestValidatesMissingPath(t *testing.T) {
 	p, _, _ := setupPlugin(t)
 
-	err := p.Configure([]byte(configMissingPath))
+	err := p.Configure([]byte(configMissingPath), hclog.NewNullLogger(), &mocks.StoreMock{})
 
 	require.Error(t, err)
 	require.Contains(t, err.Error(), ErrInvalidPath.Error())
@@ -87,7 +87,7 @@ func TestValidatesMissingPath(t *testing.T) {
 func TestValidatesMethod(t *testing.T) {
 	p, _, _ := setupPlugin(t)
 
-	err := p.Configure([]byte(configInvalidMethod))
+	err := p.Configure([]byte(configInvalidMethod), hclog.NewNullLogger(), &mocks.StoreMock{})
 
 	require.Error(t, err)
 	require.Contains(t, err.Error(), ErrInvalidMethod.Error())
@@ -96,7 +96,7 @@ func TestValidatesMethod(t *testing.T) {
 func TestValidatesMissingMethod(t *testing.T) {
 	p, _, _ := setupPlugin(t)
 
-	err := p.Configure([]byte(configMissingMethod))
+	err := p.Configure([]byte(configMissingMethod), hclog.NewNullLogger(), &mocks.StoreMock{})
 
 	require.Error(t, err)
 	require.Contains(t, err.Error(), ErrInvalidMethod.Error())
@@ -105,7 +105,7 @@ func TestValidatesMissingMethod(t *testing.T) {
 func TestValidatesInterval(t *testing.T) {
 	p, _, _ := setupPlugin(t)
 
-	err := p.Configure([]byte(configInvalidInterval))
+	err := p.Configure([]byte(configInvalidInterval), hclog.NewNullLogger(), &mocks.StoreMock{})
 
 	require.Error(t, err)
 	require.Contains(t, err.Error(), ErrInvalidInterval.Error())
@@ -114,7 +114,7 @@ func TestValidatesInterval(t *testing.T) {
 func TestValidatesMissingInterval(t *testing.T) {
 	p, _, _ := setupPlugin(t)
 
-	err := p.Configure([]byte(configMissingInterval))
+	err := p.Configure([]byte(configMissingInterval), hclog.NewNullLogger(), &mocks.StoreMock{})
 
 	require.Error(t, err)
 	require.Contains(t, err.Error(), ErrInvalidInterval.Error())
@@ -123,7 +123,7 @@ func TestValidatesMissingInterval(t *testing.T) {
 func TestValidatesDuration(t *testing.T) {
 	p, _, _ := setupPlugin(t)
 
-	err := p.Configure([]byte(configInvalidTimeout))
+	err := p.Configure([]byte(configInvalidTimeout), hclog.NewNullLogger(), &mocks.StoreMock{})
 
 	require.Error(t, err)
 	require.Contains(t, err.Error(), ErrInvalidTimeout.Error())
@@ -132,7 +132,7 @@ func TestValidatesDuration(t *testing.T) {
 func TestValidatesMissingDuration(t *testing.T) {
 	p, _, _ := setupPlugin(t)
 
-	err := p.Configure([]byte(configMissingTimeout))
+	err := p.Configure([]byte(configMissingTimeout), hclog.NewNullLogger(), &mocks.StoreMock{})
 
 	require.Error(t, err)
 	require.Contains(t, err.Error(), ErrInvalidTimeout.Error())
@@ -141,7 +141,7 @@ func TestValidatesMissingDuration(t *testing.T) {
 func TestValidatesRequiredTestPasses(t *testing.T) {
 	p, _, _ := setupPlugin(t)
 
-	err := p.Configure([]byte(configInvalidTestPasses))
+	err := p.Configure([]byte(configInvalidTestPasses), hclog.NewNullLogger(), &mocks.StoreMock{})
 
 	require.Error(t, err)
 	require.Contains(t, err.Error(), ErrInvalidTestPasses.Error())
@@ -150,7 +150,7 @@ func TestValidatesRequiredTestPasses(t *testing.T) {
 func TestValidatesMissingTestPasses(t *testing.T) {
 	p, _, _ := setupPlugin(t)
 
-	err := p.Configure([]byte(configMissingTestPasses))
+	err := p.Configure([]byte(configMissingTestPasses), hclog.NewNullLogger(), &mocks.StoreMock{})
 
 	require.Error(t, err)
 	require.Contains(t, err.Error(), ErrInvalidTestPasses.Error())
@@ -159,7 +159,7 @@ func TestValidatesMissingTestPasses(t *testing.T) {
 func TestExecuteCallsExternalServer(t *testing.T) {
 	p, _, hr := setupPlugin(t)
 
-	err := p.Configure([]byte(configValid))
+	err := p.Configure([]byte(configValid), hclog.NewNullLogger(), &mocks.StoreMock{})
 	require.NoError(t, err)
 
 	err = p.Execute(context.TODO(), "test-deployment")
@@ -175,7 +175,7 @@ func TestExecuteCallsExternalServer(t *testing.T) {
 func TestExecuteCallsCheck5Times(t *testing.T) {
 	p, mm, _ := setupPlugin(t)
 
-	err := p.Configure([]byte(configValid))
+	err := p.Configure([]byte(configValid), hclog.NewNullLogger(), &mocks.StoreMock{})
 	require.NoError(t, err)
 
 	err = p.Execute(context.TODO(), "test-deployment")
@@ -198,7 +198,7 @@ func TestExecuteCallsCheck8TimesWhenOneTestFails(t *testing.T) {
 	mm.On("Check", mock.Anything, mock.Anything, mock.Anything).Once().Return(interfaces.CheckSuccess, nil)
 	mm.On("Check", mock.Anything, mock.Anything, mock.Anything).Once().Return(interfaces.CheckSuccess, nil)
 
-	err := p.Configure([]byte(configValid))
+	err := p.Configure([]byte(configValid), hclog.NewNullLogger(), &mocks.StoreMock{})
 	require.NoError(t, err)
 
 	err = p.Execute(context.TODO(), "test-deployment")
@@ -213,7 +213,7 @@ func TestExecuteTimesoutIfNoSuccess(t *testing.T) {
 	testutils.ClearMockCall(&mm.Mock, "Check")
 	mm.On("Check", mock.Anything, mock.Anything, mock.Anything).Return(interfaces.CheckFailed, fmt.Errorf("oops"))
 
-	err := p.Configure([]byte(configValid))
+	err := p.Configure([]byte(configValid), hclog.NewNullLogger(), &mocks.StoreMock{})
 	require.NoError(t, err)
 
 	err = p.Execute(context.TODO(), "test-deployment")

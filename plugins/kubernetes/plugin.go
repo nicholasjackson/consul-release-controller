@@ -18,6 +18,7 @@ var retryInterval = 1 * time.Second
 
 type Plugin struct {
 	log        hclog.Logger
+	store      interfaces.PluginStateStore
 	kubeClient clients.Kubernetes
 	config     *PluginConfig
 }
@@ -26,19 +27,25 @@ type PluginConfig struct {
 	interfaces.RuntimeBaseConfig
 }
 
-func New(l hclog.Logger) (*Plugin, error) {
-	kc, err := clients.NewKubernetes(os.Getenv("KUBECONFIG"), retryTimeout, retryInterval, l.ResetNamed("kubernetes-client"))
-	if err != nil {
-		return nil, err
-	}
+func New() (*Plugin, error) {
 
 	// create the client
-	return &Plugin{log: l, kubeClient: kc}, nil
+	return &Plugin{}, nil
 }
 
-func (p *Plugin) Configure(data json.RawMessage) error {
+func (p *Plugin) Configure(data json.RawMessage, log hclog.Logger, store interfaces.PluginStateStore) error {
+	p.log = log
+	p.store = store
 	p.config = &PluginConfig{}
-	err := json.Unmarshal(data, p.config)
+
+	kc, err := clients.NewKubernetes(os.Getenv("KUBECONFIG"), retryTimeout, retryInterval, log.ResetNamed("kubernetes-client"))
+	if err != nil {
+		return err
+	}
+
+	p.kubeClient = kc
+
+	err = json.Unmarshal(data, p.config)
 	if err != nil {
 		return err
 	}

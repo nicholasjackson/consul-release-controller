@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"time"
 
+	"github.com/hashicorp/go-hclog"
 	"github.com/nicholasjackson/consul-release-controller/plugins/interfaces"
 	"github.com/stretchr/testify/mock"
 )
@@ -13,8 +14,8 @@ type MonitorMock struct {
 	mock.Mock
 }
 
-func (r *MonitorMock) Configure(c json.RawMessage) error {
-	args := r.Called(c)
+func (r *MonitorMock) Configure(data json.RawMessage, log hclog.Logger, store interfaces.PluginStateStore) error {
+	args := r.Called(data, log, store)
 
 	return args.Error(0)
 }

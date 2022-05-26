@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 
+	"github.com/hashicorp/go-hclog"
 	"github.com/nicholasjackson/consul-release-controller/plugins/interfaces"
 	"github.com/stretchr/testify/mock"
 )
@@ -13,11 +14,11 @@ type ReleaserMock struct {
 	baseConfig *interfaces.ReleaserBaseConfig
 }
 
-func (s *ReleaserMock) Configure(config json.RawMessage) error {
-	args := s.Called(config)
+func (s *ReleaserMock) Configure(data json.RawMessage, log hclog.Logger, store interfaces.PluginStateStore) error {
+	args := s.Called(data, log, store)
 
 	s.baseConfig = &interfaces.ReleaserBaseConfig{}
-	json.Unmarshal(config, s.baseConfig)
+	json.Unmarshal(data, s.baseConfig)
 
 	return args.Error(0)
 }

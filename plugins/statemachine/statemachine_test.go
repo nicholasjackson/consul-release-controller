@@ -27,22 +27,22 @@ func setupTests(t *testing.T) (*models.Release, *StateMachine, *mocks.Mocks) {
 	require.NoError(t, err)
 
 	pp.AssertCalled(t, "CreateReleaser", r.Releaser.Name)
-	pm.ReleaserMock.AssertCalled(t, "Configure", r.Releaser.Config)
+	pm.ReleaserMock.AssertCalled(t, "Configure", r.Releaser.Config, mock.Anything, mock.Anything)
 
 	pp.AssertCalled(t, "CreateRuntime", r.Runtime.Name)
-	pm.RuntimeMock.AssertCalled(t, "Configure", r.Runtime.Config)
+	pm.RuntimeMock.AssertCalled(t, "Configure", r.Runtime.Config, mock.Anything, mock.Anything)
 
 	pp.AssertCalled(t, "CreateMonitor", r.Monitor.Name, r.Name, pm.RuntimeMock.BaseConfig().Namespace, r.Runtime.Name)
-	pm.MonitorMock.AssertCalled(t, "Configure", r.Monitor.Config)
+	pm.MonitorMock.AssertCalled(t, "Configure", r.Monitor.Config, mock.Anything, mock.Anything)
 
 	pp.AssertCalled(t, "CreateStrategy", r.Strategy.Name)
-	pm.StrategyMock.AssertCalled(t, "Configure", r.Strategy.Config)
+	pm.StrategyMock.AssertCalled(t, "Configure", r.Strategy.Config, mock.Anything, mock.Anything)
 
 	pp.AssertCalled(t, "CreateWebhook", r.Webhooks[0].Name)
-	pm.WebhookMock.AssertCalled(t, "Configure", r.Webhooks[0].Config)
+	pm.WebhookMock.AssertCalled(t, "Configure", r.Webhooks[0].Config, mock.Anything, mock.Anything)
 
 	pp.AssertCalled(t, "CreatePostDeploymentTest", r.PostDeploymentTest.Name, pm.ReleaserMock.BaseConfig().ConsulService, "", r.Runtime.Name, pm.MonitorMock)
-	pm.PostDeploymentMock.AssertCalled(t, "Configure", r.PostDeploymentTest.Config)
+	pm.PostDeploymentMock.AssertCalled(t, "Configure", r.PostDeploymentTest.Config, mock.Anything, mock.Anything)
 
 	t.Cleanup(func() {
 		if t.Failed() {

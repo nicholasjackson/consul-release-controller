@@ -22,6 +22,7 @@ type discordClient interface {
 
 type Plugin struct {
 	log    hclog.Logger
+	store  interfaces.PluginStateStore
 	config *PluginConfig
 	client discordClient
 }
@@ -37,8 +38,8 @@ type PluginConfig struct {
 	Status []string `json:"status,omitempty"`
 }
 
-func New(l hclog.Logger) (*Plugin, error) {
-	return &Plugin{log: l}, nil
+func New() (*Plugin, error) {
+	return &Plugin{}, nil
 }
 
 var ErrMissingID = fmt.Errorf(`ID is a required field when configuring Discord webhooks, 
@@ -47,7 +48,9 @@ var ErrMissingID = fmt.Errorf(`ID is a required field when configuring Discord w
 var ErrMissingToken = fmt.Errorf(`Token is a required field when configuring Discord webhooks, 
 	you can obtain this value from the webhook URL in the Discord UI ('https://discord.com/api/webhooks/{id}/{token}')`)
 
-func (p *Plugin) Configure(data json.RawMessage) error {
+func (p *Plugin) Configure(data json.RawMessage, log hclog.Logger, store interfaces.PluginStateStore) error {
+	p.log = log
+	p.store = store
 	p.config = &PluginConfig{}
 
 	err := json.Unmarshal(data, p.config)

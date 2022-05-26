@@ -87,3 +87,37 @@ func (mc *ConsulMock) CheckHealth(name string, t interfaces.ServiceVariant) erro
 
 	return args.Error(0)
 }
+
+// SetKV sets the data at the given path in the Consul Key Value store
+func (mc *ConsulMock) SetKV(path string, data []byte) error {
+	args := mc.Mock.Called(path, data)
+
+	return args.Error(0)
+}
+
+// GetKV gets the data at the given path in the Consul Key Value store
+func (mc *ConsulMock) GetKV(path string) ([]byte, error) {
+	args := mc.Mock.Called(path)
+
+	if d, ok := args.Get(0).([]byte); ok {
+		return d, args.Error(1)
+	}
+
+	return nil, args.Error(1)
+}
+
+// DeleteKV deletes the data at the given path in the Consul Key Value store
+func (mc *ConsulMock) DeleteKV(path string) error {
+	args := mc.Mock.Called(path)
+
+	return args.Error(0)
+}
+
+func (mc *ConsulMock) ListKV(path string) ([]string, error) {
+	args := mc.Mock.Called(path)
+	if d, ok := args.Get(0).([]string); ok {
+		return d, args.Error(1)
+	}
+
+	return nil, args.Error(1)
+}

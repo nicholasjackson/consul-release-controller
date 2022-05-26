@@ -40,12 +40,12 @@ type ProviderImpl struct {
 }
 
 func (p *ProviderImpl) CreateReleaser(pluginName string) (interfaces.Releaser, error) {
-	return consul.New(p.log.Named("releaser-plugin-consul"))
+	return consul.New()
 }
 
 func (p *ProviderImpl) CreateRuntime(pluginName string) (interfaces.Runtime, error) {
 	if pluginName == PluginRuntimeTypeKubernetes {
-		return kubernetes.New(p.log.Named("runtime-plugin-kubernetes"))
+		return kubernetes.New()
 	}
 
 	return nil, fmt.Errorf("invalid Runtime plugin type: %s", pluginName)
@@ -61,7 +61,7 @@ func (p *ProviderImpl) CreateMonitor(pluginName, name, namespace, runtime string
 
 func (p *ProviderImpl) CreateStrategy(pluginName string, mp interfaces.Monitor) (interfaces.Strategy, error) {
 	if pluginName == PluginStrategyTypeCanary {
-		return canary.New(p.log.Named("strategy-plugin-canary"), mp)
+		return canary.New(mp)
 	}
 
 	return nil, fmt.Errorf("invalid Strategy plugin type: %s", pluginName)
@@ -70,9 +70,9 @@ func (p *ProviderImpl) CreateStrategy(pluginName string, mp interfaces.Monitor) 
 func (p *ProviderImpl) CreateWebhook(pluginName string) (interfaces.Webhook, error) {
 	switch pluginName {
 	case PluginWebhookTypeDiscord:
-		return discord.New(p.log.Named("webhook-plugin-discord"))
+		return discord.New()
 	case PluginWebhookTypeSlack:
-		return slack.New(p.log.Named("webhook-plugin-slack"))
+		return slack.New()
 	}
 
 	return nil, fmt.Errorf("invalid Webhook plugin type: %s", pluginName)
@@ -80,7 +80,7 @@ func (p *ProviderImpl) CreateWebhook(pluginName string) (interfaces.Webhook, err
 
 func (p *ProviderImpl) CreatePostDeploymentTest(pluginName, name, namespace, runtime string, mp interfaces.Monitor) (interfaces.PostDeploymentTest, error) {
 	if pluginName == PluginDeploymentTestTypeHTTP {
-		return httptest.New(name, namespace, runtime, p.log.Named("monitor-plugin-test-http"), mp)
+		return httptest.New(name, namespace, runtime, mp)
 	}
 
 	return nil, fmt.Errorf("invalid Post deployment test plugin type: %s", pluginName)

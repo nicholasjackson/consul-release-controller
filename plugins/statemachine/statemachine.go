@@ -28,6 +28,7 @@ type StateMachine struct {
 	webhookPlugins []interfaces.Webhook
 	logger         hclog.Logger
 	metrics        interfaces.Metrics
+	storage        interfaces.Store
 
 	metricsDone func(int)
 
@@ -38,6 +39,7 @@ func New(r *models.Release, pluginProvider interfaces.Provider) (*StateMachine, 
 	sm := &StateMachine{release: r, webhookPlugins: []interfaces.Webhook{}}
 	sm.logger = pluginProvider.GetLogger().Named("statemachine")
 	sm.metrics = pluginProvider.GetMetrics()
+	sm.storage = pluginProvider.GetDataStore()
 
 	// create the setup plugin
 	relP, err := pluginProvider.CreateReleaser(r.Releaser.Name)
@@ -46,7 +48,7 @@ func New(r *models.Release, pluginProvider interfaces.Provider) (*StateMachine, 
 	}
 
 	// configure the releaser plugin
-	relP.Configure(r.Releaser.Config)
+	relP.Configure(r.Releaser.Config, sm.logger.ResetNamed("releaser-plugin"), sm.storage.CreatePluginStateStore(r, "releaser"))
 	sm.releaserPlugin = relP
 
 	// get the releaser config
@@ -59,7 +61,7 @@ func New(r *models.Release, pluginProvider interfaces.Provider) (*StateMachine, 
 	}
 
 	// configure the runtime plugin
-	runP.Configure(r.Runtime.Config)
+	runP.Configure(r.Runtime.Config, sm.logger.ResetNamed("runtime-plugin"), sm.storage.CreatePluginStateStore(r, "runtime"))
 	sm.runtimePlugin = runP
 
 	// get the runtime config
@@ -72,7 +74,7 @@ func New(r *models.Release, pluginProvider interfaces.Provider) (*StateMachine, 
 	}
 
 	// configure the monitor plugin
-	monP.Configure(r.Monitor.Config)
+	monP.Configure(r.Monitor.Config, sm.logger.ResetNamed("monitor-plugin"), sm.storage.CreatePluginStateStore(r, "monitor"))
 	sm.monitorPlugin = monP
 
 	// create the strategy plugin
@@ -82,7 +84,7 @@ func New(r *models.Release, pluginProvider interfaces.Provider) (*StateMachine, 
 	}
 
 	// configure the strategy plugin
-	stratP.Configure(r.Strategy.Config)
+	stratP.Configure(r.Strategy.Config, sm.logger.ResetNamed("strategy-plugin"), sm.storage.CreatePluginStateStore(r, "strategy"))
 	sm.strategyPlugin = stratP
 
 	// configure the webhooks
@@ -92,7 +94,7 @@ func New(r *models.Release, pluginProvider interfaces.Provider) (*StateMachine, 
 			return nil, err
 		}
 
-		err = wp.Configure(w.Config)
+		err = wp.Configure(w.Config, sm.logger.ResetNamed("webhooks-plugin"), sm.storage.CreatePluginStateStore(r, "webhooks"))
 		if err != nil {
 			return nil, err
 		}
@@ -107,7 +109,7 @@ func New(r *models.Release, pluginProvider interfaces.Provider) (*StateMachine, 
 			return nil, err
 		}
 
-		err = testP.Configure(r.PostDeploymentTest.Config)
+		err = testP.Configure(r.PostDeploymentTest.Config, sm.logger.ResetNamed("post-deployment-tests-plugin"), sm.storage.CreatePluginStateStore(r, "post-deployment-tests"))
 		if err != nil {
 			return nil, err
 		}
@@ -212,6 +214,11 @@ func (s *StateMachine) enterState() func(e *fsm.Event) {
 
 		// append the state history
 		s.release.UpdateState(e.FSM.Current())
+
+		err := s.storage.UpsertRelease(s.release)
+		if err != nil {
+			s.logger.Error("Unable to upsert release", "name", s.release.Name, "error", err)
+		}
 	}
 }
 

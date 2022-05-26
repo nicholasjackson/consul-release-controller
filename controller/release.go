@@ -16,7 +16,7 @@ import (
 	"github.com/nicholasjackson/consul-release-controller/handlers/api"
 	kubernetes "github.com/nicholasjackson/consul-release-controller/kubernetes/controller"
 	"github.com/nicholasjackson/consul-release-controller/plugins"
-	"github.com/nicholasjackson/consul-release-controller/plugins/memory"
+	"github.com/nicholasjackson/consul-release-controller/plugins/consul"
 	"github.com/nicholasjackson/consul-release-controller/plugins/prometheus"
 	"golang.org/x/net/context"
 )
@@ -45,7 +45,8 @@ func (r *Release) Start() error {
 	r.metrics.StartServer()
 	r.metrics.ServiceStarting()
 
-	store := memory.NewStore()
+	//store := memory.NewStore()
+	store, _ := consul.NewStorage(r.log.Named("releaser-plugin-consul"))
 	provider := plugins.GetProvider(r.log, r.metrics, store)
 
 	// create the kubernetes controller

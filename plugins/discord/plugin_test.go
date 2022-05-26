@@ -8,6 +8,7 @@ import (
 	"github.com/DisgoOrg/disgo/webhook"
 	"github.com/hashicorp/go-hclog"
 	"github.com/nicholasjackson/consul-release-controller/plugins/interfaces"
+	"github.com/nicholasjackson/consul-release-controller/plugins/mocks"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 )
@@ -23,9 +24,9 @@ func (h *mockClient) CreateEmbeds(embeds []discord.Embed, opts ...rest.RequestOp
 }
 
 func setupTests(t *testing.T, config string) (*Plugin, *mockClient) {
-	p, _ := New(hclog.NewNullLogger())
+	p, _ := New()
 
-	err := p.Configure([]byte(config))
+	err := p.Configure([]byte(config), hclog.NewNullLogger(), &mocks.StoreMock{})
 	assert.NoError(t, err)
 
 	mc := &mockClient{}
@@ -36,22 +37,22 @@ func setupTests(t *testing.T, config string) (*Plugin, *mockClient) {
 }
 
 func TestValidatesID(t *testing.T) {
-	p, _ := New(hclog.NewNullLogger())
-	err := p.Configure([]byte(configWithMissingID))
+	p, _ := New()
+	err := p.Configure([]byte(configWithMissingID), hclog.NewNullLogger(), &mocks.StoreMock{})
 
 	assert.Error(t, err)
 }
 
 func TestValidatesToken(t *testing.T) {
-	p, _ := New(hclog.NewNullLogger())
-	err := p.Configure([]byte(configWithMissingToken))
+	p, _ := New()
+	err := p.Configure([]byte(configWithMissingToken), hclog.NewNullLogger(), &mocks.StoreMock{})
 
 	assert.Error(t, err)
 }
 
 func TestConfiguresWithoutError(t *testing.T) {
-	p, _ := New(hclog.NewNullLogger())
-	err := p.Configure([]byte(validConfig))
+	p, _ := New()
+	err := p.Configure([]byte(validConfig), hclog.NewNullLogger(), &mocks.StoreMock{})
 
 	assert.NoError(t, err)
 }

@@ -8,6 +8,7 @@ import (
 	"github.com/hashicorp/go-hclog"
 	"github.com/nicholasjackson/consul-release-controller/clients"
 	"github.com/nicholasjackson/consul-release-controller/plugins/interfaces"
+	"github.com/nicholasjackson/consul-release-controller/plugins/mocks"
 	"github.com/nicholasjackson/consul-release-controller/testutils"
 	v1 "github.com/prometheus/client_golang/api/prometheus/v1"
 	"github.com/prometheus/common/model"
@@ -28,7 +29,7 @@ func setupPlugin(t *testing.T, config string) (*Plugin, *clients.PrometheusMock)
 		nil,
 	)
 
-	err := p.Configure([]byte(config))
+	err := p.Configure([]byte(config), l, &mocks.StoreMock{})
 	require.NoError(t, err)
 
 	p.client = pm

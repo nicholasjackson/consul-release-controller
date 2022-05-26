@@ -65,6 +65,18 @@ type Consul interface {
 
 	// Check the Consul health of the service, returns an error when one or more endpoints are not healthy
 	CheckHealth(name string, t interfaces.ServiceVariant) error
+
+	// SetKV sets the data at the given path in the Consul Key Value store
+	SetKV(path string, data []byte) error
+
+	// GetKV gets the data at the given path in the Consul Key Value store
+	GetKV(path string) ([]byte, error)
+
+	// DeleteKV deletes the data at the given path in the Consul Key Value store
+	DeleteKV(path string) error
+
+	// ListKV returns keynames at the given path
+	ListKV(path string) ([]string, error)
 }
 
 type ConsulOptions struct {
@@ -718,4 +730,93 @@ func (c *ConsulImpl) CheckHealth(name string, t interfaces.ServiceVariant) error
 	}
 
 	return nil
+}
+
+// SetKV sets the data at the given path in the Consul Key Value store
+func (c *ConsulImpl) SetKV(path string, data []byte) error {
+	kvp := &api.KVPair{}
+	if c.options.Namespace != "" {
+		kvp.Namespace = c.options.Namespace
+	}
+
+	if c.options.Partition != "" {
+		kvp.Partition = c.options.Partition
+	}
+
+	kvp.Key = path
+	kvp.Value = data
+
+	_, err := c.client.KV().Put(kvp, &api.WriteOptions{})
+	if err != nil {
+		return fmt.Errorf("unable to write data to Consul KV: %s", err)
+	}
+
+	return nil
+}
+
+// GetKV gets the data at the given path in the Consul Key Value store
+// When the key at the path does not exist, this function returns a nil data payload
+// and no error.
+func (c *ConsulImpl) GetKV(path string) ([]byte, error) {
+	qo := &api.QueryOptions{}
+
+	if c.options.Namespace != "" {
+		qo.Namespace = c.options.Namespace
+	}
+
+	if c.options.Partition != "" {
+		qo.Partition = c.options.Partition
+	}
+
+	kp, _, err := c.client.KV().Get(path, qo)
+	if err != nil {
+		return nil, fmt.Errorf("unable to fetch key from path %s in Consul KV: %s", path, err)
+	}
+
+	// no key found
+	if kp == nil {
+		return nil, nil
+	}
+
+	return kp.Value, nil
+}
+
+// DeleteKV deletes the data at the given path in the Consul Key Value store
+func (c *ConsulImpl) DeleteKV(path string) error {
+	wo := &api.WriteOptions{}
+
+	if c.options.Namespace != "" {
+		wo.Namespace = c.options.Namespace
+	}
+
+	if c.options.Partition != "" {
+		wo.Partition = c.options.Partition
+	}
+
+	_, err := c.client.KV().Delete(path, wo)
+	if err != nil {
+		return fmt.Errorf("unable to delete key from path %s in Consul KV: %s", path, err)
+	}
+
+	return nil
+}
+
+// ListKV returns keynames at the given path
+func (c *ConsulImpl) ListKV(path string) ([]string, error) {
+	qo := &api.QueryOptions{}
+
+	if c.options.Namespace != "" {
+		qo.Namespace = c.options.Namespace
+	}
+
+	if c.options.Partition != "" {
+		qo.Partition = c.options.Partition
+	}
+
+	k, _, err := c.client.KV().Keys(path, "", qo)
+	if err != nil {
+		return nil, err
+	}
+
+	return k, nil
 }

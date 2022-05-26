@@ -5,6 +5,7 @@ import (
 
 	"github.com/hashicorp/go-hclog"
 	"github.com/nicholasjackson/consul-release-controller/plugins/interfaces"
+	"github.com/nicholasjackson/consul-release-controller/plugins/mocks"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 )
@@ -20,9 +21,9 @@ func (s *mockClient) Send(url, content string) error {
 }
 
 func setupTests(t *testing.T, config string) (*Plugin, *mockClient) {
-	p, _ := New(hclog.NewNullLogger())
+	p, _ := New()
 
-	err := p.Configure([]byte(config))
+	err := p.Configure([]byte(config), hclog.NewNullLogger(), &mocks.StoreMock{})
 	assert.NoError(t, err)
 
 	mc := &mockClient{}
@@ -33,15 +34,15 @@ func setupTests(t *testing.T, config string) (*Plugin, *mockClient) {
 }
 
 func TestValidatesURL(t *testing.T) {
-	p, _ := New(hclog.NewNullLogger())
-	err := p.Configure([]byte(configWithMissingURL))
+	p, _ := New()
+	err := p.Configure([]byte(configWithMissingURL), hclog.NewNullLogger(), &mocks.StoreMock{})
 
 	assert.Error(t, err)
 }
 
 func TestConfiguresWithoutError(t *testing.T) {
-	p, _ := New(hclog.NewNullLogger())
-	err := p.Configure([]byte(validConfig))
+	p, _ := New()
+	err := p.Configure([]byte(validConfig), hclog.NewNullLogger(), &mocks.StoreMock{})
 
 	assert.NoError(t, err)
 }

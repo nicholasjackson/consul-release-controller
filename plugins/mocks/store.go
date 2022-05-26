@@ -39,3 +39,26 @@ func (m *StoreMock) GetRelease(name string) (*models.Release, error) {
 
 	return nil, args.Error(1)
 }
+
+func (m *StoreMock) CreatePluginStateStore(r *models.Release, pluginName string) interfaces.PluginStateStore {
+	m.Called(r, pluginName)
+	return m
+}
+
+func (m *StoreMock) UpsertState(data []byte) error {
+
+	args := m.Called(data)
+	return args.Error(0)
+
+}
+
+func (m *StoreMock) GetState() ([]byte, error) {
+
+	args := m.Called()
+
+	if d, ok := args.Get(1).([]byte); ok {
+		return d, args.Error(1)
+	}
+
+	return nil, args.Error(1)
+}

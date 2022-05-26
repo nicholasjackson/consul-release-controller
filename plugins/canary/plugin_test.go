@@ -18,12 +18,12 @@ func setupPlugin(t *testing.T, config string) (*Plugin, *mocks.MonitorMock) {
 	log := hclog.NewNullLogger()
 	_, m := mocks.BuildMocks(t)
 
-	p, _ := New(log, m.MonitorMock)
+	p, _ := New(m.MonitorMock)
 
 	// set the traffic to initial traffic, this is the state after the first run
 	p.currentTraffic = 10
 
-	err := p.Configure([]byte(config))
+	err := p.Configure([]byte(config), log, m.StoreMock)
 	require.NoError(t, err)
 
 	return p, m.MonitorMock
@@ -38,12 +38,12 @@ func TestValidatesConfig(t *testing.T) {
 	log := hclog.NewNullLogger()
 	_, m := mocks.BuildMocks(t)
 
-	p, _ := New(log, m.MonitorMock)
+	p, _ := New(m.MonitorMock)
 
 	// set the traffic to initial traffic, this is the state after the first run
 	p.currentTraffic = 10
 
-	err := p.Configure([]byte(canaryStrategyWithValidationErrors))
+	err := p.Configure([]byte(canaryStrategyWithValidationErrors), log, m.StoreMock)
 	require.Error(t, err)
 
 	require.Contains(t, err.Error(), ErrInvalidInitialDelay.Error())

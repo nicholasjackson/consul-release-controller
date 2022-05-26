@@ -16,6 +16,7 @@ import (
 
 type Plugin struct {
 	log        hclog.Logger
+	store      interfaces.PluginStateStore
 	config     *PluginConfig
 	monitoring interfaces.Monitor
 
@@ -54,18 +55,20 @@ var ErrInvalidInterval = fmt.Errorf("Interval is not a valid duration, please sp
 var ErrInvalidTimeout = fmt.Errorf("Timeout is not a valid duration, please specify using Go duration format e.g (30s, 30ms, 60m)")
 var ErrInvalidTestPasses = fmt.Errorf("RequiredTestPasses is not valid, please specify a value greater than 0")
 
-func New(name, namespace, runtime string, l hclog.Logger, m interfaces.Monitor) (*Plugin, error) {
+func New(name, namespace, runtime string, m interfaces.Monitor) (*Plugin, error) {
 	// if there is no namespaces set, then use the convention for default to ensure the upstream routing works
 	if namespace == "" {
 		namespace = "default"
 	}
 
-	return &Plugin{log: l, monitoring: m, name: name, namespace: namespace, runtime: runtime}, nil
+	return &Plugin{monitoring: m, name: name, namespace: namespace, runtime: runtime}, nil
 }
 
 // Configure the plugin with the given json
 // returns an error when validation fails for the config
-func (p *Plugin) Configure(data json.RawMessage) error {
+func (p *Plugin) Configure(data json.RawMessage, log hclog.Logger, store interfaces.PluginStateStore) error {
+	p.log = log
+	p.store = store
 	p.config = &PluginConfig{}
 
 	err := json.Unmarshal(data, p.config)

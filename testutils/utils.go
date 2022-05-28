@@ -23,6 +23,11 @@ func ClearMockCall(mc *mock.Mock, method string) {
 	mc.ExpectedCalls = new
 }
 
+func GetTestFilePath(t *testing.T, filename string) string {
+	_, b, _, _ := runtime.Caller(0)
+	return path.Join(path.Dir(b), "../test_data", filename)
+}
+
 func GetTestData(t *testing.T, filename string) []byte {
 	_, b, _, _ := runtime.Caller(0)
 	f := path.Join(path.Dir(b), "../test_data", filename)

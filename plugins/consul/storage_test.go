@@ -56,9 +56,11 @@ func TestListReleasesReturnsAllReleases(t *testing.T) {
 	s, _, mc := testSetupStorage(t)
 
 	mc.On("ListKV", mock.Anything).Return([]string{
-		"consul-release-controller/releases/api",
-		"consul-release-controller/releases/payments",
-		"consul-release-controller/releases/currency",
+		"consul-release-controller/releases/api/config",
+		"consul-release-controller/releases/payments/plugin-state/runtime",
+		"consul-release-controller/releases/payments/plugin-state/monitor",
+		"consul-release-controller/releases/payments/config",
+		"consul-release-controller/releases/currency/config",
 	}, nil)
 	mc.On("GetKV", mock.Anything, mock.Anything).Return([]byte(`{"name": "api"}`), nil)
 
@@ -76,9 +78,11 @@ func TestListReleasesReturnsAllReleases(t *testing.T) {
 func TestListReleasesReturnsFilteredReleases(t *testing.T) {
 	s, _, mc := testSetupStorage(t)
 	mc.On("ListKV", mock.Anything).Return([]string{
-		"consul-release-controller/releases/api",
-		"consul-release-controller/releases/payments",
-		"consul-release-controller/releases/currency",
+		"consul-release-controller/releases/api/config",
+		"consul-release-controller/releases/payments/plugin-state/runtime",
+		"consul-release-controller/releases/payments/plugin-state/monitor",
+		"consul-release-controller/releases/payments/config",
+		"consul-release-controller/releases/currency/config",
 	}, nil)
 
 	mc.On("GetKV", mock.Anything, mock.Anything).Once().Return([]byte(`{"name": "api", "runtime": {"plugin_name": "nomad"}}`), nil)

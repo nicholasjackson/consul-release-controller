@@ -89,30 +89,24 @@ func (a *deploymentAdmission) Handle(ctx context.Context, req admission.Request)
 
 			a.log.Debug("Found existing release for", "name", deployment.Name, "namespace", deployment.Namespace, "selector", conf.DeploymentSelector, "state", sm.CurrentState())
 
+			// if the state of the release is inactive, update the config
 			if sm.CurrentState() == interfaces.StateIdle || sm.CurrentState() == interfaces.StateFail {
-				// update the release with the absolute deployment name
-				conf.CandidateName = deployment.Name
-				confData, err := json.Marshal(conf)
+
+				// update the release candidate name so that the runtime plugin knows which deployment to clone
+				ds := a.provider.GetDataStore().CreatePluginStateStore(rel, "runtime")
+
+				ps := &interfaces.RuntimeBaseState{}
+				ps.CandidateName = deployment.Name
+
+				confData, err := json.Marshal(ps)
 				if err != nil {
 					a.log.Error("Unable to serialize config", "conf", conf, "error", err)
 					return admission.Errored(500, err)
 				}
 
-				rel.Runtime.Config = confData
-
-				err = a.provider.GetDataStore().UpsertRelease(rel)
+				err = ds.UpsertState(confData)
 				if err != nil {
-					a.log.Error("Unable to update the release", "release", rel, "error", err)
-					return admission.Errored(500, err)
-				}
-
-				// clear any existing state
-				a.provider.DeleteStateMachine(rel)
-
-				// create a new statemachine
-				sm, err := a.provider.GetStateMachine(rel)
-				if err != nil {
-					a.log.Error("Unable to get statemachine", "name", rel.Name, "error", err)
+					a.log.Error("Unable to save runtime plugin state", "conf", conf, "error", err)
 					return admission.Errored(500, err)
 				}
 

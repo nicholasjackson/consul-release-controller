@@ -3,6 +3,7 @@ package consul
 import (
 	"encoding/json"
 	"fmt"
+	"strings"
 
 	"github.com/DisgoOrg/log"
 	"github.com/hashicorp/go-hclog"
@@ -59,17 +60,25 @@ func (s *Storage) ListReleases(options *interfaces.ListOptions) ([]*models.Relea
 	if err != nil {
 		return nil, err
 	}
+	s.log.Debug("Fetched keys from Consul", "keys", keys)
 
 	releases := []*models.Release{}
 	for _, k := range keys {
-		rel, err := s.getRelease(fmt.Sprintf("%s/%s", k, configPath))
-		if err != nil {
-			return nil, err
-		}
+		// Consul will return all they keys not the paths, we only need to check
+		// keys that end in the path configPath
+		if strings.HasSuffix(k, configPath) {
 
-		// filter the response
-		if options == nil || (rel.Runtime != nil && options.Runtime == rel.Runtime.Name) {
-			releases = append(releases, rel)
+			s.log.Debug("Fetching release from Consul", "path", k)
+
+			rel, err := s.getRelease(k)
+			if err != nil {
+				return nil, err
+			}
+
+			// filter the response
+			if options == nil || (rel.Runtime != nil && options.Runtime == rel.Runtime.Name) {
+				releases = append(releases, rel)
+			}
 		}
 	}
 

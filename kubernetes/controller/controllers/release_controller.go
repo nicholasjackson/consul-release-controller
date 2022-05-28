@@ -18,6 +18,7 @@ package controllers
 
 import (
 	"context"
+	"fmt"
 
 	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"
@@ -144,12 +145,25 @@ func (r *ReleaseReconciler) SetupWithManager(mgr ctrl.Manager) error {
 
 func (r *ReleaseReconciler) updateRelease(rc *consulreleasecontrollerv1.Release, log logr.Logger) error {
 	// check to see if the release exists
-	_, err := r.Provider.GetDataStore().GetRelease(rc.Name)
-	if err == interfaces.ReleaseNotFound {
-		log.Info("Create new release", "name", rc.Name)
-	} else {
-		log.Info("Update release", "name", rc.Name)
+	rel, err := r.Provider.GetDataStore().GetRelease(rc.Name)
+	if err == nil {
+		log.Info("Found existing release, updating", "name", rc.Name)
+
+		// check the version if the controller restarts kubernetes will re-submit the release, in this
+		// instance we do not want to reset the state
+		if rel.Version == fmt.Sprintf("%d", rc.ObjectMeta.Generation) {
+			log.Info("Ignoring release, not updated", "name", rc.Name, "version", rel.Version)
+			return nil
+		}
+
+		// check the state of the release, only allow an update when idle or failed
+		if rel.CurrentState() != interfaces.StateIdle && rel.CurrentState() != interfaces.StateFail {
+			log.Info("Release active, not updating", "name", rc.Name, "version", rel.Version)
+			return fmt.Errorf("unable to update release, release currently active")
+		}
 	}
+
+	log.Info("Upsert release", "name", rc.Name)
 
 	rm := rc.ConvertToModel()
 

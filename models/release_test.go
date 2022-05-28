@@ -27,3 +27,13 @@ func TestToJsonSerializesState(t *testing.T) {
 	releaseJson := d.ToJson()
 	require.Contains(t, string(releaseJson), `"name":"api"`)
 }
+
+func TestStateHistoryLimitedTo50Items(t *testing.T) {
+	r := &Release{}
+
+	for i := 0; i < 55; i++ {
+		r.UpdateState("test")
+	}
+
+	require.Len(t, r.StateHistory(), 50)
+}

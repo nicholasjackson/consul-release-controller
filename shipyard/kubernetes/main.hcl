@@ -106,7 +106,7 @@ module "consul" {
   source = "github.com/shipyard-run/blueprints?ref=d0ef4e69081263dad65edcf05ea3dc8da395b418/modules//kubernetes-consul"
 }
 
-ingress "web" {
+ingress "api" {
   source {
     driver = "local"
 
@@ -120,7 +120,7 @@ ingress "web" {
 
     config {
       cluster = "k8s_cluster.dc1"
-      address = "web.default.svc"
+      address = "api.default.svc"
       port    = 9090
     }
   }

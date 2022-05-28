@@ -101,10 +101,10 @@ func TestCallsDeployForNewDeploymentWhenIdle(t *testing.T) {
 	resp := d.Handle(context.TODO(), ar)
 	require.True(t, resp.Allowed)
 	mm.StateMachineMock.AssertCalled(t, "Deploy")
-	mm.StoreMock.AssertCalled(t, "UpsertRelease", mock.Anything)
+	mm.StoreMock.AssertCalled(t, "UpsertState", mock.Anything)
 
 	// check that the kubernetes deployment name is saved to the release config
-	rbc := getUpsertReleaseConfig(mm.StoreMock.Mock)
+	rbc := getUpsertReleaseState(mm.StoreMock.Mock)
 	require.NotNil(t, rbc)
 	require.Equal(t, "test-deployment", rbc.CandidateName)
 }
@@ -113,13 +113,13 @@ func TestReturnsErrorWhenNewDeploymentUpsertReleaseFails(t *testing.T) {
 	ar := createAdmissionRequest(false)
 	d, mm := setupAdmission(t, "test-deployment", "default")
 
-	testutils.ClearMockCall(&mm.StoreMock.Mock, "UpsertRelease")
-	mm.StoreMock.On("UpsertRelease", mock.Anything).Return(fmt.Errorf("boom"))
+	testutils.ClearMockCall(&mm.StoreMock.Mock, "UpsertState")
+	mm.StoreMock.On("UpsertState", mock.Anything).Return(fmt.Errorf("boom"))
 
 	resp := d.Handle(context.TODO(), ar)
 	require.False(t, resp.Allowed)
 	mm.StateMachineMock.AssertNotCalled(t, "Deploy")
-	mm.StoreMock.AssertCalled(t, "UpsertRelease", mock.Anything)
+	mm.StoreMock.AssertCalled(t, "UpsertState", mock.Anything)
 }
 
 func TestAddsRegExpWordBoundaryAndFailsMatchWhenNotPresent(t *testing.T) {
@@ -188,6 +188,20 @@ func getUpsertReleaseConfig(mock mock.Mock) *interfaces.RuntimeBaseConfig {
 			if dep, ok := c.Arguments.Get(0).(*models.Release); ok {
 				rbc := &interfaces.RuntimeBaseConfig{}
 				json.Unmarshal(dep.Runtime.Config, rbc)
+				return rbc
+			}
+		}
+	}
+
+	return nil
+}
+
+func getUpsertReleaseState(mock mock.Mock) *interfaces.RuntimeBaseState {
+	for _, c := range mock.Calls {
+		if c.Method == "UpsertState" {
+			if dep, ok := c.Arguments.Get(0).([]byte); ok {
+				rbc := &interfaces.RuntimeBaseState{}
+				json.Unmarshal(dep, rbc)
 				return rbc
 			}
 		}

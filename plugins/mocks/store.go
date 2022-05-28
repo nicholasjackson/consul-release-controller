@@ -56,7 +56,7 @@ func (m *StoreMock) GetState() ([]byte, error) {
 
 	args := m.Called()
 
-	if d, ok := args.Get(1).([]byte); ok {
+	if d, ok := args.Get(0).([]byte); ok {
 		return d, args.Error(1)
 	}
 

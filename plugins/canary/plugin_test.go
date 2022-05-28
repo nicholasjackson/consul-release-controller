@@ -20,13 +20,38 @@ func setupPlugin(t *testing.T, config string) (*Plugin, *mocks.MonitorMock) {
 
 	p, _ := New(m.MonitorMock)
 
-	// set the traffic to initial traffic, this is the state after the first run
-	p.currentTraffic = 10
-
 	err := p.Configure([]byte(config), log, m.StoreMock)
 	require.NoError(t, err)
 
 	return p, m.MonitorMock
+}
+
+func TestConfigureSetsState(t *testing.T) {
+	log := hclog.NewNullLogger()
+	_, m := mocks.BuildMocks(t)
+
+	testutils.ClearMockCall(&m.StoreMock.Mock, "GetState")
+	m.StoreMock.On("GetState").Return([]byte(`{"current_traffic":10}`), nil)
+
+	p, _ := New(m.MonitorMock)
+	err := p.Configure([]byte(canaryStrategy), log, m.StoreMock)
+
+	require.NoError(t, err)
+	require.Equal(t, 10, p.state.CurrentTraffic)
+}
+
+func TestConfigureSetsDefaultStateOnError(t *testing.T) {
+	log := hclog.NewNullLogger()
+	_, m := mocks.BuildMocks(t)
+
+	testutils.ClearMockCall(&m.StoreMock.Mock, "GetState")
+	m.StoreMock.On("GetState").Return(nil, fmt.Errorf("boom"))
+
+	p, _ := New(m.MonitorMock)
+	err := p.Configure([]byte(canaryStrategy), log, m.StoreMock)
+
+	require.NoError(t, err)
+	require.Equal(t, -1, p.state.CurrentTraffic)
 }
 
 func TestSetsIntitialDelayToIntervalWhenNotSet(t *testing.T) {
@@ -40,9 +65,6 @@ func TestValidatesConfig(t *testing.T) {
 
 	p, _ := New(m.MonitorMock)
 
-	// set the traffic to initial traffic, this is the state after the first run
-	p.currentTraffic = 10
-
 	err := p.Configure([]byte(canaryStrategyWithValidationErrors), log, m.StoreMock)
 	require.Error(t, err)
 
@@ -53,10 +75,8 @@ func TestValidatesConfig(t *testing.T) {
 	require.Contains(t, err.Error(), ErrThreshold.Error())
 }
 
-func TestSetsIntitialTraficAndReturnsFirstRun(t *testing.T) {
+func TestSetsInitialTrafficAndReturnsFirstRun(t *testing.T) {
 	p, mm := setupPlugin(t, canaryStrategy)
-	// reset the traffic to the initial state
-	p.currentTraffic = -1
 
 	status, traffic, err := p.Execute(context.Background(), "test-deployment")
 	require.NoError(t, err)
@@ -67,10 +87,8 @@ func TestSetsIntitialTraficAndReturnsFirstRun(t *testing.T) {
 	mm.AssertNotCalled(t, "Check", mock.Anything, mock.Anything)
 }
 
-func TestSetsIntitialTraficToTrafficStepWhenNotSetAndReturnsFirstRun(t *testing.T) {
-	p, mm := setupPlugin(t, canaryStrategyWithoutInitial)
-	// reset the traffic to the initial state
-	p.currentTraffic = -1
+func TestSetsInitialTrafficToTrafficStepWhenNotSetAndReturnsFirstRun(t *testing.T) {
+	p, mm := setupPlugin(t, canaryStrategyWithoutInitialTraffic)
 
 	status, traffic, err := p.Execute(context.Background(), "test-deployment")
 	require.NoError(t, err)
@@ -88,26 +106,32 @@ func TestCallsMonitorCheckAndReturnsWhenNoError(t *testing.T) {
 	_, _, err := p.Execute(context.Background(), "test-deployment")
 	require.NoError(t, err)
 
+	_, _, err = p.Execute(context.Background(), "test-deployment")
+	require.NoError(t, err)
+
 	mm.AssertCalled(t, "Check", mock.Anything, mock.Anything, 30*time.Millisecond)
+	mm.AssertNumberOfCalls(t, "Check", 1)
 
 	et := time.Since(st)
 	require.Greater(t, et, 30*time.Millisecond, "Execute should sleep for interval before check")
 }
 
-func TestExecuteReturnsIncrementsTrafficSubsequentRuns(t *testing.T) {
+func TestExecuteIncrementsTrafficSubsequentRuns(t *testing.T) {
 	p, _ := setupPlugin(t, canaryStrategy)
-	p.currentTraffic = 10
+
+	_, _, err := p.Execute(context.Background(), "test-deployment")
+	require.NoError(t, err)
 
 	status, traffic, err := p.Execute(context.Background(), "test-deployment")
 	require.NoError(t, err)
 
 	require.Equal(t, interfaces.StrategyStatusSuccess, string(status))
-	require.Equal(t, 20, traffic)
+	require.Equal(t, 30, traffic)
 }
 
 func TestExecuteReturnsCompleteWhenAllChecksComplete(t *testing.T) {
 	p, _ := setupPlugin(t, canaryStrategy)
-	p.currentTraffic = 80
+	p.state.CurrentTraffic = 70
 
 	status, traffic, err := p.Execute(context.Background(), "test-deployment")
 	require.NoError(t, err)
@@ -119,6 +143,7 @@ func TestExecuteReturnsCompleteWhenAllChecksComplete(t *testing.T) {
 func TestReturnsErrorWhenChecksFail(t *testing.T) {
 	p, mm := setupPlugin(t, canaryStrategy)
 	testutils.ClearMockCall(&mm.Mock, "Check")
+	p.state.CurrentTraffic = 10
 
 	mm.On("Check", mock.Anything, mock.Anything, mock.Anything, mock.Anything).Return(interfaces.CheckFailed, fmt.Errorf("boom"))
 
@@ -132,29 +157,63 @@ func TestReturnsErrorWhenChecksFail(t *testing.T) {
 	mm.AssertNumberOfCalls(t, "Check", 5)
 }
 
-func TestGetPrimaryTrafficReturnsCorrectValue(t *testing.T) {
+func TestGetPrimaryTrafficReturns100WhenMinusOne(t *testing.T) {
 	p, _ := setupPlugin(t, canaryStrategy)
-	p.currentTraffic = 80
 
 	traf := p.GetPrimaryTraffic()
 
-	require.Equal(t, 20, traf)
+	require.Equal(t, 100, traf)
+}
+
+func TestGetPrimaryTrafficReturns0WhenGreater100(t *testing.T) {
+	p, _ := setupPlugin(t, canaryStrategy)
+	p.state.CurrentTraffic = 101
+
+	traf := p.GetPrimaryTraffic()
+
+	require.Equal(t, 0, traf)
+}
+
+func TestGetPrimaryTrafficReturnsCorrectValue(t *testing.T) {
+	p, _ := setupPlugin(t, canaryStrategy)
+	p.state.CurrentTraffic = 20
+
+	traf := p.GetPrimaryTraffic()
+
+	require.Equal(t, 80, traf)
 }
 
 func TestGetCandidateTrafficReturnsCorrectValue(t *testing.T) {
 	p, _ := setupPlugin(t, canaryStrategy)
-	p.currentTraffic = 80
+	p.state.CurrentTraffic = 20
 
 	traf := p.GetCandidateTraffic()
 
-	require.Equal(t, 80, traf)
+	require.Equal(t, 20, traf)
+}
+
+func TestGetCandidateTrafficReturns0WhenMinusOne(t *testing.T) {
+	p, _ := setupPlugin(t, canaryStrategy)
+
+	traf := p.GetCandidateTraffic()
+
+	require.Equal(t, 0, traf)
+}
+
+func TestGetCandidateTrafficReturns100WhenGreater100(t *testing.T) {
+	p, _ := setupPlugin(t, canaryStrategy)
+	p.state.CurrentTraffic = 101
+
+	traf := p.GetCandidateTraffic()
+
+	require.Equal(t, 100, traf)
 }
 
 const canaryStrategyWithoutInitialDelay = `
 {
   "interval": "30ms",
   "initial_traffic": 10,
-  "traffic_step": 10,
+  "traffic_step": 20,
   "max_traffic": 90,
   "error_threshold": 5
 }
@@ -165,16 +224,15 @@ const canaryStrategy = `
   "interval": "30ms",
   "initial_traffic": 10,
   "initial_delay": "30ms",
-  "traffic_step": 10,
+  "traffic_step": 20,
   "max_traffic": 90,
   "error_threshold": 5
 }
 `
 
-const canaryStrategyWithoutInitial = `
+const canaryStrategyWithoutInitialTraffic = `
 {
   "interval": "30ms",
-  "initial_delay": "30ms",
   "traffic_step": 20,
   "max_traffic": 90,
   "error_threshold": 5

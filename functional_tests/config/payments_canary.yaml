@@ -2,36 +2,36 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: api-deployment
+  name: payments-deployment
   namespace: default
   labels:
-    app: api_v2
+    app: payments_v2
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: api
+      app: payments
   template:
     metadata:
       labels:
-        app: api
+        app: payments
         metrics: enabled
       annotations:
         consul.hashicorp.com/connect-inject: 'true'
         #consul.hashicorp.com/transparent-proxy: 'true'
         #consul.hashicorp.com/transparent-proxy-overwrite-probes: 'true'
     spec:  
-      serviceAccountName: api
+      serviceAccountName: payments
       automountServiceAccountToken: true
       containers:
-        - name: api
+        - name: payments
           image: nicholasjackson/fake-service:v0.22.8
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 9090
           env:
             - name: "NAME"
-              value: "API V2"
+              value: "Payments V2"
             - name: "LISTEN_ADDR"
               value: "0.0.0.0:9090"
             - name: "TIMING_50_PERCENTILE"
@@ -52,26 +52,3 @@ spec:
               port: 9090
             periodSeconds: 5
             initialDelaySeconds: 5
-
----
-apiVersion: consul.hashicorp.com/v1alpha1
-kind: ServiceDefaults
-metadata:
-  name: api
-spec:
-  protocol: http
-
----
-apiVersion: consul.hashicorp.com/v1alpha1
-kind: ServiceIntentions
-metadata:
-  name: api
-spec:
-  destination:
-    name: api
-  sources:
-    - name: web
-      action: allow
-    - name: consul-release-controller
-      action: allow
-

@@ -408,7 +408,7 @@ func (s *StateMachine) doMonitor() func(e *fsm.Event) {
 			// run the post deployment tests if we have any
 			if s.testPlugin != nil {
 				s.logger.Debug("Executing post deployment tests")
-				err := s.testPlugin.Execute(ctx, s.runtimePlugin.BaseConfig().CandidateName)
+				err := s.testPlugin.Execute(ctx, s.runtimePlugin.BaseState().CandidateName)
 
 				if err != nil {
 					// post deployment tests have failed rollback
@@ -429,7 +429,7 @@ func (s *StateMachine) doMonitor() func(e *fsm.Event) {
 				}
 			}
 
-			result, traffic, err := s.strategyPlugin.Execute(ctx, s.runtimePlugin.BaseConfig().CandidateName)
+			result, traffic, err := s.strategyPlugin.Execute(ctx, s.runtimePlugin.BaseState().CandidateName)
 
 			// strategy has failed with an error
 			if err != nil {

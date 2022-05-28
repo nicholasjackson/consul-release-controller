@@ -23,7 +23,7 @@ type Release struct {
 	Webhooks           []*PluginConfig `json:"webhooks"`
 	PostDeploymentTest *PluginConfig   `json:"post_deployment_test"`
 
-	Statehistory []StateHistory
+	Statehistory []StateHistory `json:"state_history"`
 }
 
 // StateHistory is a struct that defines the state at a point in time
@@ -67,6 +67,11 @@ func (d *Release) UpdateState(state string) {
 	}
 
 	d.Statehistory = append(d.Statehistory, StateHistory{Time: time.Now(), State: state})
+
+	// ensure the state history never grows beyond 50 items
+	if len(d.Statehistory) > 50 {
+		d.Statehistory = d.Statehistory[len(d.Statehistory)-50:]
+	}
 }
 
 func (d *Release) CurrentState() string {

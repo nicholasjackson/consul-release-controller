@@ -12,11 +12,15 @@ import (
 )
 
 type Plugin struct {
-	log            hclog.Logger
-	config         *PluginConfig
-	store          interfaces.PluginStateStore
-	monitoring     interfaces.Monitor
-	currentTraffic int
+	log        hclog.Logger
+	config     *PluginConfig
+	store      interfaces.PluginStateStore
+	monitoring interfaces.Monitor
+	state      *PluginState
+}
+
+type PluginState struct {
+	CurrentTraffic int `json:"current_traffic"`
 }
 
 type PluginConfig struct {
@@ -46,7 +50,7 @@ var ErrMaxTraffic = fmt.Errorf("MaxTraffic must contain a value between 1 and 10
 var ErrThreshold = fmt.Errorf("ErrorThreshold must contain a value greater than 0")
 
 func New(m interfaces.Monitor) (*Plugin, error) {
-	return &Plugin{monitoring: m, currentTraffic: -1}, nil
+	return &Plugin{monitoring: m}, nil
 }
 
 // Configure the plugin with the given json
@@ -94,6 +98,21 @@ func (p *Plugin) Configure(data json.RawMessage, log hclog.Logger, store interfa
 		return fmt.Errorf(errorMessage)
 	}
 
+	// load the state
+	p.state = &PluginState{}
+	d, err := store.GetState()
+	if err != nil {
+		log.Debug("Unable to load state", "error", err)
+		p.state.CurrentTraffic = -1
+		return nil
+	}
+
+	err = json.Unmarshal(d, p.state)
+	if err != nil {
+		log.Debug("Unable to unmarshal state", "error", err)
+		p.state.CurrentTraffic = -1
+	}
+
 	return nil
 }
 
@@ -102,14 +121,17 @@ func (p *Plugin) Configure(data json.RawMessage, log hclog.Logger, store interfa
 // interfaces.StrategyStatusFail and the percentage of traffic to set to the canditate returned on failure of the checks
 // interfaces.StrategyStatusFail and an error is returned on an internal error
 func (p *Plugin) Execute(ctx context.Context, candidateName string) (interfaces.StrategyStatus, int, error) {
-	p.log.Info("Executing strategy", "type", "canary", "traffic", p.currentTraffic)
+	p.log.Info("Executing strategy", "type", "canary", "traffic", p.state.CurrentTraffic)
+
+	// save the state on exit
+	defer p.saveState()
 
 	// if this is the first run set the initial traffic and return
-	if p.currentTraffic == -1 {
-		p.currentTraffic = p.config.InitialTraffic
+	if p.state.CurrentTraffic == -1 {
+		p.state.CurrentTraffic = p.config.InitialTraffic
 
 		if p.config.InitialTraffic == 0 {
-			p.currentTraffic = p.config.TrafficStep
+			p.state.CurrentTraffic = p.config.TrafficStep
 		}
 
 		d, err := time.ParseDuration(p.config.InitialDelay)
@@ -120,8 +142,8 @@ func (p *Plugin) Execute(ctx context.Context, candidateName string) (interfaces.
 		p.log.Debug("Waiting for initial grace before starting rollout", "type", "canary", "delay", d.Seconds())
 		time.Sleep(d)
 
-		p.log.Debug("Strategy setup", "type", "canary", "traffic", p.currentTraffic)
-		return interfaces.StrategyStatusSuccess, p.currentTraffic, nil
+		p.log.Debug("Strategy setup", "type", "canary", "traffic", p.state.CurrentTraffic)
+		return interfaces.StrategyStatusSuccess, p.state.CurrentTraffic, nil
 	}
 
 	// sleep for duration before checking
@@ -146,34 +168,63 @@ func (p *Plugin) Execute(ctx context.Context, candidateName string) (interfaces.
 
 			if failCount >= p.config.ErrorThreshold {
 				// reset the state
-				p.currentTraffic = -1
+				p.state.CurrentTraffic = -1
 				return interfaces.StrategyStatusFail, 0, nil
 			}
 
 			continue
 		}
 
-		p.currentTraffic += p.config.TrafficStep
+		p.state.CurrentTraffic += p.config.TrafficStep
 
-		if p.currentTraffic >= p.config.MaxTraffic {
+		if p.state.CurrentTraffic >= p.config.MaxTraffic {
 			// strategy is complete
-			p.log.Debug("Strategy complete", "type", "canary", "traffic", p.currentTraffic)
+			p.log.Debug("Strategy complete", "type", "canary", "traffic", p.state.CurrentTraffic)
 
 			// reset the state
-			p.currentTraffic = -1
+			p.state.CurrentTraffic = -1
 			return interfaces.StrategyStatusComplete, 100, nil
 		}
 
 		// step has been successful
-		p.log.Debug("Strategy success", "type", "canary", "traffic", p.currentTraffic)
-		return interfaces.StrategyStatusSuccess, p.currentTraffic, nil
+		p.log.Debug("Strategy success", "type", "canary", "traffic", p.state.CurrentTraffic)
+		return interfaces.StrategyStatusSuccess, p.state.CurrentTraffic, nil
 	}
 }
 
 func (p *Plugin) GetPrimaryTraffic() int {
-	return 100 - p.currentTraffic
+	if p.state.CurrentTraffic < 0 {
+		return 100
+	}
+
+	if p.state.CurrentTraffic > 100 {
+		return 0
+	}
+
+	return 100 - p.state.CurrentTraffic
 }
 
 func (p *Plugin) GetCandidateTraffic() int {
-	return p.currentTraffic
+	if p.state.CurrentTraffic < 1 {
+		return 0
+	}
+
+	if p.state.CurrentTraffic > 100 {
+		return 100
+	}
+
+	return p.state.CurrentTraffic
+}
+
+func (p *Plugin) saveState() {
+	d, err := json.Marshal(p.state)
+	if err != nil {
+		p.log.Error("Unable to marshal state to json", "error", err)
+		return
+	}
+
+	err = p.store.UpsertState(d)
+	if err != nil {
+		p.log.Error("Unable to save state", "error", err)
+	}
 }

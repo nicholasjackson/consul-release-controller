@@ -21,6 +21,10 @@ type RuntimeBaseConfig struct {
 	DeploymentSelector string `hcl:"deployment" json:"deployment"`
 	// Namespace for the deployment that triggers a release
 	Namespace string `hcl:"namespace" json:"namespace"`
+}
+
+// RuntimeBaseState is the basic state that all runtime plugins need to implement
+type RuntimeBaseState struct {
 	// CandidateName is the full name of the active candidate deployment
 	CandidateName string `hcl:"candidate_name" json:"candidate_name"`
 	// PrimaryName is the full name of the active primary deployment
@@ -35,6 +39,10 @@ type Runtime interface {
 	// BaseConfig returns the base Runtime config
 	// all Runtime plugins should embed RuntimeBaseConfig in their own config
 	BaseConfig() RuntimeBaseConfig
+
+	// BaseState returns the base Runtime state
+	// all Runtime plugins should embed RuntimeBaseState in their own state
+	BaseState() RuntimeBaseState
 
 	// Create a copy of the active deployment whos lifecycle will be owned
 	// by the release controller

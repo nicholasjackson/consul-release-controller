@@ -25,6 +25,12 @@ func (r *RuntimeMock) BaseConfig() interfaces.RuntimeBaseConfig {
 	return args.Get(0).(interfaces.RuntimeBaseConfig)
 }
 
+func (r *RuntimeMock) BaseState() interfaces.RuntimeBaseState {
+	args := r.Called()
+
+	return args.Get(0).(interfaces.RuntimeBaseState)
+}
+
 func (r *RuntimeMock) InitPrimary(ctx context.Context, releaseName string) (interfaces.RuntimeDeploymentStatus, error) {
 	args := r.Called(ctx, releaseName)
 

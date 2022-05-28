@@ -3,12 +3,14 @@ package kubernetes
 import (
 	"context"
 	"fmt"
+	"os"
 	"testing"
 	"time"
 
 	"github.com/hashicorp/go-hclog"
 	"github.com/nicholasjackson/consul-release-controller/clients"
 	"github.com/nicholasjackson/consul-release-controller/plugins/interfaces"
+	"github.com/nicholasjackson/consul-release-controller/plugins/mocks"
 	"github.com/nicholasjackson/consul-release-controller/testutils"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
@@ -43,18 +45,42 @@ func setupPlugin(t *testing.T) (*Plugin, *clients.KubernetesMock, *appsv1.Deploy
 	l := hclog.New(&hclog.LoggerOptions{Level: hclog.Debug})
 
 	km := &clients.KubernetesMock{}
+	sm := &mocks.StoreMock{}
+	sm.On("GetState").Return([]byte(testState), nil)
+	sm.On("UpsertState", mock.Anything).Return(nil)
 
 	p := &Plugin{}
 
 	p.log = l
 	p.kubeClient = km
+	p.store = sm
+
 	p.config = &PluginConfig{}
 	p.config.DeploymentSelector = "test-(.*)"
-	p.config.CandidateName = "test-deployment"
-	p.config.PrimaryName = "test-deployment-primary"
+
+	p.state = &PluginState{}
+	p.state.CandidateName = "test-deployment"
+	p.state.PrimaryName = "test-deployment-primary"
 	p.config.Namespace = "testnamespace"
 
 	return p, km, mockDep.DeepCopy(), mockCloneDep.DeepCopy()
+}
+
+func TestConfigureLoadsConfig(t *testing.T) {
+	p, _ := New()
+	sm := &mocks.StoreMock{}
+	sm.On("GetState").Return([]byte(testState), nil)
+
+	os.Setenv("KUBECONFIG", testutils.GetTestFilePath(t, "kubeconfig.yaml"))
+
+	err := p.Configure([]byte(testConfig), hclog.NewNullLogger(), sm)
+	require.NoError(t, err)
+
+	require.Equal(t, "testnamespace", p.config.Namespace)
+	require.Equal(t, "api-deployment", p.config.DeploymentSelector)
+
+	require.Equal(t, "api-primary", p.state.PrimaryName)
+	require.Equal(t, "api-deployment-v1", p.state.CandidateName)
 }
 
 func TestInitPrimaryDoesNothingWhenPrimaryExists(t *testing.T) {
@@ -246,3 +272,17 @@ func getUpsertDeployment(mock mock.Mock) *appsv1.Deployment {
 
 	return nil
 }
+
+var testConfig = `
+{
+  "deployment": "api-deployment",
+  "namespace":"testnamespace"
+}
+`
+
+var testState = `
+{
+  "candidate_name": "api-deployment-v1",
+  "primary_name":"api-primary"
+}
+`

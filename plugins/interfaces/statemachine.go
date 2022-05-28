@@ -38,4 +38,7 @@ type StateMachine interface {
 
 	// CurrentState returns the current state
 	CurrentState() string
+
+	// Resume the statemachine from the current state
+	Resume() error
 }

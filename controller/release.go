@@ -17,6 +17,7 @@ import (
 	kubernetes "github.com/nicholasjackson/consul-release-controller/kubernetes/controller"
 	"github.com/nicholasjackson/consul-release-controller/plugins"
 	"github.com/nicholasjackson/consul-release-controller/plugins/consul"
+	"github.com/nicholasjackson/consul-release-controller/plugins/interfaces"
 	"github.com/nicholasjackson/consul-release-controller/plugins/prometheus"
 	"golang.org/x/net/context"
 )
@@ -48,6 +49,10 @@ func (r *Release) Start() error {
 	//store := memory.NewStore()
 	store, _ := consul.NewStorage(r.log.Named("releaser-plugin-consul"))
 	provider := plugins.GetProvider(r.log, r.metrics, store)
+
+	// reload any releases that are currently in process, the controller may have crashed part way
+	// through an operation.
+	rehydrateReleases(provider, r.log)
 
 	// create the kubernetes controller
 	kc := kubernetes.New(provider, config.TLSCertificate(), config.TLSKey(), config.KubernetesControllerPort())
@@ -161,4 +166,26 @@ func (r *Release) Shutdown() error {
 	}
 
 	return nil
+}
+
+func rehydrateReleases(p interfaces.Provider, logger hclog.Logger) {
+	s := p.GetDataStore()
+
+	rels, err := s.ListReleases(&interfaces.ListOptions{Runtime: "kubernetes"})
+	if err != nil {
+		logger.Error("Unable to list releases", "error", err)
+		return
+	}
+
+	for _, r := range rels {
+		logger.Info("Rehydrating release", "name", r.Name, "state", r.CurrentState())
+		sm, err := p.GetStateMachine(r)
+		if err != nil {
+			logger.Error("Unable to list releases", "error", err)
+		}
+
+		go sm.Resume()
+	}
+
+	//panic("exit")
 }

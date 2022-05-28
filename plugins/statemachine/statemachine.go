@@ -179,6 +179,17 @@ func New(r *models.Release, pluginProvider interfaces.Provider) (*StateMachine, 
 	return sm, nil
 }
 
+// Resume the state machine
+func (s *StateMachine) Resume() error {
+	switch s.CurrentState() {
+	case interfaces.StateMonitor:
+		s.SetState(interfaces.StateDeploy)
+		s.Event(interfaces.EventDeployed)
+	}
+
+	return nil
+}
+
 // Configure triggers the EventConfigure state
 func (s *StateMachine) Configure() error {
 	return s.Event(interfaces.EventConfigure)

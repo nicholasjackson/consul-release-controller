@@ -20,12 +20,12 @@ var prov interfaces.Provider
 
 // temporarily store the active statemachines here, at some point we need to
 // think about serializing state
-var statemachines map[*models.Release]interfaces.StateMachine
+var statemachines map[string]interfaces.StateMachine
 
 // GetProvider lazy instantiates a plugin provider and returns a reference
 func GetProvider(log hclog.Logger, metrics interfaces.Metrics, store interfaces.Store) interfaces.Provider {
 	if prov == nil {
-		statemachines = map[*models.Release]interfaces.StateMachine{}
+		statemachines = map[string]interfaces.StateMachine{}
 		prov = &ProviderImpl{log, metrics, store}
 	}
 
@@ -99,7 +99,7 @@ func (p *ProviderImpl) GetDataStore() interfaces.Store {
 }
 
 func (p *ProviderImpl) GetStateMachine(release *models.Release) (interfaces.StateMachine, error) {
-	if r, ok := statemachines[release]; ok {
+	if r, ok := statemachines[getReleaseKey(release)]; ok {
 		return r, nil
 	}
 
@@ -108,13 +108,17 @@ func (p *ProviderImpl) GetStateMachine(release *models.Release) (interfaces.Stat
 		return nil, fmt.Errorf("unable to create new statemachine: %s", err)
 	}
 
-	statemachines[release] = sm
+	statemachines[getReleaseKey(release)] = sm
 
 	return sm, nil
 }
 
 func (p *ProviderImpl) DeleteStateMachine(release *models.Release) error {
-	delete(statemachines, release)
+	delete(statemachines, getReleaseKey(release))
 
 	return nil
+}
+
+func getReleaseKey(release *models.Release) string {
+	return fmt.Sprintf("%s-%s", release.Name, release.Namespace)
 }

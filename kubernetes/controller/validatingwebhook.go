@@ -53,7 +53,7 @@ func (a *deploymentAdmission) Handle(ctx context.Context, req admission.Request)
 	}
 
 	// is there release for this deployment?
-	rels, err := a.provider.GetDataStore().ListReleases(&interfaces.ListOptions{"kubernetes"})
+	rels, err := a.provider.GetDataStore().ListReleases(&interfaces.ListOptions{Runtime: "kubernetes"})
 	if err != nil {
 		a.log.Error("Error fetching releases", "name", deployment.Name, "namespace", deployment.Namespace, "error", err)
 		return admission.Errored(500, err)
@@ -93,9 +93,23 @@ func (a *deploymentAdmission) Handle(ctx context.Context, req admission.Request)
 			if sm.CurrentState() == interfaces.StateIdle || sm.CurrentState() == interfaces.StateFail {
 
 				// update the release candidate name so that the runtime plugin knows which deployment to clone
+				a.log.Debug("Fetch plugin state", "name", rel.Name)
 				ds := a.provider.GetDataStore().CreatePluginStateStore(rel, "runtime")
 
 				ps := &interfaces.RuntimeBaseState{}
+				d, err := ds.GetState()
+				if err != nil {
+					a.log.Error("Unable to fetch state", "name", rel.Name, "error", err)
+				}
+
+				err = json.Unmarshal(d, ps)
+				if err != nil {
+					a.log.Error("Unable to unmarshal state", "name", rel.Name, "error", err)
+				}
+
+				// update the candidate name
+				// TODO, find a better way of updating the state than this
+				a.log.Debug("Set CandidateName to plugin state", "name", rel.Name, "candidate_name", deployment.Name)
 				ps.CandidateName = deployment.Name
 
 				confData, err := json.Marshal(ps)
@@ -107,6 +121,16 @@ func (a *deploymentAdmission) Handle(ctx context.Context, req admission.Request)
 				err = ds.UpsertState(confData)
 				if err != nil {
 					a.log.Error("Unable to save runtime plugin state", "conf", conf, "error", err)
+					return admission.Errored(500, err)
+				}
+
+				// clear any existing state
+				a.provider.DeleteStateMachine(rel)
+
+				// create a new statemachine
+				sm, err := a.provider.GetStateMachine(rel)
+				if err != nil {
+					a.log.Error("Unable to get statemachine", "name", rel.Name, "error", err)
 					return admission.Errored(500, err)
 				}
 

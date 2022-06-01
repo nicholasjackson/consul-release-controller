@@ -114,7 +114,10 @@ func (s *Storage) getRelease(path string) (*models.Release, error) {
 
 // DeleteRelease with the given name
 func (s *Storage) DeleteRelease(name string) error {
-	return s.consulClient.DeleteKV(releasePath(name))
+	path := releasePath(name)
+
+	s.log.Debug("Deleting release from Consul", "path", path)
+	return s.consulClient.DeleteKV(path)
 }
 
 func (s *Storage) UpsertState(data []byte) error {

@@ -19,6 +19,7 @@ package controllers
 import (
 	"context"
 	"fmt"
+	"time"
 
 	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"
@@ -229,12 +230,44 @@ func (r *ReleaseReconciler) deleteRelease(rc *consulreleasecontrollerv1.Release,
 		return err
 	}
 
-	r.Provider.DeleteStateMachine(rm)
-	if err != nil {
-		log.Error(err, "Unable to delete statemachine", "name", rc.Name)
+	// wait until finished
+	go func() {
+		ctx, cancel := context.WithTimeout(context.Background(), 300*time.Second)
+		defer cancel()
 
-		return err
-	}
+		for {
+			if ctx.Err() != nil {
+				log.Error(fmt.Errorf("Timeout waiting to destroy release"), "name", rc.Name)
+				return
+			}
 
-	return r.Provider.GetDataStore().DeleteRelease(rm.Name)
+			// destroy is complete
+			if sm.CurrentState() == interfaces.StateIdle {
+				log.Info("Destroy complete, removing release", "name", rc.Name)
+				r.Provider.DeleteStateMachine(rm)
+				if err != nil {
+					log.Error(err, "Unable to delete statemachine", "name", rc.Name)
+				}
+
+				err = r.Provider.GetDataStore().DeleteRelease(rm.Name)
+				if err != nil {
+					log.Error(err, "Unable to delete release", "name", rc.Name)
+				}
+
+				return
+			}
+
+			if sm.CurrentState() == interfaces.StateFail {
+				log.Error(fmt.Errorf("Unable to destroy release"), "name", rc.Name)
+				return
+			}
+
+			log.Info("Waiting for destroy to complete", "current_state", sm.CurrentState())
+			time.Sleep(2 * time.Second)
+		}
+
+	}()
+
+	return nil
+
 }

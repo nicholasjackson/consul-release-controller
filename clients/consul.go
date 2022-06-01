@@ -793,7 +793,7 @@ func (c *ConsulImpl) DeleteKV(path string) error {
 		wo.Partition = c.options.Partition
 	}
 
-	_, err := c.client.KV().Delete(path, wo)
+	_, err := c.client.KV().DeleteTree(path, wo)
 	if err != nil {
 		return fmt.Errorf("unable to delete key from path %s in Consul KV: %s", path, err)
 	}

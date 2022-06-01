@@ -29,6 +29,13 @@ func (sm *StateMachineMock) Destroy() error {
 	return args.Error(0)
 }
 
+// Resume triggers the event Resume state
+func (sm *StateMachineMock) Resume() error {
+	args := sm.Called()
+
+	return args.Error(0)
+}
+
 // CurrentState returns the current state
 func (sm *StateMachineMock) CurrentState() string {
 	args := sm.Called()

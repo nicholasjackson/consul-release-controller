@@ -103,7 +103,8 @@ func (rh *ReleaseHandler) GetAll(rw http.ResponseWriter, req *http.Request) {
 			s = sm.CurrentState()
 		}
 
-		traffic := -1
+		var traffic float64
+
 		deploymentStatus := ""
 
 		// get the last strategy status
@@ -115,7 +116,7 @@ func (rh *ReleaseHandler) GetAll(rw http.ResponseWriter, req *http.Request) {
 				rh.logger.Error("Unable to marshal status from strategy", "error", err)
 			}
 
-			if ct, ok := status["candidate_traffic"].(int); ok {
+			if ct, ok := status["candidate_traffic"].(float64); ok {
 				traffic = ct
 			}
 
@@ -124,7 +125,7 @@ func (rh *ReleaseHandler) GetAll(rw http.ResponseWriter, req *http.Request) {
 			}
 		}
 
-		resp = append(resp, GetAllResponse{Name: rel.Name, Status: s, Version: rel.Version, CandidateTraffic: traffic, LastDeploymentStatus: deploymentStatus})
+		resp = append(resp, GetAllResponse{Name: rel.Name, Status: s, Version: rel.Version, CandidateTraffic: int(traffic), LastDeploymentStatus: deploymentStatus})
 	}
 
 	json.NewEncoder(rw).Encode(resp)

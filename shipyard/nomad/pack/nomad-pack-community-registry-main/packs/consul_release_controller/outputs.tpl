@@ -1,0 +1,1 @@
+Consul Release Controller successfully deployed.

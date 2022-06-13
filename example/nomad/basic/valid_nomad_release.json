@@ -1,0 +1,49 @@
+{
+  "name":"payments",
+
+  "releaser": {
+    "plugin_name": "consul",
+    "config": {
+      "consul_service": "payments"
+    }
+  },
+  
+  "runtime": {
+    "plugin_name": "nomad",
+    "config": {
+      "deployment": "payments-deployment",
+      "namespace": "default"
+    }
+  },
+
+  "strategy": {
+    "plugin_name": "canary",
+    "config": {
+      "interval": "60s",
+      "initial_traffic": 10,
+      "traffic_step": 10,
+      "max_traffic": 100,
+      "error_threshold": 5
+    }
+  },
+  
+  "monitor": {
+    "plugin_name": "prometheus",
+    "config": {
+      "address": "http://localhost:9090",
+      "queries": [
+        {
+          "name": "request-success",
+          "preset": "envoy-request-success",
+          "min":99
+        },
+        {
+          "name": "request-duration",
+          "preset": "envoy-request-duration",
+          "min":2,
+          "max": 200
+        }
+      ]
+    }
+  }
+}

@@ -78,7 +78,7 @@ func (s *Plugin) BaseConfig() interfaces.ReleaserBaseConfig {
 }
 
 // initialize is an internal function triggered by the initialize event
-func (p *Plugin) Setup(ctx context.Context) error {
+func (p *Plugin) Setup(ctx context.Context, primarySubsetFilter, candidateSubsetFilter string) error {
 	p.log.Info("Initializing deployment", "service", p.config.ConsulService)
 
 	// create the service defaults for the main service if they do not exist
@@ -116,7 +116,7 @@ func (p *Plugin) Setup(ctx context.Context) error {
 
 	// create the service resolver
 	p.log.Debug("Create service resolver", "service", p.config.ConsulService)
-	err = p.consulClient.CreateServiceResolver(p.config.ConsulService)
+	err = p.consulClient.CreateServiceResolver(p.config.ConsulService, primarySubsetFilter, candidateSubsetFilter)
 	if err != nil {
 		p.log.Error("Unable to create Consul ServiceResolver", "name", p.config.ConsulService, "error", err)
 
@@ -221,23 +221,24 @@ func (p *Plugin) Destroy(ctx context.Context) error {
 	return nil
 }
 
-func (p *Plugin) WaitUntilServiceHealthy(ctx context.Context, t interfaces.ServiceVariant) error {
-	retryContext, cancel := context.WithTimeout(ctx, 30*time.Second)
+func (p *Plugin) WaitUntilServiceHealthy(ctx context.Context, filter string) error {
+	retryContext, cancel := context.WithTimeout(ctx, 300*time.Second)
 	defer cancel()
 
 	err := retry.Constant(retryContext, 1*time.Second, func(ctx context.Context) error {
 		p.log.Debug("Checking service is healthy", "name", p.config.ConsulService)
 
-		err := p.consulClient.CheckHealth(p.config.ConsulService, t)
+		err := p.consulClient.CheckHealth(p.config.ConsulService, filter)
 		if err != nil {
 			p.log.Debug("Service not healthy, retrying", "name", p.config.ConsulService)
+			return retry.RetryableError(err)
 		}
 
 		return nil
 	})
 
 	if err != nil {
-		p.log.Error("Service health check failed", "service", p.config.ConsulService, "type", t, "error", err)
+		p.log.Error("Service health check failed", "service", p.config.ConsulService, "filter", filter, "error", err)
 	}
 
 	return err

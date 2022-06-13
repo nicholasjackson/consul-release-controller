@@ -1,4 +1,4 @@
-package controller
+package main
 
 import (
 	"crypto/rand"
@@ -15,6 +15,7 @@ import (
 	"github.com/nicholasjackson/consul-release-controller/config"
 	"github.com/nicholasjackson/consul-release-controller/handlers/api"
 	kubernetes "github.com/nicholasjackson/consul-release-controller/kubernetes/controller"
+	nomad "github.com/nicholasjackson/consul-release-controller/nomad/controller"
 	"github.com/nicholasjackson/consul-release-controller/plugins"
 	"github.com/nicholasjackson/consul-release-controller/plugins/consul"
 	"github.com/nicholasjackson/consul-release-controller/plugins/interfaces"
@@ -28,16 +29,19 @@ type Release struct {
 	listener             net.Listener
 	metrics              *prometheus.Metrics
 	kubernetesController *kubernetes.Kubernetes
+	nomadController      *nomad.Nomad
+	enableKubernetes     bool
+	enableNomad          bool
 }
 
-func New(log hclog.Logger) (*Release, error) {
+func New(log hclog.Logger, enableKubernetes, enableNomad bool) (*Release, error) {
 	metrics, err := prometheus.NewMetrics(config.MetricsBindAddress(), config.MetricsPort(), "/metrics")
 	if err != nil {
 		log.Error("failed to create metrics", "error", err)
 		return nil, err
 	}
 
-	return &Release{log: log, metrics: metrics}, nil
+	return &Release{log: log, metrics: metrics, enableKubernetes: enableKubernetes, enableNomad: enableNomad}, nil
 }
 
 // Start the server and block until exit
@@ -47,17 +51,35 @@ func (r *Release) Start() error {
 	r.metrics.ServiceStarting()
 
 	//store := memory.NewStore()
-	store, _ := consul.NewStorage(r.log.Named("releaser-plugin-consul"))
+	store, err := consul.NewStorage(r.log.Named("releaser-plugin-consul"))
+	if err != nil {
+		r.log.Error("failed to create storage", "error", err)
+		return err
+	}
+
 	provider := plugins.GetProvider(r.log, r.metrics, store)
 
 	// reload any releases that are currently in process, the controller may have crashed part way
 	// through an operation.
 	rehydrateReleases(provider, r.log)
 
-	// create the kubernetes controller
-	kc := kubernetes.New(provider, config.TLSCertificate(), config.TLSKey(), config.KubernetesControllerPort())
-	r.kubernetesController = kc
-	go kc.Start()
+	if r.enableKubernetes {
+		// create the kubernetes controller
+		kc := kubernetes.New(provider, config.TLSCertificate(), config.TLSKey(), config.KubernetesControllerPort())
+		r.kubernetesController = kc
+		go kc.Start()
+	}
+
+	if r.enableNomad {
+		// create the kubernetes controller
+		nc, err := nomad.New(provider)
+		if err != nil {
+			return fmt.Errorf("Unable to create Nomad controller: %s", err)
+		}
+
+		r.nomadController = nc
+		go nc.Start()
+	}
 
 	healthHandler := api.NewHealthHandlers(r.log.Named("health-handlers"))
 	apiHandler := api.NewReleaseHandler(provider)
@@ -161,8 +183,13 @@ func (r *Release) Shutdown() error {
 	}
 
 	if r.kubernetesController != nil {
-		r.log.Info("Shutting down kubernetes controller")
+		r.log.Info("Shutting down Kubernetes controller")
 		r.kubernetesController.Stop()
+	}
+
+	if r.nomadController != nil {
+		r.log.Info("Shutting down Nomad controller")
+		r.nomadController.Stop()
 	}
 
 	return nil
@@ -171,7 +198,7 @@ func (r *Release) Shutdown() error {
 func rehydrateReleases(p interfaces.Provider, logger hclog.Logger) {
 	s := p.GetDataStore()
 
-	rels, err := s.ListReleases(&interfaces.ListOptions{Runtime: "kubernetes"})
+	rels, err := s.ListReleases(&interfaces.ListOptions{})
 	if err != nil {
 		logger.Error("Unable to list releases", "error", err)
 		return

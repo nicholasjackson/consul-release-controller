@@ -5,7 +5,6 @@ import (
 	"strings"
 
 	"github.com/hashicorp/consul/api"
-	"github.com/nicholasjackson/consul-release-controller/plugins/interfaces"
 )
 
 const (
@@ -24,7 +23,7 @@ type Consul interface {
 	// CreateServiceResolver creates or updates a service resolver for the given service
 	// if the ServiceResolver exists then CreateServiceResolver updates it to add the
 	// subsets for the canary and primary services
-	CreateServiceResolver(name string) error
+	CreateServiceResolver(name, primarySubsetFilter, candidateSubsetFilter string) error
 
 	// CreateServiceSplitter creates a service splitter for the given name and set the traffic
 	// for the primary and the candidate
@@ -64,7 +63,9 @@ type Consul interface {
 	DeleteUpstreamRouter(name string) error
 
 	// Check the Consul health of the service, returns an error when one or more endpoints are not healthy
-	CheckHealth(name string, t interfaces.ServiceVariant) error
+	// can accept a filter string to return a subset of a services instances https://www.consul.io/api-docs/health#filtering-2
+	// Returns an error if all health checks are not passing or if no service instances are found
+	CheckHealth(name string, fitler string) error
 
 	// SetKV sets the data at the given path in the Consul Key Value store
 	SetKV(path string, data []byte) error
@@ -169,7 +170,7 @@ func (c *ConsulImpl) CreateServiceDefaults(name string) error {
 	return err
 }
 
-func (c *ConsulImpl) CreateServiceResolver(name string) error {
+func (c *ConsulImpl) CreateServiceResolver(name, primarySubsetFilter, candidateSubsetFilter string) error {
 	defaults := &api.ServiceResolverConfigEntry{}
 	qo := &api.QueryOptions{}
 	wo := &api.WriteOptions{}
@@ -210,11 +211,11 @@ func (c *ConsulImpl) CreateServiceResolver(name string) error {
 	}
 
 	primarySubset := api.ServiceResolverSubset{}
-	primarySubset.Filter = fmt.Sprintf(`Service.ID contains "%s-primary"`, name)
+	primarySubset.Filter = primarySubsetFilter
 	primarySubset.OnlyPassing = true
 
 	canarySubset := api.ServiceResolverSubset{}
-	canarySubset.Filter = fmt.Sprintf(`Service.ID not contains "%s-primary"`, name)
+	canarySubset.Filter = candidateSubsetFilter
 	canarySubset.OnlyPassing = true
 
 	defaults.Subsets[fmt.Sprintf("%s-%s-primary", SubsetPrefix, name)] = primarySubset
@@ -699,8 +700,8 @@ func (c *ConsulImpl) DeleteServiceIntention(name string) error {
 }
 
 // CheckHealth returns an error if the named service has any health checks that are failing
-func (c *ConsulImpl) CheckHealth(name string, t interfaces.ServiceVariant) error {
-	qo := &api.QueryOptions{}
+func (c *ConsulImpl) CheckHealth(name string, filter string) error {
+	qo := &api.QueryOptions{Filter: filter}
 
 	if c.options.Namespace != "" {
 		qo.Namespace = c.options.Namespace
@@ -715,17 +716,30 @@ func (c *ConsulImpl) CheckHealth(name string, t interfaces.ServiceVariant) error
 		return fmt.Errorf("unable to check health for service %s: %s", name, err)
 	}
 
+	if len(checks) == 0 {
+		return fmt.Errorf("no service checks returned for service %s, with filter %s", name, filter)
+	}
+
+	// check the connect health
 	for _, chk := range checks {
-		if t == interfaces.Primary && !strings.Contains("primary", chk.Service.ID) {
-			break
-		}
-
-		if t == interfaces.Candidate && strings.Contains("primary", chk.Service.ID) {
-			break
-		}
-
 		if chk.Checks.AggregatedStatus() != "passing" {
 			return fmt.Errorf("service health checks failing: %s, %s", chk.Service.ID, chk.Checks.AggregatedStatus())
+		}
+	}
+
+	// Also check the connect health to ensure that the proxy is healthy
+	checks, _, err = c.client.Health().Connect(name, "", false, qo)
+	if err != nil {
+		return fmt.Errorf("unable to check health for service %s: %s", name, err)
+	}
+
+	if len(checks) == 0 {
+		return fmt.Errorf("no service checks returned for service %s, with filter %s", name, filter)
+	}
+
+	for _, chk := range checks {
+		if chk.Checks.AggregatedStatus() != "passing" {
+			return fmt.Errorf("connect health checks failing: %s, %s", chk.Service.ID, chk.Checks.AggregatedStatus())
 		}
 	}
 

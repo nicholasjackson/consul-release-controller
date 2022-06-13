@@ -153,6 +153,7 @@ func New(r *models.Release, pluginProvider interfaces.Provider) (*StateMachine, 
 			{Name: interfaces.EventDestroy, Src: []string{
 				interfaces.StateFail,
 				interfaces.StateIdle,
+				interfaces.StateConfigure,
 				interfaces.StateDeploy,
 				interfaces.StateMonitor,
 				interfaces.StateScale,
@@ -259,7 +260,7 @@ func (s *StateMachine) doConfigure() func(e *fsm.Event) {
 			defer cancel()
 
 			// setup the initial configuration
-			err := s.releaserPlugin.Setup(ctx)
+			err := s.releaserPlugin.Setup(ctx, s.runtimePlugin.PrimarySubsetFilter(), s.runtimePlugin.CandidateSubsetFilter())
 			if err != nil {
 				s.logger.Error("Configure completed with error", "error", err)
 
@@ -287,11 +288,11 @@ func (s *StateMachine) doConfigure() func(e *fsm.Event) {
 				return
 			}
 
-			// if we created a new primary, scale all traffic to the new primary
+			// if we created a new primary, wait till all instances are healthy then scale all traffic to it
 			if status == interfaces.RuntimeDeploymentUpdate {
-				err = s.releaserPlugin.WaitUntilServiceHealthy(ctx, interfaces.Primary)
+				err = s.releaserPlugin.WaitUntilServiceHealthy(ctx, s.runtimePlugin.PrimarySubsetFilter())
 				if err != nil {
-					s.logger.Error("Configure completed with error", "error", err)
+					s.logger.Error("New Primary deployment not healthy", "error", err)
 
 					s.callWebhooks(s.webhookPlugins, "Configure release failed", interfaces.StateConfigure, interfaces.EventFail, 0, 100, err)
 					e.FSM.Event(interfaces.EventFail)
@@ -307,7 +308,7 @@ func (s *StateMachine) doConfigure() func(e *fsm.Event) {
 					return
 				}
 
-				// we can't determine when the configuration is synced to t he proxy, wait an arbitrary period of time
+				// we can't determine when the configuration is synced to the proxy, wait an arbitrary period of time
 				time.Sleep(stepDelay * 4)
 
 				// remove the candidate
@@ -351,7 +352,7 @@ func (s *StateMachine) doDeploy() func(e *fsm.Event) {
 				return
 			}
 
-			err = s.releaserPlugin.WaitUntilServiceHealthy(ctx, interfaces.Primary)
+			err = s.releaserPlugin.WaitUntilServiceHealthy(ctx, s.runtimePlugin.PrimarySubsetFilter())
 			if err != nil {
 				s.logger.Error("Configure completed with error", "error", err)
 
@@ -475,7 +476,7 @@ func (s *StateMachine) doMonitor() func(e *fsm.Event) {
 				e.FSM.Event(interfaces.EventComplete)
 
 			// the strategy has reported that the deployment is unhealthy, rollback
-			case interfaces.StrategyStatusFail:
+			case interfaces.StrategyStatusFailed:
 				s.logger.Debug("Monitor checks completed, candidate unhealthy")
 
 				s.callWebhooks(
@@ -582,9 +583,10 @@ func (s *StateMachine) doPromote() func(e *fsm.Event) {
 				return
 			}
 
-			err = s.releaserPlugin.WaitUntilServiceHealthy(ctx, interfaces.Primary)
+			// check consul to ensure that the promoted deployment is healthy
+			err = s.releaserPlugin.WaitUntilServiceHealthy(ctx, s.runtimePlugin.PrimarySubsetFilter())
 			if err != nil {
-				s.logger.Error("Configure completed with error", "error", err)
+				s.logger.Error("Promote completed with error", "error", err)
 
 				s.callWebhooks(s.webhookPlugins, "Promoting candidate failed", interfaces.StatePromote, interfaces.EventFail, 0, 100, err)
 				e.FSM.Event(interfaces.EventFail)
@@ -599,7 +601,7 @@ func (s *StateMachine) doPromote() func(e *fsm.Event) {
 				return
 			}
 
-			time.Sleep(stepDelay)
+			time.Sleep(stepDelay * 4)
 
 			// scale down the canary
 			err = s.runtimePlugin.RemoveCandidate(ctx)
@@ -648,7 +650,7 @@ func (s *StateMachine) doRollback() func(e *fsm.Event) {
 			//
 			// since we can not exactly determine when the state has converged in the data plane
 			// wait an arbitrary period of time.
-			time.Sleep(stepDelay)
+			time.Sleep(stepDelay * 4)
 
 			// scale down the canary
 			err = s.runtimePlugin.RemoveCandidate(ctx)
@@ -681,7 +683,7 @@ func (s *StateMachine) doDestroy() func(e *fsm.Event) {
 			}
 
 			// ensure that the original version is healthy in consul before progressing
-			err = s.releaserPlugin.WaitUntilServiceHealthy(ctx, interfaces.Candidate)
+			err = s.releaserPlugin.WaitUntilServiceHealthy(ctx, s.runtimePlugin.CandidateSubsetFilter())
 			if err != nil {
 				s.logger.Error("Configure completed with error", "error", err)
 
@@ -705,7 +707,7 @@ func (s *StateMachine) doDestroy() func(e *fsm.Event) {
 			//
 			// since we can not exactly determine when the state has converged in the data plane
 			// wait an arbitrary period of time.
-			time.Sleep(stepDelay)
+			time.Sleep(stepDelay * 4)
 
 			// destroy the primary
 			err = s.runtimePlugin.RemovePrimary(ctx)

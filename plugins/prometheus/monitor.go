@@ -83,13 +83,18 @@ func (s *Plugin) Check(ctx context.Context, candidateName string, interval time.
 	for _, q := range s.config.Queries {
 		if q.Preset != "" {
 			// use a preset if present
-			switch fmt.Sprintf("%s-%s", s.runtime, q.Preset) {
+			preset := fmt.Sprintf("%s-%s", s.runtime, q.Preset)
+			switch preset {
 			case "kubernetes-envoy-request-success":
 				querySQL = append(querySQL, KubernetesEnvoyRequestSuccess)
 			case "kubernetes-envoy-request-duration":
 				querySQL = append(querySQL, KubernetesEnvoyRequestDuration)
+			case "nomad-envoy-request-success":
+				querySQL = append(querySQL, NomadEnvoyRequestSuccess)
+			case "nomad-envoy-request-duration":
+				querySQL = append(querySQL, NomadEnvoyRequestDuration)
 			default:
-				return interfaces.CheckError, fmt.Errorf("preset query %s, does not exist", q.Preset)
+				return interfaces.CheckError, fmt.Errorf("preset query %s, does not exist", preset)
 			}
 		} else {
 			// use the custom query

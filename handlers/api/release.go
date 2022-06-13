@@ -1,9 +1,11 @@
 package api
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/hashicorp/go-hclog"
@@ -70,9 +72,11 @@ func (rh *ReleaseHandler) Post(rw http.ResponseWriter, req *http.Request) {
 }
 
 type GetAllResponse struct {
-	Name    string `json:"name"`
-	Status  string `json:"status"`
-	Version string `json:"version"`
+	Name                 string `json:"name"`
+	Status               string `json:"status"`
+	LastDeploymentStatus string `json:"last_deployment_status"`
+	CandidateTraffic     int    `json:"candidate_traffic"`
+	Version              string `json:"version"`
 }
 
 // Get handler lists current deployments
@@ -94,12 +98,33 @@ func (rh *ReleaseHandler) GetAll(rw http.ResponseWriter, req *http.Request) {
 		s := "unknown"
 		sm, err := rh.pluginProviders.GetStateMachine(rel)
 		if err != nil {
-			rh.logger.Error("Unaable to get statemachine for", "release", rel.Name)
+			rh.logger.Error("Unable to get statemachine for", "release", rel.Name)
 		} else {
 			s = sm.CurrentState()
 		}
 
-		resp = append(resp, GetAllResponse{Name: rel.Name, Status: s, Version: rel.Version})
+		traffic := -1
+		deploymentStatus := ""
+
+		// get the last strategy status
+		d, err := rh.pluginProviders.GetDataStore().CreatePluginStateStore(rel, "strategy").GetState()
+		if err == nil {
+			status := map[string]interface{}{}
+			err := json.Unmarshal(d, &status)
+			if err != nil {
+				rh.logger.Error("Unable to marshal status from strategy", "error", err)
+			}
+
+			if ct, ok := status["candidate_traffic"].(int); ok {
+				traffic = ct
+			}
+
+			if s, ok := status["status"].(string); ok {
+				deploymentStatus = s
+			}
+		}
+
+		resp = append(resp, GetAllResponse{Name: rel.Name, Status: s, Version: rel.Version, CandidateTraffic: traffic, LastDeploymentStatus: deploymentStatus})
 	}
 
 	json.NewEncoder(rw).Encode(resp)
@@ -162,10 +187,10 @@ func (rh *ReleaseHandler) Delete(rw http.ResponseWriter, req *http.Request) {
 
 	sm, err := rh.pluginProviders.GetStateMachine(rel)
 	if err != nil {
-		rh.logger.Error("Unaable to get statemachine for", "release", rel.Name)
+		rh.logger.Error("Unable to get state machine for", "release", rel.Name)
 		mFinal(http.StatusInternalServerError)
 
-		http.Error(rw, "unable to find statemachine for release", http.StatusInternalServerError)
+		http.Error(rw, "unable to find state machine for release", http.StatusInternalServerError)
 		return
 	}
 
@@ -179,18 +204,42 @@ func (rh *ReleaseHandler) Delete(rw http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	// remove the statemachine
-	rh.pluginProviders.DeleteStateMachine(rel)
+	// wait until finished
+	go func() {
+		ctx, cancel := context.WithTimeout(context.Background(), 300*time.Second)
+		defer cancel()
 
-	// delete the release
-	err = rh.store.DeleteRelease(name)
-	if err != nil {
-		rh.logger.Error("unable to delete release", "error", err)
-		mFinal(http.StatusInternalServerError)
+		for {
+			if ctx.Err() != nil {
+				rh.logger.Error("Timeout waiting to destroy release", "name", rel.Name)
+				return
+			}
 
-		http.Error(rw, "unable to delete release", http.StatusInternalServerError)
-		return
-	}
+			// destroy is complete
+			if sm.CurrentState() == interfaces.StateIdle {
+				rh.logger.Info("Destroy complete, removing release", "name", rel.Name)
+				rh.pluginProviders.DeleteStateMachine(rel)
+				if err != nil {
+					rh.logger.Error("Unable to delete state machine", "name", rel.Name, "error", err)
+				}
+
+				err = rh.pluginProviders.GetDataStore().DeleteRelease(rel.Name)
+				if err != nil {
+					rh.logger.Error("Unable to delete release", "name", rel.Name, "error", err)
+				}
+
+				return
+			}
+
+			if sm.CurrentState() == interfaces.StateFail {
+				rh.logger.Error("Unable to destroy release", "name", rel.Name)
+				return
+			}
+
+			rh.logger.Info("Waiting for destroy to complete", "current_state", sm.CurrentState())
+			time.Sleep(2 * time.Second)
+		}
+	}()
 
 	mFinal(http.StatusOK)
 }

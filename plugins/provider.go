@@ -11,6 +11,7 @@ import (
 	"github.com/nicholasjackson/consul-release-controller/plugins/httptest"
 	"github.com/nicholasjackson/consul-release-controller/plugins/interfaces"
 	"github.com/nicholasjackson/consul-release-controller/plugins/kubernetes"
+	"github.com/nicholasjackson/consul-release-controller/plugins/nomad"
 	"github.com/nicholasjackson/consul-release-controller/plugins/prometheus"
 	"github.com/nicholasjackson/consul-release-controller/plugins/slack"
 	"github.com/nicholasjackson/consul-release-controller/plugins/statemachine"
@@ -44,15 +45,18 @@ func (p *ProviderImpl) CreateReleaser(pluginName string) (interfaces.Releaser, e
 }
 
 func (p *ProviderImpl) CreateRuntime(pluginName string) (interfaces.Runtime, error) {
-	if pluginName == PluginRuntimeTypeKubernetes {
+	switch pluginName {
+	case PluginRuntimeTypeKubernetes:
 		return kubernetes.New()
+	case PluginRuntimeTypeNomad:
+		return nomad.New()
 	}
 
 	return nil, fmt.Errorf("invalid Runtime plugin type: %s", pluginName)
 }
 
 func (p *ProviderImpl) CreateMonitor(pluginName, name, namespace, runtime string) (interfaces.Monitor, error) {
-	if pluginName == PluginMonitorTypePromethus {
+	if pluginName == PluginMonitorTypePrometheus {
 		return prometheus.New(name, namespace, runtime, p.log.Named("monitor-plugin-prometheus"))
 	}
 

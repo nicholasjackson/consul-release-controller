@@ -28,7 +28,7 @@ type Releaser interface {
 
 	// Setup the necessary configuration for the service mesh
 	// Returning an error from this function will fail the deployment
-	Setup(ctx context.Context) error
+	Setup(ctx context.Context, primarySubsetFilter, candidateSubsetFilter string) error
 
 	// Scale sets the percentage of traffic that is distributed to the canary instance
 	//
@@ -42,5 +42,6 @@ type Releaser interface {
 	// WaitUntilServiceHealthy blocks until the service mesh service is passing all it's
 	// health checks. Returns an error if any endpoints for a service have failing health
 	// checks.
-	WaitUntilServiceHealthy(ctx context.Context, t ServiceVariant) error
+	// filter allows the filtering of service instances
+	WaitUntilServiceHealthy(ctx context.Context, filter string) error
 }

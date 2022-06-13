@@ -7,12 +7,17 @@ import (
 	"syscall"
 
 	"github.com/hashicorp/go-hclog"
-	"github.com/nicholasjackson/consul-release-controller/controller"
+	"github.com/nicholasjackson/env"
 )
 
+var enableKubernetes = env.Bool("ENABLE_KUBERNETES", false, false, "Should Kubernetes integration be enabled")
+var enableNomad = env.Bool("ENABLE_NOMAD", false, true, "Should Nomad integration be enabled")
+
 func main() {
+	env.Parse()
+
 	logger := hclog.New(&hclog.LoggerOptions{Level: hclog.Debug, Color: hclog.AutoColor})
-	s, err := controller.New(logger)
+	s, err := New(logger, *enableKubernetes, *enableNomad)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)

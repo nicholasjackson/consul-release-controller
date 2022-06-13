@@ -34,6 +34,7 @@ import (
 
 	"github.com/go-logr/logr"
 	"github.com/hashicorp/go-hclog"
+	admissionController "github.com/nicholasjackson/consul-release-controller/controller"
 	consulreleasecontrollerv1 "github.com/nicholasjackson/consul-release-controller/kubernetes/controller/api/v1"
 	"github.com/nicholasjackson/consul-release-controller/kubernetes/controller/controllers"
 	"github.com/nicholasjackson/consul-release-controller/plugins/interfaces"
@@ -113,11 +114,13 @@ func (k *Kubernetes) Start() error {
 	setupLog.Info("setting up webhook server")
 	hookServer := mgr.GetWebhookServer()
 
+	admissionPlugin := admissionController.NewAdmission(k.provider, k.log.ResetNamed("kubernetes-webhook"))
+
 	setupLog.Info("registering webhooks to the webhook server")
 	hookServer.Register(
 		"/validate-v1-deployment",
 		&webhook.Admission{
-			Handler: NewDeploymentAdmission(mgr.GetClient(), k.provider, k.log.ResetNamed("kubernetes-webhook")),
+			Handler: NewDeploymentAdmission(mgr.GetClient(), admissionPlugin),
 		},
 	)
 

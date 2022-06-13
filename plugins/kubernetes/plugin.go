@@ -359,3 +359,13 @@ func (p *Plugin) saveState() {
 		p.log.Error("Unable to save state", "error", err)
 	}
 }
+
+// Returns the Consul resolver subset filter that should be used for this runtime to identify candidate instances
+func (p *Plugin) CandidateSubsetFilter() string {
+	return fmt.Sprintf(`Service.ID not contains "%s"`, p.state.PrimaryName)
+}
+
+// Returns the Consul resolver subset filter that should be used for this runtime to identify the primary instances
+func (p *Plugin) PrimarySubsetFilter() string {
+	return fmt.Sprintf(`Service.ID contains "%s"`, p.state.PrimaryName)
+}

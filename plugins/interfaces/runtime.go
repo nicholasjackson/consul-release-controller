@@ -4,6 +4,11 @@ import (
 	"context"
 )
 
+const (
+	RuntimePlatformKubernetes = "kubernetes"
+	RuntimePlatformNomad      = "nomad"
+)
+
 type RuntimeDeploymentStatus string
 
 const (
@@ -63,4 +68,10 @@ type Runtime interface {
 
 	// RemovePrimary removes the Primary deployment that is a clone of the original
 	RemovePrimary(ctx context.Context) error
+
+	// Returns the Consul resolver subset filter that should be used for this runtime to identify candidate instances
+	CandidateSubsetFilter() string
+
+	// Returns the Consul resolver subset filter that should be used for this runtime to identify the primary instances
+	PrimarySubsetFilter() string
 }

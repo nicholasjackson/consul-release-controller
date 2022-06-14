@@ -34,6 +34,7 @@ type Release struct {
 	enableKubernetes     bool
 	enableNomad          bool
 	enableHTTP           bool
+	shutdown             chan struct{}
 }
 
 func New(log hclog.Logger, enableKubernetes, enableNomad bool, enableHTTP bool) (*Release, error) {
@@ -43,7 +44,7 @@ func New(log hclog.Logger, enableKubernetes, enableNomad bool, enableHTTP bool) 
 		return nil, err
 	}
 
-	return &Release{log: log, metrics: metrics, enableKubernetes: enableKubernetes, enableNomad: enableNomad, enableHTTP: enableHTTP}, nil
+	return &Release{log: log, metrics: metrics, enableKubernetes: enableKubernetes, enableNomad: enableNomad, enableHTTP: enableHTTP, shutdown: make(chan struct{})}, nil
 }
 
 // Start the server and block until exit
@@ -115,6 +116,7 @@ func (r *Release) Start() error {
 	}
 
 	// Create TLS listener.
+	r.log.Info("Listening on :9443")
 	l, err := net.Listen("tcp", ":9443")
 	if err != nil {
 		r.log.Error("Error creating TCP listener", "error", err)
@@ -129,12 +131,15 @@ func (r *Release) Start() error {
 		WriteTimeout: 10 * time.Second,
 	}
 
-	err = r.server.Serve(tls.NewListener(l, config))
-	if err != http.ErrServerClosed {
-		return fmt.Errorf("unable to start server: %s", err)
-	}
+	go func() {
+		err := r.server.Serve(tls.NewListener(l, config))
+		if err != nil && err != http.ErrServerClosed {
+			r.log.Error("Unable to start TLS server", "error", err)
+		}
+	}()
 
 	if r.enableHTTP {
+		r.log.Info("Listening on :8080")
 		r.httpServer = &http.Server{
 			Addr:         ":8080",
 			Handler:      rtr,
@@ -142,8 +147,15 @@ func (r *Release) Start() error {
 			WriteTimeout: 10 * time.Second,
 		}
 
-		r.server.ListenAndServe()
+		go func() {
+			err := r.httpServer.ListenAndServe()
+			if err != nil && err != http.ErrServerClosed {
+				r.log.Error("Unable to start HTTP server", "error", err)
+			}
+		}()
 	}
+
+	<-r.shutdown
 
 	return nil
 }
@@ -216,6 +228,8 @@ func (r *Release) Shutdown() error {
 		r.log.Info("Shutting down Nomad controller")
 		r.nomadController.Stop()
 	}
+
+	r.shutdown <- struct{}{}
 
 	return nil
 }

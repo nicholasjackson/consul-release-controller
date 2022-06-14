@@ -12,7 +12,7 @@ import (
 
 var enableKubernetes = env.Bool("ENABLE_KUBERNETES", false, false, "Should Kubernetes integration be enabled")
 var enableNomad = env.Bool("ENABLE_NOMAD", false, true, "Should Nomad integration be enabled")
-var enableHTTP = env.Bool("ENABLE_HTTP", false, true, "Should the server listen on port 8080 plain HTTP")
+var enableHTTP = env.Bool("ENABLE_HTTP", false, false, "Should the server listen on port 8080 plain HTTP")
 
 func main() {
 	env.Parse()

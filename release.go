@@ -33,18 +33,31 @@ type Release struct {
 	nomadController      *nomad.Nomad
 	enableKubernetes     bool
 	enableNomad          bool
-	enableHTTP           bool
+	tlsBindAddress       string
+	tlsBindPort          int
+	httpBindAddress      string
+	httpBindPort         int
 	shutdown             chan struct{}
 }
 
-func New(log hclog.Logger, enableKubernetes, enableNomad bool, enableHTTP bool) (*Release, error) {
+func New(log hclog.Logger) (*Release, error) {
 	metrics, err := prometheus.NewMetrics(config.MetricsBindAddress(), config.MetricsPort(), "/metrics")
 	if err != nil {
 		log.Error("failed to create metrics", "error", err)
 		return nil, err
 	}
 
-	return &Release{log: log, metrics: metrics, enableKubernetes: enableKubernetes, enableNomad: enableNomad, enableHTTP: enableHTTP, shutdown: make(chan struct{})}, nil
+	return &Release{
+		log:              log,
+		metrics:          metrics,
+		enableKubernetes: config.EnableKubernetes(),
+		enableNomad:      config.EnableNomad(),
+		tlsBindAddress:   config.TLSAPIBindAddress(),
+		tlsBindPort:      config.TLSAPIPort(),
+		httpBindAddress:  config.HTTPAPIBindAddress(),
+		httpBindPort:     config.HTTPAPIPort(),
+		shutdown:         make(chan struct{}),
+	}, nil
 }
 
 // Start the server and block until exit
@@ -116,8 +129,8 @@ func (r *Release) Start() error {
 	}
 
 	// Create TLS listener.
-	r.log.Info("Listening on :9443")
-	l, err := net.Listen("tcp", ":9443")
+	r.log.Info("Listening on ", "address", r.tlsBindAddress, "port", r.tlsBindPort)
+	l, err := net.Listen("tcp", fmt.Sprintf("%s:%d", r.tlsBindAddress, r.tlsBindPort))
 	if err != nil {
 		r.log.Error("Error creating TCP listener", "error", err)
 		return fmt.Errorf("unable to create TCP listener: %s", err)
@@ -138,10 +151,10 @@ func (r *Release) Start() error {
 		}
 	}()
 
-	if r.enableHTTP {
-		r.log.Info("Listening on :8080")
+	if r.httpBindAddress != "" {
+		r.log.Info("Listening on ", "address", r.httpBindAddress, "port", r.httpBindPort)
 		r.httpServer = &http.Server{
-			Addr:         ":8080",
+			Addr:         fmt.Sprintf("%s:%d", r.httpBindAddress, r.httpBindPort),
 			Handler:      rtr,
 			ReadTimeout:  10 * time.Second,
 			WriteTimeout: 10 * time.Second,

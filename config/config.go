@@ -27,16 +27,16 @@ func ConsulServiceUpstreams() string {
 	return os.Getenv("UPSTREAMS")
 }
 
-func APIBindAddress() string {
-	if a := os.Getenv("API_BIND_ADDRESS"); a != "" {
+func TLSAPIBindAddress() string {
+	if a := os.Getenv("TLS_API_BIND_ADDRESS"); a != "" {
 		return a
 	}
 
 	return "0.0.0.0"
 }
 
-func APIPort() int {
-	if a := os.Getenv("API_PORT"); a != "" {
+func TLSAPIPort() int {
+	if a := os.Getenv("TLS_API_PORT"); a != "" {
 		p, err := strconv.Atoi(a)
 		if err != nil {
 			return p
@@ -44,6 +44,47 @@ func APIPort() int {
 	}
 
 	return 9443
+}
+
+func HTTPAPIBindAddress() string {
+	if a := os.Getenv("HTTP_API_BIND_ADDRESS"); a != "" {
+		return a
+	}
+
+	return ""
+}
+
+func HTTPAPIPort() int {
+	if a := os.Getenv("HTTP_API_PORT"); a != "" {
+		p, err := strconv.Atoi(a)
+		if err != nil {
+			return p
+		}
+	}
+
+	return 8080
+}
+
+func EnableKubernetes() bool {
+	if a := os.Getenv("ENABLE_KUBERNETES"); a != "" {
+		b, err := strconv.ParseBool(a)
+		if err != nil {
+			return b
+		}
+	}
+
+	return false
+}
+
+func EnableNomad() bool {
+	if a := os.Getenv("ENABLE_NOMAD"); a != "" {
+		b, err := strconv.ParseBool(a)
+		if err != nil {
+			return b
+		}
+	}
+
+	return false
 }
 
 func MetricsBindAddress() string {

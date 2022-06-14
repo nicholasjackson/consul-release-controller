@@ -7,18 +7,11 @@ import (
 	"syscall"
 
 	"github.com/hashicorp/go-hclog"
-	"github.com/nicholasjackson/env"
 )
 
-var enableKubernetes = env.Bool("ENABLE_KUBERNETES", false, false, "Should Kubernetes integration be enabled")
-var enableNomad = env.Bool("ENABLE_NOMAD", false, true, "Should Nomad integration be enabled")
-var enableHTTP = env.Bool("ENABLE_HTTP", false, false, "Should the server listen on port 8080 plain HTTP")
-
 func main() {
-	env.Parse()
-
 	logger := hclog.New(&hclog.LoggerOptions{Level: hclog.Debug, Color: hclog.AutoColor})
-	s, err := New(logger, *enableKubernetes, *enableNomad, *enableHTTP)
+	s, err := New(logger)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)

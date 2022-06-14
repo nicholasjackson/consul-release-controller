@@ -26,22 +26,24 @@ import (
 type Release struct {
 	log                  hclog.Logger
 	server               *http.Server
+	httpServer           *http.Server
 	listener             net.Listener
 	metrics              *prometheus.Metrics
 	kubernetesController *kubernetes.Kubernetes
 	nomadController      *nomad.Nomad
 	enableKubernetes     bool
 	enableNomad          bool
+	enableHTTP           bool
 }
 
-func New(log hclog.Logger, enableKubernetes, enableNomad bool) (*Release, error) {
+func New(log hclog.Logger, enableKubernetes, enableNomad bool, enableHTTP bool) (*Release, error) {
 	metrics, err := prometheus.NewMetrics(config.MetricsBindAddress(), config.MetricsPort(), "/metrics")
 	if err != nil {
 		log.Error("failed to create metrics", "error", err)
 		return nil, err
 	}
 
-	return &Release{log: log, metrics: metrics, enableKubernetes: enableKubernetes, enableNomad: enableNomad}, nil
+	return &Release{log: log, metrics: metrics, enableKubernetes: enableKubernetes, enableNomad: enableNomad, enableHTTP: enableHTTP}, nil
 }
 
 // Start the server and block until exit
@@ -132,6 +134,17 @@ func (r *Release) Start() error {
 		return fmt.Errorf("unable to start server: %s", err)
 	}
 
+	if r.enableHTTP {
+		r.httpServer = &http.Server{
+			Addr:         ":8080",
+			Handler:      rtr,
+			ReadTimeout:  10 * time.Second,
+			WriteTimeout: 10 * time.Second,
+		}
+
+		r.server.ListenAndServe()
+	}
+
 	return nil
 }
 
@@ -156,6 +169,18 @@ func (r *Release) Shutdown() error {
 		defer cancel()
 
 		err = r.server.Shutdown(ctx)
+
+		if err != nil {
+			r.log.Error("Unable to shutdown server", "error", err)
+			return err
+		}
+	}
+
+	if r.httpServer != nil {
+		ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+		defer cancel()
+
+		err = r.httpServer.Shutdown(ctx)
 
 		if err != nil {
 			r.log.Error("Unable to shutdown server", "error", err)

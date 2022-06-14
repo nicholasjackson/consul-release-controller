@@ -130,7 +130,7 @@ func (r *Release) Start() error {
 
 	// Create TLS listener.
 	r.log.Info("Listening on ", "address", r.tlsBindAddress, "port", r.tlsBindPort)
-	l, err := net.Listen("tcp", fmt.Sprintf("%s:%d", r.tlsBindAddress, r.tlsBindPort))
+	l, err := net.Listen("tcp4", fmt.Sprintf("%s:%d", r.tlsBindAddress, r.tlsBindPort))
 	if err != nil {
 		r.log.Error("Error creating TCP listener", "error", err)
 		return fmt.Errorf("unable to create TCP listener: %s", err)
@@ -152,6 +152,12 @@ func (r *Release) Start() error {
 	}()
 
 	if r.httpBindAddress != "" {
+		l, err := net.Listen("tcp4", fmt.Sprintf("%s:%d", r.httpBindAddress, r.httpBindPort))
+		if err != nil {
+			r.log.Error("Error creating TCP listener", "error", err)
+			return fmt.Errorf("unable to create TCP listener: %s", err)
+		}
+
 		r.log.Info("Listening on ", "address", r.httpBindAddress, "port", r.httpBindPort)
 		r.httpServer = &http.Server{
 			Addr:         fmt.Sprintf("%s:%d", r.httpBindAddress, r.httpBindPort),
@@ -161,7 +167,7 @@ func (r *Release) Start() error {
 		}
 
 		go func() {
-			err := r.httpServer.ListenAndServe()
+			err := r.httpServer.Serve(l)
 			if err != nil && err != http.ErrServerClosed {
 				r.log.Error("Unable to start HTTP server", "error", err)
 			}

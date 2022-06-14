@@ -1,6 +1,7 @@
 package config
 
 import (
+	"fmt"
 	"os"
 	"strconv"
 )
@@ -38,7 +39,7 @@ func TLSAPIBindAddress() string {
 func TLSAPIPort() int {
 	if a := os.Getenv("TLS_API_PORT"); a != "" {
 		p, err := strconv.Atoi(a)
-		if err != nil {
+		if err == nil {
 			return p
 		}
 	}
@@ -56,8 +57,9 @@ func HTTPAPIBindAddress() string {
 
 func HTTPAPIPort() int {
 	if a := os.Getenv("HTTP_API_PORT"); a != "" {
+		fmt.Println(a)
 		p, err := strconv.Atoi(a)
-		if err != nil {
+		if err == nil {
 			return p
 		}
 	}
@@ -68,7 +70,7 @@ func HTTPAPIPort() int {
 func EnableKubernetes() bool {
 	if a := os.Getenv("ENABLE_KUBERNETES"); a != "" {
 		b, err := strconv.ParseBool(a)
-		if err != nil {
+		if err == nil {
 			return b
 		}
 	}
@@ -79,7 +81,7 @@ func EnableKubernetes() bool {
 func EnableNomad() bool {
 	if a := os.Getenv("ENABLE_NOMAD"); a != "" {
 		b, err := strconv.ParseBool(a)
-		if err != nil {
+		if err == nil {
 			return b
 		}
 	}
@@ -98,7 +100,7 @@ func MetricsBindAddress() string {
 func MetricsPort() int {
 	if a := os.Getenv("METRICS_PORT"); a != "" {
 		p, err := strconv.Atoi(a)
-		if err != nil {
+		if err == nil {
 			return p
 		}
 	}
@@ -117,7 +119,7 @@ func KubernetesControllerBindAddress() string {
 func KubernetesControllerPort() int {
 	if a := os.Getenv("K8S_CONTROLLER_PORT"); a != "" {
 		p, err := strconv.Atoi(a)
-		if err != nil {
+		if err == nil {
 			return p
 		}
 	}

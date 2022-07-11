@@ -1,26 +1,29 @@
 variable "controller_image" {
-  default = "docker.io/nicholasjackson/consul-release-controller:3c108be.dev"
+  default = "docker.io/nicholasjackson/consul-release-controller:ca90d3b.dev"
 }
 
 template "controller_pack" {
-  depends_on = ["exec_local.generate_certs"]
+  depends_on = ["certificate_leaf.releaser_leaf"]
   disabled   = var.install_controller != "docker"
 
   source = <<-EOF
     #!/bin/sh
+
     cat <<-EOH > /scripts/release_controller.hcl
+    controller_image = "${var.controller_image}"
+
     tls_cert = <<-EOT
-    $(cat /certs/leaf.cert)
+    $(cat /certs/releaser_leaf.cert)
     EOT
     
     tls_key = <<-EOT
-    $(cat /certs/leaf.key)
+    $(cat /certs/releaser_leaf.key)
     EOT
     EOH
 
     nomad-pack run \
       -f /scripts/release_controller.hcl \
-      /pack/nomad-pack-community-registry-main/packs/consul_release_controller
+      /pack/consul_release_controller
   EOF
 
   destination = "${data("controller_data")}/install_release_controller.sh"
@@ -31,7 +34,7 @@ exec_remote "controller_pack" {
   disabled   = var.install_controller != "docker"
 
   image {
-    name = "shipyardrun/hashicorp-tools:v0.8.0"
+    name = "shipyardrun/hashicorp-tools:v0.9.0"
   }
 
   network {
@@ -45,12 +48,12 @@ exec_remote "controller_pack" {
 
   # Mount a volume containing the config
   volume {
-    source      = "${file_dir()}/../../pack"
+    source      = var.pack_folder
     destination = "/pack"
   }
 
   volume {
-    source      = data("nomad_data")
+    source      = data("nomad_config")
     destination = "/certs"
   }
 
@@ -67,25 +70,6 @@ exec_remote "controller_pack" {
   }
 }
 
-nomad_ingress "controller-docker" {
-  disabled = var.install_controller != "docker"
-
-  cluster = var.cn_nomad_cluster_name
-  job     = "release-controller"
-  group   = "release-controller"
-  task    = "release-controller"
-
-  network {
-    name = "network.dc1"
-  }
-
-  port {
-    local  = 9443
-    remote = "server"
-    host   = 9443
-  }
-}
-
 output "consul_release_controller_addr" {
-  value = "https://localhost:9443"
+  value = "http://releases.ingress.shipyard.run"
 }

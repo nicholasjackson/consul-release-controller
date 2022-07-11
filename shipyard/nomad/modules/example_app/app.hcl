@@ -38,7 +38,7 @@ nomad_job "jobs" {
   ]
 }
 
-nomad_ingress "ingress" {
+nomad_ingress "ingress-http" {
   cluster = var.cn_nomad_cluster_name
   job     = "ingress"
   group   = "ingress"
@@ -50,24 +50,24 @@ nomad_ingress "ingress" {
 
   port {
     local  = 18080
-    remote = "inbound"
-    host   = 18081
+    remote = "http"
+    host   = 80
   }
 }
 
-nomad_ingress "api" {
+nomad_ingress "ingress-ssl" {
   cluster = var.cn_nomad_cluster_name
-  job     = "api-deployment"
-  group   = "api"
-  task    = "api"
+  job     = "ingress"
+  group   = "ingress"
+  task    = "ingress"
 
   network {
     name = "network.dc1"
   }
 
   port {
-    local  = 9090
-    remote = "http"
-    host   = 19090
+    local  = 18443
+    remote = "ssl"
+    host   = 443
   }
 }

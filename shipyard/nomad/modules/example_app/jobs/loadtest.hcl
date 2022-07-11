@@ -3,6 +3,11 @@ job "loadtest" {
 
   datacenters = ["dc1"]
 
+  constraint {
+    attribute = "${attr.unique.hostname}"
+    value     = "1.client.local"
+  }
+
   group "loadtest" {
     count = 1
 

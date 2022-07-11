@@ -1,9 +1,9 @@
-job "api-deployment" {
+job "payments-deployment" {
   type = "service"
 
   datacenters = ["dc1"]
 
-  group "api" {
+  group "payments" {
     count = 3
 
     network {
@@ -20,7 +20,7 @@ job "api-deployment" {
 
     # create a service so that promethues can scrape the metrics
     service {
-      name = "api-metrics"
+      name = "payments-metrics"
       port = "metrics"
       tags = ["metrics"]
       meta {
@@ -31,7 +31,7 @@ job "api-deployment" {
     }
 
     service {
-      name = "api"
+      name = "payments"
       port = "3000"
 
       connect {
@@ -41,18 +41,12 @@ job "api-deployment" {
             config {
               envoy_prometheus_bind_addr = "0.0.0.0:9102"
             }
-
-            upstreams {
-              destination_name = "payments"
-              local_bind_port  = 3001
-            }
           }
         }
       }
     }
 
-
-    task "api" {
+    task "payments" {
       driver = "docker"
 
       config {
@@ -61,9 +55,10 @@ job "api-deployment" {
       }
 
       env {
-        NAME          = "API V1"
-        UPSTREAM_URIS = "http://localhost:3001"
-        LISTEN_ADDR   = "0.0.0.0:3000"
+        NAME                 = "PAYMENTS V1"
+        TIMING_50_PERCENTILE = "20ms"
+        LISTEN_ADDR          = "0.0.0.0:3000"
+        ERROR_RATE           = "0.3"
       }
 
       resources {

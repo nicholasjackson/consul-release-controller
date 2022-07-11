@@ -1,29 +1,9 @@
-exec_local "generate_certs" {
-  cmd = "shipyard"
-  args = [
-    "connector",
-    "generate-certs",
-    "--leaf",
-    "--root-ca",
-    "./root.cert",
-    "--root-key",
-    "./root.key",
-    "--dns-name",
-    "127.0.0.1:9443",
-    "${data("nomad_data")}",
-  ]
-
-  working_directory = "${shipyard()}/certs"
-
-  timeout = "30s"
-}
-
 output "TLS_CERT" {
-  value = "${data("nomad_data")}/leaf.cert"
+  value = "${data("nomad_config")}/releaser_leaf.cert"
 }
 
 output "TLS_KEY" {
-  value = "${data("nomad_data")}/leaf.key"
+  value = "${data("nomad_config")}/releaser_leaf.key"
 }
 
 nomad_job "controller-local" {

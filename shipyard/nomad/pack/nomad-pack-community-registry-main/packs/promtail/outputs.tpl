@@ -1,1 +1,0 @@
-Promtail successfully deployed.

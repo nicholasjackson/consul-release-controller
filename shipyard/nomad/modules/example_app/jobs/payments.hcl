@@ -9,7 +9,7 @@ job "payments-deployment" {
     network {
       mode = "bridge"
       port "http" {
-        to = "9090"
+        to = "3000"
       }
 
       # dynamic port for the metrics
@@ -25,14 +25,14 @@ job "payments-deployment" {
       tags = ["metrics"]
       meta {
         metrics    = "prometheus"
-        job        = "${NOMAD_JOB_NAME}"
-        datacenter = "${node.datacenter}"
+        job        = NOMAD_JOB_NAME
+        datacenter = node.datacenter
       }
     }
 
     service {
       name = "payments"
-      port = "9090"
+      port = "3000"
 
       connect {
         sidecar_service {
@@ -57,6 +57,7 @@ job "payments-deployment" {
       env {
         NAME                 = "PAYMENTS V1"
         TIMING_50_PERCENTILE = "20ms"
+        LISTEN_ADDR          = "0.0.0.0:3000"
       }
 
       resources {

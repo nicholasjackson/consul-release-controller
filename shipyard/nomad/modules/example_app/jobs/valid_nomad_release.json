@@ -7,7 +7,7 @@
       "consul_service": "payments"
     }
   },
-  
+
   "runtime": {
     "plugin_name": "nomad",
     "config": {
@@ -19,14 +19,14 @@
   "strategy": {
     "plugin_name": "canary",
     "config": {
-      "interval": "60s",
+      "interval": "30s",
       "initial_traffic": 10,
-      "traffic_step": 10,
+      "traffic_step": 20,
       "max_traffic": 100,
-      "error_threshold": 5
+      "error_threshold": 2
     }
   },
-  
+
   "monitor": {
     "plugin_name": "prometheus",
     "config": {

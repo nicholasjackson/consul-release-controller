@@ -9,16 +9,15 @@ require (
 	github.com/armon/go-metrics v0.3.10
 	github.com/ashwanthkumar/slack-go-webhook v0.0.0-20200209025033-430dd4e66960
 	github.com/cucumber/godog v0.12.2
+	github.com/go-chi/chi v1.5.4
 	github.com/go-chi/chi/v5 v5.0.7
 	github.com/go-chi/httplog v0.2.1
+	github.com/go-logr/logr v1.2.0
 	github.com/go-playground/validator/v10 v10.10.0
 	github.com/hashicorp/consul/api v1.12.0
 	github.com/hashicorp/go-hclog v1.1.0
 	github.com/hashicorp/nomad/api v0.0.0-20220602232126-b7357fd32565
-	github.com/kr/pretty v0.3.0
 	github.com/looplab/fsm v0.3.0
-	github.com/nicholasjackson/consul-release-controller/kubernetes/controller v0.0.0-20220119105946-cedeca178c18
-	github.com/nicholasjackson/env v0.6.0
 	github.com/prometheus/client_golang v1.12.1
 	github.com/prometheus/common v0.32.1
 	github.com/sethvargo/go-retry v0.1.0
@@ -29,8 +28,6 @@ require (
 	k8s.io/client-go v0.23.0
 	sigs.k8s.io/controller-runtime v0.11.0
 )
-
-replace github.com/nicholasjackson/consul-release-controller/kubernetes/controller => ./kubernetes/controller
 
 require (
 	cloud.google.com/go v0.81.0 // indirect
@@ -49,7 +46,6 @@ require (
 	github.com/fatih/color v1.9.0 // indirect
 	github.com/form3tech-oss/jwt-go v3.2.3+incompatible // indirect
 	github.com/fsnotify/fsnotify v1.5.1 // indirect
-	github.com/go-logr/logr v1.2.0 // indirect
 	github.com/go-playground/locales v0.14.0 // indirect
 	github.com/go-playground/universal-translator v0.18.0 // indirect
 	github.com/gofrs/uuid v4.0.0+incompatible // indirect
@@ -73,7 +69,6 @@ require (
 	github.com/hashicorp/serf v0.9.6 // indirect
 	github.com/imdario/mergo v0.3.12 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
-	github.com/kr/text v0.2.0 // indirect
 	github.com/leodido/go-urn v1.2.1 // indirect
 	github.com/mattn/go-colorable v0.1.7 // indirect
 	github.com/mattn/go-isatty v0.0.12 // indirect
@@ -87,7 +82,6 @@ require (
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/prometheus/client_model v0.2.0 // indirect
 	github.com/prometheus/procfs v0.7.3 // indirect
-	github.com/rogpeppe/go-internal v1.8.0 // indirect
 	github.com/rs/zerolog v1.18.1-0.20200514152719-663cbb4c8469 // indirect
 	github.com/sasha-s/go-csync v0.0.0-20210812194225-61421b77c44b // indirect
 	github.com/spf13/pflag v1.0.5 // indirect

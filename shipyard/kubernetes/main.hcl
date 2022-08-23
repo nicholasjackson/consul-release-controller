@@ -27,23 +27,9 @@ variable "consul_release_controller_enabled" {
   default     = false
 }
 
-//variable "consul_image" {
-//  default = "hashicorp/consul:1.9.13"
-//}
-//
-//variable "consul_envoy_image" {
-//  default     = "envoyproxy/envoy:v1.16.5"
-//  description = "Using the debian base images as alpine does not support arm"
-//}
-
 variable "consul_image" {
   default = "hashicorp/consul:1.11.5"
 }
-//
-//variable "consul_envoy_image" {
-//  default     = "envoyproxy/envoy:v1.20.0"
-//  description = "Using the debian base images as alpine does not support arm"
-//}
 
 variable "consul_tls_enabled" {
   description = "Enable TLS to secure the Consul server"
@@ -81,7 +67,7 @@ variable "controller_version" {
 }
 
 variable "controller_image" {
-  default = "${var.controller_version != "" ? "${var.controller_repo}:${var.controller_version}" : ""}"
+  default = var.controller_version != "" ? "${var.controller_repo}:${var.controller_version}" : ""
 }
 
 network "dc1" {
@@ -103,7 +89,7 @@ k8s_cluster "dc1" {
 }
 
 module "consul" {
-  source = "github.com/shipyard-run/blueprints?ref=d0ef4e69081263dad65edcf05ea3dc8da395b418/modules//kubernetes-consul"
+  source = "github.com/shipyard-run/blueprints?ref=2519640d022cffd1aa416153dab2c3998b44d600/modules//kubernetes-consul"
 }
 
 ingress "api" {

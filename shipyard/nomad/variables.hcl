@@ -11,7 +11,7 @@ variable "cn_nomad_cluster_name" {
 }
 
 variable "cn_nomad_client_nodes" {
-  default = 3
+  default = 1
 }
 
 variable "cn_nomad_version" {

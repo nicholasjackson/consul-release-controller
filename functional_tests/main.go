@@ -18,7 +18,7 @@ import (
 	"github.com/cucumber/godog/colors"
 	"github.com/hashicorp/consul/api"
 	"github.com/hashicorp/go-hclog"
-	"github.com/nicholasjackson/consul-release-controller/controller"
+	"github.com/nicholasjackson/consul-release-controller/pkg/server"
 )
 
 var opts = &godog.Options{
@@ -28,13 +28,14 @@ var opts = &godog.Options{
 
 var logStore bytes.Buffer
 var logger hclog.Logger
-var server *controller.Release
+var releaseServer *server.Release
 
 var environment map[string]string
 
 var createEnvironment = flag.Bool("create-environment", true, "Create and destroy the test environment when running tests?")
 var alwaysLog = flag.Bool("always-log", false, "Always show the log output")
 var dontDestroy = flag.Bool("dont-destroy", false, "Do not destroy the environment after the scenario")
+var dontDestroyError = flag.Bool("dont-destroy-on-error", false, "Do not destroy the environment after an error")
 
 func main() {
 	godog.BindFlags("godog.", flag.CommandLine, opts)
@@ -52,27 +53,13 @@ func main() {
 
 func initializeSuite(ctx *godog.TestSuiteContext) {
 	ctx.BeforeSuite(func() {
-		environment = map[string]string{}
-
-		if *alwaysLog {
-			logger = hclog.New(&hclog.LoggerOptions{Name: "functional-tests", Level: hclog.Trace, Color: hclog.AutoColor})
-			logger.Info("Create standard logger")
-		} else {
-			logStore = *bytes.NewBufferString("")
-			logger = hclog.New(&hclog.LoggerOptions{Output: &logStore, Level: hclog.Trace})
-		}
-
-		var err error
-		server, err = controller.New(logger)
-		if err != nil {
-			logger.Error("Unable to create server", "error", err)
-			os.Exit(1)
-		}
 	})
 }
 
 func initializeScenario(ctx *godog.ScenarioContext) {
 	ctx.Step(`^the controller is running on Kubernetes$`, theControllerIsRunningOnKubernetes)
+	ctx.Step(`^the controller is running on Nomad$`, theControllerIsRunningOnNomad)
+
 	ctx.Step(`^a Consul "([^"]*)" called "([^"]*)" should be created$`, aConsulCalledShouldBeCreated)
 	ctx.Step(`^I create a new Canary "([^"]*)"$`, iCreateANewCanary)
 
@@ -86,9 +73,24 @@ func initializeScenario(ctx *godog.ScenarioContext) {
 	ctx.Step(`^eventually a call to the URL "([^"]*)" contains the text$`, aCallToTheURLContainsTheText)
 	ctx.Step(`^I delete the Canary "([^"]*)"$`, iDeleteTheCanary)
 
+	ctx.Before(func(ctx context.Context, sc *godog.Scenario) (context.Context, error) {
+		environment = map[string]string{}
+
+		if *alwaysLog {
+			logger = hclog.New(&hclog.LoggerOptions{Name: "functional-tests", Level: hclog.Trace, Color: hclog.AutoColor})
+			logger.Info("Create standard logger")
+		} else {
+			logStore = *bytes.NewBufferString("")
+			logger = hclog.New(&hclog.LoggerOptions{Output: &logStore, Level: hclog.Trace})
+		}
+
+		return ctx, nil
+	})
+
 	ctx.After(func(ctx context.Context, sc *godog.Scenario, scenarioError error) (context.Context, error) {
-		if server != nil {
-			err := server.Shutdown()
+		logger.Info("Scenario complete, cleanup", "error", scenarioError)
+		if releaseServer != nil {
+			err := releaseServer.Shutdown()
 			if err != nil {
 				logger.Error("Unable to shutdown server", "error", err)
 				scenarioError = err
@@ -97,11 +99,23 @@ func initializeScenario(ctx *godog.ScenarioContext) {
 
 		// only destroy the environment when the flag is true
 		if *createEnvironment && !*dontDestroy {
-			err := executeCommand([]string{"/usr/local/bin/shipyard", "destroy"}, false)
-			if err != nil {
-				logger.Error("Unable to destroy shipyard resources", "error", err)
-				scenarioError = err
+			// don't destroy when there is an error and don't destroy error is set
+			if scenarioError != nil && *dontDestroyError {
+				logger.Info("Don't destroy Shipyard environment")
+
+			} else {
+				logger.Info("Destroying Shipyard environment")
+				err := executeCommand([]string{"shipyard", "destroy"}, true)
+				if err != nil {
+					logger.Error("Unable to destroy shipyard resources", "error", err)
+					scenarioError = err
+				}
 			}
+
+		}
+
+		for k := range environment {
+			os.Unsetenv(k)
 		}
 
 		if scenarioError != nil && !*alwaysLog {
@@ -115,15 +129,12 @@ func initializeScenario(ctx *godog.ScenarioContext) {
 			fmt.Printf("%s\n", string(d))
 
 			fmt.Printf("Error log written to file %s", logfile)
+
 		}
 
-		// exit after the scenario when don't destroy is set
-		if *dontDestroy {
-			if scenarioError != nil {
-				os.Exit(1)
-			}
-
-			os.Exit(0)
+		if scenarioError != nil || *dontDestroy {
+			// quit all further tests
+			os.Exit(1)
 		}
 
 		return ctx, nil
@@ -143,29 +154,42 @@ func executeCommand(command []string, log bool) error {
 }
 
 func startServer() error {
-	var err error
+	errChan := make(chan error)
 
 	// set the environment variables
+	logger.Debug("Running Server with", "environment", environment)
 	for k, v := range environment {
 		os.Setenv(k, v)
 	}
 
+	var err error
+	releaseServer, err = server.New(logger)
+	if err != nil {
+		logger.Error("Unable to create server", "error", err)
+		return err
+	}
+
 	go func() {
-		err = server.Start()
+		err := releaseServer.Start()
 		if err != nil {
 			logger.Error("Unable to start server", "error", err)
+			errChan <- err
 		}
 	}()
 
-	// wait for the server to start and return any error
-	time.Sleep(5 * time.Second)
-	return err
+	okChan := time.After(10 * time.Second)
+	select {
+	case <-okChan:
+		return nil
+	case err := <-errChan:
+		return err
+	}
 }
 
 func retryOperation(f func() error) error {
 	// max time to wait 300s
 	attempt := 0
-	maxAttempts := 100
+	maxAttempts := 30
 	delay := 10 * time.Second
 
 	var funcError error

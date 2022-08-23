@@ -1,0 +1,203 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.8.0
+  creationTimestamp: null
+  name: releases.consul-release-controller.nicholasjackson.io
+spec:
+  group: consul-release-controller.nicholasjackson.io
+  names:
+    kind: Release
+    listKind: ReleaseList
+    plural: releases
+    singular: release
+  scope: Namespaced
+  versions:
+  - name: v1
+    schema:
+      openAPIV3Schema:
+        description: Release is the Schema for the releases API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: ReleaseSpec defines the desired state of Release
+            properties:
+              monitor:
+                description: Monitor defines the configuration for the strategy plugin
+                properties:
+                  config:
+                    properties:
+                      address:
+                        type: string
+                      queries:
+                        items:
+                          properties:
+                            max:
+                              type: integer
+                            min:
+                              type: integer
+                            name:
+                              type: string
+                            preset:
+                              type: string
+                            query:
+                              type: string
+                          type: object
+                        type: array
+                    required:
+                    - address
+                    type: object
+                  pluginName:
+                    type: string
+                required:
+                - config
+                - pluginName
+                type: object
+              postDeploymentTest:
+                description: PostDeploymentTest defines the configuration for the
+                  post deployment tests plugin
+                properties:
+                  config:
+                    properties:
+                      interval:
+                        type: string
+                      method:
+                        type: string
+                      path:
+                        type: string
+                      payload:
+                        type: string
+                      requiredTestPasses:
+                        type: integer
+                      timeout:
+                        type: string
+                    required:
+                    - interval
+                    - method
+                    - path
+                    - requiredTestPasses
+                    - timeout
+                    type: object
+                  pluginName:
+                    type: string
+                required:
+                - config
+                - pluginName
+                type: object
+              releaser:
+                description: Releaser defines the configuration for the releaser plugin
+                properties:
+                  config:
+                    properties:
+                      consulService:
+                        type: string
+                      namespace:
+                        type: string
+                      partition:
+                        type: string
+                    required:
+                    - consulService
+                    type: object
+                  pluginName:
+                    type: string
+                required:
+                - config
+                - pluginName
+                type: object
+              runtime:
+                description: Runtime defines the configuration for the runtime plugin
+                properties:
+                  config:
+                    properties:
+                      deployment:
+                        description: Name of an existing Deployment in the same namespace
+                        type: string
+                    required:
+                    - deployment
+                    type: object
+                  pluginName:
+                    type: string
+                required:
+                - config
+                - pluginName
+                type: object
+              strategy:
+                description: Strategy defines the configuration for the strategy plugin
+                properties:
+                  config:
+                    properties:
+                      errorThreshold:
+                        type: integer
+                      initialDelay:
+                        type: string
+                      initialTraffic:
+                        type: integer
+                      interval:
+                        type: string
+                      maxTraffic:
+                        type: integer
+                      trafficStep:
+                        type: integer
+                    type: object
+                  pluginName:
+                    type: string
+                required:
+                - config
+                - pluginName
+                type: object
+              webhooks:
+                items:
+                  properties:
+                    config:
+                      properties:
+                        id:
+                          type: string
+                        status:
+                          items:
+                            type: string
+                          type: array
+                        template:
+                          type: string
+                        token:
+                          type: string
+                        url:
+                          type: string
+                      type: object
+                    name:
+                      type: string
+                    pluginName:
+                      type: string
+                  required:
+                  - config
+                  - name
+                  - pluginName
+                  type: object
+                type: array
+            type: object
+          status:
+            description: ReleaseStatus defines the observed state of Release
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []

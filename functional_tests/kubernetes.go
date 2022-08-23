@@ -7,16 +7,17 @@ import (
 	"io/ioutil"
 	"os"
 	"os/exec"
-	"path"
 	"strings"
 	"time"
 
-	"github.com/nicholasjackson/consul-release-controller/clients"
-	v1release "github.com/nicholasjackson/consul-release-controller/kubernetes/controller/api/v1"
+	"github.com/nicholasjackson/consul-release-controller/pkg/clients"
+	v1release "github.com/nicholasjackson/consul-release-controller/pkg/controllers/kubernetes/api/v1"
 	"github.com/sethvargo/go-retry"
 	appsv1 "k8s.io/api/apps/v1"
 	"k8s.io/apimachinery/pkg/util/yaml"
 )
+
+var timeout = 30 * time.Second
 
 func getKubernetesClient() (clients.Kubernetes, error) {
 	return clients.NewKubernetes(os.Getenv("KUBECONFIG"), 120*time.Second, 1*time.Second, logger.Named("kubernetes-client"))
@@ -27,8 +28,10 @@ func theControllerIsRunningOnKubernetes() error {
 
 	os.Setenv("LOG_LEVEL", "debug")
 	if *createEnvironment {
+		logger.Info("Creating Shipyard environment")
+
 		err := executeCommand([]string{
-			"/usr/local/bin/shipyard",
+			"shipyard",
 			"run",
 			`--var="helm_controller_enabled=false"`,
 			"./shipyard/kubernetes",
@@ -40,12 +43,11 @@ func theControllerIsRunningOnKubernetes() error {
 	}
 
 	// set the shipyard environment variables
-	environment["TLS_CERT"] = path.Join(os.Getenv("HOME"), ".shipyard", "data", "kube_setup", "tls.crt")
-	environment["TLS_KEY"] = path.Join(os.Getenv("HOME"), ".shipyard", "data", "kube_setup", "tls.key")
+	environment["ENABLE_KUBERNETES"] = "true"
 
 	// get the variables from shipyard
 	output := &strings.Builder{}
-	cmd := exec.Command("/usr/local/bin/shipyard", "output")
+	cmd := exec.Command("shipyard", "output")
 	cmd.Dir = "../"
 	cmd.Stdout = output
 	cmd.Stderr = output
@@ -92,12 +94,17 @@ func iDeployANewVersionOfTheKubernetesDeployment(arg1 string) error {
 		return fmt.Errorf("unable to create Kubernetes client, error: %s", err)
 	}
 
-	err = cs.UpsertDeployment(context.Background(), dep)
+	ctx, cancel := context.WithTimeout(context.Background(), timeout)
+	defer cancel()
+
+	err = cs.UpsertDeployment(ctx, dep)
 	if err != nil {
 		return fmt.Errorf("unable to create Kubernetes deployment, error: %s", err)
 	}
 
-	_, err = cs.GetHealthyDeployment(context.Background(), dep.Name, dep.Namespace)
+	ctx, cancel = context.WithTimeout(context.Background(), timeout)
+	defer cancel()
+	_, err = cs.GetHealthyDeployment(ctx, dep.Name, dep.Namespace)
 	if err != nil {
 		logger.Debug("Kubernetes deployment not found", "name", dep.Name, "namespace", dep.Namespace, "error", err)
 		return fmt.Errorf("unable to find deployment: %s", err)
@@ -112,7 +119,9 @@ func iDeleteTheKubernetesDeployment(name string) error {
 		return fmt.Errorf("unable to create Kubernetes client, error: %s", err)
 	}
 
-	err = cs.DeleteDeployment(context.Background(), name, "default")
+	ctx, cancel := context.WithTimeout(context.Background(), timeout)
+	defer cancel()
+	err = cs.DeleteDeployment(ctx, name, "default")
 	if err == nil {
 		return nil
 	}
@@ -130,7 +139,9 @@ func aKubernetesDeploymentCalledShouldExist(arg1 string) error {
 		return fmt.Errorf("unable to create Kubernetes client, error: %s", err)
 	}
 
-	_, err = cs.GetHealthyDeployment(context.Background(), arg1, "default")
+	ctx, cancel := context.WithTimeout(context.Background(), timeout)
+	defer cancel()
+	_, err = cs.GetHealthyDeployment(ctx, arg1, "default")
 	if err != nil {
 		return fmt.Errorf("unable to get Kubernetes deployment, error: %s", err)
 	}
@@ -148,7 +159,10 @@ func aKubernetesDeploymentCalledShouldNotExist(arg1 string) error {
 	defer cancel()
 
 	err = retry.Fibonacci(retryContext, 1*time.Second, func(ctx context.Context) error {
-		dep, err := cs.GetDeployment(context.Background(), arg1, "default")
+
+		ctx, cancel := context.WithTimeout(context.Background(), timeout)
+		defer cancel()
+		dep, err := cs.GetDeployment(ctx, arg1, "default")
 		if err == clients.ErrDeploymentNotFound {
 			return nil
 		}
@@ -190,7 +204,9 @@ func iDeployANewVersionOfTheKubernetesRelease(arg1 string) error {
 		return fmt.Errorf("unable to create Kubernetes client, error: %s", err)
 	}
 
-	err = cs.InsertRelease(context.Background(), rel)
+	ctx, cancel := context.WithTimeout(context.Background(), timeout)
+	defer cancel()
+	err = cs.InsertRelease(ctx, rel)
 	if err != nil {
 		return fmt.Errorf("unable to create Kubernetes release, error: %s", err)
 	}
@@ -204,7 +220,9 @@ func iDeleteTheKubernetesRelease(name string) error {
 		return fmt.Errorf("unable to create Kubernetes client, error: %s", err)
 	}
 
-	err = cs.DeleteRelease(context.Background(), name, "default")
+	ctx, cancel := context.WithTimeout(context.Background(), timeout)
+	defer cancel()
+	err = cs.DeleteRelease(ctx, name, "default")
 	if err == nil {
 		return nil
 	}

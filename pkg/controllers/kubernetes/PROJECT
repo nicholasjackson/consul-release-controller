@@ -1,0 +1,16 @@
+domain: nicholasjackson.io
+layout:
+- go.kubebuilder.io/v3
+projectName: controller
+repo: github.com/nicholasjackson/consul-release-controller/kubernetes/controller
+resources:
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: nicholasjackson.io
+  group: consul-release-controller
+  kind: Release
+  path: github.com/nicholasjackson/consul-release-controller/kubernetes/controller/api/v1
+  version: v1
+version: "3"

@@ -1,0 +1,35 @@
+---
+apiVersion: consul-release-controller.nicholasjackson.io/v1
+kind: Release
+metadata:
+  name: release-sample
+  namespace: default
+spec:
+  releaser:
+    pluginName: "consul"
+    config:
+      consulService: "api"
+  runtime:
+    pluginName: "kubernetes"
+    config:
+      deployment: "api-deployment"
+  strategy:
+    pluginName: "canary"
+    config:
+      initialDelay: "30s"
+      interval: "30s"
+      trafficStep: 40
+      maxTraffic: 100
+      errorThreshold: 5
+  monitor:
+    pluginName: "prometheus"
+    config:
+      address: "http://localhost:9090"
+      queries:
+        - name: "request-success"
+          preset: "envoy-request-success"
+          min: 99
+        - name: "request-duration"
+          preset: "envoy-request-duration"
+          min: 20
+          max: 200

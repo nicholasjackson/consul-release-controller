@@ -50,20 +50,28 @@ fetch_kubernetes_certs:
 
 # Create the shipyard environment and run the functional tests
 functional_tests_kubernetes:
-	cd functional_tests && go run . --godog.tags="@k8s"
+	cd functional_tests && go run . --godog.tags="@k8s_canary_existing"
+	cd functional_tests && go run . --godog.tags="@k8s_canary_none"
+	cd functional_tests && go run . --godog.tags="@k8s_canary_rollback"
+	cd functional_tests && go run . --godog.tags="@k8s_canary_with_post_deployment_test"
+	cd functional_tests && go run . --godog.tags="@k8s_canary_with_post_deployment_test_fail"
 
 functional_tests_nomad:
-	cd functional_tests && go run . --godog.tags="@k8s"
+	cd functional_tests && go run . --godog.tags="@nomad_canary_existing"
 
 # Run the functional tests, without creating the environment
 # the environment can be created manually by running shipyard run ./shipyard/nomad
 functional_tests_nomad_no_env:
-	cd functional_tests && go run . --godog.tags="@nomad" --create-environment=false
+	cd functional_tests && go run . --godog.tags="@nomad_canary_existing" --create-environment=false
 
 # Run the functional tests, without creating the environment
 # the environment can be created manually by running shipyard run ./shipyard/kubernetes
 functional_tests_kubernetes_no_env:
-	cd functional_tests && go run . --godog.tags="@k8s" --create-environment=false
+	cd functional_tests && go run . --godog.tags="@k8s_canary_existing" --create-environment=false
+	cd functional_tests && go run . --godog.tags="@k8s_canary_none" --create-environment=false
+	cd functional_tests && go run . --godog.tags="@k8s_canary_rollback" --create-environment=false
+	cd functional_tests && go run . --godog.tags="@k8s_canary_with_post_deployment_test" --create-environment=false
+	cd functional_tests && go run . --godog.tags="@k8s_canary_with_post_deployment_test_fail" --create-environment=false
 
 # Create a dev environment with Shipyard and do not install the controller helm chart
 nomad_dev_env_local_controller:

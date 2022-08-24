@@ -17,9 +17,9 @@ spec:
     pluginName: "canary"
     config:
       initialDelay: "30s"
-      initialTraffic: 10
+      initialTraffic: 20
       interval: "30s"
-      trafficStep: 20
+      trafficStep: 30
       maxTraffic: 100
       errorThreshold: 5
   monitor:

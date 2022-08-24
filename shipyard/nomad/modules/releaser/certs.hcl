@@ -13,3 +13,11 @@ certificate_leaf "releaser_leaf" {
 
   output = data("nomad_config")
 }
+
+output "TLS_KEY" {
+  value = "${data("nomad_config")}/releaser_leaf.key"
+}
+
+output "TLS_CERT" {
+  value = "${data("nomad_config")}/releaser_leaf.cert"
+}

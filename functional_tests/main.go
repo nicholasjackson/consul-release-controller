@@ -70,6 +70,14 @@ func initializeScenario(ctx *godog.ScenarioContext) {
 	ctx.Step(`^I create a new Kubernetes release "([^"]*)"$`, iDeployANewVersionOfTheKubernetesRelease)
 	ctx.Step(`^I delete the Kubernetes release "([^"]*)"$`, iDeleteTheKubernetesRelease)
 
+	ctx.Step(`^a Nomad job called "([^"]*)" should exist$`, aNomadJobCalledShouldExist)
+	ctx.Step(`^a Nomad job called "([^"]*)" should not exist$`, aNomadJobCalledShouldNotExist)
+	ctx.Step(`^I create a new Nomad release "([^"]*)"$`, iCreateANewNomadRelease)
+	ctx.Step(`^I create a new version of the Nomad job "([^"]*)"$`, iCreateANewVersionOfTheNomadJob)
+	ctx.Step(`^I delete the Nomad job "([^"]*)"$`, iDeleteTheNomadJob)
+	ctx.Step(`^I delete the Nomad release "([^"]*)"$`, iDeleteTheNomadRelease)
+	ctx.Step(`^Nomad job called "([^"]*)" should exist$`, nomadJobCalledShouldExist)
+
 	ctx.Step(`^eventually a call to the URL "([^"]*)" contains the text$`, aCallToTheURLContainsTheText)
 	ctx.Step(`^I delete the Canary "([^"]*)"$`, iDeleteTheCanary)
 

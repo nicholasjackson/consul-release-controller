@@ -2,6 +2,7 @@ package server
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/hashicorp/go-hclog"
 	"github.com/nicholasjackson/consul-release-controller/pkg/api"
@@ -34,6 +35,10 @@ func New(log hclog.Logger) (*Release, error) {
 	if err != nil {
 		log.Error("failed to create metrics", "error", err)
 		return nil, err
+	}
+
+	for k, v := range os.Environ() {
+		log.Debug("Running with", "key", k, "value", v)
 	}
 
 	return &Release{
@@ -169,20 +174,25 @@ func (r *Release) Shutdown() error {
 		err := r.metrics.StopServer()
 		if err != nil {
 			r.log.Error("Unable to shutdown metrics", "error", err)
-			return err
+			return fmt.Errorf("unable to shutdown metrics server: %s", err)
 		}
+
+		r.log.Debug("Metrics server stopped")
 	}
 
 	if r.kubernetesController != nil {
 		r.log.Info("Shutting down Kubernetes controller")
 		r.kubernetesController.Stop()
+		r.log.Debug("Kubernetes controller stopped")
 	}
 
 	if r.nomadController != nil {
 		r.log.Info("Shutting down Nomad controller")
 		r.nomadController.Stop()
+		r.log.Debug("Nomad controller stopped")
 	}
 
+	r.log.Debug("Shutdown complete")
 	r.shutdown <- struct{}{}
 
 	return nil

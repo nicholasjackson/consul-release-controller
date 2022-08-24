@@ -5,8 +5,9 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
-	"path"
 	"strings"
+
+	"github.com/cucumber/godog"
 )
 
 func theControllerIsRunningOnNomad() error {
@@ -15,7 +16,7 @@ func theControllerIsRunningOnNomad() error {
 	os.Setenv("LOG_LEVEL", "debug")
 	if *createEnvironment {
 		err := executeCommand([]string{
-			"/usr/local/bin/shipyard",
+			"shipyard",
 			"run",
 			`--var="install_controller=local"`,
 			"./shipyard/nomad",
@@ -27,13 +28,11 @@ func theControllerIsRunningOnNomad() error {
 	}
 
 	// set the shipyard environment variables
-	environment["TLS_CERT"] = path.Join(os.Getenv("HOME"), ".shipyard", "data", "nomad_config", "releaser_leaf.cert")
-	environment["TLS_KEY"] = path.Join(os.Getenv("HOME"), ".shipyard", "data", "nomad_config", "releaser_leaf.key")
 	environment["ENABLE_NOMAD"] = "true"
 
 	// get the variables from shipyard
 	output := &strings.Builder{}
-	cmd := exec.Command("/usr/local/bin/shipyard", "output")
+	cmd := exec.Command("shipyard", "output")
 	cmd.Dir = "../"
 	cmd.Stdout = output
 	cmd.Stderr = output
@@ -54,4 +53,33 @@ func theControllerIsRunningOnNomad() error {
 	}
 
 	return startServer()
+}
+
+func aNomadJobCalledShouldExist(arg1 string) error {
+	return godog.ErrPending
+}
+
+func aNomadJobCalledShouldNotExist(arg1 string) error {
+	return godog.ErrPending
+}
+
+func iCreateANewNomadRelease(arg1 string) error {
+	return godog.ErrPending
+}
+
+func iCreateANewVersionOfTheNomadJob(arg1 string) error {
+	return godog.ErrPending
+}
+
+func iDeleteTheNomadJob(arg1 string) error {
+	return godog.ErrPending
+
+}
+
+func iDeleteTheNomadRelease(arg1 string) error {
+	return godog.ErrPending
+}
+
+func nomadJobCalledShouldExist(arg1 string) error {
+	return godog.ErrPending
 }

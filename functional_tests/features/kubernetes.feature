@@ -1,5 +1,5 @@
 @k8s
-Feature: Kubernetes 
+Feature: Kubernetes
   In order to test a Canary Deployments on Kubernetes
   I need to ensure the code funcionality is working as specified
 
@@ -11,7 +11,7 @@ Feature: Kubernetes
       And a Kubernetes deployment called "payments-primary" should not exist
     And I create a new version of the Kubernetes deployment "./config/payments.yaml"
     Then a Kubernetes deployment called "payments-deployment" should exist
-      And eventually a call to the URL "http://localhost:18080" contains the text 
+      And eventually a call to the URL "http://localhost:18080" contains the text
         """
         Payments V1
         """
@@ -39,7 +39,7 @@ Feature: Kubernetes
     When I delete the Kubernetes release "payments"
       Then a Kubernetes deployment called "payments-primary" should not exist
       And a Kubernetes deployment called "payments-deployment" should exist
-      And eventually a call to the URL "http://localhost:18080" contains the text 
+      And eventually a call to the URL "http://localhost:18080" contains the text
         """
         Payments V2
         """
@@ -60,7 +60,7 @@ Feature: Kubernetes
     When I create a new version of the Kubernetes deployment "./config/payments.yaml"
       Then a Kubernetes deployment called "payments-primary" should exist
       And a Kubernetes deployment called "payments-deployment" should not exist
-      And eventually a call to the URL "http://localhost:18080" contains the text 
+      And eventually a call to the URL "http://localhost:18080" contains the text
         """
         Payments V1
         """
@@ -79,7 +79,7 @@ Feature: Kubernetes
     When I delete the Kubernetes release "payments"
       Then a Kubernetes deployment called "payments-primary" should not exist
       And a Kubernetes deployment called "payments-deployment" should exist
-      And eventually a call to the URL "http://localhost:18080" contains the text 
+      And eventually a call to the URL "http://localhost:18080" contains the text
         """
         Payments V2
         """
@@ -90,7 +90,7 @@ Feature: Kubernetes
     When I delete the Kubernetes deployment "payments-deployment"
     And I create a new version of the Kubernetes deployment "./config/payments.yaml"
     Then a Kubernetes deployment called "payments-deployment" should exist
-      And eventually a call to the URL "http://localhost:18080" contains the text 
+      And eventually a call to the URL "http://localhost:18080" contains the text
         """
         Payments V1
         """
@@ -105,7 +105,7 @@ Feature: Kubernetes
         """
     When I create a new version of the Kubernetes deployment "./config/payments_with_error.yaml"
       Then a Kubernetes deployment called "payments-primary" should exist
-      And a Kubernetes deployment callepaymentsapi-deployment" should exist
+      And a Kubernetes deployment called "payments-deployment" should exist
       And a Consul "service-splitter" called "payments" should be created
       And eventually a call to the URL "https://localhost:9443/v1/releases" contains the text
         """
@@ -118,7 +118,7 @@ Feature: Kubernetes
     When I delete the Kubernetes release "payments"
       Then a Kubernetes deployment called "payments-primary" should not exist
       And a Kubernetes deployment called "payments-deployment" should exist
-      And eventually a call to the URL "http://localhost:18080" contains the text 
+      And eventually a call to the URL "http://localhost:18080" contains the text
         """
         Payments V1
         """
@@ -140,7 +140,7 @@ Feature: Kubernetes
     When I create a new version of the Kubernetes deployment "./config/payments.yaml"
       Then a Kubernetes deployment called "payments-primary" should exist
       Then a Kubernetes deployment called "payments-deployment" should not exist
-      And eventually a call to the URL "http://localhost:18080" contains the text 
+      And eventually a call to the URL "http://localhost:18080" contains the text
         """
         Payments V1
         """
@@ -163,7 +163,7 @@ Feature: Kubernetes
     When I delete the Kubernetes release "payments"
       Then a Kubernetes deployment called "payments-primary" should not exist
       And a Kubernetes deployment called "payments-deployment" should exist
-      And eventually a call to the URL "http://localhost:18080" contains the text 
+      And eventually a call to the URL "http://localhost:18080" contains the text
         """
         Payments V2
         """
@@ -174,7 +174,7 @@ Feature: Kubernetes
     When I delete the Kubernetes deployment "payments-deployment"
     And I create a new version of the Kubernetes deployment "./config/payments.yaml"
     Then a Kubernetes deployment called "payments-deployment" should exist
-      And eventually a call to the URL "http://localhost:18080" contains the text 
+      And eventually a call to the URL "http://localhost:18080" contains the text
         """
         Payments V1
         """
@@ -202,7 +202,7 @@ Feature: Kubernetes
     When I delete the Kubernetes release "payments"
       Then a Kubernetes deployment called "payments-primary" should not exist
       And a Kubernetes deployment called "payments-deployment" should exist
-      And eventually a call to the URL "http://localhost:18080" contains the text 
+      And eventually a call to the URL "http://localhost:18080" contains the text
         """
         Payments V1
         """

@@ -94,7 +94,7 @@ Feature: Kubernetes
         """
         Payments V1
         """
-    And I create a new Kubernetes release "./config/payments_release.yaml"
+    And I create a new Kubernetes release "./config/kubernetes/payments_release.yaml"
       Then a Kubernetes deployment called "payments-primary" should exist
       And a Kubernetes deployment called "payments-deployment" should not exist
       And a Consul "service-defaults" called "payments" should be created

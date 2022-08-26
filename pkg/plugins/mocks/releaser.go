@@ -32,8 +32,8 @@ func (s *ReleaserMock) BaseConfig() interfaces.ReleaserBaseConfig {
 	return *s.baseConfig
 }
 
-func (s *ReleaserMock) Setup(ctx context.Context) error {
-	args := s.Called(ctx)
+func (s *ReleaserMock) Setup(ctx context.Context, primarySubset, candidateSubset string) error {
+	args := s.Called(ctx, primarySubset, candidateSubset)
 
 	err := args.Error(0)
 	if err != nil {
@@ -65,8 +65,8 @@ func (s *ReleaserMock) Destroy(ctx context.Context) error {
 	return nil
 }
 
-func (s *ReleaserMock) WaitUntilServiceHealthy(ctx context.Context, t interfaces.ServiceVariant) error {
-	args := s.Called(ctx, t)
+func (s *ReleaserMock) WaitUntilServiceHealthy(ctx context.Context, filter string) error {
+	args := s.Called(ctx, filter)
 
 	return args.Error(0)
 }

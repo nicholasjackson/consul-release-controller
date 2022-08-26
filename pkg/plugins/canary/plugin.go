@@ -56,7 +56,6 @@ func New(m interfaces.Monitor) (*Plugin, error) {
 
 // Configure the plugin with the given json
 // returns an error when validation fails for the config
-
 func (p *Plugin) Configure(data json.RawMessage, log hclog.Logger, store interfaces.PluginStateStore) error {
 	p.log = log
 	p.store = store

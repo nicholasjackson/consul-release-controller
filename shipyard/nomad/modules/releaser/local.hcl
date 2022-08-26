@@ -30,6 +30,6 @@ nomad_ingress "controller-local" {
   port {
     local  = 8080
     remote = "http"
-    host   = 18080
+    host   = 28080
   }
 }

@@ -50,6 +50,8 @@ func NewAdmission(p interfaces.Provider, l hclog.Logger) Admission {
 }
 
 // Check if the given deployment is allowed by the system
+// name is the deployment or job name
+// namespace is the namespace for the job or deployment
 func (a *AdmissionImpl) Check(ctx context.Context, name string, namespace string, labels map[string]string, version string, runtime string) (AdmissionResponse, error) {
 	a.log.Info("Handle deployment admission", "deployment", name, "namespaces", namespace, "labels", labels)
 

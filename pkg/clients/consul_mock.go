@@ -1,7 +1,6 @@
 package clients
 
 import (
-	"github.com/nicholasjackson/consul-release-controller/pkg/plugins/interfaces"
 	"github.com/stretchr/testify/mock"
 )
 
@@ -15,8 +14,8 @@ func (mc *ConsulMock) CreateServiceDefaults(name string) error {
 	return args.Error(0)
 }
 
-func (mc *ConsulMock) CreateServiceResolver(name string) error {
-	args := mc.Called(name)
+func (mc *ConsulMock) CreateServiceResolver(name, primarySubsetFilter, candidateSubsetFilter string) error {
+	args := mc.Called(name, primarySubsetFilter, candidateSubsetFilter)
 
 	return args.Error(0)
 }
@@ -82,8 +81,8 @@ func (mc *ConsulMock) DeleteServiceIntention(name string) error {
 	return args.Error(0)
 }
 
-func (mc *ConsulMock) CheckHealth(name string, t interfaces.ServiceVariant) error {
-	args := mc.Called(name)
+func (mc *ConsulMock) CheckHealth(name, filter string) error {
+	args := mc.Called(name, filter)
 
 	return args.Error(0)
 }

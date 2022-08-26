@@ -24,7 +24,7 @@ func setupPlugin(t *testing.T) (*Plugin, *clients.ConsulMock) {
 	mc := &clients.ConsulMock{}
 
 	mc.On("CreateServiceDefaults", mock.Anything).Return(nil)
-	mc.On("CreateServiceResolver", mock.Anything).Return(nil)
+	mc.On("CreateServiceResolver", mock.Anything, mock.Anything, mock.Anything).Return(nil)
 	mc.On("CreateUpstreamRouter", mock.Anything, mock.Anything).Return(nil)
 	mc.On("CreateServiceSplitter", mock.Anything, mock.Anything, mock.Anything).Return(nil)
 	mc.On("CreateServiceIntention", mock.Anything, mock.Anything).Return(nil)
@@ -70,7 +70,7 @@ func TestConfigureReturnsValidationErrors(t *testing.T) {
 func TestSetupCreatesConsulServiceDefaults(t *testing.T) {
 	p, mc := setupPlugin(t)
 
-	err := p.Setup(context.Background())
+	err := p.Setup(context.Background(), "primary", "candidate")
 	require.NoError(t, err)
 
 	mc.AssertCalled(t, "CreateServiceDefaults", "api")
@@ -84,7 +84,7 @@ func TestSetupFailsOnCreateServiceDefaultsForServiceError(t *testing.T) {
 	testutils.ClearMockCall(&mc.Mock, "CreateServiceDefaults")
 	mc.On("CreateServiceDefaults", mock.Anything).Return(fmt.Errorf("boom"))
 
-	err := p.Setup(context.Background())
+	err := p.Setup(context.Background(), "primary", "candidate")
 
 	mc.AssertCalled(t, "CreateServiceDefaults", "api")
 	mc.AssertNotCalled(t, "CreateServiceDefaults", clients.ControllerServiceName)
@@ -100,7 +100,7 @@ func TestSetupFailsOnCreateServiceDefaultsForControllerError(t *testing.T) {
 	mc.On("CreateServiceDefaults", mock.Anything).Once().Return(nil)
 	mc.On("CreateServiceDefaults", mock.Anything).Once().Return(fmt.Errorf("boom"))
 
-	err := p.Setup(context.Background())
+	err := p.Setup(context.Background(), "primary", "candidate")
 
 	mc.AssertCalled(t, "CreateServiceDefaults", "api")
 	mc.AssertCalled(t, "CreateServiceDefaults", clients.ControllerServiceName)
@@ -117,7 +117,7 @@ func TestSetupFailsOnCreateServiceDefaultsForUpstreamError(t *testing.T) {
 	mc.On("CreateServiceDefaults", mock.Anything).Once().Return(nil)
 	mc.On("CreateServiceDefaults", mock.Anything).Once().Return(fmt.Errorf("boom"))
 
-	err := p.Setup(context.Background())
+	err := p.Setup(context.Background(), "primary", "candidate")
 
 	mc.AssertCalled(t, "CreateServiceDefaults", "api")
 	mc.AssertCalled(t, "CreateServiceDefaults", clients.ControllerServiceName)
@@ -129,26 +129,26 @@ func TestSetupFailsOnCreateServiceDefaultsForUpstreamError(t *testing.T) {
 func TestSetupCreatesConsulServiceResolver(t *testing.T) {
 	p, mc := setupPlugin(t)
 
-	err := p.Setup(context.Background())
+	err := p.Setup(context.Background(), "primary", "candidate")
 	require.NoError(t, err)
 
-	mc.AssertCalled(t, "CreateServiceResolver", "api")
+	mc.AssertCalled(t, "CreateServiceResolver", "api", "primary", "candidate")
 }
 
 func TestSetupFailsOnCreateServiceResolverError(t *testing.T) {
 	p, mc := setupPlugin(t)
 
 	testutils.ClearMockCall(&mc.Mock, "CreateServiceResolver")
-	mc.On("CreateServiceResolver", mock.Anything).Return(fmt.Errorf("boom"))
+	mc.On("CreateServiceResolver", mock.Anything, mock.Anything, mock.Anything).Return(fmt.Errorf("boom"))
 
-	err := p.Setup(context.Background())
+	err := p.Setup(context.Background(), "primary", "candidate")
 	require.Error(t, err)
 }
 
 func TestSetupCreatesUpstreamServiceRouter(t *testing.T) {
 	p, mc := setupPlugin(t)
 
-	err := p.Setup(context.Background())
+	err := p.Setup(context.Background(), "primary", "candidate")
 	require.NoError(t, err)
 
 	mc.AssertCalled(t, "CreateUpstreamRouter", "api")
@@ -160,14 +160,14 @@ func TestSetupFailsOnCreateUpstreamServiceRouterError(t *testing.T) {
 	testutils.ClearMockCall(&mc.Mock, "CreateUpstreamRouter")
 	mc.On("CreateUpstreamRouter", mock.Anything).Return(fmt.Errorf("boom"))
 
-	err := p.Setup(context.Background())
+	err := p.Setup(context.Background(), "primary", "candidate")
 	require.Error(t, err)
 }
 
 func TestSetupCreatesServiceIntention(t *testing.T) {
 	p, mc := setupPlugin(t)
 
-	err := p.Setup(context.Background())
+	err := p.Setup(context.Background(), "primary", "candidate")
 	require.NoError(t, err)
 
 	mc.AssertCalled(t, "CreateServiceIntention", "api")
@@ -179,7 +179,7 @@ func TestSetupFailsOnCreateServiceIntentionError(t *testing.T) {
 	testutils.ClearMockCall(&mc.Mock, "CreateServiceIntention")
 	mc.On("CreateServiceIntention", mock.Anything).Return(fmt.Errorf("boom"))
 
-	err := p.Setup(context.Background())
+	err := p.Setup(context.Background(), "primary", "candidate")
 	require.Error(t, err)
 }
 

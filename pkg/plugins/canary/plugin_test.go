@@ -31,13 +31,13 @@ func TestConfigureSetsState(t *testing.T) {
 	_, m := mocks.BuildMocks(t)
 
 	testutils.ClearMockCall(&m.StoreMock.Mock, "GetState")
-	m.StoreMock.On("GetState").Return([]byte(`{"current_traffic":10}`), nil)
+	m.StoreMock.On("GetState").Return([]byte(`{"candidate_traffic":10}`), nil)
 
 	p, _ := New(m.MonitorMock)
 	err := p.Configure([]byte(canaryStrategy), log, m.StoreMock)
 
 	require.NoError(t, err)
-	require.Equal(t, 10, p.state.CurrentTraffic)
+	require.Equal(t, 10, p.state.CandidateTraffic)
 }
 
 func TestConfigureSetsDefaultStateOnError(t *testing.T) {
@@ -51,7 +51,7 @@ func TestConfigureSetsDefaultStateOnError(t *testing.T) {
 	err := p.Configure([]byte(canaryStrategy), log, m.StoreMock)
 
 	require.NoError(t, err)
-	require.Equal(t, -1, p.state.CurrentTraffic)
+	require.Equal(t, -1, p.state.CandidateTraffic)
 }
 
 func TestSetsIntitialDelayToIntervalWhenNotSet(t *testing.T) {
@@ -131,7 +131,7 @@ func TestExecuteIncrementsTrafficSubsequentRuns(t *testing.T) {
 
 func TestExecuteReturnsCompleteWhenAllChecksComplete(t *testing.T) {
 	p, _ := setupPlugin(t, canaryStrategy)
-	p.state.CurrentTraffic = 70
+	p.state.CandidateTraffic = 70
 
 	status, traffic, err := p.Execute(context.Background(), "test-deployment")
 	require.NoError(t, err)
@@ -143,14 +143,14 @@ func TestExecuteReturnsCompleteWhenAllChecksComplete(t *testing.T) {
 func TestReturnsErrorWhenChecksFail(t *testing.T) {
 	p, mm := setupPlugin(t, canaryStrategy)
 	testutils.ClearMockCall(&mm.Mock, "Check")
-	p.state.CurrentTraffic = 10
+	p.state.CandidateTraffic = 10
 
 	mm.On("Check", mock.Anything, mock.Anything, mock.Anything, mock.Anything).Return(interfaces.CheckFailed, fmt.Errorf("boom"))
 
 	status, traffic, err := p.Execute(context.Background(), "test-deployment")
 	require.NoError(t, err)
 
-	require.Equal(t, interfaces.StrategyStatusFail, string(status))
+	require.Equal(t, interfaces.StrategyStatusFailed, string(status))
 	require.Equal(t, traffic, 0)
 
 	// should call check 5 times due to error threshold
@@ -167,7 +167,7 @@ func TestGetPrimaryTrafficReturns100WhenMinusOne(t *testing.T) {
 
 func TestGetPrimaryTrafficReturns0WhenGreater100(t *testing.T) {
 	p, _ := setupPlugin(t, canaryStrategy)
-	p.state.CurrentTraffic = 101
+	p.state.CandidateTraffic = 101
 
 	traf := p.GetPrimaryTraffic()
 
@@ -176,7 +176,7 @@ func TestGetPrimaryTrafficReturns0WhenGreater100(t *testing.T) {
 
 func TestGetPrimaryTrafficReturnsCorrectValue(t *testing.T) {
 	p, _ := setupPlugin(t, canaryStrategy)
-	p.state.CurrentTraffic = 20
+	p.state.CandidateTraffic = 20
 
 	traf := p.GetPrimaryTraffic()
 
@@ -185,7 +185,7 @@ func TestGetPrimaryTrafficReturnsCorrectValue(t *testing.T) {
 
 func TestGetCandidateTrafficReturnsCorrectValue(t *testing.T) {
 	p, _ := setupPlugin(t, canaryStrategy)
-	p.state.CurrentTraffic = 20
+	p.state.CandidateTraffic = 20
 
 	traf := p.GetCandidateTraffic()
 
@@ -202,7 +202,7 @@ func TestGetCandidateTrafficReturns0WhenMinusOne(t *testing.T) {
 
 func TestGetCandidateTrafficReturns100WhenGreater100(t *testing.T) {
 	p, _ := setupPlugin(t, canaryStrategy)
-	p.state.CurrentTraffic = 101
+	p.state.CandidateTraffic = 101
 
 	traf := p.GetCandidateTraffic()
 

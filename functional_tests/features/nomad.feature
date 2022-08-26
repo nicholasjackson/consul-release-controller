@@ -9,14 +9,14 @@ Feature: Nomad
     When I delete the Nomad job "payments-deployment"
       Then a Nomad job called "payments-deployment" should not exist
       And a Nomad job called "payments-primary" should not exist
-    And I create a new version of the Nomad job "./config/nomad/payments.hcl"
+    And I create a new version of the Nomad job "./config/nomad/payments.hcl" called "payments-deployment"
     Then a Nomad job called "payments-deployment" should exist
       And eventually a call to the URL "http://localhost:18080" contains the text
         """
         Payments V1
         """
     When I create a new Nomad release "./config/nomad/payments_release.json"
-      Then Nomad job called "payments-primary" should exist
+      Then a Nomad job called "payments-primary" should exist
       And a Nomad job called "payments-deployment" should not exist
       And a Consul "service-defaults" called "payments" should be created
       And a Consul "service-resolver" called "payments" should be created
@@ -25,8 +25,8 @@ Feature: Nomad
         """
         "status":"state_idle"
         """
-    When I create a new version of the Nomad job "./config/nomad/payments_canary.hcl"
-      Then Nomad job called "payments-primary" should exist
+    When I create a new version of the Nomad job "./config/nomad/payments_canary.hcl" called "payments-deployment"
+      Then a Nomad job called "payments-primary" should exist
       And a Nomad job called "payments-deployment" should exist
       And eventually a call to the URL "https://localhost:9443/v1/releases" contains the text
         """

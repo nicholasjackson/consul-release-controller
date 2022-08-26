@@ -65,7 +65,7 @@ type Consul interface {
 	// Check the Consul health of the service, returns an error when one or more endpoints are not healthy
 	// can accept a filter string to return a subset of a services instances https://www.consul.io/api-docs/health#filtering-2
 	// Returns an error if all health checks are not passing or if no service instances are found
-	CheckHealth(name string, fitler string) error
+	CheckHealth(name string, filter string) error
 
 	// SetKV sets the data at the given path in the Consul Key Value store
 	SetKV(path string, data []byte) error

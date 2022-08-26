@@ -51,7 +51,7 @@ nomad_ingress "ingress-http" {
   port {
     local  = 18080
     remote = "http"
-    host   = 80
+    host   = 18080
   }
 }
 
@@ -68,6 +68,6 @@ nomad_ingress "ingress-ssl" {
   port {
     local  = 18443
     remote = "ssl"
-    host   = 443
+    host   = 18443
   }
 }

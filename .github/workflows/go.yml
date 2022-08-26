@@ -16,7 +16,7 @@ jobs:
         go-version: 1.18
 
     - name: Build
-      run: go build -v .
+      run: go build -v ./cmd/main.go
 
     - name: Test
       run: go test -v ./...
@@ -26,7 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    
+
     - name: Set up Go
       uses: actions/setup-go@v2
       with:
@@ -40,13 +40,13 @@ jobs:
         curl -L https://github.com/kubernetes-sigs/kubebuilder/releases/download/v3.1.0/kubebuilder_linux_amd64 \
              -o /tmp/kubebuilder
         sudo mv /tmp/kubebuilder /usr/local/bin/kubebuilder
-   
+
     - name: Check Kubebuilder can generate CRDs
-      run: cd kubernetes/controller && make manifests
-    
+      run: cd pkg/controllers/kubernetes && make manifests
+
     - name: Check Kubebuilder can generate deep copy objects
-      run: cd kubernetes/controller && make generate
-   
+      run: cd pkg/controllers/kubernetes && make generate
+
   functional_tests:
     name: Run Functional Tests
     runs-on: ubuntu-latest
@@ -60,6 +60,7 @@ jobs:
           - "@k8s_canary_rollback"
           - "@k8s_canary_with_post_deployment_test"
           - "@k8s_canary_with_post_deployment_test_fail"
+          - "@nomad_canary_existing"
     steps:
     - uses: actions/checkout@v2
 
@@ -71,11 +72,11 @@ jobs:
     - name: Setup Functional Tests
       run: |
         curl https://shipyard.run/install | bash
-    
+
     - name: Run Functional Tests
       run: |
         cd functional_tests && go run . --godog.tags="${{ matrix.tags }}"
-      
+
     - name: Send status to Discord
       uses: sarisia/actions-status-discord@v1
       if: always()
@@ -94,17 +95,17 @@ jobs:
 
     steps:
     - name: Login to DockerHub
-      uses: docker/login-action@v1 
+      uses: docker/login-action@v1
       with:
         username: ${{ secrets.DOCKER_USER }}
         password: ${{ secrets.DOCKER_PASS }}
 
     - uses: actions/checkout@v2
-      
+
     - name: Build and Push Docker Image
       run: |
         make build_docker
-    
+
     - name: Send status to Discord
       uses: sarisia/actions-status-discord@v1
       if: always()
@@ -167,9 +168,9 @@ jobs:
     - name: Deploy Github pages
       uses: JamesIves/github-pages-deploy-action@v4.2.3
       with:
-        branch: gh-pages # The branch the action should deploy to.
-        folder: docs/build # The folder the action should deploy.
-    
+        branch: gh-pages  # The branch the action should deploy to.
+        folder: docs/build  # The folder the action should deploy.
+
     - name: Send status to Discord
       uses: sarisia/actions-status-discord@v1
       with:
@@ -185,7 +186,7 @@ jobs:
       - build_controller
       - functional_tests
     if: ${{ needs.check_labels.outputs.pr_labels_set == 'true' }}
-    
+
     steps:
     - name: Set up Go 1.18
       uses: actions/setup-go@v2
@@ -198,7 +199,7 @@ jobs:
         node-version: '14'
 
     - name: Login to DockerHub
-      uses: docker/login-action@v1 
+      uses: docker/login-action@v1
       with:
         username: ${{ secrets.DOCKER_USER }}
         password: ${{ secrets.DOCKER_PASS }}
@@ -217,21 +218,21 @@ jobs:
       with:
         webhook: ${{ secrets.DISCORD_WEBHOOK }}
         description: "Unable to release new version, ensure that all PRs are labeled with a valid release label (patch, minor, major)"
-      
+
     - name: Bump version and push tag
       id: tag_version
       uses: mathieudutour/github-tag-action@v6.0
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }} 
+        github_token: ${{ secrets.GITHUB_TOKEN }}
         dry_run: true
         default_bump: ${{ fromJson(steps.check_pr_labels.outputs.labels)[0] }}
-     
+
     - name: Build and Push Docker Image
       run: |
         make build_docker
       env:
         VERSION_ENV: ${{ steps.tag_version.outputs.new_version }}
-    
+
     - name: Generate the Helm release
       run: |
         make generate_helm
@@ -259,14 +260,14 @@ jobs:
     - name: Deploy Github pages
       uses: JamesIves/github-pages-deploy-action@v4.2.3
       with:
-        branch: gh-pages # The branch the action should deploy to.
-        folder: docs/build # The folder the action should deploy.
-    
+        branch: gh-pages  # The branch the action should deploy to.
+        folder: docs/build  # The folder the action should deploy.
+
     - name: Bump version and push tag
       id: create_tag
       uses: mathieudutour/github-tag-action@v6.0
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }} 
+        github_token: ${{ secrets.GITHUB_TOKEN }}
         default_bump: ${{ fromJson(steps.check_pr_labels.outputs.labels)[0] }}
 
     - name: Release
@@ -274,10 +275,10 @@ jobs:
       with:
         tag_name: ${{ steps.tag_version.outputs.new_tag }}
         token: ${{ secrets.GH_TOKEN }}
-        files: | 
+        files: |
           ./consul-release-controller-${{ steps.tag_version.outputs.new_version }}.tgz
 
-    
+
     - name: Send status to Discord
       uses: sarisia/actions-status-discord@v1
       if: always()

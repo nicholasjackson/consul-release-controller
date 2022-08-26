@@ -67,13 +67,13 @@ func TestEventConfigureWithSetupErrorSetsStatusFail(t *testing.T) {
 	r, sm, pm := setupTests(t)
 
 	testutils.ClearMockCall(&pm.ReleaserMock.Mock, "Setup")
-	pm.ReleaserMock.On("Setup", mock.Anything).Return(fmt.Errorf("boom"))
+	pm.ReleaserMock.On("Setup", mock.Anything, mock.Anything, mock.Anything).Return(fmt.Errorf("boom"))
 
 	sm.SetState(interfaces.StateStart)
 	sm.Event(interfaces.EventConfigure)
 
 	require.Eventually(t, func() bool { return historyContains(r, interfaces.StateFail) }, 100*time.Millisecond, 1*time.Millisecond)
-	pm.ReleaserMock.AssertCalled(t, "Setup", mock.Anything)
+	pm.ReleaserMock.AssertCalled(t, "Setup", mock.Anything, mock.Anything, mock.Anything)
 	pm.WebhookMock.AssertCalled(t, "Send", mock.Anything)
 }
 
@@ -87,9 +87,9 @@ func TestEventConfigureWithInitErrorSetsStatusFail(t *testing.T) {
 	sm.Event(interfaces.EventConfigure)
 
 	require.Eventually(t, func() bool { return historyContains(r, interfaces.StateFail) }, 100*time.Millisecond, 1*time.Millisecond)
-	pm.ReleaserMock.AssertCalled(t, "Setup", mock.Anything)
+	pm.ReleaserMock.AssertCalled(t, "Setup", mock.Anything, mock.Anything, mock.Anything)
 	pm.RuntimeMock.AssertCalled(t, "InitPrimary", mock.Anything, mock.Anything)
-	pm.RuntimeMock.AssertNotCalled(t, "WaitUntilServiceHealthy", mock.Anything, interfaces.Primary)
+	pm.RuntimeMock.AssertNotCalled(t, "WaitUntilServiceHealthy", mock.Anything, pm.RuntimeMock.PrimarySubsetFilter())
 	pm.WebhookMock.AssertCalled(t, "Send", mock.Anything)
 }
 
@@ -103,9 +103,9 @@ func TestEventConfigureWithHealthCheckErrorSetsStatusFail(t *testing.T) {
 	sm.Event(interfaces.EventConfigure)
 
 	require.Eventually(t, func() bool { return historyContains(r, interfaces.StateFail) }, 100*time.Millisecond, 1*time.Millisecond)
-	pm.ReleaserMock.AssertCalled(t, "Setup", mock.Anything)
+	pm.ReleaserMock.AssertCalled(t, "Setup", mock.Anything, mock.Anything, mock.Anything)
 	pm.RuntimeMock.AssertCalled(t, "InitPrimary", mock.Anything, mock.Anything)
-	pm.ReleaserMock.AssertCalled(t, "WaitUntilServiceHealthy", mock.Anything, interfaces.Primary)
+	pm.ReleaserMock.AssertCalled(t, "WaitUntilServiceHealthy", mock.Anything, pm.RuntimeMock.PrimarySubsetFilter())
 	pm.ReleaserMock.AssertNotCalled(t, "Scale", mock.Anything, mock.Anything)
 	pm.WebhookMock.AssertCalled(t, "Send", mock.Anything)
 }
@@ -120,7 +120,7 @@ func TestEventConfigureWithScaleErrorSetsStatusFail(t *testing.T) {
 	sm.Event(interfaces.EventConfigure)
 
 	require.Eventually(t, func() bool { return historyContains(r, interfaces.StateFail) }, 100*time.Millisecond, 1*time.Millisecond)
-	pm.ReleaserMock.AssertCalled(t, "Setup", mock.Anything)
+	pm.ReleaserMock.AssertCalled(t, "Setup", mock.Anything, mock.Anything, mock.Anything)
 	pm.RuntimeMock.AssertCalled(t, "InitPrimary", mock.Anything, mock.Anything)
 	pm.ReleaserMock.AssertCalled(t, "Scale", mock.Anything, 0)
 	pm.WebhookMock.AssertCalled(t, "Send", mock.Anything)
@@ -136,7 +136,7 @@ func TestEventConfigureWithRemoveErrorSetsStatusFail(t *testing.T) {
 	sm.Event(interfaces.EventConfigure)
 
 	require.Eventually(t, func() bool { return historyContains(r, interfaces.StateFail) }, 100*time.Millisecond, 1*time.Millisecond)
-	pm.ReleaserMock.AssertCalled(t, "Setup", mock.Anything)
+	pm.ReleaserMock.AssertCalled(t, "Setup", mock.Anything, mock.Anything, mock.Anything)
 	pm.RuntimeMock.AssertCalled(t, "InitPrimary", mock.Anything, mock.Anything)
 	pm.ReleaserMock.AssertCalled(t, "Scale", mock.Anything, 0)
 	pm.WebhookMock.AssertCalled(t, "Send", mock.Anything)
@@ -149,7 +149,7 @@ func TestEventConfigureWithNoErrorSetsStatusIdle(t *testing.T) {
 	sm.Event(interfaces.EventConfigure)
 
 	require.Eventually(t, func() bool { return historyContains(r, interfaces.StateIdle) }, 100*time.Millisecond, 1*time.Millisecond)
-	pm.ReleaserMock.AssertCalled(t, "Setup", mock.Anything)
+	pm.ReleaserMock.AssertCalled(t, "Setup", mock.Anything, mock.Anything, mock.Anything)
 	pm.RuntimeMock.AssertCalled(t, "InitPrimary", mock.Anything, mock.Anything)
 	pm.ReleaserMock.AssertCalled(t, "Scale", mock.Anything, 0)
 	pm.RuntimeMock.AssertCalled(t, "RemoveCandidate", mock.Anything)
@@ -183,7 +183,7 @@ func TestEventDeployWithHealthCheckErrorSetsStatusFail(t *testing.T) {
 
 	require.Eventually(t, func() bool { return historyContains(r, interfaces.StateFail) }, 100*time.Millisecond, 1*time.Millisecond)
 	pm.RuntimeMock.AssertCalled(t, "InitPrimary", mock.Anything, mock.Anything)
-	pm.ReleaserMock.AssertCalled(t, "WaitUntilServiceHealthy", mock.Anything, interfaces.Primary)
+	pm.ReleaserMock.AssertCalled(t, "WaitUntilServiceHealthy", mock.Anything, pm.RuntimeMock.PrimarySubsetFilter())
 	pm.ReleaserMock.AssertNotCalled(t, "Scale", mock.Anything, mock.Anything)
 	pm.WebhookMock.AssertCalled(t, "Send", mock.Anything)
 }
@@ -267,7 +267,7 @@ func TestEventDeployedWithExecuteErrorSetsStatusFail(t *testing.T) {
 	r, sm, pm := setupTests(t)
 
 	testutils.ClearMockCall(&pm.StrategyMock.Mock, "Execute")
-	pm.StrategyMock.On("Execute", mock.Anything, mock.Anything).Return(interfaces.StrategyStatusFail, 0, fmt.Errorf("boom"))
+	pm.StrategyMock.On("Execute", mock.Anything, mock.Anything).Return(interfaces.StrategyStatusFailed, 0, fmt.Errorf("boom"))
 
 	sm.SetState(interfaces.StateDeploy)
 	sm.Event(interfaces.EventDeployed)
@@ -380,7 +380,7 @@ func TestEventCompleteWithHealthCheckErrorSetsStatusFail(t *testing.T) {
 
 	require.Eventually(t, func() bool { return historyContains(r, interfaces.StateFail) }, 100*time.Millisecond, 1*time.Millisecond)
 	pm.ReleaserMock.AssertCalled(t, "Scale", mock.Anything, 100)
-	pm.ReleaserMock.AssertCalled(t, "WaitUntilServiceHealthy", mock.Anything, interfaces.Primary)
+	pm.ReleaserMock.AssertCalled(t, "WaitUntilServiceHealthy", mock.Anything, pm.RuntimeMock.PrimarySubsetFilter())
 	pm.ReleaserMock.AssertNotCalled(t, "Scale", mock.Anything, 0)
 	pm.WebhookMock.AssertCalled(t, "Send", mock.Anything)
 }
@@ -499,7 +499,7 @@ func TestEventDestroyWithHealthCheckErrorSetsStatusFail(t *testing.T) {
 
 	require.Eventually(t, func() bool { return historyContains(r, interfaces.StateFail) }, 100*time.Millisecond, 1*time.Millisecond)
 	pm.RuntimeMock.AssertCalled(t, "RestoreOriginal", mock.Anything)
-	pm.ReleaserMock.AssertCalled(t, "WaitUntilServiceHealthy", mock.Anything, interfaces.Candidate)
+	pm.ReleaserMock.AssertCalled(t, "WaitUntilServiceHealthy", mock.Anything, pm.RuntimeMock.CandidateSubsetFilter())
 	pm.ReleaserMock.AssertNotCalled(t, "Scale", mock.Anything, 100)
 	pm.WebhookMock.AssertCalled(t, "Send", mock.Anything)
 }

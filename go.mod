@@ -9,7 +9,6 @@ require (
 	github.com/armon/go-metrics v0.3.10
 	github.com/ashwanthkumar/slack-go-webhook v0.0.0-20200209025033-430dd4e66960
 	github.com/cucumber/godog v0.12.2
-	github.com/go-chi/chi v1.5.4
 	github.com/go-chi/chi/v5 v5.0.7
 	github.com/go-chi/httplog v0.2.1
 	github.com/go-logr/logr v1.2.0
@@ -23,6 +22,7 @@ require (
 	github.com/sethvargo/go-retry v0.1.0
 	github.com/stretchr/testify v1.7.1
 	golang.org/x/net v0.0.0-20211209124913-491a49abca63
+	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1
 	k8s.io/api v0.23.0
 	k8s.io/apimachinery v0.23.0
 	k8s.io/client-go v0.23.0

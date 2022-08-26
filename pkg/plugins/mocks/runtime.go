@@ -60,3 +60,15 @@ func (r *RuntimeMock) RemovePrimary(ctx context.Context) error {
 
 	return args.Error(0)
 }
+
+// Returns the Consul resolver subset filter that should be used for this runtime to identify candidate instances
+func (r *RuntimeMock) CandidateSubsetFilter() string {
+	r.Called()
+	return "candidate filter"
+}
+
+// Returns the Consul resolver subset filter that should be used for this runtime to identify the primary instances
+func (r *RuntimeMock) PrimarySubsetFilter() string {
+	r.Called()
+	return "primary filter"
+}

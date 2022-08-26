@@ -29,7 +29,7 @@ func BuildMocks(t *testing.T) (*ProviderMock, *Mocks) {
 	relMock := &ReleaserMock{}
 	relMock.On("Configure", mock.Anything, mock.Anything, mock.Anything).Return(nil)
 	relMock.On("BaseConfig").Return(nil)
-	relMock.On("Setup", mock.Anything).Return(nil)
+	relMock.On("Setup", mock.Anything, mock.Anything, mock.Anything).Return(nil)
 	relMock.On("Scale", mock.Anything, mock.Anything).Return(nil)
 	relMock.On("Destroy", mock.Anything, mock.Anything).Return(nil)
 	relMock.On("WaitUntilServiceHealthy", mock.Anything, mock.Anything).Return(nil)
@@ -43,6 +43,8 @@ func BuildMocks(t *testing.T) (*ProviderMock, *Mocks) {
 	runMock.On("RemoveCandidate", mock.Anything).Return(nil)
 	runMock.On("RestoreOriginal", mock.Anything).Return(nil)
 	runMock.On("RemovePrimary", mock.Anything).Return(nil)
+	runMock.On("CandidateSubsetFilter").Return(nil)
+	runMock.On("PrimarySubsetFilter").Return(nil)
 
 	monMock := &MonitorMock{}
 	monMock.On("Configure", mock.Anything, mock.Anything, mock.Anything).Return(nil)

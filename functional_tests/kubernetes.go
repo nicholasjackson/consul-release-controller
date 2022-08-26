@@ -107,7 +107,7 @@ func iDeployANewVersionOfTheKubernetesDeployment(arg1 string) error {
 	_, err = cs.GetHealthyDeployment(ctx, dep.Name, dep.Namespace)
 	if err != nil {
 		logger.Debug("Kubernetes deployment not found", "name", dep.Name, "namespace", dep.Namespace, "error", err)
-		return fmt.Errorf("unable to find deployment: %s", err)
+		return fmt.Errorf("unable to find deployment: %s, %s", dep.Name, err)
 	}
 
 	return nil
@@ -127,7 +127,7 @@ func iDeleteTheKubernetesDeployment(name string) error {
 	}
 
 	if err != clients.ErrDeploymentNotFound {
-		return fmt.Errorf("unable to delete deployment: %s", err)
+		return fmt.Errorf("unable to delete deployment: %s, %s", name, err)
 	}
 
 	return nil
@@ -143,7 +143,7 @@ func aKubernetesDeploymentCalledShouldExist(arg1 string) error {
 	defer cancel()
 	_, err = cs.GetHealthyDeployment(ctx, arg1, "default")
 	if err != nil {
-		return fmt.Errorf("unable to get Kubernetes deployment, error: %s", err)
+		return fmt.Errorf("unable to get Kubernetes deployment: %s, error: %s", arg1, err)
 	}
 
 	return err

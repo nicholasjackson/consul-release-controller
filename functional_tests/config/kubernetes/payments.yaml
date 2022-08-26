@@ -20,7 +20,7 @@ spec:
         consul.hashicorp.com/connect-inject: 'true'
         #consul.hashicorp.com/transparent-proxy: 'true'
         #consul.hashicorp.com/transparent-proxy-overwrite-probes: 'true'
-    spec:  
+    spec:
       serviceAccountName: payments
       automountServiceAccountToken: true
       containers:

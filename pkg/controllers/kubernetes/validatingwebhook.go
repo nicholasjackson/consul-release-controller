@@ -34,7 +34,14 @@ func (a *deploymentAdmission) Handle(ctx context.Context, req admission.Request)
 	}
 
 	// check if the deployment is allowed
-	resp, err := a.admission.Check(ctx, deployment.Name, deployment.Namespace, deployment.Labels, deployment.ResourceVersion, interfaces.RuntimePlatformKubernetes)
+	resp, err := a.admission.Check(
+		ctx,
+		deployment.Name,
+		deployment.Namespace,
+		deployment.Labels,
+		deployment.ResourceVersion,
+		interfaces.RuntimePlatformKubernetes)
+
 	if err != nil && resp == admissionController.AdmissionError {
 		return admission.Errored(http.StatusInternalServerError, err)
 	}

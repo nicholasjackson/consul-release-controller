@@ -59,6 +59,8 @@ functional_tests_kubernetes:
 functional_tests_nomad:
 	cd functional_tests && go run . --godog.tags="@nomad_canary_existing"
 
+functional_tests_all: functional_tests_kubernetes functional_tests_nomad
+
 # Run the functional tests, without creating the environment
 # the environment can be created manually by running shipyard run ./shipyard/nomad
 functional_tests_nomad_no_env:

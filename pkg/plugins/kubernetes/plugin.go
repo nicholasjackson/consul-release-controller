@@ -4,24 +4,18 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"os"
-	"time"
 
 	"github.com/hashicorp/go-hclog"
 	"github.com/nicholasjackson/consul-release-controller/pkg/clients"
 	"github.com/nicholasjackson/consul-release-controller/pkg/plugins/interfaces"
-	v1 "k8s.io/api/apps/v1"
 )
 
-var retryTimeout = 600 * time.Second
-var retryInterval = 1 * time.Second
-
 type Plugin struct {
-	log        hclog.Logger
-	store      interfaces.PluginStateStore
-	kubeClient clients.Kubernetes
-	config     *PluginConfig
-	state      *PluginState
+	log    hclog.Logger
+	store  interfaces.PluginStateStore
+	client clients.RuntimeClient
+	config *PluginConfig
+	state  *PluginState
 }
 
 type PluginConfig struct {
@@ -32,10 +26,9 @@ type PluginState struct {
 	interfaces.RuntimeBaseState
 }
 
-func New() (*Plugin, error) {
-
+func New(c clients.RuntimeClient) (*Plugin, error) {
 	// create the client
-	return &Plugin{}, nil
+	return &Plugin{client: c}, nil
 }
 
 func (p *Plugin) Configure(data json.RawMessage, log hclog.Logger, store interfaces.PluginStateStore) error {
@@ -43,14 +36,7 @@ func (p *Plugin) Configure(data json.RawMessage, log hclog.Logger, store interfa
 	p.store = store
 	p.config = &PluginConfig{}
 
-	kc, err := clients.NewKubernetes(os.Getenv("KUBECONFIG"), retryTimeout, retryInterval, log.ResetNamed("kubernetes-client"))
-	if err != nil {
-		log.Error("Unable to create Kubernetes client", "error", err)
-	}
-
-	p.kubeClient = kc
-
-	err = json.Unmarshal(data, p.config)
+	err := json.Unmarshal(data, p.config)
 	if err != nil {
 		return err
 	}
@@ -111,12 +97,12 @@ func (p *Plugin) InitPrimary(ctx context.Context, releaseName string) (interface
 
 	p.state.PrimaryName = fmt.Sprintf("%s-primary", releaseName)
 
-	var primaryDeployment *v1.Deployment
-	var candidateDeployment *v1.Deployment
+	var primaryDeployment *clients.Deployment
+	var candidateDeployment *clients.Deployment
 	var err error
 
 	// have we already created the primary? if so return
-	_, primaryErr := p.kubeClient.GetDeployment(ctx, p.state.PrimaryName, p.config.Namespace)
+	_, primaryErr := p.client.GetDeployment(ctx, p.state.PrimaryName, p.config.Namespace)
 
 	// if we already have a primary exit
 	if primaryErr == nil {
@@ -126,7 +112,7 @@ func (p *Plugin) InitPrimary(ctx context.Context, releaseName string) (interface
 	}
 
 	// fetch the current deployment
-	candidateDeployment, err = p.kubeClient.GetDeploymentWithSelector(ctx, p.config.DeploymentSelector, p.config.Namespace)
+	candidateDeployment, err = p.client.GetDeploymentWithSelector(ctx, p.config.DeploymentSelector, p.config.Namespace)
 	// if we have no Candidate there is nothing we can do
 	if err != nil || candidateDeployment == nil {
 		p.log.Debug("No candidate deployment, nothing to do")
@@ -138,12 +124,21 @@ func (p *Plugin) InitPrimary(ctx context.Context, releaseName string) (interface
 
 	// create a new primary appending primary to the deployment name
 	p.log.Debug("Cloning deployment", "name", p.state.CandidateName, "namespace", p.config.Namespace)
-	primaryDeployment = candidateDeployment.DeepCopy()
-	primaryDeployment.Name = p.state.PrimaryName
-	primaryDeployment.ResourceVersion = "primary"
+	primaryDeployment = &clients.Deployment{
+		Name:      p.state.PrimaryName,
+		Namespace: candidateDeployment.Namespace,
+		Meta:      candidateDeployment.Meta,
+		Instances: candidateDeployment.Instances,
+	}
+
+	if primaryDeployment.Meta == nil {
+		primaryDeployment.Meta = map[string]string{}
+	}
+
+	primaryDeployment.Meta[interfaces.RuntimeDeploymentVersionLabel] = "1"
 
 	// save the new primary
-	err = p.kubeClient.UpsertDeployment(ctx, primaryDeployment)
+	err = p.client.CloneDeployment(ctx, candidateDeployment, primaryDeployment)
 	if err != nil {
 		p.log.Debug("Unable to create Primary deployment", "name", p.state.PrimaryName, "namespace", p.config.Namespace, "error", err)
 
@@ -151,7 +146,7 @@ func (p *Plugin) InitPrimary(ctx context.Context, releaseName string) (interface
 	}
 
 	// check the health of the primary
-	_, err = p.kubeClient.GetHealthyDeployment(ctx, p.state.PrimaryName, p.config.Namespace)
+	_, err = p.client.GetHealthyDeployment(ctx, p.state.PrimaryName, p.config.Namespace)
 	if err != nil {
 		return interfaces.RuntimeDeploymentInternalError, err
 	}
@@ -169,7 +164,7 @@ func (p *Plugin) PromoteCandidate(ctx context.Context) (interfaces.RuntimeDeploy
 	defer p.saveState()
 
 	// the deployment might not yet exist due to eventual consistency
-	candidate, err := p.kubeClient.GetHealthyDeployment(ctx, p.state.CandidateName, p.config.Namespace)
+	candidateDeployment, err := p.client.GetHealthyDeployment(ctx, p.state.CandidateName, p.config.Namespace)
 
 	if err == clients.ErrDeploymentNotFound {
 		p.log.Debug("Candidate deployment does not exist", "name", p.state.CandidateName, "namespace", p.config.Namespace)
@@ -185,7 +180,7 @@ func (p *Plugin) PromoteCandidate(ctx context.Context) (interfaces.RuntimeDeploy
 
 	// delete the old primary deployment if exists
 	p.log.Debug("Delete existing primary deployment", "name", p.state.PrimaryName, "namespace", p.config.Namespace)
-	err = p.kubeClient.DeleteDeployment(ctx, p.state.PrimaryName, p.config.Namespace)
+	err = p.client.DeleteDeployment(ctx, p.state.PrimaryName, p.config.Namespace)
 	if err != nil {
 		p.log.Error("Unable to remove Kubernetes deployment", "name", p.state.PrimaryName, "namespace", p.config.Namespace, "error", err)
 		return interfaces.RuntimeDeploymentInternalError, fmt.Errorf("unable to remove previous primary deployment: %s", err)
@@ -193,29 +188,32 @@ func (p *Plugin) PromoteCandidate(ctx context.Context) (interfaces.RuntimeDeploy
 
 	// create a new primary deployment from the canary
 	p.log.Debug("Creating primary deployment from", "name", p.state.CandidateName, "namespace", p.config.Namespace)
-	primary := candidate.DeepCopy()
-	primary.Name = p.state.PrimaryName
-	primary.ResourceVersion = "primary"
-
-	// add labels to ensure the deployment is not picked up by the validating webhook
-	if primary.Labels == nil {
-		primary.Labels = map[string]string{}
+	primaryDeployment := &clients.Deployment{
+		ResourceVersion: "primary",
+		Name:            p.state.PrimaryName,
+		Namespace:       candidateDeployment.Namespace,
+		Meta:            candidateDeployment.Meta,
+		Instances:       candidateDeployment.Instances,
 	}
 
-	primary.Labels[interfaces.RuntimeDeploymentVersionLabel] = "1"
+	if primaryDeployment.Meta == nil {
+		primaryDeployment.Meta = map[string]string{}
+	}
 
-	// save the new deployment
-	err = p.kubeClient.UpsertDeployment(ctx, primary)
+	primaryDeployment.Meta[interfaces.RuntimeDeploymentVersionLabel] = "1"
+
+	// save the new primary
+	err = p.client.CloneDeployment(ctx, candidateDeployment, primaryDeployment)
 	if err != nil {
-		p.log.Error("Unable to create Primary deployment", "name", p.state.PrimaryName, "namespace", p.config.Namespace, "dep", primary, "error", err)
+		p.log.Debug("Unable to create Primary deployment", "name", p.state.PrimaryName, "namespace", p.config.Namespace, "error", err)
 
 		return interfaces.RuntimeDeploymentInternalError, fmt.Errorf("unable to clone deployment: %s", err)
 	}
 
-	p.log.Debug("Successfully created new Primary deployment", "name", p.state.PrimaryName, "namespace", primary.Namespace)
+	p.log.Debug("Successfully created new Primary deployment", "name", p.state.PrimaryName, "namespace", primaryDeployment.Namespace)
 
 	// wait for deployment healthy
-	_, err = p.kubeClient.GetHealthyDeployment(ctx, p.state.PrimaryName, primary.Namespace)
+	_, err = p.client.GetHealthyDeployment(ctx, p.state.PrimaryName, primaryDeployment.Namespace)
 	if err != nil {
 		p.log.Error("Primary deployment not healthy", "name", p.state.PrimaryName, "namespace", p.config.Namespace, "error", err)
 
@@ -234,7 +232,7 @@ func (p *Plugin) RemoveCandidate(ctx context.Context) error {
 	defer p.saveState()
 
 	// get the candidate
-	d, err := p.kubeClient.GetDeployment(ctx, p.state.CandidateName, p.config.Namespace)
+	d, err := p.client.GetDeployment(ctx, p.state.CandidateName, p.config.Namespace)
 	if err == clients.ErrDeploymentNotFound {
 		p.log.Debug("Candidate not found", "name", p.state.CandidateName, "namespace", p.config.Namespace, "error", err)
 
@@ -248,10 +246,15 @@ func (p *Plugin) RemoveCandidate(ctx context.Context) error {
 	}
 
 	// scale the canary to 0
-	zero := int32(0)
-	d.Spec.Replicas = &zero
+	d.Instances = 0
 
-	err = p.kubeClient.UpsertDeployment(ctx, d)
+	if d.Meta == nil {
+		d.Meta = map[string]string{}
+	}
+
+	d.Meta[interfaces.RuntimeDeploymentVersionLabel] = d.ResourceVersion
+
+	err = p.client.UpdateDeployment(ctx, d)
 	if err != nil {
 		p.log.Error("Unable to scale Kubernetes deployment", "name", p.state.CandidateName, "namespace", p.config.Namespace, "error", err)
 		return err
@@ -272,7 +275,7 @@ func (p *Plugin) RestoreOriginal(ctx context.Context) error {
 	defer p.saveState()
 
 	// get the primary
-	primaryDeployment, err := p.kubeClient.GetDeployment(ctx, p.state.PrimaryName, p.config.Namespace)
+	primaryDeployment, err := p.client.GetDeployment(ctx, p.state.PrimaryName, p.config.Namespace)
 
 	// if there is no primary, return, nothing we can do
 	if err == clients.ErrDeploymentNotFound {
@@ -290,7 +293,7 @@ func (p *Plugin) RestoreOriginal(ctx context.Context) error {
 
 	p.log.Debug("Delete existing candidate deployment", "name", p.state.CandidateName, "namespace", p.config.Namespace)
 
-	err = p.kubeClient.DeleteDeployment(ctx, p.state.CandidateName, p.config.Namespace)
+	err = p.client.DeleteDeployment(ctx, p.state.CandidateName, p.config.Namespace)
 	if err != nil && err != clients.ErrDeploymentNotFound {
 		p.log.Error("Unable to remove existing candidate deployment", "name", p.state.PrimaryName, "namespace", p.config.Namespace, "error", err)
 
@@ -298,16 +301,20 @@ func (p *Plugin) RestoreOriginal(ctx context.Context) error {
 	}
 
 	// create canary from the current primary
-	cd := primaryDeployment.DeepCopy()
-	cd.Name = p.state.CandidateName
-	cd.ResourceVersion = ""
+	candidateDeployment := &clients.Deployment{
+		Name:            p.state.CandidateName,
+		Namespace:       primaryDeployment.Namespace,
+		ResourceVersion: "",
+		Instances:       primaryDeployment.Instances,
+		Meta:            primaryDeployment.Meta,
+	}
 
 	// remove the ownership label so that it can be updated as normal
-	delete(cd.Labels, interfaces.RuntimeDeploymentVersionLabel)
+	delete(candidateDeployment.Meta, interfaces.RuntimeDeploymentVersionLabel)
 
 	p.log.Debug("Clone primary to create original deployment", "primary", p.state.PrimaryName, "candidate", p.state.CandidateName, "namespace", p.config.Namespace)
 
-	err = p.kubeClient.UpsertDeployment(ctx, cd)
+	err = p.client.CloneDeployment(ctx, primaryDeployment, candidateDeployment)
 	if err != nil {
 		p.log.Error("Unable to restore original deployment", "name", p.state.CandidateName, "namespace", p.config.Namespace, "error", err)
 
@@ -315,7 +322,7 @@ func (p *Plugin) RestoreOriginal(ctx context.Context) error {
 	}
 
 	// wait for health checks
-	_, err = p.kubeClient.GetHealthyDeployment(ctx, cd.Name, cd.Namespace)
+	_, err = p.client.GetHealthyDeployment(ctx, candidateDeployment.Name, candidateDeployment.Namespace)
 	if err != nil {
 		p.log.Error("Original deployment not healthy", "name", p.state.CandidateName, "namespace", p.config.Namespace, "error", err)
 
@@ -332,7 +339,7 @@ func (p *Plugin) RemovePrimary(ctx context.Context) error {
 	defer p.saveState()
 
 	// delete the primary
-	err := p.kubeClient.DeleteDeployment(ctx, p.state.PrimaryName, p.config.Namespace)
+	err := p.client.DeleteDeployment(ctx, p.state.PrimaryName, p.config.Namespace)
 	// if there is no primary, return, nothing we can do
 	if err == clients.ErrDeploymentNotFound {
 		p.log.Debug("Primary does not exist, exiting", "name", p.state.PrimaryName, "namespace", p.config.Namespace)

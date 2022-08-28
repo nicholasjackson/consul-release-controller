@@ -30,22 +30,47 @@ const (
 var ErrDeploymentNotFound = fmt.Errorf(DeploymentNotFound)
 var ErrDeploymentNotHealthy = fmt.Errorf(DeploymentNotHealthy)
 
-// Kubernetes is a high level functional interface for interacting with the Kubernetes API
-type Kubernetes interface {
+// Deployment is a type that defines an abstract deployment
+type Deployment struct {
+	// Name of the deployment
+	Name string
+	// Namespace for the deployment
+	Namespace string
+	// ResourceVersion of the deployment
+	ResourceVersion string
+	// Meta data associated with the deployment, e.g. translates to labels in Kubernetes or Meta in Nomad
+	Meta map[string]string
+	// Instances of a deployment to run
+	Instances int
+}
+
+// NewDeployment creates a new deployment
+func NewDeployment() *Deployment {
+	return &Deployment{
+		Meta: map[string]string{},
+	}
+}
+
+// RuntimeClient is a high level functional interface for interacting with the runtime APIs like Kubernetes
+type RuntimeClient interface {
 	// GetDeployment returns a Kubernetes deployment matching the given name and
 	// namespace.
 	// If the deployment does not exist a DeploymentNotFound error will be returned
 	// and a nil deployments
 	// Any other error than DeploymentNotFound can be treated like an internal error
 	// in executing the request
-	GetDeployment(ctx context.Context, name, namespace string) (*appsv1.Deployment, error)
+	GetDeployment(ctx context.Context, name, namespace string) (*Deployment, error)
 
 	// GetDeploymentWithSelector returns the first deployment whos name and namespace match the given
 	// regular expression and namespace.
-	GetDeploymentWithSelector(ctx context.Context, selector, namespace string) (*appsv1.Deployment, error)
+	GetDeploymentWithSelector(ctx context.Context, selector, namespace string) (*Deployment, error)
 
-	// UpsertDeployment creates or updates the given Kubernetes Deployment
-	UpsertDeployment(ctx context.Context, dep *appsv1.Deployment) error
+	// UpdateDeployment updates an active deployment, settng metadata or scale parameters, name and namespace can not be changed
+	// returns DeploymentNotFound if the deployment does not exist
+	UpdateDeployment(ctx context.Context, deployment *Deployment) error
+
+	// CloneDeployment creates a clone of the existing deployment using the details provided in new deployment
+	CloneDeployment(ctx context.Context, existingDeployment *Deployment, newDeployment *Deployment) error
 
 	// DeleteDeployment deletes the given Kubernetes Deployment
 	DeleteDeployment(ctx context.Context, name, namespace string) error
@@ -55,7 +80,24 @@ type Kubernetes interface {
 	// returns a nil deployment and a ErrDeploymentNotFound error when the deployment does not exist
 	// returns a nill deployment and a ErrDeploymentNotHealthy error when the deployment exists but is not in a healthy state
 	// any other error type signifies an internal error
-	GetHealthyDeployment(ctx context.Context, name, namespace string) (*appsv1.Deployment, error)
+	GetHealthyDeployment(ctx context.Context, name, namespace string) (*Deployment, error)
+}
+
+// Kubernetes defines an interface for a Kubernetes client
+type Kubernetes interface {
+	RuntimeClient
+
+	// GetKubernetesDeployment returns a appsv1.Deployment for the given parameters using a regex to match the deployment name
+	GetKubernetesDeploymentWithSelector(ctx context.Context, selector, namespace string) (*appsv1.Deployment, error)
+
+	// GetKubernetesDeployment returns an appsv1.Deployment for the given name and namespace
+	GetKubernetesDeployment(ctx context.Context, name, namespace string) (*appsv1.Deployment, error)
+
+	// GetHealthyKubernetes deployment finds a deployment and returns an appsv1.Deployment only when the deployment is healthy
+	GetHealthyKubernetesDeployment(ctx context.Context, name, namespace string) (*appsv1.Deployment, error)
+
+	// UpsertKubernetesDeployment creates or updates the given Kubernetes Deployment
+	UpsertKubernetesDeployment(ctx context.Context, dep *appsv1.Deployment) error
 
 	// InsertRelease creates or updates the given Kubernetes Release
 	InsertRelease(ctx context.Context, dep *v1release.Release) error
@@ -99,6 +141,7 @@ func NewKubernetes(configPath string, timeout, interval time.Duration, l hclog.L
 	return &KubernetesImpl{clientset: cs, controllerClient: cc, timeout: timeout, interval: interval, logger: l}, nil
 }
 
+// KubernetesImpl is the concrete implementation of the Kubernetes client interface
 type KubernetesImpl struct {
 	clientset        *kubernetes.Clientset
 	controllerClient controller.Client
@@ -107,7 +150,7 @@ type KubernetesImpl struct {
 	logger           hclog.Logger
 }
 
-func (k *KubernetesImpl) GetDeploymentWithSelector(ctx context.Context, selector, namespace string) (*appsv1.Deployment, error) {
+func (k *KubernetesImpl) GetKubernetesDeploymentWithSelector(ctx context.Context, selector, namespace string) (*appsv1.Deployment, error) {
 	deps, err := k.clientset.AppsV1().Deployments(namespace).List(ctx, v1.ListOptions{})
 	if err != nil {
 		return nil, ErrDeploymentNotFound
@@ -125,14 +168,14 @@ func (k *KubernetesImpl) GetDeploymentWithSelector(ctx context.Context, selector
 	// iterate over the list and look for a match
 	for _, d := range deps.Items {
 		if re.MatchString(d.Name) {
-			return k.GetDeployment(ctx, d.Name, namespace)
+			return k.GetKubernetesDeployment(ctx, d.Name, namespace)
 		}
 	}
 
 	return nil, ErrDeploymentNotFound
 }
 
-func (k *KubernetesImpl) GetDeployment(ctx context.Context, name, namespace string) (*appsv1.Deployment, error) {
+func (k *KubernetesImpl) GetKubernetesDeployment(ctx context.Context, name, namespace string) (*appsv1.Deployment, error) {
 	d, err := k.clientset.AppsV1().Deployments(namespace).Get(ctx, name, v1.GetOptions{})
 
 	if errors.IsNotFound(err) {
@@ -142,7 +185,7 @@ func (k *KubernetesImpl) GetDeployment(ctx context.Context, name, namespace stri
 	return d, err
 }
 
-func (k *KubernetesImpl) UpsertDeployment(ctx context.Context, dep *appsv1.Deployment) error {
+func (k *KubernetesImpl) UpsertKubernetesDeployment(ctx context.Context, dep *appsv1.Deployment) error {
 	// set modified by
 	if dep.Labels == nil {
 		dep.Labels = map[string]string{}
@@ -164,7 +207,7 @@ func (k *KubernetesImpl) UpsertDeployment(ctx context.Context, dep *appsv1.Deplo
 	return err
 }
 
-func (k *KubernetesImpl) DeleteDeployment(ctx context.Context, name, namespace string) error {
+func (k *KubernetesImpl) DeleteKubernetesDeployment(ctx context.Context, name, namespace string) error {
 	thirty := int64(30)
 	err := k.clientset.AppsV1().Deployments(namespace).Delete(ctx, name, v1.DeleteOptions{GracePeriodSeconds: &thirty})
 
@@ -176,7 +219,7 @@ func (k *KubernetesImpl) DeleteDeployment(ctx context.Context, name, namespace s
 }
 
 // getHealthyDeployment gets the named kubernetes deployment and blocks until it is healthy
-func (k *KubernetesImpl) GetHealthyDeployment(ctx context.Context, name, namespace string) (*appsv1.Deployment, error) {
+func (k *KubernetesImpl) GetHealthyKubernetesDeployment(ctx context.Context, name, namespace string) (*appsv1.Deployment, error) {
 	retryContext, cancel := context.WithTimeout(ctx, k.timeout)
 	defer cancel()
 
@@ -186,7 +229,7 @@ func (k *KubernetesImpl) GetHealthyDeployment(ctx context.Context, name, namespa
 	err := retry.Constant(retryContext, k.interval, func(ctx context.Context) error {
 		k.logger.Debug("Checking health", "name", name, "namespace", namespace)
 
-		deployment, lastError = k.GetDeployment(ctx, name, namespace)
+		deployment, lastError = k.GetKubernetesDeployment(ctx, name, namespace)
 		if lastError == ErrDeploymentNotFound {
 			k.logger.Debug("Deployment not found", "name", name, "namespace", namespace, "error", lastError)
 
@@ -252,4 +295,91 @@ func (k *KubernetesImpl) DeleteRelease(ctx context.Context, name, namespace stri
 	}
 
 	return err
+}
+
+func (k *KubernetesImpl) GetDeployment(ctx context.Context, name, namespace string) (*Deployment, error) {
+	dep, err := k.GetKubernetesDeployment(ctx, name, namespace)
+	if dep != nil {
+		d := &Deployment{
+			Name:            dep.Name,
+			Namespace:       dep.Namespace,
+			Meta:            dep.Labels,
+			Instances:       int(*dep.Spec.Replicas),
+			ResourceVersion: dep.ResourceVersion,
+		}
+
+		return d, err
+	}
+
+	return nil, err
+}
+
+func (k *KubernetesImpl) GetDeploymentWithSelector(ctx context.Context, selector, namespace string) (*Deployment, error) {
+	dep, err := k.GetKubernetesDeploymentWithSelector(ctx, selector, namespace)
+	if dep != nil {
+		d := &Deployment{
+			Name:            dep.Name,
+			Namespace:       dep.Namespace,
+			Meta:            dep.Labels,
+			Instances:       int(*dep.Spec.Replicas),
+			ResourceVersion: dep.ResourceVersion,
+		}
+
+		return d, err
+	}
+
+	return nil, err
+}
+
+func (k *KubernetesImpl) UpdateDeployment(ctx context.Context, deployment *Deployment) error {
+	dep, err := k.GetKubernetesDeployment(ctx, deployment.Name, deployment.Namespace)
+	if err != nil {
+		return err
+	}
+
+	replicas := int32(deployment.Instances)
+	dep.Labels = deployment.Meta
+	dep.ResourceVersion = deployment.ResourceVersion
+	dep.Spec.Replicas = &replicas
+
+	return k.UpsertKubernetesDeployment(ctx, dep)
+}
+
+func (k *KubernetesImpl) CloneDeployment(ctx context.Context, existingDeployment *Deployment, newDeployment *Deployment) error {
+	fmt.Println("clone", existingDeployment.Name, existingDeployment.Namespace)
+
+	dep, err := k.GetKubernetesDeployment(ctx, existingDeployment.Name, existingDeployment.Namespace)
+	if err != nil {
+		return err
+	}
+
+	clone := dep.DeepCopy()
+
+	clone.Name = newDeployment.Name
+	clone.Namespace = newDeployment.Namespace
+	clone.Labels = newDeployment.Meta
+	clone.ResourceVersion = newDeployment.ResourceVersion
+
+	return k.UpsertKubernetesDeployment(ctx, clone)
+}
+
+func (k *KubernetesImpl) DeleteDeployment(ctx context.Context, name, namespace string) error {
+	return k.DeleteKubernetesDeployment(ctx, name, namespace)
+}
+
+func (k *KubernetesImpl) GetHealthyDeployment(ctx context.Context, name, namespace string) (*Deployment, error) {
+	dep, err := k.GetHealthyKubernetesDeployment(ctx, name, namespace)
+	if err != nil {
+		return nil, err
+	}
+
+	d := &Deployment{
+		Name:            dep.Name,
+		Namespace:       dep.Namespace,
+		Meta:            dep.Labels,
+		Instances:       int(*dep.Spec.Replicas),
+		ResourceVersion: dep.ResourceVersion,
+	}
+
+	return d, nil
 }

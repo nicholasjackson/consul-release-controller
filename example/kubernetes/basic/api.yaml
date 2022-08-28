@@ -33,7 +33,7 @@ metadata:
   labels:
     app: api_v1
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: api
@@ -48,7 +48,7 @@ spec:
         #consul.hashicorp.com/transparent-proxy: 'true'
         #consul.hashicorp.com/transparent-proxy-overwrite-probes: 'true'
         #consul.hashicorp.com/transparent-proxy-exclude-inbound-ports: '9090'
-    spec:  
+    spec:
       serviceAccountName: api
       automountServiceAccountToken: true
       containers:

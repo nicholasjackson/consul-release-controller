@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/hashicorp/go-hclog"
+	"github.com/nicholasjackson/consul-release-controller/pkg/clients"
 	"github.com/nicholasjackson/consul-release-controller/pkg/models"
 	"github.com/nicholasjackson/consul-release-controller/pkg/plugins/interfaces"
 	"github.com/stretchr/testify/mock"
@@ -150,6 +151,16 @@ func (p *ProviderMock) CreatePostDeploymentTest(pluginName, deploymentName, name
 	args := p.Called(pluginName, deploymentName, namespace, runtime, mp)
 
 	return args.Get(0).(interfaces.PostDeploymentTest), args.Error(1)
+}
+
+func (p *ProviderMock) GetRuntimeClient(runtime string) (clients.RuntimeClient, error) {
+	args := p.Called(runtime)
+
+	if rc, ok := args.Get(0).(clients.RuntimeClient); ok {
+		return rc, args.Error(1)
+	}
+
+	return nil, args.Error(1)
 }
 
 func (p *ProviderMock) GetLogger() hclog.Logger {

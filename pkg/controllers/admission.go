@@ -53,7 +53,7 @@ func NewAdmission(p interfaces.Provider, l hclog.Logger) Admission {
 // name is the deployment or job name
 // namespace is the namespace for the job or deployment
 func (a *AdmissionImpl) Check(ctx context.Context, name string, namespace string, labels map[string]string, version string, runtime string) (AdmissionResponse, error) {
-	a.log.Info("Handle deployment admission", "deployment", name, "namespaces", namespace, "labels", labels)
+	a.log.Info("Handle deployment admission", "deployment", name, "namespaces", namespace, "labels", labels, "resource_version", version)
 
 	// was the deployment modified by the release controller, if so, ignore
 	if labels != nil &&

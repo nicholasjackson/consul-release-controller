@@ -12,7 +12,7 @@ import (
 	"github.com/nicholasjackson/consul-release-controller/pkg/plugins/interfaces"
 )
 
-// StepDelay is used to set the default delay between events
+// stepDelay is used to set the default delay between events
 var stepDelay = 5 * time.Second
 
 // defaultTimeout is the default time that an event step can take before timing out
@@ -59,6 +59,8 @@ func New(r *models.Release, pluginProvider interfaces.Provider) (*StateMachine, 
 	if err != nil {
 		return nil, err
 	}
+
+	//p.kubeClient = kc
 
 	// configure the runtime plugin
 	runP.Configure(r.Runtime.Config, sm.logger.ResetNamed("runtime-plugin"), sm.storage.CreatePluginStateStore(r, "runtime"))

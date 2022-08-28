@@ -2,8 +2,11 @@ package plugins
 
 import (
 	"fmt"
+	"os"
+	"time"
 
 	"github.com/hashicorp/go-hclog"
+	"github.com/nicholasjackson/consul-release-controller/pkg/clients"
 	"github.com/nicholasjackson/consul-release-controller/pkg/models"
 	"github.com/nicholasjackson/consul-release-controller/pkg/plugins/canary"
 	"github.com/nicholasjackson/consul-release-controller/pkg/plugins/consul"
@@ -11,13 +14,18 @@ import (
 	"github.com/nicholasjackson/consul-release-controller/pkg/plugins/httptest"
 	"github.com/nicholasjackson/consul-release-controller/pkg/plugins/interfaces"
 	"github.com/nicholasjackson/consul-release-controller/pkg/plugins/kubernetes"
-	"github.com/nicholasjackson/consul-release-controller/pkg/plugins/nomad"
 	"github.com/nicholasjackson/consul-release-controller/pkg/plugins/prometheus"
 	"github.com/nicholasjackson/consul-release-controller/pkg/plugins/slack"
 	"github.com/nicholasjackson/consul-release-controller/pkg/plugins/statemachine"
 )
 
 var prov interfaces.Provider
+
+// retryTimeout is the maximum time to retry an operation
+var retryTimeout = 600 * time.Second
+
+// retryInterval is the interval at which an operation is retried
+var retryInterval = 1 * time.Second
 
 // temporarily store the active statemachines here, at some point we need to
 // think about serializing state
@@ -45,11 +53,16 @@ func (p *ProviderImpl) CreateReleaser(pluginName string) (interfaces.Releaser, e
 }
 
 func (p *ProviderImpl) CreateRuntime(pluginName string) (interfaces.Runtime, error) {
+	rc, err := p.GetRuntimeClient(pluginName)
+	if err != nil {
+		return nil, fmt.Errorf("unable to create runtime client: %s", err)
+	}
+
 	switch pluginName {
 	case PluginRuntimeTypeKubernetes:
-		return kubernetes.New()
+		return kubernetes.New(rc)
 	case PluginRuntimeTypeNomad:
-		return nomad.New()
+		return kubernetes.New(rc)
 	}
 
 	return nil, fmt.Errorf("invalid Runtime plugin type: %s", pluginName)
@@ -88,6 +101,20 @@ func (p *ProviderImpl) CreatePostDeploymentTest(pluginName, name, namespace, run
 	}
 
 	return nil, fmt.Errorf("invalid Post deployment test plugin type: %s", pluginName)
+}
+
+func (p *ProviderImpl) GetRuntimeClient(runtime string) (clients.RuntimeClient, error) {
+	switch runtime {
+	case PluginRuntimeTypeKubernetes:
+		kc, err := clients.NewKubernetes(os.Getenv("KUBECONFIG"), retryTimeout, retryInterval, p.GetLogger().ResetNamed("kubernetes-client"))
+		if err != nil {
+			return nil, fmt.Errorf("unable to create Kubernetes client: %s", err)
+		}
+
+		return kc, nil
+	}
+
+	return nil, fmt.Errorf("runtime %s not implemented", runtime)
 }
 
 func (p *ProviderImpl) GetLogger() hclog.Logger {

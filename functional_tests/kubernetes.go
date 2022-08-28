@@ -97,7 +97,7 @@ func iDeployANewVersionOfTheKubernetesDeployment(arg1 string) error {
 	ctx, cancel := context.WithTimeout(context.Background(), timeout)
 	defer cancel()
 
-	err = cs.UpsertDeployment(ctx, dep)
+	err = cs.UpsertKubernetesDeployment(ctx, dep)
 	if err != nil {
 		return fmt.Errorf("unable to create Kubernetes deployment, error: %s", err)
 	}
@@ -141,7 +141,7 @@ func aKubernetesDeploymentCalledShouldExist(arg1 string) error {
 
 	ctx, cancel := context.WithTimeout(context.Background(), timeout)
 	defer cancel()
-	_, err = cs.GetHealthyDeployment(ctx, arg1, "default")
+	_, err = cs.GetHealthyKubernetesDeployment(ctx, arg1, "default")
 	if err != nil {
 		return fmt.Errorf("unable to get Kubernetes deployment: %s, error: %s", arg1, err)
 	}
@@ -162,7 +162,7 @@ func aKubernetesDeploymentCalledShouldNotExist(arg1 string) error {
 
 		ctx, cancel := context.WithTimeout(context.Background(), timeout)
 		defer cancel()
-		dep, err := cs.GetDeployment(ctx, arg1, "default")
+		dep, err := cs.GetKubernetesDeployment(ctx, arg1, "default")
 		if err == clients.ErrDeploymentNotFound {
 			return nil
 		}

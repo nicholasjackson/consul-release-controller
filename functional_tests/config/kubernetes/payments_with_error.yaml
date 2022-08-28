@@ -7,7 +7,7 @@ metadata:
   labels:
     app: payments_v3
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: payments
@@ -20,7 +20,7 @@ spec:
         consul.hashicorp.com/connect-inject: 'true'
         #consul.hashicorp.com/transparent-proxy: 'true'
         #consul.hashicorp.com/transparent-proxy-overwrite-probes: 'true'
-    spec:  
+    spec:
       serviceAccountName: payments
       automountServiceAccountToken: true
       containers:

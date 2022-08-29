@@ -41,6 +41,7 @@ func theControllerIsRunningOnNomad() error {
 		}, shipyardLogger, true)
 
 		if err != nil {
+			fmt.Println(shipyardLogStore.String())
 			return fmt.Errorf("unable to create Nomad environment: %s", err)
 		}
 	}

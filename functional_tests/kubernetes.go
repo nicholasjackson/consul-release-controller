@@ -39,6 +39,7 @@ func theControllerIsRunningOnKubernetes() error {
 		}, shipyardLogger, true)
 
 		if err != nil {
+			fmt.Println(shipyardLogStore.String())
 			return fmt.Errorf("unable to create Kubernetes environment: %s", err)
 		}
 	}

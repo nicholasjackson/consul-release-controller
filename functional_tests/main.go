@@ -27,6 +27,7 @@ var opts = &godog.Options{
 }
 
 var logStore bytes.Buffer
+var shipyardLogStore bytes.Buffer
 var logger hclog.Logger
 var shipyardLogger hclog.Logger
 var releaseServer *server.Release
@@ -89,7 +90,9 @@ func initializeScenario(ctx *godog.ScenarioContext) {
 			shipyardLogger = hclog.New(&hclog.LoggerOptions{Name: "shipyard", Level: hclog.Trace, Color: hclog.AutoColor})
 			logger.Info("Create standard logger")
 		} else {
-			shipyardLogger = hclog.NewNullLogger()
+			shipyardLogStore = *bytes.NewBufferString("")
+			shipyardLogger = hclog.New(&hclog.LoggerOptions{Output: &logStore, Level: hclog.Trace})
+
 			logStore = *bytes.NewBufferString("")
 			logger = hclog.New(&hclog.LoggerOptions{Output: &logStore, Level: hclog.Trace})
 		}

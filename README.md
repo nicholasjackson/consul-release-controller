@@ -15,11 +15,11 @@ from on premise VMs to cloud based Nomad or Kubernetes).
 ## Supported platforms [x] currently supported:
 
 - [x] Kubernetes
-- [ ] Nomad
+- [x] Nomad
 - [ ] ECS
 - [ ] Virtual machines
 - [ ] Cross platform deployments (e.g. ECS to Kubernetes, Virtual Machine to Nomad) 
-- [ ] Enterprise feature support
+- [x] Enterprise feature support
 
 
 # Configuration

@@ -97,7 +97,7 @@ spec:
         - name: config-volume
           mountPath: /etc/config
       - name: statsd-exporter
-        image: prom/statsd-exporter 
+        image: prom/statsd-exporter
         ports:
           - containerPort: 9102
       volumes:

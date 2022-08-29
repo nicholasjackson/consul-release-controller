@@ -53,7 +53,7 @@ spec:
         consul.hashicorp.com/connect-inject: 'true'
         consul.hashicorp.com/transparent-proxy: 'false'
         consul.hashicorp.com/connect-service-upstreams: "consul-release-controller-upstreams:18080"
-    spec:  
+    spec:
       serviceAccountName: consul-release-controller
       automountServiceAccountToken: true
       containers:

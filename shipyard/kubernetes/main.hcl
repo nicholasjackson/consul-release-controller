@@ -28,21 +28,7 @@ variable "consul_release_controller_enabled" {
 }
 
 //variable "consul_image" {
-//  default = "hashicorp/consul:1.9.13"
-//}
-//
-//variable "consul_envoy_image" {
-//  default     = "envoyproxy/envoy:v1.16.5"
-//  description = "Using the debian base images as alpine does not support arm"
-//}
-
-variable "consul_image" {
-  default = "hashicorp/consul:1.11.5"
-}
-//
-//variable "consul_envoy_image" {
-//  default     = "envoyproxy/envoy:v1.20.0"
-//  description = "Using the debian base images as alpine does not support arm"
+//  default = "hashicorp/consul:1.11.5"
 //}
 
 variable "consul_tls_enabled" {
@@ -81,7 +67,7 @@ variable "controller_version" {
 }
 
 variable "controller_image" {
-  default = "${var.controller_version != "" ? "${var.controller_repo}:${var.controller_version}" : ""}"
+  default = var.controller_version != "" ? "${var.controller_repo}:${var.controller_version}" : ""
 }
 
 network "dc1" {
@@ -103,10 +89,10 @@ k8s_cluster "dc1" {
 }
 
 module "consul" {
-  source = "github.com/shipyard-run/blueprints?ref=d0ef4e69081263dad65edcf05ea3dc8da395b418/modules//kubernetes-consul"
+  source = "github.com/shipyard-run/blueprints?ref=42b91d756c8da134649c05f8e6c377e7328f10f0/modules//kubernetes-consul"
 }
 
-ingress "web" {
+ingress "api" {
   source {
     driver = "local"
 
@@ -120,7 +106,7 @@ ingress "web" {
 
     config {
       cluster = "k8s_cluster.dc1"
-      address = "web.default.svc"
+      address = "api.default.svc"
       port    = 9090
     }
   }

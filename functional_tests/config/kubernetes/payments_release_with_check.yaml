@@ -1,0 +1,44 @@
+---
+apiVersion: consul-release-controller.nicholasjackson.io/v1
+kind: Release
+metadata:
+  name: payments
+  namespace: default
+spec:
+  releaser:
+    pluginName: "consul"
+    config:
+      consulService: "payments"
+  runtime:
+    pluginName: "kubernetes"
+    config:
+      deployment: "payments-deployment"
+  postDeploymentTest:
+    pluginName: "http"
+    config:
+      path: "/"
+      method: "GET"
+      requiredTestPasses: 3
+      interval: "10s"
+      timeout: "120s"
+  strategy:
+    pluginName: "canary"
+    config:
+      initialDelay: "30s"
+      initialTraffic: 20
+      interval: "30s"
+      trafficStep: 30
+      maxTraffic: 100
+      errorThreshold: 5
+  monitor:
+    pluginName: "prometheus"
+    config:
+      address: "http://localhost:9090"
+      queries:
+        - name: "request-success"
+          preset: "envoy-request-success"
+          min: 99
+        - name: "request-duration"
+          preset: "envoy-request-duration"
+          min: 20
+          max: 200

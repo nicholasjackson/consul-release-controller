@@ -27,9 +27,9 @@ variable "consul_release_controller_enabled" {
   default     = false
 }
 
-variable "consul_image" {
-  default = "hashicorp/consul:1.11.5"
-}
+//variable "consul_image" {
+//  default = "hashicorp/consul:1.11.5"
+//}
 
 variable "consul_tls_enabled" {
   description = "Enable TLS to secure the Consul server"
@@ -89,7 +89,7 @@ k8s_cluster "dc1" {
 }
 
 module "consul" {
-  source = "github.com/shipyard-run/blueprints?ref=2519640d022cffd1aa416153dab2c3998b44d600/modules//kubernetes-consul"
+  source = "github.com/shipyard-run/blueprints?ref=42b91d756c8da134649c05f8e6c377e7328f10f0/modules//kubernetes-consul"
 }
 
 ingress "api" {

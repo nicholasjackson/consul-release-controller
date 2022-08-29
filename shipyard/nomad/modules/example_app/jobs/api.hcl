@@ -4,7 +4,7 @@ job "api-deployment" {
   datacenters = ["dc1"]
 
   group "api" {
-    count = 3
+    count = 1
 
     network {
       mode = "bridge"

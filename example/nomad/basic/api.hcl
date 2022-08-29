@@ -4,7 +4,7 @@ job "api-deployment" {
   datacenters = ["dc1"]
 
   group "api" {
-    count = 3
+    count = 1
 
     network {
       mode = "bridge"
@@ -25,8 +25,8 @@ job "api-deployment" {
       tags = ["metrics"]
       meta {
         metrics    = "prometheus"
-        job        = "${NOMAD_JOB_NAME}"
-        datacenter = "${node.datacenter}"
+        job        = NOMAD_JOB_NAME
+        datacenter = node.datacenter
       }
     }
 

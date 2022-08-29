@@ -2,7 +2,6 @@ package interfaces
 
 import (
 	"github.com/hashicorp/go-hclog"
-	"github.com/nicholasjackson/consul-release-controller/pkg/clients"
 	"github.com/nicholasjackson/consul-release-controller/pkg/models"
 )
 
@@ -29,7 +28,7 @@ type Provider interface {
 	CreatePostDeploymentTest(pluginName, deploymentName, namespace, runtime string, mp Monitor) (PostDeploymentTest, error)
 
 	// GetRuntimeClient gets a client for interacting with runtime deployments
-	GetRuntimeClient(runtimeName string) (clients.RuntimeClient, error)
+	GetRuntimeClient(runtimeName string) (RuntimeClient, error)
 
 	// Gets an instance of the current logger
 	GetLogger() hclog.Logger

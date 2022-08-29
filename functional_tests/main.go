@@ -28,6 +28,7 @@ var opts = &godog.Options{
 
 var logStore bytes.Buffer
 var logger hclog.Logger
+var shipyardLogger hclog.Logger
 var releaseServer *server.Release
 
 var environment map[string]string
@@ -85,8 +86,10 @@ func initializeScenario(ctx *godog.ScenarioContext) {
 
 		if *alwaysLog {
 			logger = hclog.New(&hclog.LoggerOptions{Name: "functional-tests", Level: hclog.Trace, Color: hclog.AutoColor})
+			shipyardLogger = hclog.New(&hclog.LoggerOptions{Name: "shipyard", Level: hclog.Trace, Color: hclog.AutoColor})
 			logger.Info("Create standard logger")
 		} else {
+			shipyardLogger = hclog.NewNullLogger()
 			logStore = *bytes.NewBufferString("")
 			logger = hclog.New(&hclog.LoggerOptions{Output: &logStore, Level: hclog.Trace})
 		}
@@ -112,7 +115,7 @@ func initializeScenario(ctx *godog.ScenarioContext) {
 
 			} else {
 				logger.Info("Destroying Shipyard environment")
-				err := executeCommand([]string{"shipyard", "destroy"}, true)
+				err := executeCommand([]string{"shipyard", "destroy"}, shipyardLogger, false)
 				if err != nil {
 					logger.Error("Unable to destroy shipyard resources", "error", err)
 					scenarioError = err
@@ -132,11 +135,7 @@ func initializeScenario(ctx *godog.ScenarioContext) {
 			os.Remove(logfile)
 			os.WriteFile(logfile, logStore.Bytes(), os.ModePerm)
 
-			d, _ := ioutil.ReadFile(logfile)
-			fmt.Printf("%s\n", string(d))
-
 			fmt.Printf("Error log written to file %s", logfile)
-
 		}
 
 		if scenarioError != nil || *dontDestroy {
@@ -148,13 +147,13 @@ func initializeScenario(ctx *godog.ScenarioContext) {
 	})
 }
 
-func executeCommand(command []string, log bool) error {
+func executeCommand(command []string, l hclog.Logger, log bool) error {
 	cmd := exec.Command(command[0], command[1:]...)
 	cmd.Dir = "../"
 
 	if log {
-		cmd.Stdout = logger.StandardWriter(&hclog.StandardLoggerOptions{ForceLevel: hclog.Debug})
-		cmd.Stderr = logger.StandardWriter(&hclog.StandardLoggerOptions{ForceLevel: hclog.Error})
+		cmd.Stdout = l.StandardWriter(&hclog.StandardLoggerOptions{ForceLevel: hclog.Debug})
+		cmd.Stderr = l.StandardWriter(&hclog.StandardLoggerOptions{ForceLevel: hclog.Error})
 	}
 
 	return cmd.Run()

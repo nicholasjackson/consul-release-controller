@@ -1,4 +1,4 @@
-package kubernetes
+package runtime
 
 import (
 	"context"
@@ -6,14 +6,13 @@ import (
 	"fmt"
 
 	"github.com/hashicorp/go-hclog"
-	"github.com/nicholasjackson/consul-release-controller/pkg/clients"
 	"github.com/nicholasjackson/consul-release-controller/pkg/plugins/interfaces"
 )
 
 type Plugin struct {
 	log    hclog.Logger
 	store  interfaces.PluginStateStore
-	client clients.RuntimeClient
+	client interfaces.RuntimeClient
 	config *PluginConfig
 	state  *PluginState
 }
@@ -26,7 +25,7 @@ type PluginState struct {
 	interfaces.RuntimeBaseState
 }
 
-func New(c clients.RuntimeClient) (*Plugin, error) {
+func New(c interfaces.RuntimeClient) (*Plugin, error) {
 	// create the client
 	return &Plugin{client: c}, nil
 }
@@ -97,8 +96,8 @@ func (p *Plugin) InitPrimary(ctx context.Context, releaseName string) (interface
 
 	p.state.PrimaryName = fmt.Sprintf("%s-primary", releaseName)
 
-	var primaryDeployment *clients.Deployment
-	var candidateDeployment *clients.Deployment
+	var primaryDeployment *interfaces.Deployment
+	var candidateDeployment *interfaces.Deployment
 	var err error
 
 	// have we already created the primary? if so return
@@ -124,7 +123,7 @@ func (p *Plugin) InitPrimary(ctx context.Context, releaseName string) (interface
 
 	// create a new primary appending primary to the deployment name
 	p.log.Debug("Cloning deployment", "name", p.state.CandidateName, "namespace", p.config.Namespace)
-	primaryDeployment = &clients.Deployment{
+	primaryDeployment = &interfaces.Deployment{
 		Name:      p.state.PrimaryName,
 		Namespace: candidateDeployment.Namespace,
 		Meta:      candidateDeployment.Meta,
@@ -166,7 +165,7 @@ func (p *Plugin) PromoteCandidate(ctx context.Context) (interfaces.RuntimeDeploy
 	// the deployment might not yet exist due to eventual consistency
 	candidateDeployment, err := p.client.GetHealthyDeployment(ctx, p.state.CandidateName, p.config.Namespace)
 
-	if err == clients.ErrDeploymentNotFound {
+	if err == interfaces.ErrDeploymentNotFound {
 		p.log.Debug("Candidate deployment does not exist", "name", p.state.CandidateName, "namespace", p.config.Namespace)
 
 		return interfaces.RuntimeDeploymentNotFound, nil
@@ -188,12 +187,11 @@ func (p *Plugin) PromoteCandidate(ctx context.Context) (interfaces.RuntimeDeploy
 
 	// create a new primary deployment from the canary
 	p.log.Debug("Creating primary deployment from", "name", p.state.CandidateName, "namespace", p.config.Namespace)
-	primaryDeployment := &clients.Deployment{
-		ResourceVersion: "primary",
-		Name:            p.state.PrimaryName,
-		Namespace:       candidateDeployment.Namespace,
-		Meta:            candidateDeployment.Meta,
-		Instances:       candidateDeployment.Instances,
+	primaryDeployment := &interfaces.Deployment{
+		Name:      p.state.PrimaryName,
+		Namespace: candidateDeployment.Namespace,
+		Meta:      candidateDeployment.Meta,
+		Instances: candidateDeployment.Instances,
 	}
 
 	if primaryDeployment.Meta == nil {
@@ -233,7 +231,7 @@ func (p *Plugin) RemoveCandidate(ctx context.Context) error {
 
 	// get the candidate
 	d, err := p.client.GetDeployment(ctx, p.state.CandidateName, p.config.Namespace)
-	if err == clients.ErrDeploymentNotFound {
+	if err == interfaces.ErrDeploymentNotFound {
 		p.log.Debug("Candidate not found", "name", p.state.CandidateName, "namespace", p.config.Namespace, "error", err)
 
 		return nil
@@ -278,7 +276,7 @@ func (p *Plugin) RestoreOriginal(ctx context.Context) error {
 	primaryDeployment, err := p.client.GetDeployment(ctx, p.state.PrimaryName, p.config.Namespace)
 
 	// if there is no primary, return, nothing we can do
-	if err == clients.ErrDeploymentNotFound {
+	if err == interfaces.ErrDeploymentNotFound {
 		p.log.Debug("Primary does not exist, exiting", "name", p.state.PrimaryName, "namespace", p.config.Namespace)
 
 		return nil
@@ -294,14 +292,14 @@ func (p *Plugin) RestoreOriginal(ctx context.Context) error {
 	p.log.Debug("Delete existing candidate deployment", "name", p.state.CandidateName, "namespace", p.config.Namespace)
 
 	err = p.client.DeleteDeployment(ctx, p.state.CandidateName, p.config.Namespace)
-	if err != nil && err != clients.ErrDeploymentNotFound {
+	if err != nil && err != interfaces.ErrDeploymentNotFound {
 		p.log.Error("Unable to remove existing candidate deployment", "name", p.state.PrimaryName, "namespace", p.config.Namespace, "error", err)
 
 		return fmt.Errorf("unable to remove previous candidate deployment: %s", err)
 	}
 
 	// create canary from the current primary
-	candidateDeployment := &clients.Deployment{
+	candidateDeployment := &interfaces.Deployment{
 		Name:            p.state.CandidateName,
 		Namespace:       primaryDeployment.Namespace,
 		ResourceVersion: "",
@@ -341,7 +339,7 @@ func (p *Plugin) RemovePrimary(ctx context.Context) error {
 	// delete the primary
 	err := p.client.DeleteDeployment(ctx, p.state.PrimaryName, p.config.Namespace)
 	// if there is no primary, return, nothing we can do
-	if err == clients.ErrDeploymentNotFound {
+	if err == interfaces.ErrDeploymentNotFound {
 		p.log.Debug("Primary does not exist, exiting", "name", p.state.PrimaryName, "namespace", p.config.Namespace)
 
 		return nil
@@ -369,12 +367,12 @@ func (p *Plugin) saveState() {
 	}
 }
 
-// Returns the Consul resolver subset filter that should be used for this runtime to identify candidate instances
+// CandidateSubsetFilter returns the Consul resolver subset filter that should be used for this runtime to identify candidate instances
 func (p *Plugin) CandidateSubsetFilter() string {
-	return fmt.Sprintf(`Service.ID not contains "%s"`, p.state.PrimaryName)
+	return p.client.CandidateSubsetFilter()
 }
 
-// Returns the Consul resolver subset filter that should be used for this runtime to identify the primary instances
+// PrimarySubsetFilter returns the Consul resolver subset filter that should be used for this runtime to identify the primary instances
 func (p *Plugin) PrimarySubsetFilter() string {
-	return fmt.Sprintf(`Service.ID contains "%s"`, p.state.PrimaryName)
+	return p.client.PrimarySubsetFilter()
 }

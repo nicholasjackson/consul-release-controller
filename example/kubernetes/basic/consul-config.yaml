@@ -29,6 +29,25 @@ spec:
 
 ---
 apiVersion: consul.hashicorp.com/v1alpha1
+kind: ServiceRouter
+metadata:
+  name: api
+spec:
+  routes:
+    - match:
+        http:
+          pathPrefix: /
+      destination:
+        service: api
+        requestTimeout: 10s
+        numRetries: 5
+        retryOnConnectFailure: true
+        retryOnStatusCodes:
+          - 503
+
+
+---
+apiVersion: consul.hashicorp.com/v1alpha1
 kind: ServiceIntentions
 metadata:
   name: ingress-gateway

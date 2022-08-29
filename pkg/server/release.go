@@ -2,7 +2,6 @@ package server
 
 import (
 	"fmt"
-	"os"
 
 	"github.com/hashicorp/go-hclog"
 	"github.com/nicholasjackson/consul-release-controller/pkg/api"
@@ -35,10 +34,6 @@ func New(log hclog.Logger) (*Release, error) {
 	if err != nil {
 		log.Error("failed to create metrics", "error", err)
 		return nil, err
-	}
-
-	for k, v := range os.Environ() {
-		log.Debug("Running with", "key", k, "value", v)
 	}
 
 	return &Release{

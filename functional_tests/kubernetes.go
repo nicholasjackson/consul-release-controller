@@ -12,6 +12,7 @@ import (
 
 	"github.com/nicholasjackson/consul-release-controller/pkg/clients"
 	v1release "github.com/nicholasjackson/consul-release-controller/pkg/controllers/kubernetes/api/v1"
+	"github.com/nicholasjackson/consul-release-controller/pkg/plugins/interfaces"
 	"github.com/sethvargo/go-retry"
 	appsv1 "k8s.io/api/apps/v1"
 	"k8s.io/apimachinery/pkg/util/yaml"
@@ -35,7 +36,7 @@ func theControllerIsRunningOnKubernetes() error {
 			"run",
 			`--var="helm_controller_enabled=false"`,
 			"./shipyard/kubernetes",
-		}, true)
+		}, shipyardLogger, true)
 
 		if err != nil {
 			return fmt.Errorf("unable to create Kubernetes environment: %s", err)
@@ -126,7 +127,7 @@ func iDeleteTheKubernetesDeployment(name string) error {
 		return nil
 	}
 
-	if err != clients.ErrDeploymentNotFound {
+	if err != interfaces.ErrDeploymentNotFound {
 		return fmt.Errorf("unable to delete deployment: %s, %s", name, err)
 	}
 
@@ -163,7 +164,7 @@ func aKubernetesDeploymentCalledShouldNotExist(arg1 string) error {
 		ctx, cancel := context.WithTimeout(context.Background(), timeout)
 		defer cancel()
 		dep, err := cs.GetKubernetesDeployment(ctx, arg1, "default")
-		if err == clients.ErrDeploymentNotFound {
+		if err == interfaces.ErrDeploymentNotFound {
 			return nil
 		}
 
@@ -227,7 +228,7 @@ func iDeleteTheKubernetesRelease(name string) error {
 		return nil
 	}
 
-	if err != clients.ErrDeploymentNotFound {
+	if err != interfaces.ErrDeploymentNotFound {
 		return fmt.Errorf("unable to delete release: %s", err)
 	}
 

@@ -15,6 +15,7 @@ import (
 
 	"github.com/hashicorp/nomad/api"
 	"github.com/nicholasjackson/consul-release-controller/pkg/clients"
+	"github.com/nicholasjackson/consul-release-controller/pkg/plugins/interfaces"
 	"github.com/sethvargo/go-retry"
 )
 
@@ -37,7 +38,7 @@ func theControllerIsRunningOnNomad() error {
 			"run",
 			`--var="install_controller=local"`,
 			"./shipyard/nomad",
-		}, true)
+		}, shipyardLogger, true)
 
 		if err != nil {
 			return fmt.Errorf("unable to create Nomad environment: %s", err)
@@ -96,7 +97,7 @@ func aNomadJobCalledShouldNotExist(arg1 string) error {
 		ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 		defer cancel()
 		_, err := cli.GetJob(ctx, arg1, "")
-		if err != clients.ErrDeploymentNotFound {
+		if err != interfaces.ErrDeploymentNotFound {
 			return retry.RetryableError(err)
 		}
 

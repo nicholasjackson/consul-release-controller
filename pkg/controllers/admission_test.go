@@ -8,8 +8,8 @@ import (
 
 	"github.com/nicholasjackson/consul-release-controller/pkg/models"
 	"github.com/nicholasjackson/consul-release-controller/pkg/plugins/interfaces"
-	"github.com/nicholasjackson/consul-release-controller/pkg/plugins/kubernetes"
 	"github.com/nicholasjackson/consul-release-controller/pkg/plugins/mocks"
+	"github.com/nicholasjackson/consul-release-controller/pkg/plugins/runtime"
 	"github.com/nicholasjackson/consul-release-controller/pkg/testutils"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
@@ -18,7 +18,7 @@ import (
 func setupAdmission(t *testing.T, deploymentName, namespace string) (Admission, *mocks.Mocks) {
 	pm, mm := mocks.BuildMocks(t)
 
-	pc := &kubernetes.PluginConfig{}
+	pc := &runtime.PluginConfig{}
 	pc.DeploymentSelector = deploymentName
 	pc.Namespace = namespace
 

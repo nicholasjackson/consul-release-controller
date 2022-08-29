@@ -4,7 +4,7 @@ job "payments-deployment" {
   datacenters = ["dc1"]
 
   group "payments" {
-    count = 3
+    count = 1
 
     network {
       mode = "bridge"
@@ -25,8 +25,8 @@ job "payments-deployment" {
       tags = ["metrics"]
       meta {
         metrics    = "prometheus"
-        job        = "${NOMAD_JOB_NAME}"
-        datacenter = "${node.datacenter}"
+        job        = NOMAD_JOB_NAME
+        datacenter = node.datacenter
       }
     }
 

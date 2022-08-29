@@ -13,8 +13,8 @@ import (
 	"github.com/nicholasjackson/consul-release-controller/pkg/plugins/discord"
 	"github.com/nicholasjackson/consul-release-controller/pkg/plugins/httptest"
 	"github.com/nicholasjackson/consul-release-controller/pkg/plugins/interfaces"
-	"github.com/nicholasjackson/consul-release-controller/pkg/plugins/kubernetes"
 	"github.com/nicholasjackson/consul-release-controller/pkg/plugins/prometheus"
+	"github.com/nicholasjackson/consul-release-controller/pkg/plugins/runtime"
 	"github.com/nicholasjackson/consul-release-controller/pkg/plugins/slack"
 	"github.com/nicholasjackson/consul-release-controller/pkg/plugins/statemachine"
 )
@@ -60,9 +60,9 @@ func (p *ProviderImpl) CreateRuntime(pluginName string) (interfaces.Runtime, err
 
 	switch pluginName {
 	case PluginRuntimeTypeKubernetes:
-		return kubernetes.New(rc)
+		return runtime.New(rc)
 	case PluginRuntimeTypeNomad:
-		return kubernetes.New(rc)
+		return runtime.New(rc)
 	}
 
 	return nil, fmt.Errorf("invalid Runtime plugin type: %s", pluginName)
@@ -103,7 +103,7 @@ func (p *ProviderImpl) CreatePostDeploymentTest(pluginName, name, namespace, run
 	return nil, fmt.Errorf("invalid Post deployment test plugin type: %s", pluginName)
 }
 
-func (p *ProviderImpl) GetRuntimeClient(runtime string) (clients.RuntimeClient, error) {
+func (p *ProviderImpl) GetRuntimeClient(runtime string) (interfaces.RuntimeClient, error) {
 	switch runtime {
 	case PluginRuntimeTypeKubernetes:
 		kc, err := clients.NewKubernetes(os.Getenv("KUBECONFIG"), retryTimeout, retryInterval, p.GetLogger().ResetNamed("kubernetes-client"))
@@ -112,6 +112,13 @@ func (p *ProviderImpl) GetRuntimeClient(runtime string) (clients.RuntimeClient, 
 		}
 
 		return kc, nil
+	case PluginRuntimeTypeNomad:
+		nc, err := clients.NewNomad(retryInterval, retryTimeout, p.GetLogger().ResetNamed("nomad-client"))
+		if err != nil {
+			return nil, fmt.Errorf("unable to create Nomad client: %s", err)
+		}
+
+		return nc, err
 	}
 
 	return nil, fmt.Errorf("runtime %s not implemented", runtime)

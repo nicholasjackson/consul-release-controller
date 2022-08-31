@@ -4,7 +4,7 @@ job "payments-deployment" {
   datacenters = ["dc1"]
 
   group "payments" {
-    count = 3
+    count = 1
 
     network {
       mode = "bridge"

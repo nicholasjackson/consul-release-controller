@@ -53,8 +53,20 @@ func main() {
 	os.Exit(status)
 }
 
+var logfile string
+var suiteError error
+
 func initializeSuite(ctx *godog.TestSuiteContext) {
 	ctx.BeforeSuite(func() {
+	})
+
+	ctx.AfterSuite(func() {
+		if suiteError != nil {
+			fmt.Printf("Error log written to file %s", logfile)
+
+			b, _ := ioutil.ReadFile(logfile)
+			fmt.Println(string(b))
+		}
 	})
 }
 
@@ -102,6 +114,11 @@ func initializeScenario(ctx *godog.ScenarioContext) {
 
 	ctx.After(func(ctx context.Context, sc *godog.Scenario, scenarioError error) (context.Context, error) {
 		logger.Info("Scenario complete, cleanup", "error", scenarioError)
+
+		if scenarioError != nil {
+			suiteError = scenarioError
+		}
+
 		if releaseServer != nil {
 			err := releaseServer.Shutdown()
 			if err != nil {
@@ -133,12 +150,12 @@ func initializeScenario(ctx *godog.ScenarioContext) {
 
 		if scenarioError != nil && !*alwaysLog {
 			pwd, _ := os.Getwd()
-			logfile := path.Join(pwd, "tests.log")
+			logfile = path.Join(pwd, "tests.log")
+
 			// create log file
 			os.Remove(logfile)
 			os.WriteFile(logfile, logStore.Bytes(), os.ModePerm)
 
-			fmt.Printf("Error log written to file %s", logfile)
 		}
 
 		if scenarioError != nil || *dontDestroy {

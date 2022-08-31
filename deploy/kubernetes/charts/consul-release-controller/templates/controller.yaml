@@ -41,6 +41,9 @@ spec:
         {{- if eq (toString .Values.autoEncrypt.enabled) "true" }}
         {{- toYaml .Values.autoEncrypt.init_container | nindent 12 }}
         {{- end }}
+        {{- if eq (toString .Values.acls.enabled) "true" }}
+        {{- toYaml .Values.acls.init_container | nindent 12 }}
+        {{- end }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
@@ -82,6 +85,8 @@ spec:
               value: /tmp/serving-certs/tls.key
             - name: UPSTREAMS
               value: "http://localhost:18080"
+            - name: ENABLE_KUBERNETES
+              value: "true"
             {{- if eq (toString .Values.autoEncrypt.enabled) "false" }}
             {{- toYaml .Values.controller.container_config.hostEnv | nindent 12 }}
             {{- end }}
@@ -90,6 +95,13 @@ spec:
             {{- end }}
             {{- if eq (toString .Values.autoEncrypt.enabled) "true" }}
             {{- toYaml .Values.autoEncrypt.env | nindent 12 }}
+            {{- end }}
+            {{- if (and .Values.acls.secretName .Values.acls.secretKey) }}
+            - name: CONSUL_HTTP_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.acls.secretName }}
+                  key: {{ .Values.acls.secretKey }}
             {{- end }}
             {{- if eq (toString .Values.acls.enabled) "true" }}
             {{- toYaml .Values.acls.env | nindent 12 }}

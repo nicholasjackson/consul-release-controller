@@ -22,6 +22,16 @@ variable "consul_acls_enabled" {
   default     = true
 }
 
+variable "consul_data_folder" {
+  description = "Data folder where output files including TLS certificates will be stored"
+  default     = data("consul_kubernetes")
+}
+
+variable "controller_token_file" {
+  description = "File containing an ACL token for the controller"
+  default     = "${var.consul_data_folder}/bootstrap_acl.token"
+}
+
 variable "consul_release_controller_enabled" {
   description = "Enable the Consul release controller using the blueprint"
   default     = false

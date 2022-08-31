@@ -10,8 +10,11 @@ controller:
       tag: "#{{ .Vars.controller_version }}"
 autoencrypt:
   enabled: #{{ .Vars.tls_enabled }}
+#{{- if eq .Vars.acls_enabled true }}
 acls:
-  enabled: #{{ .Vars.acls_enabled }}
+  secretName: "consul-controller-token"
+  secretKey: "token"
+#{{ end }}
 #{{- if eq .Vars.controller_enabled false }}
 webhook:
   service: controller-webhook
@@ -30,7 +33,87 @@ EOF
   }
 }
 
+template "cert_manager_values" {
+  disabled = !var.helm_chart_install
+
+  source = <<-EOF
+  installCRDs: 'true'
+  # Disable Transparent proxy and Consul injection
+  startupapicheck:
+    podAnnotations:
+      'consul.hashicorp.com/connect-inject': 'false'
+      'consul.hashicorp.com/transparent-proxy': 'false'
+  cainjector:
+    podAnnotations:
+      'consul.hashicorp.com/connect-inject': 'false'
+      'consul.hashicorp.com/transparent-proxy': 'false'
+  webhook:
+    podAnnotations:
+      'consul.hashicorp.com/connect-inject': 'false'
+      'consul.hashicorp.com/transparent-proxy': 'false'
+  podAnnotations:
+    'consul.hashicorp.com/connect-inject': 'false'
+    'consul.hashicorp.com/transparent-proxy': 'false'
+  EOF
+
+  destination = "${data("kube_setup")}/cert-manager-helm-values.yaml"
+}
+
+template "controller_acl_token" {
+  disabled   = !var.helm_chart_install
+  depends_on = ["module.consul"]
+
+  source = <<-EOF
+  kubectl create secret generic consul-controller-token \
+    --from-literal='token=#{{ file .Vars.token_file | trim }}' \
+    -n consul
+  EOF
+
+  destination = "${data("kube_setup")}/controller-acl-token.sh"
+
+  vars = {
+    token_file = var.controller_token_file
+  }
+}
+
+exec_remote "bootstrap_controller_acls" {
+  disabled = !var.helm_chart_install
+
+  depends_on = ["template.controller_acl_token", "module.consul"]
+
+  image {
+    name = "shipyardrun/tools:v0.6.0"
+  }
+
+  network {
+    name = "network.${var.consul_k8s_network}"
+  }
+
+  cmd = "sh"
+  args = [
+    "/data/controller-acl-token.sh",
+  ]
+
+  # Mount a volume containing the config for the kube cluster
+  volume {
+    source      = "${shipyard()}/config/${var.consul_k8s_cluster}"
+    destination = "/config"
+  }
+
+  volume {
+    source      = data("kube_setup")
+    destination = "/data"
+  }
+
+  env {
+    key   = "KUBECONFIG"
+    value = "/config/kubeconfig-docker.yaml"
+  }
+}
+
 helm "cert_manager_local" {
+  disabled = !var.helm_chart_install
+
   cluster          = "k8s_cluster.dc1"
   namespace        = "cert-manager"
   create_namespace = true
@@ -50,9 +133,7 @@ helm "cert_manager_local" {
     ]
   }
 
-  values_string = {
-    "installCRDs" = true
-  }
+  values = "${data("kube_setup")}/cert-manager-helm-values.yaml"
 }
 
 helm "consul_release_controller" {
@@ -136,7 +217,7 @@ exec_remote "get_certs" {
   ]
 
   volume {
-    source      = "${data("kube_setup")}"
+    source      = data("kube_setup")
     destination = "/output"
   }
 

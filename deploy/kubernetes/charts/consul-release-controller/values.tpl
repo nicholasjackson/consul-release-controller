@@ -24,11 +24,11 @@ controller:
           fieldPath: status.hostIP
     - name: CONSUL_HTTP_ADDR
       value: http://$(HOST_IP):8500
-    
-    # Configure additional environment variables to be added to the controller container 
+
+    # Configure additional environment variables to be added to the controller container
     env: []
 
-    # Add additional volume mounts to the controller container. 
+    # Add additional volume mounts to the controller container.
     additional_volume_mounts: []
 
     resources: {}
@@ -119,15 +119,10 @@ autoEncrypt:
       - mountPath: /consul/tls/client/ca
         name: consul-auto-encrypt-ca-cert
 
-# Default values when Consul has been deployed using the Helm chart with the controller and ACLs enabled
+# If ACLs are enabled a secret containing a valid ACL token is required
 acls:
-  enabled: false
-  env:
-  - name: CONSUL_HTTP_TOKEN
-    valueFrom: 
-      secretKeyRef:
-        name: consul-controller-acl-token
-        key: token 
+  secretName: ""
+  secretKey: ""
 
 # Configures Prometheus metrics collection
 prometheus:
@@ -137,7 +132,7 @@ prometheus:
   namespace: monitoring
   # Interval for Prometheus to scrape the controller
   scrapeInterval: 15s
-  
+
 # Not currently used, conversion webhooks will be eventually enabled
 webhook:
   enabled: "true"
@@ -146,8 +141,8 @@ webhook:
 
   # Override the default webhook service name and namespace
   # This can be used when running the controller locally
-  service: "" 
-  namespace: "" 
+  service: ""
+  namespace: ""
 
 
   # Allows adding additional DNS Names to the cert generated

@@ -1,3 +1,4 @@
+---
 name: Go
 
 on: [push]
@@ -53,6 +54,7 @@ jobs:
     needs:
       - build_controller
     strategy:
+      max-parallel: 1
       matrix:
         tags:
           - "@k8s_canary_existing"
@@ -60,7 +62,7 @@ jobs:
           - "@k8s_canary_rollback"
           - "@k8s_canary_with_post_deployment_test"
           - "@k8s_canary_with_post_deployment_test_fail"
-            #          - "@nomad_canary_existing"
+          - "@nomad_canary_existing"
     steps:
     - uses: actions/checkout@v2
 
@@ -245,7 +247,6 @@ jobs:
         default_author: github_actions
         message: 'Update helm chart to version ${{ steps.tag_version.outputs.new_version }}'
 
-
     - name: Build Docusaurus docs
       run: |
         cd docs
@@ -277,7 +278,6 @@ jobs:
         token: ${{ secrets.GH_TOKEN }}
         files: |
           ./consul-release-controller-${{ steps.tag_version.outputs.new_version }}.tgz
-
 
     - name: Send status to Discord
       uses: sarisia/actions-status-discord@v1

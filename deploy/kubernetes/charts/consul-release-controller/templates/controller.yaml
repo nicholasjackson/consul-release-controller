@@ -41,9 +41,6 @@ spec:
         {{- if eq (toString .Values.autoEncrypt.enabled) "true" }}
         {{- toYaml .Values.autoEncrypt.init_container | nindent 12 }}
         {{- end }}
-        {{- if eq (toString .Values.acls.enabled) "true" }}
-        {{- toYaml .Values.acls.init_container | nindent 12 }}
-        {{- end }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
@@ -102,9 +99,6 @@ spec:
                 secretKeyRef:
                   name: {{ .Values.acls.secretName }}
                   key: {{ .Values.acls.secretKey }}
-            {{- end }}
-            {{- if eq (toString .Values.acls.enabled) "true" }}
-            {{- toYaml .Values.acls.env | nindent 12 }}
             {{- end }}
       {{- with .Values.controller.nodeSelector }}
       nodeSelector:

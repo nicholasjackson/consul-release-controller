@@ -80,30 +80,32 @@ func New(config *ServerConfig, p interfaces.Provider, l hclog.Logger) (*Server, 
 
 // Start the server and block until complete
 func (a *Server) Start() error {
-	// Create TLS listener.
-	a.logger.Info("HTTPS Listening on ", "address", a.config.TLSBindAddress, "port", a.config.TLSBindPort)
-	l, err := net.Listen("tcp4", fmt.Sprintf("%s:%d", a.config.TLSBindAddress, a.config.TLSBindPort))
-	if err != nil {
-		return fmt.Errorf("unable to create TCP listener: %s", err)
-	}
-
-	a.httpsListener = l
-
-	a.httpsServer = &http.Server{
-		Handler:      a.router,
-		ReadTimeout:  10 * time.Second,
-		WriteTimeout: 10 * time.Second,
-	}
-
 	errChan := make(chan error)
 
-	// start the TLS endpoint
-	go func() {
-		err := a.httpsServer.Serve(tls.NewListener(l, a.tlsConfig))
-		if err != nil && err != http.ErrServerClosed {
-			errChan <- fmt.Errorf("unable to start TLS server: %s", err)
+	if a.config.TLSBindAddress != "" {
+		// Create TLS listener.
+		a.logger.Info("HTTPS Listening on ", "address", a.config.TLSBindAddress, "port", a.config.TLSBindPort)
+		l, err := net.Listen("tcp4", fmt.Sprintf("%s:%d", a.config.TLSBindAddress, a.config.TLSBindPort))
+		if err != nil {
+			return fmt.Errorf("unable to create TCP listener: %s", err)
 		}
-	}()
+
+		a.httpsListener = l
+
+		a.httpsServer = &http.Server{
+			Handler:      a.router,
+			ReadTimeout:  10 * time.Second,
+			WriteTimeout: 10 * time.Second,
+		}
+
+		// start the TLS endpoint
+		go func() {
+			err := a.httpsServer.Serve(tls.NewListener(l, a.tlsConfig))
+			if err != nil && err != http.ErrServerClosed {
+				errChan <- fmt.Errorf("unable to start TLS server: %s", err)
+			}
+		}()
+	}
 
 	// if we are listening on plain HTTP start the server
 	if a.config.HTTPBindAddress != "" {

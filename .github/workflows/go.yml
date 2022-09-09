@@ -58,10 +58,10 @@ jobs:
       matrix:
         tags:
           - "@k8s_canary_existing"
-           - "@k8s_canary_none"
-           - "@k8s_canary_rollback"
-           - "@k8s_canary_with_post_deployment_test"
-           - "@k8s_canary_with_post_deployment_test_fail"
+          - "@k8s_canary_none"
+          - "@k8s_canary_rollback"
+          - "@k8s_canary_with_post_deployment_test"
+          - "@k8s_canary_with_post_deployment_test_fail"
             #- "@nomad_canary_existing"
     steps:
     - uses: actions/checkout@v2

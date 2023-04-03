@@ -2,6 +2,7 @@ package statemachine
 
 import (
 	"bytes"
+	"context"
 	"fmt"
 	"io/ioutil"
 	"testing"
@@ -70,7 +71,7 @@ func TestEventConfigureWithSetupErrorSetsStatusFail(t *testing.T) {
 	pm.ReleaserMock.On("Setup", mock.Anything, mock.Anything, mock.Anything).Return(fmt.Errorf("boom"))
 
 	sm.SetState(interfaces.StateStart)
-	sm.Event(interfaces.EventConfigure)
+	sm.Event(context.TODO(), interfaces.EventConfigure)
 
 	require.Eventually(t, func() bool { return historyContains(r, interfaces.StateFail) }, 100*time.Millisecond, 1*time.Millisecond)
 	pm.ReleaserMock.AssertCalled(t, "Setup", mock.Anything, mock.Anything, mock.Anything)
@@ -84,7 +85,7 @@ func TestEventConfigureWithInitErrorSetsStatusFail(t *testing.T) {
 	pm.RuntimeMock.On("InitPrimary", mock.Anything, mock.Anything).Return(interfaces.RuntimeDeploymentInternalError, fmt.Errorf("boom"))
 
 	sm.SetState(interfaces.StateStart)
-	sm.Event(interfaces.EventConfigure)
+	sm.Event(context.TODO(), interfaces.EventConfigure)
 
 	require.Eventually(t, func() bool { return historyContains(r, interfaces.StateFail) }, 100*time.Millisecond, 1*time.Millisecond)
 	pm.ReleaserMock.AssertCalled(t, "Setup", mock.Anything, mock.Anything, mock.Anything)
@@ -100,7 +101,7 @@ func TestEventConfigureWithHealthCheckErrorSetsStatusFail(t *testing.T) {
 	pm.ReleaserMock.On("WaitUntilServiceHealthy", mock.Anything, mock.Anything).Return(fmt.Errorf("boom"))
 
 	sm.SetState(interfaces.StateStart)
-	sm.Event(interfaces.EventConfigure)
+	sm.Event(context.TODO(), interfaces.EventConfigure)
 
 	require.Eventually(t, func() bool { return historyContains(r, interfaces.StateFail) }, 100*time.Millisecond, 1*time.Millisecond)
 	pm.ReleaserMock.AssertCalled(t, "Setup", mock.Anything, mock.Anything, mock.Anything)
@@ -117,7 +118,7 @@ func TestEventConfigureWithScaleErrorSetsStatusFail(t *testing.T) {
 	pm.ReleaserMock.On("Scale", mock.Anything, 0).Return(fmt.Errorf("boom"))
 
 	sm.SetState(interfaces.StateStart)
-	sm.Event(interfaces.EventConfigure)
+	sm.Event(context.TODO(), interfaces.EventConfigure)
 
 	require.Eventually(t, func() bool { return historyContains(r, interfaces.StateFail) }, 100*time.Millisecond, 1*time.Millisecond)
 	pm.ReleaserMock.AssertCalled(t, "Setup", mock.Anything, mock.Anything, mock.Anything)
@@ -133,7 +134,7 @@ func TestEventConfigureWithRemoveErrorSetsStatusFail(t *testing.T) {
 	pm.RuntimeMock.On("RemoveCandidate", mock.Anything).Return(fmt.Errorf("boom"))
 
 	sm.SetState(interfaces.StateStart)
-	sm.Event(interfaces.EventConfigure)
+	sm.Event(context.TODO(), interfaces.EventConfigure)
 
 	require.Eventually(t, func() bool { return historyContains(r, interfaces.StateFail) }, 100*time.Millisecond, 1*time.Millisecond)
 	pm.ReleaserMock.AssertCalled(t, "Setup", mock.Anything, mock.Anything, mock.Anything)
@@ -146,7 +147,7 @@ func TestEventConfigureWithNoErrorSetsStatusIdle(t *testing.T) {
 	r, sm, pm := setupTests(t)
 
 	sm.SetState(interfaces.StateStart)
-	sm.Event(interfaces.EventConfigure)
+	sm.Event(context.TODO(), interfaces.EventConfigure)
 
 	require.Eventually(t, func() bool { return historyContains(r, interfaces.StateIdle) }, 100*time.Millisecond, 1*time.Millisecond)
 	pm.ReleaserMock.AssertCalled(t, "Setup", mock.Anything, mock.Anything, mock.Anything)
@@ -165,7 +166,7 @@ func TestEventDeployWithInitErrorSetsStatusFail(t *testing.T) {
 	pm.RuntimeMock.On("InitPrimary", mock.Anything, mock.Anything).Return(interfaces.RuntimeDeploymentInternalError, fmt.Errorf("boom"))
 
 	sm.SetState(interfaces.StateIdle)
-	sm.Event(interfaces.EventDeploy)
+	sm.Event(context.TODO(), interfaces.EventDeploy)
 
 	require.Eventually(t, func() bool { return historyContains(r, interfaces.StateFail) }, 100*time.Millisecond, 1*time.Millisecond)
 	pm.RuntimeMock.AssertCalled(t, "InitPrimary", mock.Anything, mock.Anything)
@@ -179,7 +180,7 @@ func TestEventDeployWithHealthCheckErrorSetsStatusFail(t *testing.T) {
 	pm.ReleaserMock.On("WaitUntilServiceHealthy", mock.Anything, mock.Anything).Return(fmt.Errorf("boom"))
 
 	sm.SetState(interfaces.StateIdle)
-	sm.Event(interfaces.EventDeploy)
+	sm.Event(context.TODO(), interfaces.EventDeploy)
 
 	require.Eventually(t, func() bool { return historyContains(r, interfaces.StateFail) }, 100*time.Millisecond, 1*time.Millisecond)
 	pm.RuntimeMock.AssertCalled(t, "InitPrimary", mock.Anything, mock.Anything)
@@ -195,7 +196,7 @@ func TestEventDeployWithScaleErrorSetsStatusFail(t *testing.T) {
 	pm.ReleaserMock.On("Scale", mock.Anything, 0).Return(fmt.Errorf("boom"))
 
 	sm.SetState(interfaces.StateIdle)
-	sm.Event(interfaces.EventDeploy)
+	sm.Event(context.TODO(), interfaces.EventDeploy)
 
 	require.Eventually(t, func() bool { return historyContains(r, interfaces.StateFail) }, 100*time.Millisecond, 1*time.Millisecond)
 	pm.RuntimeMock.AssertCalled(t, "InitPrimary", mock.Anything, mock.Anything)
@@ -210,7 +211,7 @@ func TestEventDeployWithRemoveErrorSetsStatusFail(t *testing.T) {
 	pm.RuntimeMock.On("RemoveCandidate", mock.Anything).Return(fmt.Errorf("boom"))
 
 	sm.SetState(interfaces.StateIdle)
-	sm.Event(interfaces.EventDeploy)
+	sm.Event(context.TODO(), interfaces.EventDeploy)
 
 	require.Eventually(t, func() bool { return historyContains(r, interfaces.StateFail) }, 100*time.Millisecond, 1*time.Millisecond)
 	pm.RuntimeMock.AssertCalled(t, "InitPrimary", mock.Anything, mock.Anything)
@@ -226,7 +227,7 @@ func TestEventDeployWithNoPrimarySetsStatusMonitor(t *testing.T) {
 	pm.RuntimeMock.On("InitPrimary", mock.Anything, mock.Anything).Return(interfaces.RuntimeDeploymentNoAction, nil)
 
 	sm.SetState(interfaces.StateIdle)
-	sm.Event(interfaces.EventDeploy)
+	sm.Event(context.TODO(), interfaces.EventDeploy)
 
 	require.Eventually(t, func() bool { return historyContains(r, interfaces.StateMonitor) }, 100*time.Millisecond, 1*time.Millisecond)
 	pm.RuntimeMock.AssertCalled(t, "InitPrimary", mock.Anything, mock.Anything)
@@ -239,7 +240,7 @@ func TestEventDeployWithNoErrorSetsStatusIdle(t *testing.T) {
 	r, sm, pm := setupTests(t)
 
 	sm.SetState(interfaces.StateIdle)
-	sm.Event(interfaces.EventDeploy)
+	sm.Event(context.TODO(), interfaces.EventDeploy)
 
 	require.Eventually(t, func() bool { return historyContains(r, interfaces.StateIdle) }, 100*time.Millisecond, 1*time.Millisecond)
 	pm.RuntimeMock.AssertCalled(t, "InitPrimary", mock.Anything, mock.Anything)
@@ -255,7 +256,7 @@ func TestEventDeployedWithPostDeploymentTestErrorSetsStatusRollback(t *testing.T
 	pm.PostDeploymentMock.On("Execute", mock.Anything, mock.Anything).Return(fmt.Errorf("boom"))
 
 	sm.SetState(interfaces.StateDeploy)
-	sm.Event(interfaces.EventDeployed)
+	sm.Event(context.TODO(), interfaces.EventDeployed)
 
 	require.Eventually(t, func() bool { return historyContains(r, interfaces.StateRollback) }, 100*time.Millisecond, 1*time.Millisecond)
 	pm.PostDeploymentMock.AssertCalled(t, "Execute", mock.Anything, mock.Anything)
@@ -270,7 +271,7 @@ func TestEventDeployedWithExecuteErrorSetsStatusFail(t *testing.T) {
 	pm.StrategyMock.On("Execute", mock.Anything, mock.Anything).Return(interfaces.StrategyStatusFailed, 0, fmt.Errorf("boom"))
 
 	sm.SetState(interfaces.StateDeploy)
-	sm.Event(interfaces.EventDeployed)
+	sm.Event(context.TODO(), interfaces.EventDeployed)
 
 	require.Eventually(t, func() bool { return historyContains(r, interfaces.StateFail) }, 100*time.Millisecond, 1*time.Millisecond)
 	pm.StrategyMock.AssertCalled(t, "Execute", mock.Anything, mock.Anything)
@@ -284,7 +285,7 @@ func TestEventDeployedWithExecuteSuccessSetsStatusScale(t *testing.T) {
 	pm.StrategyMock.On("Execute", mock.Anything, mock.Anything).Return(interfaces.StrategyStatusSuccess, 20, nil)
 
 	sm.SetState(interfaces.StateDeploy)
-	sm.Event(interfaces.EventDeployed)
+	sm.Event(context.TODO(), interfaces.EventDeployed)
 
 	require.Eventually(t, func() bool { return historyContains(r, interfaces.StateScale) }, 100*time.Millisecond, 1*time.Millisecond)
 	pm.StrategyMock.AssertCalled(t, "Execute", mock.Anything, mock.Anything)
@@ -299,7 +300,7 @@ func TestEventDeployedWithExecuteCompleteSetsStatusScale(t *testing.T) {
 	pm.StrategyMock.On("Execute", mock.Anything, mock.Anything).Return(interfaces.StrategyStatusComplete, 100, nil)
 
 	sm.SetState(interfaces.StateDeploy)
-	sm.Event(interfaces.EventDeployed)
+	sm.Event(context.TODO(), interfaces.EventDeployed)
 
 	require.Eventually(t, func() bool { return historyContains(r, interfaces.StatePromote) }, 100*time.Millisecond, 1*time.Millisecond)
 	pm.StrategyMock.AssertCalled(t, "Execute", mock.Anything, mock.Anything)
@@ -309,7 +310,7 @@ func TestEventHealthyWithNoTrafficSetsStatusFail(t *testing.T) {
 	r, sm, pm := setupTests(t)
 
 	sm.SetState(interfaces.StateMonitor)
-	sm.Event(interfaces.EventHealthy)
+	sm.Event(context.TODO(), interfaces.EventHealthy)
 
 	require.Eventually(t, func() bool { return historyContains(r, interfaces.StateFail) }, 100*time.Millisecond, 1*time.Millisecond)
 	pm.ReleaserMock.AssertNotCalled(t, "Scale", mock.Anything, mock.Anything)
@@ -322,7 +323,7 @@ func TestEventHealthyWithScaleErrorSetsStatusFail(t *testing.T) {
 	pm.ReleaserMock.On("Scale", mock.Anything, mock.Anything).Return(fmt.Errorf("boom"))
 
 	sm.SetState(interfaces.StateMonitor)
-	sm.Event(interfaces.EventHealthy, 20)
+	sm.Event(context.TODO(), interfaces.EventHealthy, 20)
 
 	require.Eventually(t, func() bool { return historyContains(r, interfaces.StateFail) }, 100*time.Millisecond, 1*time.Millisecond)
 	pm.ReleaserMock.AssertCalled(t, "Scale", mock.Anything, 20)
@@ -333,7 +334,7 @@ func TestEventHealthyWithNoScaleErrorSetsStatusMonitor(t *testing.T) {
 	r, sm, pm := setupTests(t)
 
 	sm.SetState(interfaces.StateMonitor)
-	sm.Event(interfaces.EventHealthy, 20)
+	sm.Event(context.TODO(), interfaces.EventHealthy, 20)
 
 	require.Eventually(t, func() bool { return historyContains(r, interfaces.StateMonitor) }, 100*time.Millisecond, 1*time.Millisecond)
 	pm.ReleaserMock.AssertCalled(t, "Scale", mock.Anything, 20)
@@ -347,7 +348,7 @@ func TestEventCompleteWithScaleCandidateErrorSetsStatusFail(t *testing.T) {
 	pm.ReleaserMock.On("Scale", mock.Anything, 100).Return(fmt.Errorf("boom"))
 
 	sm.SetState(interfaces.StateMonitor)
-	sm.Event(interfaces.EventComplete)
+	sm.Event(context.TODO(), interfaces.EventComplete)
 
 	require.Eventually(t, func() bool { return historyContains(r, interfaces.StateFail) }, 100*time.Millisecond, 1*time.Millisecond)
 	pm.ReleaserMock.AssertCalled(t, "Scale", mock.Anything, 100)
@@ -361,7 +362,7 @@ func TestEventCompleteWithPromoteErrorSetsStatusFail(t *testing.T) {
 	pm.RuntimeMock.On("PromoteCandidate", mock.Anything).Return(interfaces.RuntimeDeploymentInternalError, fmt.Errorf("boom"))
 
 	sm.SetState(interfaces.StateMonitor)
-	sm.Event(interfaces.EventComplete)
+	sm.Event(context.TODO(), interfaces.EventComplete)
 
 	require.Eventually(t, func() bool { return historyContains(r, interfaces.StateFail) }, 100*time.Millisecond, 1*time.Millisecond)
 	pm.ReleaserMock.AssertCalled(t, "Scale", mock.Anything, 100)
@@ -376,7 +377,7 @@ func TestEventCompleteWithHealthCheckErrorSetsStatusFail(t *testing.T) {
 	pm.ReleaserMock.On("WaitUntilServiceHealthy", mock.Anything, mock.Anything).Return(fmt.Errorf("boom"))
 
 	sm.SetState(interfaces.StateMonitor)
-	sm.Event(interfaces.EventComplete)
+	sm.Event(context.TODO(), interfaces.EventComplete)
 
 	require.Eventually(t, func() bool { return historyContains(r, interfaces.StateFail) }, 100*time.Millisecond, 1*time.Millisecond)
 	pm.ReleaserMock.AssertCalled(t, "Scale", mock.Anything, 100)
@@ -393,7 +394,7 @@ func TestEventCompleteWithScalePrimaryErrorSetsStatusFail(t *testing.T) {
 	pm.ReleaserMock.On("Scale", mock.Anything, 0).Return(fmt.Errorf("boom"))
 
 	sm.SetState(interfaces.StateMonitor)
-	sm.Event(interfaces.EventComplete)
+	sm.Event(context.TODO(), interfaces.EventComplete)
 
 	require.Eventually(t, func() bool { return historyContains(r, interfaces.StateFail) }, 100*time.Millisecond, 1*time.Millisecond)
 	pm.ReleaserMock.AssertCalled(t, "Scale", mock.Anything, 100)
@@ -409,7 +410,7 @@ func TestEventCompleteWithRemoveCandidateErrorSetsStatusFail(t *testing.T) {
 	pm.RuntimeMock.On("RemoveCandidate", mock.Anything).Return(fmt.Errorf("boom"))
 
 	sm.SetState(interfaces.StateMonitor)
-	sm.Event(interfaces.EventComplete)
+	sm.Event(context.TODO(), interfaces.EventComplete)
 
 	require.Eventually(t, func() bool { return historyContains(r, interfaces.StateFail) }, 100*time.Millisecond, 1*time.Millisecond)
 	pm.ReleaserMock.AssertCalled(t, "Scale", mock.Anything, 100)
@@ -423,7 +424,7 @@ func TestEventCompleteWithNoErrorSetsStatusIdle(t *testing.T) {
 	r, sm, pm := setupTests(t)
 
 	sm.SetState(interfaces.StateMonitor)
-	sm.Event(interfaces.EventComplete)
+	sm.Event(context.TODO(), interfaces.EventComplete)
 
 	require.Eventually(t, func() bool { return historyContains(r, interfaces.StateIdle) }, 100*time.Millisecond, 1*time.Millisecond)
 	pm.ReleaserMock.AssertCalled(t, "Scale", mock.Anything, 100)
@@ -440,7 +441,7 @@ func TestEventUnhealthyWithScaleErrorSetsStatusFail(t *testing.T) {
 	pm.ReleaserMock.On("Scale", mock.Anything, 0).Return(fmt.Errorf("boom"))
 
 	sm.SetState(interfaces.StateMonitor)
-	sm.Event(interfaces.EventUnhealthy)
+	sm.Event(context.TODO(), interfaces.EventUnhealthy)
 
 	require.Eventually(t, func() bool { return historyContains(r, interfaces.StateFail) }, 100*time.Millisecond, 1*time.Millisecond)
 	pm.ReleaserMock.AssertCalled(t, "Scale", mock.Anything, 0)
@@ -454,7 +455,7 @@ func TestEventUnhealthyRemoveCandidateErrorSetsStatusFail(t *testing.T) {
 	pm.RuntimeMock.On("RemoveCandidate", mock.Anything).Return(fmt.Errorf("boom"))
 
 	sm.SetState(interfaces.StateMonitor)
-	sm.Event(interfaces.EventUnhealthy)
+	sm.Event(context.TODO(), interfaces.EventUnhealthy)
 
 	require.Eventually(t, func() bool { return historyContains(r, interfaces.StateFail) }, 100*time.Millisecond, 1*time.Millisecond)
 	pm.ReleaserMock.AssertCalled(t, "Scale", mock.Anything, 0)
@@ -466,7 +467,7 @@ func TestEventUnhealthyWithNoErrorSetsStatusIdle(t *testing.T) {
 	r, sm, pm := setupTests(t)
 
 	sm.SetState(interfaces.StateMonitor)
-	sm.Event(interfaces.EventUnhealthy)
+	sm.Event(context.TODO(), interfaces.EventUnhealthy)
 
 	require.Eventually(t, func() bool { return historyContains(r, interfaces.StateIdle) }, 100*time.Millisecond, 1*time.Millisecond)
 	pm.ReleaserMock.AssertCalled(t, "Scale", mock.Anything, 0)
@@ -481,7 +482,7 @@ func TestEventDestroyWithRestoreOriginalErrorSetsStatusFail(t *testing.T) {
 	pm.RuntimeMock.On("RestoreOriginal", mock.Anything).Return(fmt.Errorf("boom"))
 
 	sm.SetState(interfaces.StateIdle)
-	sm.Event(interfaces.EventDestroy)
+	sm.Event(context.TODO(), interfaces.EventDestroy)
 
 	require.Eventually(t, func() bool { return historyContains(r, interfaces.StateFail) }, 100*time.Millisecond, 1*time.Millisecond)
 	pm.RuntimeMock.AssertCalled(t, "RestoreOriginal", mock.Anything)
@@ -495,7 +496,7 @@ func TestEventDestroyWithHealthCheckErrorSetsStatusFail(t *testing.T) {
 	pm.ReleaserMock.On("WaitUntilServiceHealthy", mock.Anything, mock.Anything).Return(fmt.Errorf("boom"))
 
 	sm.SetState(interfaces.StateIdle)
-	sm.Event(interfaces.EventDestroy)
+	sm.Event(context.TODO(), interfaces.EventDestroy)
 
 	require.Eventually(t, func() bool { return historyContains(r, interfaces.StateFail) }, 100*time.Millisecond, 1*time.Millisecond)
 	pm.RuntimeMock.AssertCalled(t, "RestoreOriginal", mock.Anything)
@@ -511,7 +512,7 @@ func TestEventDestroyWithScaleErrorSetsStatusFail(t *testing.T) {
 	pm.ReleaserMock.On("Scale", mock.Anything, 100).Return(fmt.Errorf("boom"))
 
 	sm.SetState(interfaces.StateIdle)
-	sm.Event(interfaces.EventDestroy)
+	sm.Event(context.TODO(), interfaces.EventDestroy)
 
 	require.Eventually(t, func() bool { return historyContains(r, interfaces.StateFail) }, 100*time.Millisecond, 1*time.Millisecond)
 	pm.RuntimeMock.AssertCalled(t, "RestoreOriginal", mock.Anything)
@@ -526,7 +527,7 @@ func TestEventDestroyWithRemovePrimaryErrorSetsStatusFail(t *testing.T) {
 	pm.RuntimeMock.On("RemovePrimary", mock.Anything).Return(fmt.Errorf("boom"))
 
 	sm.SetState(interfaces.StateIdle)
-	sm.Event(interfaces.EventDestroy)
+	sm.Event(context.TODO(), interfaces.EventDestroy)
 
 	require.Eventually(t, func() bool { return historyContains(r, interfaces.StateFail) }, 100*time.Millisecond, 1*time.Millisecond)
 	pm.RuntimeMock.AssertCalled(t, "RestoreOriginal", mock.Anything)
@@ -542,7 +543,7 @@ func TestEventDestroyWithDestroyErrorSetsStatusFail(t *testing.T) {
 	pm.ReleaserMock.On("Destroy", mock.Anything).Return(fmt.Errorf("boom"))
 
 	sm.SetState(interfaces.StateIdle)
-	sm.Event(interfaces.EventDestroy)
+	sm.Event(context.TODO(), interfaces.EventDestroy)
 
 	require.Eventually(t, func() bool { return historyContains(r, interfaces.StateFail) }, 100*time.Millisecond, 1*time.Millisecond)
 	pm.RuntimeMock.AssertCalled(t, "RestoreOriginal", mock.Anything)
@@ -556,7 +557,7 @@ func TestEventDestroyWithNoErrorSetsStatusIdle(t *testing.T) {
 	r, sm, pm := setupTests(t)
 
 	sm.SetState(interfaces.StateIdle)
-	sm.Event(interfaces.EventDestroy)
+	sm.Event(context.TODO(), interfaces.EventDestroy)
 
 	require.Eventually(t, func() bool { return historyContains(r, interfaces.StateIdle) }, 100*time.Millisecond, 1*time.Millisecond)
 	pm.RuntimeMock.AssertCalled(t, "RestoreOriginal", mock.Anything)

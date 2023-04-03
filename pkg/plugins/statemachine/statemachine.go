@@ -254,8 +254,12 @@ func (s *StateMachine) leaveState() func(context.Context, *fsm.Event) {
 
 func (s *StateMachine) doConfigure() func(ctx context.Context, e *fsm.Event) {
 	return func(ctx context.Context, e *fsm.Event) {
+		// passed in context is cancelled as soon as this function returns
+		// we run in a functions so not to block, therefore can not use the built
+		// in context
+
 		s.logger.Debug("Configure", "state", e.FSM.Current())
-		to, cancel := context.WithTimeout(ctx, defaultTimeout)
+		to, cancel := context.WithTimeout(context.Background(), defaultTimeout)
 
 		go func() {
 			// clean up resources if we finish before timeout
@@ -334,8 +338,12 @@ func (s *StateMachine) doConfigure() func(ctx context.Context, e *fsm.Event) {
 
 func (s *StateMachine) doDeploy() func(ctx context.Context, e *fsm.Event) {
 	return func(ctx context.Context, e *fsm.Event) {
+		// passed in context is cancelled as soon as this function returns
+		// we run in a functions so not to block, therefore can not use the built
+		// in context
+
 		s.logger.Debug("Deploy", "state", e.FSM.Current())
-		to, cancel := context.WithTimeout(ctx, defaultTimeout)
+		to, cancel := context.WithTimeout(context.Background(), defaultTimeout)
 
 		go func() {
 			// wait a few seconds as deploy is called before the new deployment is admitted to the server
@@ -412,8 +420,12 @@ func (s *StateMachine) doDeploy() func(ctx context.Context, e *fsm.Event) {
 
 func (s *StateMachine) doMonitor() func(ctx context.Context, e *fsm.Event) {
 	return func(ctx context.Context, e *fsm.Event) {
+		// passed in context is cancelled as soon as this function returns
+		// we run in a functions so not to block, therefore can not use the built
+		// in context
+
 		s.logger.Debug("Monitor", "state", e.FSM.Current())
-		to, cancel := context.WithTimeout(ctx, defaultTimeout)
+		to, cancel := context.WithTimeout(context.Background(), defaultTimeout)
 
 		go func() {
 			// clean up resources if we finish before timeout
@@ -501,8 +513,11 @@ func (s *StateMachine) doMonitor() func(ctx context.Context, e *fsm.Event) {
 
 func (s *StateMachine) doScale() func(ctx context.Context, e *fsm.Event) {
 	return func(ctx context.Context, e *fsm.Event) {
+		// passed in context is cancelled as soon as this function returns
+		// we run in a functions so not to block, therefore can not use the built
+		// in context
 		s.logger.Debug("Scale", "state", e.FSM.Current())
-		to, cancel := context.WithTimeout(ctx, defaultTimeout)
+		to, cancel := context.WithTimeout(context.Background(), defaultTimeout)
 
 		go func() {
 			// clean up resources if we finish before timeout
@@ -555,8 +570,11 @@ func (s *StateMachine) doScale() func(ctx context.Context, e *fsm.Event) {
 
 func (s *StateMachine) doPromote() func(ctx context.Context, e *fsm.Event) {
 	return func(ctx context.Context, e *fsm.Event) {
+		// passed in context is cancelled as soon as this function returns
+		// we run in a functions so not to block, therefore can not use the built
+		// in context
 		s.logger.Debug("Promote", "state", e.FSM.Current())
-		to, cancel := context.WithTimeout(ctx, defaultTimeout)
+		to, cancel := context.WithTimeout(context.Background(), defaultTimeout)
 
 		go func() {
 			// clean up resources if we finish before timeout
@@ -623,6 +641,10 @@ func (s *StateMachine) doPromote() func(ctx context.Context, e *fsm.Event) {
 
 func (s *StateMachine) doRollback() func(ctx context.Context, e *fsm.Event) {
 	return func(ctx context.Context, e *fsm.Event) {
+		// passed in context is cancelled as soon as this function returns
+		// we run in a functions so not to block, therefore can not use the built
+		// in context
+
 		s.logger.Debug("Rollback", "state", e.FSM.Current())
 		to, cancel := context.WithTimeout(context.Background(), defaultTimeout)
 
@@ -672,7 +694,11 @@ func (s *StateMachine) doRollback() func(ctx context.Context, e *fsm.Event) {
 
 func (s *StateMachine) doDestroy() func(ctx context.Context, e *fsm.Event) {
 	return func(ctx context.Context, e *fsm.Event) {
-		to, cancel := context.WithTimeout(ctx, defaultTimeout)
+		// passed in context is cancelled as soon as this function returns
+		// we run in a functions so not to block, therefore can not use the built
+		// in context
+
+		to, cancel := context.WithTimeout(context.Background(), defaultTimeout)
 		s.logger.Debug("Destroy", "state", e.FSM.Current())
 
 		go func() {

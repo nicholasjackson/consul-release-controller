@@ -49,6 +49,7 @@ func (p *Plugin) Configure(data json.RawMessage, log hclog.Logger, store interfa
 	d, err := store.GetState()
 	if err != nil {
 		log.Debug("Unable to load state", "error", err)
+		return nil
 	}
 
 	err = json.Unmarshal(d, p.state)
@@ -114,7 +115,7 @@ func (p *Plugin) InitPrimary(ctx context.Context, releaseName string) (interface
 	candidateDeployment, err = p.client.GetDeploymentWithSelector(ctx, p.config.DeploymentSelector, p.config.Namespace)
 	// if we have no Candidate there is nothing we can do
 	if err != nil || candidateDeployment == nil {
-		p.log.Debug("No candidate deployment, nothing to do")
+		p.log.Debug("No candidate deployment, nothing to do", "error", err)
 		return interfaces.RuntimeDeploymentNoAction, nil
 	}
 

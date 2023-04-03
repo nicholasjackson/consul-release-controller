@@ -16,7 +16,6 @@ require (
 	github.com/hashicorp/consul/api v1.20.0
 	github.com/hashicorp/go-hclog v1.5.0
 	github.com/hashicorp/nomad/api v0.0.0-20230331162532-78c90c57c530
-	github.com/kr/pretty v0.2.1
 	github.com/looplab/fsm v1.0.1
 	github.com/prometheus/client_golang v1.14.0
 	github.com/prometheus/common v0.42.0
@@ -67,7 +66,6 @@ require (
 	github.com/imdario/mergo v0.3.15 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
-	github.com/kr/text v0.2.0 // indirect
 	github.com/leodido/go-urn v1.2.2 // indirect
 	github.com/mailru/easyjson v0.7.7 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect

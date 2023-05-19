@@ -93,6 +93,7 @@ type KubernetesImpl struct {
 func (k *KubernetesImpl) GetKubernetesDeploymentWithSelector(ctx context.Context, selector, namespace string) (*appsv1.Deployment, error) {
 	deps, err := k.clientset.AppsV1().Deployments(namespace).List(ctx, v1.ListOptions{})
 	if err != nil {
+		k.logger.Debug("Error fetching Kubernetes deployment", "error", err)
 		return nil, interfaces.ErrDeploymentNotFound
 	}
 
@@ -239,12 +240,18 @@ func (k *KubernetesImpl) DeleteRelease(ctx context.Context, name, namespace stri
 
 func (k *KubernetesImpl) GetDeployment(ctx context.Context, name, namespace string) (*interfaces.Deployment, error) {
 	dep, err := k.GetKubernetesDeployment(ctx, name, namespace)
+
 	if dep != nil {
+		instances := 0
+		if dep.Spec.Replicas != nil {
+			instances = int(*dep.Spec.Replicas)
+		}
+
 		d := &interfaces.Deployment{
 			Name:            dep.Name,
 			Namespace:       dep.Namespace,
 			Meta:            dep.Labels,
-			Instances:       int(*dep.Spec.Replicas),
+			Instances:       instances,
 			ResourceVersion: dep.ResourceVersion,
 		}
 

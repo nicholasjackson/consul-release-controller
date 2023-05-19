@@ -50,7 +50,7 @@ fetch_kubernetes_certs:
 
 # Create the shipyard environment and run the functional tests
 functional_tests_kubernetes:
-	cd functional_tests && go run . --godog.tags="@k8s_canary_existing"
+	cd functional_tests && go run . --godog.tags="@k8s_canary_existing" --always-log=true
 	cd functional_tests && go run . --godog.tags="@k8s_canary_none"
 	cd functional_tests && go run . --godog.tags="@k8s_canary_rollback"
 	cd functional_tests && go run . --godog.tags="@k8s_canary_with_post_deployment_test"

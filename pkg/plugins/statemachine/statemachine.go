@@ -187,7 +187,7 @@ func (s *StateMachine) Resume() error {
 	switch s.CurrentState() {
 	case interfaces.StateMonitor:
 		s.SetState(interfaces.StateDeploy)
-		s.Event(interfaces.EventDeployed)
+		s.Event(context.Background(), interfaces.EventDeployed)
 	}
 
 	return nil
@@ -195,17 +195,17 @@ func (s *StateMachine) Resume() error {
 
 // Configure triggers the EventConfigure state
 func (s *StateMachine) Configure() error {
-	return s.Event(interfaces.EventConfigure)
+	return s.Event(context.Background(), interfaces.EventConfigure)
 }
 
 // Deploy triggers the EventDeploy state
 func (s *StateMachine) Deploy() error {
-	return s.Event(interfaces.EventDeploy)
+	return s.Event(context.Background(), interfaces.EventDeploy)
 }
 
 // Destroy triggers the event Destroy state
 func (s *StateMachine) Destroy() error {
-	return s.Event(interfaces.EventDestroy)
+	return s.Event(context.Background(), interfaces.EventDestroy)
 }
 
 // CurrentState returns the current state of the machine
@@ -213,15 +213,15 @@ func (s *StateMachine) CurrentState() string {
 	return s.FSM.Current()
 }
 
-func (s *StateMachine) logEvent() func(e *fsm.Event) {
-	return func(e *fsm.Event) {
-		s.logger.Debug("Handle event", "event", e.Event, "state", e.FSM.Current())
+func (s *StateMachine) logEvent() func(ctx context.Context, e *fsm.Event) {
+	return func(ctx context.Context, e *fsm.Event) {
+		s.logger.Debug("Before event", "event", e.Event, "state", e.FSM.Current())
 	}
 }
 
-func (s *StateMachine) enterState() func(e *fsm.Event) {
-	return func(e *fsm.Event) {
-		s.logger.Debug("Log state", "event", e.Event, "release", s.release.Name, "state", e.FSM.Current())
+func (s *StateMachine) enterState() func(ctx context.Context, e *fsm.Event) {
+	return func(ctx context.Context, e *fsm.Event) {
+		s.logger.Debug("Log state enter", "event", e.Event, "release", s.release.Name, "state", e.FSM.Current(), "error", e.Err)
 
 		// setup timing for the duration we exist in this state
 		s.metricsDone = s.metrics.StateChanged(s.release.Name, e.FSM.Current(), nil)
@@ -236,9 +236,9 @@ func (s *StateMachine) enterState() func(e *fsm.Event) {
 	}
 }
 
-func (s *StateMachine) leaveState() func(e *fsm.Event) {
-	return func(e *fsm.Event) {
-		s.logger.Debug("Log state", "event", e.Event, "state", e.FSM.Current())
+func (s *StateMachine) leaveState() func(context.Context, *fsm.Event) {
+	return func(ctx context.Context, e *fsm.Event) {
+		s.logger.Debug("Log state leave", "event", e.Event, "state", e.FSM.Current(), "error", e.Err)
 
 		// when we leave the state call the timing done function
 		if s.metricsDone != nil {
@@ -252,22 +252,26 @@ func (s *StateMachine) leaveState() func(e *fsm.Event) {
 	}
 }
 
-func (s *StateMachine) doConfigure() func(e *fsm.Event) {
-	return func(e *fsm.Event) {
+func (s *StateMachine) doConfigure() func(ctx context.Context, e *fsm.Event) {
+	return func(ctx context.Context, e *fsm.Event) {
+		// passed in context is cancelled as soon as this function returns
+		// we run in a functions so not to block, therefore can not use the built
+		// in context
+
 		s.logger.Debug("Configure", "state", e.FSM.Current())
-		ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+		to, cancel := context.WithTimeout(context.Background(), defaultTimeout)
 
 		go func() {
 			// clean up resources if we finish before timeout
 			defer cancel()
 
 			// setup the initial configuration
-			err := s.releaserPlugin.Setup(ctx, s.runtimePlugin.PrimarySubsetFilter(), s.runtimePlugin.CandidateSubsetFilter())
+			err := s.releaserPlugin.Setup(to, s.runtimePlugin.PrimarySubsetFilter(), s.runtimePlugin.CandidateSubsetFilter())
 			if err != nil {
 				s.logger.Error("Configure completed with error", "error", err)
 
 				s.callWebhooks(s.webhookPlugins, "Configure release failed", interfaces.StateConfigure, interfaces.EventFail, 0, 100, err)
-				e.FSM.Event(interfaces.EventFail)
+				e.FSM.Event(context.Background(), interfaces.EventFail)
 				return
 			}
 
@@ -281,32 +285,32 @@ func (s *StateMachine) doConfigure() func(e *fsm.Event) {
 			time.Sleep(stepDelay)
 
 			// if a deployment already exists copy this to the primary
-			status, err := s.runtimePlugin.InitPrimary(ctx, s.release.Name)
+			status, err := s.runtimePlugin.InitPrimary(to, s.release.Name)
 			if err != nil {
 				s.logger.Error("Configure completed with error", "status", status, "error", err)
 
 				s.callWebhooks(s.webhookPlugins, "Configure release failed", interfaces.StateConfigure, interfaces.EventFail, 0, 100, err)
-				e.FSM.Event(interfaces.EventFail)
+				e.FSM.Event(context.Background(), interfaces.EventFail)
 				return
 			}
 
 			// if we created a new primary, wait till all instances are healthy then scale all traffic to it
 			if status == interfaces.RuntimeDeploymentUpdate {
-				err = s.releaserPlugin.WaitUntilServiceHealthy(ctx, s.runtimePlugin.PrimarySubsetFilter())
+				err = s.releaserPlugin.WaitUntilServiceHealthy(to, s.runtimePlugin.PrimarySubsetFilter())
 				if err != nil {
 					s.logger.Error("New Primary deployment not healthy", "error", err)
 
 					s.callWebhooks(s.webhookPlugins, "Configure release failed", interfaces.StateConfigure, interfaces.EventFail, 0, 100, err)
-					e.FSM.Event(interfaces.EventFail)
+					e.FSM.Event(context.Background(), interfaces.EventFail)
 					return
 				}
 
-				err = s.releaserPlugin.Scale(ctx, 0)
+				err = s.releaserPlugin.Scale(to, 0)
 				if err != nil {
 					s.logger.Error("Configure completed with error", "error", err)
 
 					s.callWebhooks(s.webhookPlugins, "Configure release failed", interfaces.StateConfigure, interfaces.EventFail, 0, 100, err)
-					e.FSM.Event(interfaces.EventFail)
+					e.FSM.Event(context.Background(), interfaces.EventFail)
 					return
 				}
 
@@ -314,12 +318,12 @@ func (s *StateMachine) doConfigure() func(e *fsm.Event) {
 				time.Sleep(stepDelay * 4)
 
 				// remove the candidate
-				err = s.runtimePlugin.RemoveCandidate(ctx)
+				err = s.runtimePlugin.RemoveCandidate(to)
 				if err != nil {
 					s.logger.Error("Configure completed with error", "error", err)
 
 					s.callWebhooks(s.webhookPlugins, "Configure release failed", interfaces.StateConfigure, interfaces.EventFail, 100, 0, err)
-					e.FSM.Event(interfaces.EventFail)
+					e.FSM.Event(context.Background(), interfaces.EventFail)
 					return
 				}
 			}
@@ -327,15 +331,19 @@ func (s *StateMachine) doConfigure() func(e *fsm.Event) {
 			s.logger.Debug("Configure completed successfully")
 
 			s.callWebhooks(s.webhookPlugins, "Configure release succeeded", interfaces.StateConfigure, interfaces.EventConfigured, 100, 0, nil)
-			e.FSM.Event(interfaces.EventConfigured)
+			e.FSM.Event(context.Background(), interfaces.EventConfigured)
 		}()
 	}
 }
 
-func (s *StateMachine) doDeploy() func(e *fsm.Event) {
-	return func(e *fsm.Event) {
+func (s *StateMachine) doDeploy() func(ctx context.Context, e *fsm.Event) {
+	return func(ctx context.Context, e *fsm.Event) {
+		// passed in context is cancelled as soon as this function returns
+		// we run in a functions so not to block, therefore can not use the built
+		// in context
+
 		s.logger.Debug("Deploy", "state", e.FSM.Current())
-		ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+		to, cancel := context.WithTimeout(context.Background(), defaultTimeout)
 
 		go func() {
 			// wait a few seconds as deploy is called before the new deployment is admitted to the server
@@ -345,32 +353,32 @@ func (s *StateMachine) doDeploy() func(e *fsm.Event) {
 			defer cancel()
 
 			// Create a primary if one does not exist
-			status, err := s.runtimePlugin.InitPrimary(ctx, s.release.Name)
+			status, err := s.runtimePlugin.InitPrimary(to, s.release.Name)
 			if err != nil {
 				s.logger.Error("Deploy completed with error", "error", err)
 
 				s.callWebhooks(s.webhookPlugins, "New Deployment failed", interfaces.StateDeploy, interfaces.EventFail, 100, 0, err)
-				e.FSM.Event(interfaces.EventFail)
+				e.FSM.Event(context.Background(), interfaces.EventFail)
 				return
 			}
 
-			err = s.releaserPlugin.WaitUntilServiceHealthy(ctx, s.runtimePlugin.PrimarySubsetFilter())
+			err = s.releaserPlugin.WaitUntilServiceHealthy(to, s.runtimePlugin.PrimarySubsetFilter())
 			if err != nil {
 				s.logger.Error("Configure completed with error", "error", err)
 
 				s.callWebhooks(s.webhookPlugins, "New Deployment failed", interfaces.StateDeploy, interfaces.EventFail, 100, 0, err)
-				e.FSM.Event(interfaces.EventFail)
+				e.FSM.Event(context.Background(), interfaces.EventFail)
 				return
 			}
 
 			// now the primary has been created send 100 of traffic there
-			err = s.releaserPlugin.Scale(ctx, 0)
+			err = s.releaserPlugin.Scale(to, 0)
 			// work has failed, raise the failed event
 			if err != nil {
 				s.logger.Error("Deploy completed with error", "error", err)
 
 				s.callWebhooks(s.webhookPlugins, "New Deployment failed", interfaces.StateDeploy, interfaces.EventFail, 100, 0, err)
-				e.FSM.Event(interfaces.EventFail)
+				e.FSM.Event(context.Background(), interfaces.EventFail)
 				return
 			}
 
@@ -388,32 +396,36 @@ func (s *StateMachine) doDeploy() func(e *fsm.Event) {
 				time.Sleep(stepDelay * 4)
 
 				// remove the candidate and wait for the next deployment
-				err = s.runtimePlugin.RemoveCandidate(ctx)
+				err = s.runtimePlugin.RemoveCandidate(to)
 				if err != nil {
 					s.logger.Error("Deploy completed with error", "error", err)
 
 					s.callWebhooks(s.webhookPlugins, "New deployment failed", interfaces.StateDeploy, interfaces.EventFail, 100, 0, err)
-					e.FSM.Event(interfaces.EventFail)
+					e.FSM.Event(context.Background(), interfaces.EventFail)
 					return
 				}
 
 				s.callWebhooks(s.webhookPlugins, "New deployment succeeded", interfaces.StateDeploy, interfaces.EventComplete, 100, 0, nil)
-				e.FSM.Event(interfaces.EventComplete)
+				e.FSM.Event(context.Background(), interfaces.EventComplete)
 				return
 			}
 
 			// new deployment run the strategy
 			s.logger.Debug("Deploy completed, executing strategy")
 			s.callWebhooks(s.webhookPlugins, "New deployment succeeded, executing strategy", interfaces.StateDeploy, interfaces.EventDeployed, 100, 0, nil)
-			e.FSM.Event(interfaces.EventDeployed)
+			e.FSM.Event(context.Background(), interfaces.EventDeployed)
 		}()
 	}
 }
 
-func (s *StateMachine) doMonitor() func(e *fsm.Event) {
-	return func(e *fsm.Event) {
+func (s *StateMachine) doMonitor() func(ctx context.Context, e *fsm.Event) {
+	return func(ctx context.Context, e *fsm.Event) {
+		// passed in context is cancelled as soon as this function returns
+		// we run in a functions so not to block, therefore can not use the built
+		// in context
+
 		s.logger.Debug("Monitor", "state", e.FSM.Current())
-		ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+		to, cancel := context.WithTimeout(context.Background(), defaultTimeout)
 
 		go func() {
 			// clean up resources if we finish before timeout
@@ -422,7 +434,7 @@ func (s *StateMachine) doMonitor() func(e *fsm.Event) {
 			// run the post deployment tests if we have any
 			if s.testPlugin != nil {
 				s.logger.Debug("Executing post deployment tests")
-				err := s.testPlugin.Execute(ctx, s.runtimePlugin.BaseState().CandidateName)
+				err := s.testPlugin.Execute(to, s.runtimePlugin.BaseState().CandidateName)
 
 				if err != nil {
 					// post deployment tests have failed rollback
@@ -438,12 +450,14 @@ func (s *StateMachine) doMonitor() func(e *fsm.Event) {
 						err,
 					)
 
-					e.FSM.Event(interfaces.EventUnhealthy)
+					// events need to be called with a new context as the one passed in is cancelled at the end
+					// of the event
+					e.FSM.Event(context.Background(), interfaces.EventUnhealthy)
 					return
 				}
 			}
 
-			result, traffic, err := s.strategyPlugin.Execute(ctx, s.runtimePlugin.BaseState().CandidateName)
+			result, traffic, err := s.strategyPlugin.Execute(to, s.runtimePlugin.BaseState().CandidateName)
 
 			// strategy has failed with an error
 			if err != nil {
@@ -459,7 +473,7 @@ func (s *StateMachine) doMonitor() func(e *fsm.Event) {
 					err,
 				)
 
-				e.FSM.Event(interfaces.EventFail)
+				e.FSM.Event(context.Background(), interfaces.EventFail)
 			}
 
 			// strategy returned a response
@@ -469,13 +483,13 @@ func (s *StateMachine) doMonitor() func(e *fsm.Event) {
 				// send the traffic with the healthy event so that it can be used for scaling
 				s.logger.Debug("Monitor checks completed, candidate healthy")
 
-				e.FSM.Event(interfaces.EventHealthy, traffic)
+				e.FSM.Event(context.Background(), interfaces.EventHealthy, traffic)
 
 			// the strategy has completed the roll out promote the deployment
 			case interfaces.StrategyStatusComplete:
 				s.logger.Debug("Monitor checks completed, strategy complete")
 
-				e.FSM.Event(interfaces.EventComplete)
+				e.FSM.Event(context.Background(), interfaces.EventComplete)
 
 			// the strategy has reported that the deployment is unhealthy, rollback
 			case interfaces.StrategyStatusFailed:
@@ -491,16 +505,19 @@ func (s *StateMachine) doMonitor() func(e *fsm.Event) {
 					err,
 				)
 
-				e.FSM.Event(interfaces.EventUnhealthy)
+				e.FSM.Event(context.Background(), interfaces.EventUnhealthy)
 			}
 		}()
 	}
 }
 
-func (s *StateMachine) doScale() func(e *fsm.Event) {
-	return func(e *fsm.Event) {
+func (s *StateMachine) doScale() func(ctx context.Context, e *fsm.Event) {
+	return func(ctx context.Context, e *fsm.Event) {
+		// passed in context is cancelled as soon as this function returns
+		// we run in a functions so not to block, therefore can not use the built
+		// in context
 		s.logger.Debug("Scale", "state", e.FSM.Current())
-		ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+		to, cancel := context.WithTimeout(context.Background(), defaultTimeout)
 
 		go func() {
 			// clean up resources if we finish before timeout
@@ -510,13 +527,13 @@ func (s *StateMachine) doScale() func(e *fsm.Event) {
 			if len(e.Args) != 1 {
 				s.logger.Error("Scale completed with error", "error", fmt.Errorf("no traffic percentage in event payload"))
 
-				e.FSM.Event(interfaces.EventFail)
+				e.FSM.Event(context.Background(), interfaces.EventFail)
 				return
 			}
 
 			traffic := e.Args[0].(int)
 
-			err := s.releaserPlugin.Scale(ctx, traffic)
+			err := s.releaserPlugin.Scale(to, traffic)
 			if err != nil {
 				s.logger.Error("Scale completed with error", "error", err)
 
@@ -530,7 +547,7 @@ func (s *StateMachine) doScale() func(e *fsm.Event) {
 					err,
 				)
 
-				e.FSM.Event(interfaces.EventFail)
+				e.FSM.Event(context.Background(), interfaces.EventFail)
 				return
 			}
 
@@ -546,25 +563,28 @@ func (s *StateMachine) doScale() func(e *fsm.Event) {
 				nil,
 			)
 
-			e.FSM.Event(interfaces.EventScaled)
+			e.FSM.Event(context.Background(), interfaces.EventScaled)
 		}()
 	}
 }
 
-func (s *StateMachine) doPromote() func(e *fsm.Event) {
-	return func(e *fsm.Event) {
+func (s *StateMachine) doPromote() func(ctx context.Context, e *fsm.Event) {
+	return func(ctx context.Context, e *fsm.Event) {
+		// passed in context is cancelled as soon as this function returns
+		// we run in a functions so not to block, therefore can not use the built
+		// in context
 		s.logger.Debug("Promote", "state", e.FSM.Current())
-		ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+		to, cancel := context.WithTimeout(context.Background(), defaultTimeout)
 
 		go func() {
 			// clean up resources if we finish before timeout
 			defer cancel()
 
 			// scale all traffic to the candidate before promoting
-			err := s.releaserPlugin.Scale(ctx, 100)
+			err := s.releaserPlugin.Scale(to, 100)
 			if err != nil {
 				s.callWebhooks(s.webhookPlugins, "Promoting candidate failed", interfaces.StatePromote, interfaces.EventFail, 0, 100, err)
-				e.FSM.Event(interfaces.EventFail)
+				e.FSM.Event(context.Background(), interfaces.EventFail)
 				return
 			}
 
@@ -578,59 +598,63 @@ func (s *StateMachine) doPromote() func(e *fsm.Event) {
 			time.Sleep(stepDelay)
 
 			// promote the candidate to primary
-			_, err = s.runtimePlugin.PromoteCandidate(ctx)
+			_, err = s.runtimePlugin.PromoteCandidate(to)
 			if err != nil {
 				s.callWebhooks(s.webhookPlugins, "Promoting candidate failed", interfaces.StatePromote, interfaces.EventFail, 0, 100, err)
-				e.FSM.Event(interfaces.EventFail)
+				e.FSM.Event(context.Background(), interfaces.EventFail)
 				return
 			}
 
 			// check consul to ensure that the promoted deployment is healthy
-			err = s.releaserPlugin.WaitUntilServiceHealthy(ctx, s.runtimePlugin.PrimarySubsetFilter())
+			err = s.releaserPlugin.WaitUntilServiceHealthy(to, s.runtimePlugin.PrimarySubsetFilter())
 			if err != nil {
 				s.logger.Error("Promote completed with error", "error", err)
 
 				s.callWebhooks(s.webhookPlugins, "Promoting candidate failed", interfaces.StatePromote, interfaces.EventFail, 0, 100, err)
-				e.FSM.Event(interfaces.EventFail)
+				e.FSM.Event(context.Background(), interfaces.EventFail)
 				return
 			}
 
 			// scale all traffic to the primary
-			err = s.releaserPlugin.Scale(ctx, 0)
+			err = s.releaserPlugin.Scale(to, 0)
 			if err != nil {
 				s.callWebhooks(s.webhookPlugins, "Promoting candidate failed", interfaces.StatePromote, interfaces.EventFail, 0, 100, err)
-				e.FSM.Event(interfaces.EventFail)
+				e.FSM.Event(context.Background(), interfaces.EventFail)
 				return
 			}
 
 			time.Sleep(stepDelay * 4)
 
 			// scale down the canary
-			err = s.runtimePlugin.RemoveCandidate(ctx)
+			err = s.runtimePlugin.RemoveCandidate(to)
 			if err != nil {
 				s.callWebhooks(s.webhookPlugins, "Promoting candidate failed", interfaces.StatePromote, interfaces.EventFail, 100, 0, err)
-				e.FSM.Event(interfaces.EventFail)
+				e.FSM.Event(context.Background(), interfaces.EventFail)
 				return
 			}
 
 			s.callWebhooks(s.webhookPlugins, "Promoting candidate to primary succeeded", interfaces.StatePromote, interfaces.EventPromoted, 100, 0, err)
-			e.FSM.Event(interfaces.EventPromoted)
+			e.FSM.Event(context.Background(), interfaces.EventPromoted)
 		}()
 	}
 }
 
-func (s *StateMachine) doRollback() func(e *fsm.Event) {
-	return func(e *fsm.Event) {
+func (s *StateMachine) doRollback() func(ctx context.Context, e *fsm.Event) {
+	return func(ctx context.Context, e *fsm.Event) {
+		// passed in context is cancelled as soon as this function returns
+		// we run in a functions so not to block, therefore can not use the built
+		// in context
+
 		s.logger.Debug("Rollback", "state", e.FSM.Current())
-		ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+		to, cancel := context.WithTimeout(context.Background(), defaultTimeout)
 
 		go func() {
 			// clean up resources if we finish before timeout
 			defer cancel()
 			// scale all traffic to the primary
-			err := s.releaserPlugin.Scale(ctx, 0)
+			err := s.releaserPlugin.Scale(to, 0)
 			if err != nil {
-				e.FSM.Event(interfaces.EventFail)
+				e.FSM.Event(context.Background(), interfaces.EventFail)
 
 				s.callWebhooks(
 					s.webhookPlugins,
@@ -655,42 +679,46 @@ func (s *StateMachine) doRollback() func(e *fsm.Event) {
 			time.Sleep(stepDelay * 4)
 
 			// scale down the canary
-			err = s.runtimePlugin.RemoveCandidate(ctx)
+			err = s.runtimePlugin.RemoveCandidate(to)
 			if err != nil {
 				s.callWebhooks(s.webhookPlugins, "Rolling back deployment failed", interfaces.StateRollback, interfaces.EventFail, 100, 0, err)
-				e.FSM.Event(interfaces.EventFail)
+				e.FSM.Event(context.Background(), interfaces.EventFail)
 				return
 			}
 
 			s.callWebhooks(s.webhookPlugins, "Deployment rolled back", interfaces.StateRollback, interfaces.EventComplete, 100, 0, err)
-			e.FSM.Event(interfaces.EventComplete)
+			e.FSM.Event(context.Background(), interfaces.EventComplete)
 		}()
 	}
 }
 
-func (s *StateMachine) doDestroy() func(e *fsm.Event) {
-	return func(e *fsm.Event) {
-		ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+func (s *StateMachine) doDestroy() func(ctx context.Context, e *fsm.Event) {
+	return func(ctx context.Context, e *fsm.Event) {
+		// passed in context is cancelled as soon as this function returns
+		// we run in a functions so not to block, therefore can not use the built
+		// in context
+
+		to, cancel := context.WithTimeout(context.Background(), defaultTimeout)
 		s.logger.Debug("Destroy", "state", e.FSM.Current())
 
 		go func() {
 			// clean up resources if we finish before timeout
 			defer cancel()
 			// restore the original deployment
-			err := s.runtimePlugin.RestoreOriginal(ctx)
+			err := s.runtimePlugin.RestoreOriginal(to)
 			if err != nil {
 				s.callWebhooks(s.webhookPlugins, "Remove release failed", interfaces.StateDestroy, interfaces.EventFail, 100, 0, err)
-				e.FSM.Event(interfaces.EventFail)
+				e.FSM.Event(context.Background(), interfaces.EventFail)
 				return
 			}
 
 			// ensure that the original version is healthy in consul before progressing
-			err = s.releaserPlugin.WaitUntilServiceHealthy(ctx, s.runtimePlugin.CandidateSubsetFilter())
+			err = s.releaserPlugin.WaitUntilServiceHealthy(to, s.runtimePlugin.CandidateSubsetFilter())
 			if err != nil {
 				s.logger.Error("Configure completed with error", "error", err)
 
 				s.callWebhooks(s.webhookPlugins, "Remove release failed", interfaces.StateDestroy, interfaces.EventFail, 100, 0, err)
-				e.FSM.Event(interfaces.EventFail)
+				e.FSM.Event(context.Background(), interfaces.EventFail)
 				return
 			}
 
@@ -698,7 +726,7 @@ func (s *StateMachine) doDestroy() func(e *fsm.Event) {
 			err = s.releaserPlugin.Scale(ctx, 100)
 			if err != nil {
 				s.callWebhooks(s.webhookPlugins, "Remove release failed", interfaces.StateDestroy, interfaces.EventFail, 100, 0, err)
-				e.FSM.Event(interfaces.EventFail)
+				e.FSM.Event(context.Background(), interfaces.EventFail)
 				return
 			}
 
@@ -712,23 +740,23 @@ func (s *StateMachine) doDestroy() func(e *fsm.Event) {
 			time.Sleep(stepDelay * 4)
 
 			// destroy the primary
-			err = s.runtimePlugin.RemovePrimary(ctx)
+			err = s.runtimePlugin.RemovePrimary(to)
 			if err != nil {
 				s.callWebhooks(s.webhookPlugins, "Remove release failed", interfaces.StateDestroy, interfaces.EventFail, 0, 100, err)
-				e.FSM.Event(interfaces.EventFail)
+				e.FSM.Event(context.Background(), interfaces.EventFail)
 				return
 			}
 
 			// remove the consul config
-			err = s.releaserPlugin.Destroy(ctx)
+			err = s.releaserPlugin.Destroy(to)
 			if err != nil {
 				s.callWebhooks(s.webhookPlugins, "Remove release failed", interfaces.StateDestroy, interfaces.EventFail, 0, 100, err)
-				e.FSM.Event(interfaces.EventFail)
+				e.FSM.Event(context.Background(), interfaces.EventFail)
 				return
 			}
 
 			s.callWebhooks(s.webhookPlugins, "Remove release succeeded", interfaces.StateDestroy, interfaces.EventComplete, 0, 100, err)
-			e.FSM.Event(interfaces.EventComplete)
+			e.FSM.Event(context.Background(), interfaces.EventComplete)
 		}()
 	}
 }
